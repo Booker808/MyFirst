@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>cn.evun.core-framework</groupId>
+    <artifactId>core-framework-parent</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0.0-SNAPSHOT</version>
+    <modules>
+        <module>common</module>
+        <module>outerface</module>
+        <module>enterprice-center</module>
+        <module>product-center</module>
+        <module>service</module>
+        <module>demo</module>
+        <module>dao</module>
+    </modules>
+
+    <properties>
+        <sweet.version>1.1.0-SNAPSHOT</sweet.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.csjscm.sweet.b2b</groupId>
+                <artifactId>common</artifactId>
+                <version>${b2b.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.csjscm.sweet.b2b</groupId>
+                <artifactId>service</artifactId>
+                <version>${b2b.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.csjscm.sweet.b2b</groupId>
+                <artifactId>api</artifactId>
+                <version>${b2b.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.csjscm.sweet.b2b</groupId>
+                <artifactId>api-gateway</artifactId>
+                <version>${b2b.version}</version>
+            </dependency>
+
+            <!--sweet-->
+            <dependency>
+                <groupId>com.csjscm.sweet.framework</groupId>
+                <artifactId>sweet-framework-core</artifactId>
+                <version>${sweet.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.csjscm.sweet.framework</groupId>
+                <artifactId>sweet-framework-auth</artifactId>
+                <version>${sweet.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.csjscm.sweet.framework</groupId>
+                <artifactId>sweet-framework-redis-autoconfiguration</artifactId>
+                <version>${sweet.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.csjscm.sweet.framework</groupId>
+                <artifactId>sweet-framework-storage</artifactId>
+                <version>${sweet.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>1.16.18</version>
+                <scope>provided</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-scm-plugin</artifactId>
+                <version>1.9.4</version>
+                <configuration>
+                    <connectionType>developerConnection</connectionType>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.1</version>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.19.1</version>
+                <configuration>
+                    <!-- 设置成true在使用maven打包发布时不做junit测试 -->
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
