@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+
+    <context id="DB2Tables" targetRuntime="MyBatis3">
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://192.168.2.199:3306/shoppingcenter?useUnicode=true"
+                        userId="root"
+                        password="Aa123456">
+        </jdbcConnection>
+        <javaModelGenerator targetPackage="cn.evun.coreframework.model" targetProject="src/main/java" />
+        <sqlMapGenerator targetPackage="sql-mappers" targetProject="src/main/resources" />
+        <javaClientGenerator type="XMLMAPPER" targetPackage="cn.evun.coreframework.dao" targetProject="src/main/java" />
+
+        <table tableName="brand_master"/>
+        <table tableName="category"/>
+        <table tableName="sku_core"/>
+        <table tableName="sku_customer"/>
+        <table tableName="sku_partner"/>
+        <table tableName="sku_sell"/>
+        <table tableName="sku_uom"/>
+        <table tableName="sku_upc"/>
+        <table tableName="spu"/>
+        <table tableName="unit_convert"/>
+    </context>
+</generatorConfiguration>
