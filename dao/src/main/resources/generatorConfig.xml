@@ -25,5 +25,6 @@
         <table tableName="sku_upc"/>
         <table tableName="spu"/>
         <table tableName="unit_convert"/>
+        <table tableName="inv_unit"/>
     </context>
 </generatorConfiguration>
