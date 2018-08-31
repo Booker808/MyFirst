@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>cn.evun.core-framework</groupId>
+    <groupId>com.csjscm.core.framework</groupId>
     <artifactId>core-framework-parent</artifactId>
     <packaging>pom</packaging>
     <version>1.0.0-SNAPSHOT</version>
@@ -20,28 +20,44 @@
 
     <properties>
         <sweet.version>1.1.0-SNAPSHOT</sweet.version>
+        <b2b.version>1.0.0-SNAPSHOT</b2b.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>com.csjscm.sweet.b2b</groupId>
+                <groupId>com.csjscm.core.framework</groupId>
                 <artifactId>common</artifactId>
                 <version>${b2b.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.csjscm.sweet.b2b</groupId>
+                <groupId>com.csjscm.core.framework</groupId>
                 <artifactId>service</artifactId>
                 <version>${b2b.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.csjscm.sweet.b2b</groupId>
-                <artifactId>api</artifactId>
+                <groupId>com.csjscm.core.framework</groupId>
+                <artifactId>outerface</artifactId>
                 <version>${b2b.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.csjscm.sweet.b2b</groupId>
-                <artifactId>api-gateway</artifactId>
+                <groupId>com.csjscm.core.framework</groupId>
+                <artifactId>dao</artifactId>
+                <version>${b2b.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.csjscm.core.framework</groupId>
+                <artifactId>demo</artifactId>
+                <version>${b2b.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.csjscm.core.framework</groupId>
+                <artifactId>enterprice-center</artifactId>
+                <version>${b2b.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.csjscm.core.framework</groupId>
+                <artifactId>product-center</artifactId>
                 <version>${b2b.version}</version>
             </dependency>
 

@@ -11,9 +11,9 @@
                         userId="root"
                         password="Aa123456">
         </jdbcConnection>
-        <javaModelGenerator targetPackage="cn.evun.coreframework.model" targetProject="src/main/java" />
+        <javaModelGenerator targetPackage="com.csjscm.core.framework.model" targetProject="src/main/java" />
         <sqlMapGenerator targetPackage="sql-mappers" targetProject="src/main/resources" />
-        <javaClientGenerator type="XMLMAPPER" targetPackage="cn.evun.coreframework.dao" targetProject="src/main/java" />
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.csjscm.core.framework.dao" targetProject="src/main/java" />
 
         <table tableName="brand_master"/>
         <table tableName="category"/>
