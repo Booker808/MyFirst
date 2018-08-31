@@ -30,6 +30,8 @@ public class SkuCore {
 
     private String minUint;
 
+    private String productPic;
+
     private String ean13Code;
 
     private String mnemonicCode;
@@ -101,6 +103,8 @@ public class SkuCore {
     private String approvalStatusOld;
 
     private String brandIdOld;
+
+    private String minUintOld;
 
     public String getProductNo() {
         return productNo;
@@ -204,6 +208,14 @@ public class SkuCore {
 
     public void setMinUint(String minUint) {
         this.minUint = minUint;
+    }
+
+    public String getProductPic() {
+        return productPic;
+    }
+
+    public void setProductPic(String productPic) {
+        this.productPic = productPic;
     }
 
     public String getEan13Code() {
@@ -492,5 +504,13 @@ public class SkuCore {
 
     public void setBrandIdOld(String brandIdOld) {
         this.brandIdOld = brandIdOld;
+    }
+
+    public String getMinUintOld() {
+        return minUintOld;
+    }
+
+    public void setMinUintOld(String minUintOld) {
+        this.minUintOld = minUintOld;
     }
 }
