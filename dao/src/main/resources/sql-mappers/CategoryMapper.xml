@@ -1,292 +1,378 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- category表:商品分类表模块 -->
 <mapper namespace="com.csjscm.core.framework.dao.CategoryMapper">
-  <resultMap id="BaseResultMap" type="com.csjscm.core.framework.model.Category">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <id column="class_code" jdbcType="VARCHAR" property="classCode" />
-    <result column="class_name" jdbcType="VARCHAR" property="className" />
-    <result column="simple_name" jdbcType="VARCHAR" property="simpleName" />
-    <result column="parent_class" jdbcType="VARCHAR" property="parentClass" />
-    <result column="level_num" jdbcType="INTEGER" property="levelNum" />
-    <result column="memos" jdbcType="VARCHAR" property="memos" />
-    <result column="create_user_id" jdbcType="VARCHAR" property="createUserId" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="edit_user_id" jdbcType="VARCHAR" property="editUserId" />
-    <result column="edit_time" jdbcType="TIMESTAMP" property="editTime" />
-    <result column="udf1" jdbcType="VARCHAR" property="udf1" />
-    <result column="udf2" jdbcType="VARCHAR" property="udf2" />
-    <result column="udf3" jdbcType="VARCHAR" property="udf3" />
-    <result column="udf4" jdbcType="VARCHAR" property="udf4" />
-    <result column="udf5" jdbcType="VARCHAR" property="udf5" />
-    <result column="udf6" jdbcType="VARCHAR" property="udf6" />
-    <result column="udf7" jdbcType="VARCHAR" property="udf7" />
-    <result column="udf8" jdbcType="VARCHAR" property="udf8" />
-    <result column="udf9" jdbcType="VARCHAR" property="udf9" />
-    <result column="udf10" jdbcType="VARCHAR" property="udf10" />
-    <result column="request_id" jdbcType="VARCHAR" property="requestId" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    id, class_code, class_name, simple_name, parent_class, level_num, memos, create_user_id, 
-    create_time, edit_user_id, edit_time, udf1, udf2, udf3, udf4, udf5, udf6, udf7, udf8, 
-    udf9, udf10, request_id
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="com.csjscm.core.framework.model.CategoryKey" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from category
-    where id = #{id,jdbcType=INTEGER}
-      and class_code = #{classCode,jdbcType=VARCHAR}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="com.csjscm.core.framework.model.CategoryKey">
-    delete from category
-    where id = #{id,jdbcType=INTEGER}
-      and class_code = #{classCode,jdbcType=VARCHAR}
-  </delete>
-  <insert id="insert" parameterType="com.csjscm.core.framework.model.Category">
-    insert into category (id, class_code, class_name, 
-      simple_name, parent_class, level_num, 
-      memos, create_user_id, create_time, 
-      edit_user_id, edit_time, udf1, 
-      udf2, udf3, udf4, udf5, 
-      udf6, udf7, udf8, udf9, 
-      udf10, request_id)
-    values (#{id,jdbcType=INTEGER}, #{classCode,jdbcType=VARCHAR}, #{className,jdbcType=VARCHAR}, 
-      #{simpleName,jdbcType=VARCHAR}, #{parentClass,jdbcType=VARCHAR}, #{levelNum,jdbcType=INTEGER}, 
-      #{memos,jdbcType=VARCHAR}, #{createUserId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{editUserId,jdbcType=VARCHAR}, #{editTime,jdbcType=TIMESTAMP}, #{udf1,jdbcType=VARCHAR}, 
-      #{udf2,jdbcType=VARCHAR}, #{udf3,jdbcType=VARCHAR}, #{udf4,jdbcType=VARCHAR}, #{udf5,jdbcType=VARCHAR}, 
-      #{udf6,jdbcType=VARCHAR}, #{udf7,jdbcType=VARCHAR}, #{udf8,jdbcType=VARCHAR}, #{udf9,jdbcType=VARCHAR}, 
-      #{udf10,jdbcType=VARCHAR}, #{requestId,jdbcType=VARCHAR})
-  </insert>
-  <insert id="insertSelective" parameterType="com.csjscm.core.framework.model.Category">
-    insert into category
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="classCode != null">
-        class_code,
-      </if>
-      <if test="className != null">
-        class_name,
-      </if>
-      <if test="simpleName != null">
-        simple_name,
-      </if>
-      <if test="parentClass != null">
-        parent_class,
-      </if>
-      <if test="levelNum != null">
-        level_num,
-      </if>
-      <if test="memos != null">
-        memos,
-      </if>
-      <if test="createUserId != null">
-        create_user_id,
-      </if>
-      <if test="createTime != null">
-        create_time,
-      </if>
-      <if test="editUserId != null">
-        edit_user_id,
-      </if>
-      <if test="editTime != null">
-        edit_time,
-      </if>
-      <if test="udf1 != null">
-        udf1,
-      </if>
-      <if test="udf2 != null">
-        udf2,
-      </if>
-      <if test="udf3 != null">
-        udf3,
-      </if>
-      <if test="udf4 != null">
-        udf4,
-      </if>
-      <if test="udf5 != null">
-        udf5,
-      </if>
-      <if test="udf6 != null">
-        udf6,
-      </if>
-      <if test="udf7 != null">
-        udf7,
-      </if>
-      <if test="udf8 != null">
-        udf8,
-      </if>
-      <if test="udf9 != null">
-        udf9,
-      </if>
-      <if test="udf10 != null">
-        udf10,
-      </if>
-      <if test="requestId != null">
-        request_id,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="classCode != null">
-        #{classCode,jdbcType=VARCHAR},
-      </if>
-      <if test="className != null">
-        #{className,jdbcType=VARCHAR},
-      </if>
-      <if test="simpleName != null">
-        #{simpleName,jdbcType=VARCHAR},
-      </if>
-      <if test="parentClass != null">
-        #{parentClass,jdbcType=VARCHAR},
-      </if>
-      <if test="levelNum != null">
-        #{levelNum,jdbcType=INTEGER},
-      </if>
-      <if test="memos != null">
-        #{memos,jdbcType=VARCHAR},
-      </if>
-      <if test="createUserId != null">
-        #{createUserId,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="editUserId != null">
-        #{editUserId,jdbcType=VARCHAR},
-      </if>
-      <if test="editTime != null">
-        #{editTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="udf1 != null">
-        #{udf1,jdbcType=VARCHAR},
-      </if>
-      <if test="udf2 != null">
-        #{udf2,jdbcType=VARCHAR},
-      </if>
-      <if test="udf3 != null">
-        #{udf3,jdbcType=VARCHAR},
-      </if>
-      <if test="udf4 != null">
-        #{udf4,jdbcType=VARCHAR},
-      </if>
-      <if test="udf5 != null">
-        #{udf5,jdbcType=VARCHAR},
-      </if>
-      <if test="udf6 != null">
-        #{udf6,jdbcType=VARCHAR},
-      </if>
-      <if test="udf7 != null">
-        #{udf7,jdbcType=VARCHAR},
-      </if>
-      <if test="udf8 != null">
-        #{udf8,jdbcType=VARCHAR},
-      </if>
-      <if test="udf9 != null">
-        #{udf9,jdbcType=VARCHAR},
-      </if>
-      <if test="udf10 != null">
-        #{udf10,jdbcType=VARCHAR},
-      </if>
-      <if test="requestId != null">
-        #{requestId,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.csjscm.core.framework.model.Category">
-    update category
-    <set>
-      <if test="className != null">
-        class_name = #{className,jdbcType=VARCHAR},
-      </if>
-      <if test="simpleName != null">
-        simple_name = #{simpleName,jdbcType=VARCHAR},
-      </if>
-      <if test="parentClass != null">
-        parent_class = #{parentClass,jdbcType=VARCHAR},
-      </if>
-      <if test="levelNum != null">
-        level_num = #{levelNum,jdbcType=INTEGER},
-      </if>
-      <if test="memos != null">
-        memos = #{memos,jdbcType=VARCHAR},
-      </if>
-      <if test="createUserId != null">
-        create_user_id = #{createUserId,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null">
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="editUserId != null">
-        edit_user_id = #{editUserId,jdbcType=VARCHAR},
-      </if>
-      <if test="editTime != null">
-        edit_time = #{editTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="udf1 != null">
-        udf1 = #{udf1,jdbcType=VARCHAR},
-      </if>
-      <if test="udf2 != null">
-        udf2 = #{udf2,jdbcType=VARCHAR},
-      </if>
-      <if test="udf3 != null">
-        udf3 = #{udf3,jdbcType=VARCHAR},
-      </if>
-      <if test="udf4 != null">
-        udf4 = #{udf4,jdbcType=VARCHAR},
-      </if>
-      <if test="udf5 != null">
-        udf5 = #{udf5,jdbcType=VARCHAR},
-      </if>
-      <if test="udf6 != null">
-        udf6 = #{udf6,jdbcType=VARCHAR},
-      </if>
-      <if test="udf7 != null">
-        udf7 = #{udf7,jdbcType=VARCHAR},
-      </if>
-      <if test="udf8 != null">
-        udf8 = #{udf8,jdbcType=VARCHAR},
-      </if>
-      <if test="udf9 != null">
-        udf9 = #{udf9,jdbcType=VARCHAR},
-      </if>
-      <if test="udf10 != null">
-        udf10 = #{udf10,jdbcType=VARCHAR},
-      </if>
-      <if test="requestId != null">
-        request_id = #{requestId,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-      and class_code = #{classCode,jdbcType=VARCHAR}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.csjscm.core.framework.model.Category">
-    update category
-    set class_name = #{className,jdbcType=VARCHAR},
-      simple_name = #{simpleName,jdbcType=VARCHAR},
-      parent_class = #{parentClass,jdbcType=VARCHAR},
-      level_num = #{levelNum,jdbcType=INTEGER},
-      memos = #{memos,jdbcType=VARCHAR},
-      create_user_id = #{createUserId,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      edit_user_id = #{editUserId,jdbcType=VARCHAR},
-      edit_time = #{editTime,jdbcType=TIMESTAMP},
-      udf1 = #{udf1,jdbcType=VARCHAR},
-      udf2 = #{udf2,jdbcType=VARCHAR},
-      udf3 = #{udf3,jdbcType=VARCHAR},
-      udf4 = #{udf4,jdbcType=VARCHAR},
-      udf5 = #{udf5,jdbcType=VARCHAR},
-      udf6 = #{udf6,jdbcType=VARCHAR},
-      udf7 = #{udf7,jdbcType=VARCHAR},
-      udf8 = #{udf8,jdbcType=VARCHAR},
-      udf9 = #{udf9,jdbcType=VARCHAR},
-      udf10 = #{udf10,jdbcType=VARCHAR},
-      request_id = #{requestId,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=INTEGER}
-      and class_code = #{classCode,jdbcType=VARCHAR}
-  </update>
+    <!--返回Map-->        
+    <resultMap id="BaseResultMap" type="com.csjscm.core.framework.model.Category">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="class_code" property="classCode" jdbcType="VARCHAR" />
+        <result column="class_name" property="className" jdbcType="VARCHAR" />
+        <result column="simple_name" property="simpleName" jdbcType="VARCHAR" />
+        <result column="parent_class" property="parentClass" jdbcType="VARCHAR" />
+        <result column="level_num" property="levelNum" jdbcType="INTEGER" />
+        <result column="memos" property="memos" jdbcType="VARCHAR" />
+        <result column="create_user_id" property="createUserId" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="edit_user_id" property="editUserId" jdbcType="VARCHAR" />
+        <result column="edit_time" property="editTime" jdbcType="TIMESTAMP" />
+        <result column="udf1" property="udf1" jdbcType="VARCHAR" />
+        <result column="udf2" property="udf2" jdbcType="VARCHAR" />
+        <result column="udf3" property="udf3" jdbcType="VARCHAR" />
+        <result column="udf4" property="udf4" jdbcType="VARCHAR" />
+        <result column="udf5" property="udf5" jdbcType="VARCHAR" />
+        <result column="udf6" property="udf6" jdbcType="VARCHAR" />
+        <result column="udf7" property="udf7" jdbcType="VARCHAR" />
+        <result column="udf8" property="udf8" jdbcType="VARCHAR" />
+        <result column="udf9" property="udf9" jdbcType="VARCHAR" />
+        <result column="udf10" property="udf10" jdbcType="VARCHAR" />
+        <result column="request_id" property="requestId" jdbcType="VARCHAR" />
+    </resultMap>
+    
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="Base_Column_List">
+        id,class_code,class_name,simple_name,parent_class,level_num,memos,create_user_id,create_time,edit_user_id,edit_time,udf1,udf2,udf3,udf4,udf5,udf6,udf7,udf8,udf9,udf10,request_id 
+    </sql>
+    
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="searchBy">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test=" id != null and id != '' ">
+                id  = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="classCode != null and classCode != '' ">
+                and class_code = #{classCode,jdbcType=VARCHAR}
+            </if>
+            <if test="className != null and className != '' ">
+                and class_name = #{className,jdbcType=VARCHAR}
+            </if>
+            <if test="simpleName != null and simpleName != '' ">
+                and simple_name = #{simpleName,jdbcType=VARCHAR}
+            </if>
+            <if test="parentClass != null and parentClass != '' ">
+                and parent_class = #{parentClass,jdbcType=VARCHAR}
+            </if>
+            <if test="levelNum != null and levelNum != '' ">
+                and level_num = #{levelNum,jdbcType=INTEGER}
+            </if>
+            <if test="memos != null and memos != '' ">
+                and memos = #{memos,jdbcType=VARCHAR}
+            </if>
+            <if test="createUserId != null and createUserId != '' ">
+                and create_user_id = #{createUserId,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null and createTime != '' ">
+                and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="editUserId != null and editUserId != '' ">
+                and edit_user_id = #{editUserId,jdbcType=VARCHAR}
+            </if>
+            <if test="editTime != null and editTime != '' ">
+                and edit_time = #{editTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="udf1 != null and udf1 != '' ">
+                and udf1 = #{udf1,jdbcType=VARCHAR}
+            </if>
+            <if test="udf2 != null and udf2 != '' ">
+                and udf2 = #{udf2,jdbcType=VARCHAR}
+            </if>
+            <if test="udf3 != null and udf3 != '' ">
+                and udf3 = #{udf3,jdbcType=VARCHAR}
+            </if>
+            <if test="udf4 != null and udf4 != '' ">
+                and udf4 = #{udf4,jdbcType=VARCHAR}
+            </if>
+            <if test="udf5 != null and udf5 != '' ">
+                and udf5 = #{udf5,jdbcType=VARCHAR}
+            </if>
+            <if test="udf6 != null and udf6 != '' ">
+                and udf6 = #{udf6,jdbcType=VARCHAR}
+            </if>
+            <if test="udf7 != null and udf7 != '' ">
+                and udf7 = #{udf7,jdbcType=VARCHAR}
+            </if>
+            <if test="udf8 != null and udf8 != '' ">
+                and udf8 = #{udf8,jdbcType=VARCHAR}
+            </if>
+            <if test="udf9 != null and udf9 != '' ">
+                and udf9 = #{udf9,jdbcType=VARCHAR}
+            </if>
+            <if test="udf10 != null and udf10 != '' ">
+                and udf10 = #{udf10,jdbcType=VARCHAR}
+            </if>
+            <if test="requestId != null and requestId != '' ">
+                and request_id = #{requestId,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </sql>
+    
+    
+    <insert id="insert" parameterType="com.csjscm.core.framework.model.Category">
+        insert into category(class_code,class_name,simple_name,parent_class,level_num,memos,create_user_id,create_time,edit_user_id,edit_time,udf1,udf2,udf3,udf4,udf5,udf6,udf7,udf8,udf9,udf10,request_id)values(#{classCode,jdbcType=VARCHAR},#{className,jdbcType=VARCHAR},#{simpleName,jdbcType=VARCHAR},#{parentClass,jdbcType=VARCHAR},#{levelNum,jdbcType=INTEGER},#{memos,jdbcType=VARCHAR},#{createUserId,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},#{editUserId,jdbcType=VARCHAR},#{editTime,jdbcType=TIMESTAMP},#{udf1,jdbcType=VARCHAR},#{udf2,jdbcType=VARCHAR},#{udf3,jdbcType=VARCHAR},#{udf4,jdbcType=VARCHAR},#{udf5,jdbcType=VARCHAR},#{udf6,jdbcType=VARCHAR},#{udf7,jdbcType=VARCHAR},#{udf8,jdbcType=VARCHAR},#{udf9,jdbcType=VARCHAR},#{udf10,jdbcType=VARCHAR},#{requestId,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.csjscm.core.framework.model.Category">
+        insert into category
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="classCode != null">
+                class_code,
+            </if>
+            <if test="className != null">
+                class_name,
+            </if>
+            <if test="simpleName != null">
+                simple_name,
+            </if>
+            <if test="parentClass != null">
+                parent_class,
+            </if>
+            <if test="levelNum != null">
+                level_num,
+            </if>
+            <if test="memos != null">
+                memos,
+            </if>
+            <if test="createUserId != null">
+                create_user_id,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="editUserId != null">
+                edit_user_id,
+            </if>
+            <if test="editTime != null">
+                edit_time,
+            </if>
+            <if test="udf1 != null">
+                udf1,
+            </if>
+            <if test="udf2 != null">
+                udf2,
+            </if>
+            <if test="udf3 != null">
+                udf3,
+            </if>
+            <if test="udf4 != null">
+                udf4,
+            </if>
+            <if test="udf5 != null">
+                udf5,
+            </if>
+            <if test="udf6 != null">
+                udf6,
+            </if>
+            <if test="udf7 != null">
+                udf7,
+            </if>
+            <if test="udf8 != null">
+                udf8,
+            </if>
+            <if test="udf9 != null">
+                udf9,
+            </if>
+            <if test="udf10 != null">
+                udf10,
+            </if>
+            <if test="requestId != null">
+                request_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="classCode != null">
+                #{classCode,jdbcType=VARCHAR},
+            </if>
+            <if test="className != null">
+                #{className,jdbcType=VARCHAR},
+            </if>
+            <if test="simpleName != null">
+                #{simpleName,jdbcType=VARCHAR},
+            </if>
+            <if test="parentClass != null">
+                #{parentClass,jdbcType=VARCHAR},
+            </if>
+            <if test="levelNum != null">
+                #{levelNum,jdbcType=INTEGER},
+            </if>
+            <if test="memos != null">
+                #{memos,jdbcType=VARCHAR},
+            </if>
+            <if test="createUserId != null">
+                #{createUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="editUserId != null">
+                #{editUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="editTime != null">
+                #{editTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="udf1 != null">
+                #{udf1,jdbcType=VARCHAR},
+            </if>
+            <if test="udf2 != null">
+                #{udf2,jdbcType=VARCHAR},
+            </if>
+            <if test="udf3 != null">
+                #{udf3,jdbcType=VARCHAR},
+            </if>
+            <if test="udf4 != null">
+                #{udf4,jdbcType=VARCHAR},
+            </if>
+            <if test="udf5 != null">
+                #{udf5,jdbcType=VARCHAR},
+            </if>
+            <if test="udf6 != null">
+                #{udf6,jdbcType=VARCHAR},
+            </if>
+            <if test="udf7 != null">
+                #{udf7,jdbcType=VARCHAR},
+            </if>
+            <if test="udf8 != null">
+                #{udf8,jdbcType=VARCHAR},
+            </if>
+            <if test="udf9 != null">
+                #{udf9,jdbcType=VARCHAR},
+            </if>
+            <if test="udf10 != null">
+                #{udf10,jdbcType=VARCHAR},
+            </if>
+            <if test="requestId != null">
+                #{requestId,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="com.csjscm.core.framework.model.Category">
+        update category set 
+            class_code = #{classCode,jdbcType=VARCHAR},
+            class_name = #{className,jdbcType=VARCHAR},
+            simple_name = #{simpleName,jdbcType=VARCHAR},
+            parent_class = #{parentClass,jdbcType=VARCHAR},
+            level_num = #{levelNum,jdbcType=INTEGER},
+            memos = #{memos,jdbcType=VARCHAR},
+            create_user_id = #{createUserId,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            edit_user_id = #{editUserId,jdbcType=VARCHAR},
+            edit_time = #{editTime,jdbcType=TIMESTAMP},
+            udf1 = #{udf1,jdbcType=VARCHAR},
+            udf2 = #{udf2,jdbcType=VARCHAR},
+            udf3 = #{udf3,jdbcType=VARCHAR},
+            udf4 = #{udf4,jdbcType=VARCHAR},
+            udf5 = #{udf5,jdbcType=VARCHAR},
+            udf6 = #{udf6,jdbcType=VARCHAR},
+            udf7 = #{udf7,jdbcType=VARCHAR},
+            udf8 = #{udf8,jdbcType=VARCHAR},
+            udf9 = #{udf9,jdbcType=VARCHAR},
+            udf10 = #{udf10,jdbcType=VARCHAR},
+            request_id = #{requestId,jdbcType=VARCHAR}
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <update id="updateSelective"  parameterType="com.csjscm.core.framework.model.Category">
+        update category
+          <set>
+            <if test="classCode != null and classCode != '' ">        
+                class_code = #{classCode,jdbcType=VARCHAR},                
+            </if>
+            <if test="className != null and className != '' ">        
+                class_name = #{className,jdbcType=VARCHAR},                
+            </if>
+            <if test="simpleName != null and simpleName != '' ">        
+                simple_name = #{simpleName,jdbcType=VARCHAR},                
+            </if>
+            <if test="parentClass != null and parentClass != '' ">        
+                parent_class = #{parentClass,jdbcType=VARCHAR},                
+            </if>
+            <if test="levelNum != null and levelNum != '' ">        
+                level_num = #{levelNum,jdbcType=INTEGER},                
+            </if>
+            <if test="memos != null and memos != '' ">        
+                memos = #{memos,jdbcType=VARCHAR},                
+            </if>
+            <if test="createUserId != null and createUserId != '' ">        
+                create_user_id = #{createUserId,jdbcType=VARCHAR},                
+            </if>
+            <if test="createTime != null and createTime != '' ">        
+                create_time = #{createTime,jdbcType=TIMESTAMP},                
+            </if>
+            <if test="editUserId != null and editUserId != '' ">        
+                edit_user_id = #{editUserId,jdbcType=VARCHAR},                
+            </if>
+            <if test="editTime != null and editTime != '' ">        
+                edit_time = #{editTime,jdbcType=TIMESTAMP},                
+            </if>
+            <if test="udf1 != null and udf1 != '' ">        
+                udf1 = #{udf1,jdbcType=VARCHAR},                
+            </if>
+            <if test="udf2 != null and udf2 != '' ">        
+                udf2 = #{udf2,jdbcType=VARCHAR},                
+            </if>
+            <if test="udf3 != null and udf3 != '' ">        
+                udf3 = #{udf3,jdbcType=VARCHAR},                
+            </if>
+            <if test="udf4 != null and udf4 != '' ">        
+                udf4 = #{udf4,jdbcType=VARCHAR},                
+            </if>
+            <if test="udf5 != null and udf5 != '' ">        
+                udf5 = #{udf5,jdbcType=VARCHAR},                
+            </if>
+            <if test="udf6 != null and udf6 != '' ">        
+                udf6 = #{udf6,jdbcType=VARCHAR},                
+            </if>
+            <if test="udf7 != null and udf7 != '' ">        
+                udf7 = #{udf7,jdbcType=VARCHAR},                
+            </if>
+            <if test="udf8 != null and udf8 != '' ">        
+                udf8 = #{udf8,jdbcType=VARCHAR},                
+            </if>
+            <if test="udf9 != null and udf9 != '' ">        
+                udf9 = #{udf9,jdbcType=VARCHAR},                
+            </if>
+            <if test="udf10 != null and udf10 != '' ">        
+                udf10 = #{udf10,jdbcType=VARCHAR},                
+            </if>
+            <if test="requestId != null and requestId != '' ">        
+                request_id = #{requestId,jdbcType=VARCHAR}                
+            </if>
+        </set>    
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+   <delete id="deleteById" parameterType="java.lang.Integer">
+       delete  from category where id=#{id}
+   </delete>
+    <select id="findByPrimary" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List" />
+        from category
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+	<select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from category
+        <include refid="searchBy"/>
+    </select>
+               
+    <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from category
+        <include refid="searchBy"/>
+    </select>
+    <select id="findCount" resultType="java.lang.Integer" parameterType="java.util.HashMap">
+        select count(id)
+        from category
+        <include refid="searchBy"/>
+    </select>
+
 </mapper>

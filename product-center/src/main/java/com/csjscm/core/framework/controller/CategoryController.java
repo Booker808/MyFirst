@@ -1,30 +1,52 @@
 package com.csjscm.core.framework.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.csjscm.core.framework.common.util.BussinessException;
 import com.csjscm.core.framework.model.Category;
+import com.csjscm.core.framework.service.CategoryService;
 import com.csjscm.sweet.framework.core.mvc.APIResponse;
+import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
+import com.github.pagehelper.Page;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
+@Api("商品分类")
 @Controller
 @RequestMapping("/product/category")
 @ResponseBody
-public class CategoryController {
+public class CategoryController{
+    @Autowired
+    private CategoryService categoryService;
 
     /**
      * 查询分类接口
      *
-     * @param condition 查询条件
      * @return
      */
-    @RequestMapping(value = "/category",method = RequestMethod.GET)
-    public APIResponse queryCategoryList(@RequestParam Map<String,String> condition){
-        System.out.println("------------------以条件查询分类列表："+JSON.toJSONString(condition));
-        return APIResponse.success();
+    @ApiOperation("商品查询分类接口")
+    @RequestMapping(value = "/categoryPage",method = RequestMethod.GET)
+    public APIResponse<QueryResult<Category>> queryCategoryList(@ApiParam(name="parentClass",value="上级分类id",required=false) @RequestParam(value = "parentClass",required = false) Integer parentClass,
+                                         @ApiParam(name="current",value="当前页",required=true) @RequestParam(value = "current") int current,
+                                         @ApiParam(name="current",value="页面大小",required=true) @RequestParam(value = "pageSize") int pageSize){
+        if(parentClass==null){
+           parentClass=0;
+       }
+        Map<String,Object> map=new HashMap<>();
+        map.put("parentClass",parentClass);
+        QueryResult<Category> page = categoryService.findPage(map, current, pageSize);
+        return APIResponse.success(page);
     }
 
     /**
@@ -33,10 +55,10 @@ public class CategoryController {
      * @param id
      * @return
      */
+    @ApiOperation("查询目标为ID的分类")
     @RequestMapping(value = "/category/{id}",method = RequestMethod.GET)
-    public APIResponse queryCategory(@PathVariable Integer id){
-        System.out.println("------------------以ID查询单个分类："+id);
-        return APIResponse.success();
+    public APIResponse queryCategory(@ApiParam(name="id",value="主键id",required=true) @PathVariable Integer id){
+        return APIResponse.success(categoryService.findByPrimary(id));
     }
 
     /**
@@ -46,22 +68,24 @@ public class CategoryController {
      * @return
      */
     @RequestMapping(value = "/category",method = RequestMethod.POST)
-    public APIResponse createCategory(@RequestBody Category category){
-        System.out.println("------------------创建分类对象："+JSON.toJSONString(category));
+    public APIResponse createCategory(@Valid Category category){
+        categoryService.save(category);
         return APIResponse.success();
     }
 
     /**
      * 更新指定分类
      *
-     * @param id 分类ID
+     * @param
      * @param category 分类对象
      * @return
      */
     @RequestMapping(value = "/category/{id}",method = RequestMethod.PUT)
-    public APIResponse updateCategory(@PathVariable Integer id,
+    public APIResponse updateCategory(
             @RequestBody Category category){
-        System.out.println("------------------修改分类对象：id:"+id+",对象："+JSON.toJSONString(category));
+        if(category.getId()!=null){
+            categoryService.update(category);
+        }
         return APIResponse.success();
     }
 
@@ -71,11 +95,11 @@ public class CategoryController {
      * @param id
      * @return
      */
-    @RequestMapping(value = "/category/{id}",method = RequestMethod.DELETE)
+/*    @RequestMapping(value = "/category/{id}",method = RequestMethod.DELETE)
     public APIResponse deleteCategory(@PathVariable Integer id){
         System.out.println("----------删除指定ID分类："+id);
         return APIResponse.success();
-    }
+    }*/
 
     /**
      * 删除指定分类列表
@@ -84,8 +108,8 @@ public class CategoryController {
      * @return
      */
     @RequestMapping(value = "/category",method = RequestMethod.DELETE)
-    public APIResponse deleteCategoryList(@RequestParam List<Integer> ids){
-        System.out.println("----------删除指定ID列表的分类："+JSON.toJSONString(ids));
+    public APIResponse deleteCategoryList(@ApiParam(name="ids",value="要删除的id，多个以逗号隔开",required=true)@RequestParam String ids){
+        categoryService.deleteByIds(ids);
         return APIResponse.success();
     }
 
@@ -99,5 +123,10 @@ public class CategoryController {
     public APIResponse importCategory(MultipartFile file){
         System.out.println("---------------从文件导入分类"+file.getName());
         return APIResponse.success();
+    }
+
+    @ExceptionHandler({BussinessException.class})
+    public APIResponse exceptionHandler(Exception e, HttpServletResponse response) {
+          return APIResponse.fail(e.getMessage());
     }
 }

@@ -1,18 +1,46 @@
 package com.csjscm.core.framework.dao;
 
+
 import com.csjscm.core.framework.model.Category;
-import com.csjscm.core.framework.model.CategoryKey;
+import java.util.List;
+import java.util.Map;
 
-public interface CategoryMapper {
-    int deleteByPrimaryKey(CategoryKey key);
+/**
+ * 商品分类表Dao
+ * 
+ * @author yinzy
+ * @version 1.0.0
+ * @date 2018-08-31 13:14:18
+ */
 
-    int insert(Category record);
 
-    int insertSelective(Category record);
+public interface CategoryMapper{
+    int deleteByPrimaryKey(Integer id);
 
-    Category selectByPrimaryKey(CategoryKey key);
+    int insert(Category t);
 
-    int updateByPrimaryKeySelective(Category record);
+    int insertSelective(Category t);
 
-    int updateByPrimaryKey(Category record);
+    int updateSelective(Category t);
+
+    int update(Category t);
+
+    Category findByPrimary(Integer id);
+     /**
+      * 按条件查询单个
+      *
+      */
+     Category findSelective(Map<String, Object> map);
+     /**
+      * 按条件查询list
+      *
+      */
+     List<Category> listSelective(Map<String, Object> map);
+     /**
+      * 按条件查询条数
+      *
+      */
+     int findCount(Map<String, Object> map);
+
+
 }
