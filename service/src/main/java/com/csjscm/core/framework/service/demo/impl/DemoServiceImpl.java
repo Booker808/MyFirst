@@ -5,7 +5,6 @@ import com.csjscm.core.framework.dao.UnitConvertMapper;
 import com.csjscm.core.framework.model.UnitConvert;
 import com.csjscm.core.framework.service.demo.DemoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 @Service
