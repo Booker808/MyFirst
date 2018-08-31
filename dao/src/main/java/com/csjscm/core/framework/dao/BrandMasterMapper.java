@@ -2,6 +2,8 @@ package com.csjscm.core.framework.dao;
 
 import com.csjscm.core.framework.model.BrandMaster;
 
+import java.util.List;
+
 public interface BrandMasterMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -14,4 +16,6 @@ public interface BrandMasterMapper {
     int updateByPrimaryKeySelective(BrandMaster record);
 
     int updateByPrimaryKey(BrandMaster record);
+
+    List<BrandMaster> selectByBrand (String condition);
 }

@@ -1,20 +1,24 @@
 package com.csjscm.core.framework.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.csjscm.core.framework.model.BrandMaster;
+import com.csjscm.core.framework.service.BrandMasterService;
 import com.csjscm.sweet.framework.core.mvc.APIResponse;
+import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
+import io.swagger.annotations.ApiParam;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-import java.util.Map;
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/product/brand")
 @ResponseBody
 public class BrandController {
 
+    @Autowired
+    private BrandMasterService brandMasterService;
     /**
      * 查询品牌接口
      *
@@ -22,9 +26,11 @@ public class BrandController {
      * @return
      */
     @RequestMapping(value = "/brand",method = RequestMethod.GET)
-    public APIResponse queryBrandList(@RequestParam Map<String,String> condition){
-        System.out.println("------------------以条件查询品牌列表："+ JSON.toJSONString(condition));
-        return APIResponse.success();
+    public APIResponse queryBrandList(@ApiParam(name="condition",value="品牌名称",required=true)@RequestParam String condition,
+                                      @ApiParam(name="current",value="当前页",required=true) @RequestParam(value = "current") int current,
+                                      @ApiParam(name="current",value="页面大小",required=true) @RequestParam(value = "pageSize") int pageSize){
+        QueryResult<BrandMaster> page = brandMasterService.queryBrandList(condition, current, pageSize);
+        return APIResponse.success(page);
     }
 
     /**
@@ -34,9 +40,9 @@ public class BrandController {
      * @return
      */
     @RequestMapping(value = "/brand/{id}",method = RequestMethod.GET)
-    public APIResponse queryBrand(@PathVariable Integer id){
-        System.out.println("------------------以ID查询单个品牌："+id);
-        return APIResponse.success();
+    public APIResponse queryBrand(@ApiParam(name="id",value="主键id",required=true) @PathVariable Integer id){
+        BrandMaster brandMaster = brandMasterService.selectByPrimaryKey(id);
+        return APIResponse.success(brandMaster);
     }
 
     /**
@@ -46,8 +52,8 @@ public class BrandController {
      * @return
      */
     @RequestMapping(value = "/brand",method = RequestMethod.POST)
-    public APIResponse createBrand(@RequestBody BrandMaster brand){
-        System.out.println("------------------创建品牌对象："+JSON.toJSONString(brand));
+    public APIResponse createBrand(@Valid BrandMaster brand){
+        brandMasterService.insertSelective(brand);
         return APIResponse.success();
     }
 
@@ -59,9 +65,10 @@ public class BrandController {
      * @return
      */
     @RequestMapping(value = "/brand/{id}",method = RequestMethod.PUT)
-    public APIResponse updateBrand(@PathVariable Integer id,
-                                      @RequestBody BrandMaster brand){
-        System.out.println("------------------修改品牌对象：id:"+id+",对象："+JSON.toJSONString(brand));
+    public APIResponse updateBrand(@RequestBody BrandMaster brand){
+        if (null != brand.getId()) {
+            brandMasterService.updateByPrimaryKeySelective(brand);
+        }
         return APIResponse.success();
     }
 
@@ -73,7 +80,7 @@ public class BrandController {
      */
     @RequestMapping(value = "/brand/{id}",method = RequestMethod.DELETE)
     public APIResponse deleteBrand(@PathVariable Integer id){
-        System.out.println("----------删除指定ID品牌："+id);
+        brandMasterService.deleteByPrimaryKey(id);
         return APIResponse.success();
     }
 
@@ -84,8 +91,8 @@ public class BrandController {
      * @return
      */
     @RequestMapping(value = "/brand",method = RequestMethod.DELETE)
-    public APIResponse deleteBrandList(@RequestParam List<Integer> ids){
-        System.out.println("----------删除指定ID列表的品牌："+JSON.toJSONString(ids));
+    public APIResponse deleteBrandList(@ApiParam(name="ids",value="要删除的id，多个以逗号隔开",required=true) @RequestParam String ids){
+        brandMasterService.deleteByIds(ids);
         return APIResponse.success();
     }
 
