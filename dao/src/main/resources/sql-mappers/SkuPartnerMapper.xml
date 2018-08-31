@@ -43,11 +43,38 @@
     udf1, udf2, udf3, udf4, udf5, udf6, udf7, udf8, udf9, udf10, udf11, udf12, udf13, 
     udf14, udf15, udf16, udf17, udf18, udf19, udf20
   </sql>
+
+  <sql id="Example_Where_Clause">
+    <where>
+      1=1
+      <if test="productNo != null">
+        and product_no = #{productNo,jdbcType=VARCHAR}
+      </if>
+      <if test="supplyNo != null">
+        and supply_no=#{supplyNo,jdbcType=INTEGER}
+      </if>
+      <if test="brandId != null">
+        and brand_id=#{brandId,jdbcType=INTEGER}
+      </if>
+      <if test="productName != null">
+        and product_name LIKE CONCAT('%',#{productName,jdbcType=VARCHAR},'%')
+      </if>
+      <if test="brandName != null">
+        and brand_name = #{brandName,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from sku_partner
     where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByExample" parameterType="map" resultMap="BaseResultMap">
+    select
+      <include refid="Base_Column_List"/>
+    from sku_partner
+    <include refid="Example_Where_Clause"/>
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from sku_partner

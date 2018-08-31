@@ -60,11 +60,34 @@
     suf3, suf4, suf5, suf6, suf7, suf8, suf9, suf10, request_id, category_id_old, create_user_id_old, 
     edit_user_id_old, approval_status_old, brand_id_old
   </sql>
+  <sql id="Example_Where_Clause">
+    <where>
+        1=1
+        <if test="productNo != null">
+            and product_no = #{productNo,jdbcType=VARCHAR}
+        </if>
+        <if test="brandId != null">
+            and brand_id=#{brandId,jdbcType=INTEGER}
+        </if>
+        <if test="productName != null">
+           and product_name LIKE CONCAT('%',#{productName,jdbcType=VARCHAR},'%')
+        </if>
+        <if test="brandName != null">
+            and brand_name = #{brandName,jdbcType=VARCHAR}
+        </if>
+    </where>
+  </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from sku_core
     where product_no = #{productNo,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByExample" parameterType="map" resultMap="BaseResultMap">
+    select
+      <include refid="Base_Column_List"/>
+    from sku_core
+    <include refid="Example_Where_Clause"/>
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from sku_core
