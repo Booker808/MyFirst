@@ -6,8 +6,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;  
 import java.io.InputStream;
 import java.util.ArrayList;  
-import java.util.List;  
+import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.poi.hssf.usermodel.DVConstraint;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -356,7 +357,7 @@ public class ExcelUtil {
      * @param xlsPath 
      * @throws IOException 
      */  
-    public List<Row> readExcel(MultipartFile file) throws IOException{  
+    public List<Row> readExcel(MultipartFile file) throws BussinessException{
           
         //扩展名为空时，  
        /* if (xlsPath.equals("")){  
@@ -693,8 +694,8 @@ public class ExcelUtil {
      * @param cell 
      * @return 
      */  
-    private String getCellValue(Cell cell) {  
-        Object result = "";  
+    public String getCellValue(Cell cell) {
+        Object result = "";
         if (cell != null) {  
             switch (cell.getCellType()) {  
             case Cell.CELL_TYPE_STRING:  
@@ -717,7 +718,10 @@ public class ExcelUtil {
             default:  
                 break;  
             }  
-        }  
+        }
+        if (StringUtils.isBlank(result.toString())){
+            throw new  BussinessException("");
+        }
         return result.toString();  
     }  
   

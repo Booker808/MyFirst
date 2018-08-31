@@ -1,15 +1,14 @@
 package com.csjscm.core.framework.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.csjscm.core.framework.common.util.BussinessException;
 import com.csjscm.core.framework.model.Category;
 import com.csjscm.core.framework.service.CategoryService;
 import com.csjscm.sweet.framework.core.mvc.APIResponse;
 import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
-import com.github.pagehelper.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 
@@ -37,11 +35,11 @@ public class CategoryController{
      */
     @ApiOperation("商品查询分类接口")
     @RequestMapping(value = "/categoryPage",method = RequestMethod.GET)
-    public APIResponse<QueryResult<Category>> queryCategoryList(@ApiParam(name="parentClass",value="上级分类id",required=false) @RequestParam(value = "parentClass",required = false) Integer parentClass,
+    public APIResponse<QueryResult<Category>> queryCategoryList(@ApiParam(name="parentClass",value="上级分类id",required=false) @RequestParam(value = "parentClass",required = false) String parentClass,
                                          @ApiParam(name="current",value="当前页",required=true) @RequestParam(value = "current") int current,
-                                         @ApiParam(name="current",value="页面大小",required=true) @RequestParam(value = "pageSize") int pageSize){
-        if(parentClass==null){
-           parentClass=0;
+                                         @ApiParam(name="pageSize",value="页面大小",required=true) @RequestParam(value = "pageSize") int pageSize){
+        if(StringUtils.isBlank(parentClass)){
+           parentClass="0";
        }
         Map<String,Object> map=new HashMap<>();
         map.put("parentClass",parentClass);
