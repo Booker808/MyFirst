@@ -9,6 +9,9 @@ import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * Created by zjc on 2018/8/31.
  */
@@ -19,10 +22,20 @@ public class BrandMasterServiceImpl implements BrandMasterService {
     private BrandMasterMapper brandMasterMapper;
 
     @Override
-    public QueryResult<BrandMaster> queryBrandList(String condition, int current, int pageSize) {
+    public QueryResult<BrandMaster> queryBrandMasterList(Map<String, Object> map, int current, int pageSize) {
         PageHelper.startPage(current,pageSize);
-        Page<BrandMaster> page = (Page<BrandMaster>) brandMasterMapper.selectByBrand(condition);
+        Page<BrandMaster> page = (Page<BrandMaster>) brandMasterMapper.selectByBrand(map);
         return new QueryResult(page);
+    }
+
+    @Override
+    public List<BrandMaster> selectByBrandName(String brandName) {
+        return brandMasterMapper.selectByBrandName(brandName);
+    }
+
+    @Override
+    public List<BrandMaster> selectByBrandNameSky() {
+        return brandMasterMapper.selectByBrandNameSky();
     }
 
     @Override

@@ -161,10 +161,55 @@
       request_id = #{requestId,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="selectByBrand" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <sql id="searchBy">
+    <trim prefix="where" prefixOverrides="and|or">
+      <if test="brandId != null">
+        brand_id = #{brandId,jdbcType=VARCHAR},
+      </if>
+      <if test="brandName != null">
+        and brand_name = #{brandName,jdbcType=VARCHAR},
+      </if>
+      <if test="brandPic != null">
+        and brand_pic = #{brandPic,jdbcType=VARCHAR},
+      </if>
+      <if test="brandInfo != null">
+        and brand_info = #{brandInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="brandCa != null">
+        and brand_ca = #{brandCa,jdbcType=VARCHAR},
+      </if>
+      <if test="createUserId != null">
+        and create_user_id = #{createUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        and create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="editUserId != null">
+        and edit_user_id = #{editUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="editTime != null">
+        and edit_time = #{editTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="requestId != null">
+        and request_id = #{requestId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </sql>
+  <select id="selectByBrand" parameterType="java.util.HashMap" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from brand_master
+    <include refid="searchBy"/>
+  </select>
+  <select id="selectByBrandName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+      brand_name
+    from brand_master
     where brand_name like concat('%',#{brandName,jdbcType=VARCHAR},'%')
+  </select>
+  <select id="selectByBrandNameSky" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+      brand_name
+    from brand_master
   </select>
 </mapper>
