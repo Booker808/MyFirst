@@ -41,4 +41,5 @@ public interface SkuCoreMapper {
 
     List<SkuCoreEx> selectExByExample(SkuCoreExample example);
 
+    List<SkuCore> selectByProductNoList();
 }

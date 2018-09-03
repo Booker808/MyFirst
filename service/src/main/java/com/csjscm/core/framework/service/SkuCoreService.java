@@ -1,8 +1,10 @@
 package com.csjscm.core.framework.service;
 
 import com.csjscm.core.framework.common.util.BussinessException;
+import com.csjscm.core.framework.model.SkuCore;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -27,4 +29,9 @@ public interface SkuCoreService {
      */
     void saveImportSkuCore(String data);
 
+    /**
+     * 查询商品最大分类
+     * @return
+     */
+    List<SkuCore> selectByProductNoList();
 }

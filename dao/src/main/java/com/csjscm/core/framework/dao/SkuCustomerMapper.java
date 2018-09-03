@@ -22,4 +22,5 @@ public interface SkuCustomerMapper {
     List<SkuCustomer> selectByExample(SkuCustomerExample example);
 
     List<SkuCustomerEx> selectExByExample(SkuCustomerExample example);
+
 }

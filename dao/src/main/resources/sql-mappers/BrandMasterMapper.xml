@@ -207,7 +207,7 @@
   </select>
   <select id="selectByBrandName" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
-      brand_name
+      id,brand_name
     from brand_master
     where brand_name like concat('%',#{brandName,jdbcType=VARCHAR},'%')
   </select>
@@ -231,8 +231,7 @@
   </select>
   <select id="selectByBrandNameSky" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
-      brand_name
+      id,brand_name
     from brand_master
-
   </select>
 </mapper>
