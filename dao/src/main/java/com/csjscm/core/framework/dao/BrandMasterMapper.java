@@ -18,6 +18,7 @@ public interface BrandMasterMapper {
 
     int updateByPrimaryKey(BrandMaster record);
 
+
     List<BrandMaster> selectByBrand (String condition);
     /**
      * 按条件查询单个
@@ -34,4 +35,11 @@ public interface BrandMasterMapper {
      *
      */
     int findCount(Map<String,Object> map);
+
+    List<BrandMaster> selectByBrandName (String brandName);
+
+    List<BrandMaster> selectByBrandNameSky ();
+
+    List<BrandMaster> selectByBrand (Map<String, Object> map);
+
 }

@@ -1,35 +1,50 @@
 package com.csjscm.core.framework.model;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
 public class SkuCustomer {
     private Integer id;
 
+    @ApiModelProperty("商品编码")
     private String productNo;
 
+    @ApiModelProperty("客户Id")
     private String customerId;
 
+    @ApiModelProperty("客户编码")
     private String customerNo;
 
+    @ApiModelProperty("客户商品编码")
     private String customerPdNo;
 
+    @ApiModelProperty("客户商品名")
     private String customerPdName;
 
+    @ApiModelProperty("客户商品规格")
     private String customerPdRule;
 
+    @ApiModelProperty("客户商品型号")
     private String customerPdSize;
 
+    @ApiModelProperty("参考售价")
     private BigDecimal referencePrice;
 
+    @ApiModelProperty("近期报价")
     private BigDecimal recentQuotation;
 
+    @ApiModelProperty("创建人ID")
     private String createUserId;
 
+    @ApiModelProperty("创建时间戳")
     private Date createTime;
 
+    @ApiModelProperty("编辑人ID")
     private String editUserId;
 
+    @ApiModelProperty("编辑时间戳")
     private Date editTime;
 
     private String udf1;

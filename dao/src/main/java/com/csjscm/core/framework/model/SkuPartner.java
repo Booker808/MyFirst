@@ -1,35 +1,50 @@
 package com.csjscm.core.framework.model;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
 public class SkuPartner {
     private Integer id;
 
+    @ApiModelProperty("商品编码")
     private String productNo;
 
+    @ApiModelProperty("供应商编码")
     private String supplyNo;
 
+    @ApiModelProperty("供应商名称")
     private String supplyName;
 
+    @ApiModelProperty("供应商商品规格")
     private String supplyRule;
 
+    @ApiModelProperty("供应商商品型号")
     private String supplySize;
 
+    @ApiModelProperty("品牌ID")
     private String brandId;
 
+    @ApiModelProperty("品牌名")
     private String brandName;
 
+    @ApiModelProperty("参考售价")
     private BigDecimal refrencePrice;
 
+    @ApiModelProperty("最近询价")
     private BigDecimal recentEnquiry;
 
+    @ApiModelProperty("创建人ID")
     private String createUserId;
 
+    @ApiModelProperty("创建时间戳")
     private Date createTime;
 
+    @ApiModelProperty("编辑人ID")
     private String editUserId;
 
+    @ApiModelProperty("编辑时间戳")
     private Date editTime;
 
     private String udf1;

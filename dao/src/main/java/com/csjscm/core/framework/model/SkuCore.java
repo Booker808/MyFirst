@@ -1,55 +1,81 @@
 package com.csjscm.core.framework.model;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
 public class SkuCore {
+    @ApiModelProperty("商品编码")
     private String productNo;
 
+    @ApiModelProperty("标准商品编码")
     private String stdProductNo;
 
+    @ApiModelProperty("商品名称")
     private String productName;
 
+    @ApiModelProperty("商品价格")
     private BigDecimal productPrice;
 
+    @ApiModelProperty("分类ID")
     private Integer categoryId;
 
+    @ApiModelProperty("分类编码")
     private String categoryNo;
 
+    @ApiModelProperty("是否有效0：有效，1无效")
     private Integer isvalidate;
 
+    @ApiModelProperty("核准状况(1:已核准;2:待核准;3:不许交易)")
     private Integer approvalStatus;
 
+    @ApiModelProperty("来源渠道（1：手动新增；2：导入；3：来自商城）")
     private Integer channel;
 
+    @ApiModelProperty("品牌名称")
     private String brandName;
 
+    @ApiModelProperty("品牌ID")
     private Integer brandId;
 
+    @ApiModelProperty("包装规格ID")
     private Integer unitId;
 
+    @ApiModelProperty("最小库存单位")
     private String minUint;
 
+    @ApiModelProperty("商品图片")
     private String productPic;
 
+    @ApiModelProperty("也称69码")
     private String ean13Code;
 
+    @ApiModelProperty("助记码")
     private String mnemonicCode;
 
+    @ApiModelProperty("开票类型")
     private String invoiceType;
 
+    @ApiModelProperty("税则码")
     private String txtCode;
 
+    @ApiModelProperty("规格")
     private String rule;
 
+    @ApiModelProperty("型号")
     private String size;
 
+    @ApiModelProperty("创建用户ID")
     private String createUserId;
 
+    @ApiModelProperty("创建时间戳")
     private Date createTime;
 
+    @ApiModelProperty("编辑用户ID")
     private String editUserId;
 
+    @ApiModelProperty("编辑时间戳")
     private Date editTime;
 
     private String udf1;
@@ -92,18 +118,25 @@ public class SkuCore {
 
     private String suf10;
 
+    @ApiModelProperty(hidden = true)
     private String requestId;
 
+    @ApiModelProperty(hidden = true)
     private String categoryIdOld;
 
+    @ApiModelProperty(hidden = true)
     private String createUserIdOld;
 
+    @ApiModelProperty(hidden = true)
     private String editUserIdOld;
 
+    @ApiModelProperty(hidden = true)
     private String approvalStatusOld;
 
+    @ApiModelProperty(hidden = true)
     private String brandIdOld;
 
+    @ApiModelProperty(hidden = true)
     private String minUintOld;
 
     public String getProductNo() {

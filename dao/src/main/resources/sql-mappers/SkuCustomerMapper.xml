@@ -37,30 +37,36 @@
     <result column="udf19" jdbcType="VARCHAR" property="udf19" />
     <result column="udf20" jdbcType="VARCHAR" property="udf20" />
   </resultMap>
+  <resultMap id="ExResultMap" type="com.csjscm.core.framework.model.SkuCustomerEx" extends="BaseResultMap">
+    <result column="identifying_code" property="identifyingCode" jdbcType="VARCHAR" />
+    <result column="min_uint" property="minUint" jdbcType="VARCHAR" />
+    <result column="brand_id" property="brandId" jdbcType="INTEGER" />
+    <result column="brand_name" property="brandName" jdbcType="VARCHAR"/>
+  </resultMap>
   <sql id="Base_Column_List">
-    id, product_no, customer_id, customer_no, customer_pd_no, customer_pd_name, customer_pd_rule, 
-    customer_pd_size, reference_price, recent_quotation, create_user_id, create_time, 
-    edit_user_id, edit_time, udf1, udf2, udf3, udf4, udf5, udf6, udf7, udf8, udf9, udf10, 
+    id, product_no, customer_id, customer_no, customer_pd_no, customer_pd_name, customer_pd_rule,
+    customer_pd_size, reference_price, recent_quotation, create_user_id, create_time,
+    edit_user_id, edit_time, udf1, udf2, udf3, udf4, udf5, udf6, udf7, udf8, udf9, udf10,
     udf11, udf12, udf13, udf14, udf15, udf16, udf17, udf18, udf19, udf20
   </sql>
 
+  <sql id="Customer_Column_List">
+    c.id, c.product_no, c.customer_id, c.customer_no, c.customer_pd_no, c.customer_pd_name, c.customer_pd_rule,
+    c.customer_pd_size, c.reference_price, c.recent_quotation, c.create_user_id, c.create_time,
+    c.edit_user_id, c.edit_time, c.udf1, c.udf2, c.udf3, c.udf4, c.udf5, c.udf6, c.udf7, c.udf8, c.udf9, c.udf10,
+    c.udf11, c.udf12, c.udf13, c.udf14, c.udf15, c.udf16, c.udf17, c.udf18, c.udf19, c.udf20
+  </sql>
   <sql id="Example_Where_Clause">
     <where>
       1=1
-      <if test="productNo != null">
-        and product_no = #{productNo,jdbcType=VARCHAR}
+      <if test="productNo != null and productNo != ''">
+        and c.product_no = #{productNo,jdbcType=VARCHAR}
       </if>
-      <if test="customerNo != null">
-        and customer_no=#{customerNo,jdbcType=INTEGER}
+      <if test="customerNo != null and customerNo != ''">
+        and c.customer_no=#{customerNo,jdbcType=VARCHAR}
       </if>
-      <if test="brandId != null">
-        and brand_id=#{brandId,jdbcType=INTEGER}
-      </if>
-      <if test="productName != null">
-        and product_name LIKE CONCAT('%',#{productName,jdbcType=VARCHAR},'%')
-      </if>
-      <if test="brandName != null">
-        and brand_name = #{brandName,jdbcType=VARCHAR}
+      <if test="productName != null and productName != ''">
+        and c.product_name LIKE CONCAT('%',#{productName,jdbcType=VARCHAR},'%')
       </if>
     </where>
   </sql>
@@ -72,9 +78,23 @@
   </select>
   <select id="selectByExample" parameterType="map" resultMap="BaseResultMap">
     select
-      <include refid="Base_Column_List"/>
-    from sku_customer
+      <include refid="Customer_Column_List"/>
+    from sku_customer c
     <include refid="Example_Where_Clause"/>
+  </select>
+  <select id="selectExByExample" parameterType="map" resultMap="ExResultMap">
+    select
+      <include refid="Customer_Column_List"/>,
+      upc.identifying_code,sku.min_uint,sku.brand_id,sku.brand_name
+    from sku_customer c left join sku_core sku on c.product_no=sku.product_no
+    left join sku_upc upc on c.product_no=upc.product_no
+    <include refid="Example_Where_Clause"/>
+    <if test="brandId != null">
+      and sku.brand_id=#{brandId,jdbcType=INTEGER}
+    </if>
+    <if test="brandName != null and brandName != ''">
+      and sku.brand_name = #{brandName,jdbcType=VARCHAR}
+    </if>
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from sku_customer

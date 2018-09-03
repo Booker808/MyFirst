@@ -37,6 +37,10 @@
     <result column="udf19" jdbcType="VARCHAR" property="udf19" />
     <result column="udf20" jdbcType="VARCHAR" property="udf20" />
   </resultMap>
+  <resultMap id="ExResultMap" type="com.csjscm.core.framework.model.SkuPartnerEx" extends="BaseResultMap">
+    <result column="identifying_code" property="identifyingCode" jdbcType="VARCHAR" />
+    <result column="min_uint" property="minUint" jdbcType="VARCHAR" />
+  </resultMap>
   <sql id="Base_Column_List">
     id, product_no, supply_no, supply_name, supply_rule, supply_size, brand_id, brand_name, 
     refrence_price, recent_enquiry, create_user_id, create_time, edit_user_id, edit_time, 
@@ -44,23 +48,30 @@
     udf14, udf15, udf16, udf17, udf18, udf19, udf20
   </sql>
 
+  <sql id="Partner_Column_List">
+    p.id, p.product_no, p.supply_no, p.supply_name, p.supply_rule, p.supply_size, p.brand_id, p.brand_name,
+    p.refrence_price, p.recent_enquiry, p.create_user_id, p.create_time, p.edit_user_id, p.edit_time,
+    p.udf1, p.udf2, p.udf3, p.udf4, p.udf5, p.udf6, p.udf7, p.udf8, p.udf9, p.udf10, p.udf11, p.udf12, p.udf13,
+    p.udf14, p.udf15, p.udf16, p.udf17, p.udf18, p.udf19, p.udf20
+  </sql>
+
   <sql id="Example_Where_Clause">
     <where>
       1=1
-      <if test="productNo != null">
-        and product_no = #{productNo,jdbcType=VARCHAR}
+      <if test="productNo != null and productNo != ''">
+        and p.product_no = #{productNo,jdbcType=VARCHAR}
       </if>
-      <if test="supplyNo != null">
-        and supply_no=#{supplyNo,jdbcType=INTEGER}
+      <if test="supplyNo != null and supplyNo != ''">
+        and p.supply_no=#{supplyNo,jdbcType=VARCHAR}
       </if>
       <if test="brandId != null">
-        and brand_id=#{brandId,jdbcType=INTEGER}
+        and p.brand_id=#{brandId,jdbcType=INTEGER}
       </if>
-      <if test="productName != null">
-        and product_name LIKE CONCAT('%',#{productName,jdbcType=VARCHAR},'%')
+      <if test="productName != null and productName != ''">
+        and p.product_name LIKE CONCAT('%',#{productName,jdbcType=VARCHAR},'%')
       </if>
-      <if test="brandName != null">
-        and brand_name = #{brandName,jdbcType=VARCHAR}
+      <if test="brandName != null and brandName != ''">
+        and p.brand_name = #{brandName,jdbcType=VARCHAR}
       </if>
     </where>
   </sql>
@@ -72,8 +83,16 @@
   </select>
   <select id="selectByExample" parameterType="map" resultMap="BaseResultMap">
     select
-      <include refid="Base_Column_List"/>
-    from sku_partner
+      <include refid="Partner_Column_List"/>
+    from sku_partner p
+    <include refid="Example_Where_Clause"/>
+  </select>
+  <select id="selectExByExample" parameterType="map" resultMap="ExResultMap">
+    select
+      <include refid="Partner_Column_List"/>,
+      sku.min_uint,upc.identifying_code
+    from sku_partner p left join sku_core sku on p.product_no=sku.product_no
+    left join sku_upc upc on upc.product_no=p.product_no
     <include refid="Example_Where_Clause"/>
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
