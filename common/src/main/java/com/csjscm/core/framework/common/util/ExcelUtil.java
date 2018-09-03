@@ -694,7 +694,7 @@ public class ExcelUtil {
      * @param cell 
      * @return 
      */  
-    public String getCellValue(Cell cell) {
+    private String getCellValue(Cell cell) {
         Object result = "";
         if (cell != null) {  
             switch (cell.getCellType()) {  
@@ -718,9 +718,6 @@ public class ExcelUtil {
             default:  
                 break;  
             }  
-        }
-        if (StringUtils.isBlank(result.toString())){
-            throw new  BussinessException("");
         }
         return result.toString();  
     }  

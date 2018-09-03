@@ -1,106 +1,152 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- inv_unit表:计量单位定义表模块 -->
 <mapper namespace="com.csjscm.core.framework.dao.InvUnitMapper">
-  <resultMap id="BaseResultMap" type="com.csjscm.core.framework.model.InvUnit">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="obj_name" jdbcType="VARCHAR" property="objName" />
-    <result column="obj_type" jdbcType="INTEGER" property="objType" />
-    <result column="isvalid" jdbcType="INTEGER" property="isvalid" />
-    <result column="memo" jdbcType="VARCHAR" property="memo" />
-    <result column="request_id" jdbcType="VARCHAR" property="requestId" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    id, obj_name, obj_type, isvalid, memo, request_id
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from inv_unit
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from inv_unit
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="com.csjscm.core.framework.model.InvUnit">
-    insert into inv_unit (id, obj_name, obj_type, 
-      isvalid, memo, request_id
-      )
-    values (#{id,jdbcType=INTEGER}, #{objName,jdbcType=VARCHAR}, #{objType,jdbcType=INTEGER}, 
-      #{isvalid,jdbcType=INTEGER}, #{memo,jdbcType=VARCHAR}, #{requestId,jdbcType=VARCHAR}
-      )
-  </insert>
-  <insert id="insertSelective" parameterType="com.csjscm.core.framework.model.InvUnit">
-    insert into inv_unit
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="objName != null">
-        obj_name,
-      </if>
-      <if test="objType != null">
-        obj_type,
-      </if>
-      <if test="isvalid != null">
-        isvalid,
-      </if>
-      <if test="memo != null">
-        memo,
-      </if>
-      <if test="requestId != null">
-        request_id,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="objName != null">
-        #{objName,jdbcType=VARCHAR},
-      </if>
-      <if test="objType != null">
-        #{objType,jdbcType=INTEGER},
-      </if>
-      <if test="isvalid != null">
-        #{isvalid,jdbcType=INTEGER},
-      </if>
-      <if test="memo != null">
-        #{memo,jdbcType=VARCHAR},
-      </if>
-      <if test="requestId != null">
-        #{requestId,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.csjscm.core.framework.model.InvUnit">
-    update inv_unit
-    <set>
-      <if test="objName != null">
-        obj_name = #{objName,jdbcType=VARCHAR},
-      </if>
-      <if test="objType != null">
-        obj_type = #{objType,jdbcType=INTEGER},
-      </if>
-      <if test="isvalid != null">
-        isvalid = #{isvalid,jdbcType=INTEGER},
-      </if>
-      <if test="memo != null">
-        memo = #{memo,jdbcType=VARCHAR},
-      </if>
-      <if test="requestId != null">
-        request_id = #{requestId,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.csjscm.core.framework.model.InvUnit">
-    update inv_unit
-    set obj_name = #{objName,jdbcType=VARCHAR},
-      obj_type = #{objType,jdbcType=INTEGER},
-      isvalid = #{isvalid,jdbcType=INTEGER},
-      memo = #{memo,jdbcType=VARCHAR},
-      request_id = #{requestId,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+    <!--返回Map-->        
+    <resultMap id="BaseResultMap" type="com.csjscm.core.framework.model.InvUnit">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="obj_name" property="objName" jdbcType="VARCHAR" />
+        <result column="obj_type" property="objType" jdbcType="INTEGER" />
+        <result column="isvalid" property="isvalid" jdbcType="INTEGER" />
+        <result column="memo" property="memo" jdbcType="VARCHAR" />
+        <result column="request_id" property="requestId" jdbcType="VARCHAR" />
+    </resultMap>
+    
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="Base_Column_List">
+        id,obj_name,obj_type,isvalid,memo,request_id 
+    </sql>
+    
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="searchBy">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test=" id != null and id != '' ">
+                id  = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="objName != null and objName != '' ">
+                and obj_name = #{objName,jdbcType=VARCHAR}
+            </if>
+            <if test="objType != null and objType != '' ">
+                and obj_type = #{objType,jdbcType=INTEGER}
+            </if>
+            <if test="isvalid != null and isvalid != '' ">
+                and isvalid = #{isvalid,jdbcType=INTEGER}
+            </if>
+            <if test="memo != null and memo != '' ">
+                and memo = #{memo,jdbcType=VARCHAR}
+            </if>
+            <if test="requestId != null and requestId != '' ">
+                and request_id = #{requestId,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </sql>
+    
+    
+    <insert id="insert" parameterType="com.csjscm.core.framework.model.InvUnit">
+        insert into inv_unit(obj_name,obj_type,isvalid,memo,request_id)values(#{objName,jdbcType=VARCHAR},#{objType,jdbcType=INTEGER},#{isvalid,jdbcType=INTEGER},#{memo,jdbcType=VARCHAR},#{requestId,jdbcType=VARCHAR})
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.csjscm.core.framework.model.InvUnit">
+        insert into inv_unit
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="objName != null">
+                obj_name,
+            </if>
+            <if test="objType != null">
+                obj_type,
+            </if>
+            <if test="isvalid != null">
+                isvalid,
+            </if>
+            <if test="memo != null">
+                memo,
+            </if>
+            <if test="requestId != null">
+                request_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="objName != null">
+                #{objName,jdbcType=VARCHAR},
+            </if>
+            <if test="objType != null">
+                #{objType,jdbcType=INTEGER},
+            </if>
+            <if test="isvalid != null">
+                #{isvalid,jdbcType=INTEGER},
+            </if>
+            <if test="memo != null">
+                #{memo,jdbcType=VARCHAR},
+            </if>
+            <if test="requestId != null">
+                #{requestId,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="update" parameterType="com.csjscm.core.framework.model.InvUnit">
+        update inv_unit set 
+            obj_name = #{objName,jdbcType=VARCHAR},
+            obj_type = #{objType,jdbcType=INTEGER},
+            isvalid = #{isvalid,jdbcType=INTEGER},
+            memo = #{memo,jdbcType=VARCHAR},
+            request_id = #{requestId,jdbcType=VARCHAR}
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <update id="updateSelective"  parameterType="com.csjscm.core.framework.model.InvUnit">
+        update inv_unit
+          <set>
+            <if test="objName != null and objName != '' ">        
+                obj_name = #{objName,jdbcType=VARCHAR},                
+            </if>
+            <if test="objType != null and objType != '' ">        
+                obj_type = #{objType,jdbcType=INTEGER},                
+            </if>
+            <if test="isvalid != null and isvalid != '' ">        
+                isvalid = #{isvalid,jdbcType=INTEGER},                
+            </if>
+            <if test="memo != null and memo != '' ">        
+                memo = #{memo,jdbcType=VARCHAR},                
+            </if>
+            <if test="requestId != null and requestId != '' ">        
+                request_id = #{requestId,jdbcType=VARCHAR}                
+            </if>
+        </set>    
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <select id="findByPrimary" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List" />
+        from inv_unit
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+	<select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from inv_unit
+        <include refid="searchBy"/>
+    </select>
+               
+    <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from inv_unit
+        <include refid="searchBy"/>
+    </select>
+    <select id="findCount" resultType="java.lang.Integer" parameterType="java.util.HashMap">
+        select count(id)
+        from inv_unit
+        <include refid="searchBy"/>
+    </select>
+
 </mapper>

@@ -18,6 +18,44 @@
     id, brand_id, brand_name, brand_pic, brand_info, brand_ca, create_user_id, create_time, 
     edit_user_id, edit_time, request_id
   </sql>
+  <!-- 基本的sql查询条件公共引用 -->
+  <sql id="searchBy">
+    <trim prefix="where" prefixOverrides="and|or">
+      <if test=" id != null and id != '' ">
+        id  = #{id,jdbcType=INTEGER}
+      </if>
+      <if test="brandId != null and brandId != '' ">
+        and brand_id = #{brandId,jdbcType=VARCHAR}
+      </if>
+      <if test="brandName != null and brandName != '' ">
+        and brand_name = #{brandName,jdbcType=VARCHAR}
+      </if>
+      <if test="brandPic != null and brandPic != '' ">
+        and brand_pic = #{brandPic,jdbcType=VARCHAR}
+      </if>
+      <if test="brandInfo != null and brandInfo != '' ">
+        and brand_info = #{brandInfo,jdbcType=VARCHAR}
+      </if>
+      <if test="brandCa != null and brandCa != '' ">
+        and brand_ca = #{brandCa,jdbcType=VARCHAR}
+      </if>
+      <if test="createUserId != null and createUserId != '' ">
+        and create_user_id = #{createUserId,jdbcType=VARCHAR}
+      </if>
+      <if test="createTime != null and createTime != '' ">
+        and create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="editUserId != null and editUserId != '' ">
+        and edit_user_id = #{editUserId,jdbcType=VARCHAR}
+      </if>
+      <if test="editTime != null and editTime != '' ">
+        and edit_time = #{editTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="requestId != null and requestId != '' ">
+        and request_id = #{requestId,jdbcType=VARCHAR}
+      </if>
+    </trim>
+  </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
@@ -166,5 +204,23 @@
     <include refid="Base_Column_List" />
     from brand_master
     where brand_name like concat('%',#{brandName,jdbcType=VARCHAR},'%')
+  </select>
+  <select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+    select
+    <include refid="Base_Column_List" />
+    from brand_master
+    <include refid="searchBy"/>
+  </select>
+
+  <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+    select
+    <include refid="Base_Column_List" />
+    from brand_master
+    <include refid="searchBy"/>
+  </select>
+  <select id="findCount" resultType="java.lang.Integer" parameterType="java.util.HashMap">
+    select count(id)
+    from brand_master
+    <include refid="searchBy"/>
   </select>
 </mapper>

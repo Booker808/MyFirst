@@ -65,6 +65,7 @@ public class CategoryController{
      * @param category
      * @return
      */
+    @ApiOperation("创建分类对象")
     @RequestMapping(value = "/category",method = RequestMethod.POST)
     public APIResponse createCategory(@Valid Category category){
         categoryService.save(category);

@@ -3,6 +3,7 @@ package com.csjscm.core.framework.controller;
 import com.csjscm.core.framework.common.util.BussinessException;
 import com.csjscm.core.framework.model.Category;
 import com.csjscm.core.framework.service.CategoryService;
+import com.csjscm.core.framework.service.SkuCoreService;
 import com.csjscm.sweet.framework.core.mvc.APIResponse;
 import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
 import io.swagger.annotations.Api;
@@ -21,12 +22,20 @@ import java.util.Map;
 
 @Api("商品核心表")
 @Controller
-@RequestMapping("/product/category")
+@RequestMapping("/product/product")
 @ResponseBody
 public class SkuCoreController {
-    @Autowired
-    private CategoryService categoryService;
 
+    @Autowired
+    private SkuCoreService skuCoreService;
+
+
+    @ApiOperation("导入商品excel")
+    @RequestMapping(value = "importSkuCoreExcel",method = RequestMethod.POST)
+    public APIResponse importExcel(@ApiParam(name = "file",value = "excel文件") @RequestParam(value="file") MultipartFile  file){
+        Map<String, Object> map = skuCoreService.importSkuCoreExcel(file);
+        return  APIResponse.success(map);
+    }
 
     @ExceptionHandler({BussinessException.class})
     public APIResponse exceptionHandler(Exception e, HttpServletResponse response) {

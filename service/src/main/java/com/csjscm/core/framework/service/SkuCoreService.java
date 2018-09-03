@@ -1,6 +1,9 @@
 package com.csjscm.core.framework.service;
 
+import com.csjscm.core.framework.common.util.BussinessException;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Map;
 
 /**
  * 商品核心表Service
@@ -16,5 +19,12 @@ public interface SkuCoreService {
      * @param file
      * @throws Exception
      */
-    void  importSkuCoreExcel(MultipartFile file)throws Exception;
+    Map<String,Object> importSkuCoreExcel(MultipartFile file)throws BussinessException;
+
+    /**
+     * 保存导入的商品信息
+     * @param data
+     */
+    void saveImportSkuCore(String data);
+
 }
