@@ -2,6 +2,7 @@ package com.csjscm.core.framework.dao;
 
 import com.csjscm.core.framework.example.SkuPartnerExample;
 import com.csjscm.core.framework.model.SkuPartner;
+import com.csjscm.core.framework.model.SkuPartnerEx;
 
 import java.util.List;
 
@@ -19,4 +20,6 @@ public interface SkuPartnerMapper {
     int updateByPrimaryKey(SkuPartner record);
 
     List<SkuPartner> selectByExample(SkuPartnerExample example);
+
+    List<SkuPartnerEx> selectExByExample(SkuPartnerExample example);
 }

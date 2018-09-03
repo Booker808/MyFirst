@@ -78,16 +78,16 @@
   <sql id="Example_Where_Clause">
     <where>
       1=1
-      <if test="productNo != null">
+      <if test="productNo != null and productNo != ''">
         and sc.product_no = #{productNo,jdbcType=VARCHAR}
       </if>
       <if test="brandId != null">
         and sc.brand_id=#{brandId,jdbcType=INTEGER}
       </if>
-      <if test="productName != null">
+      <if test="productName != null and productName != ''">
         and sc.product_name LIKE CONCAT('%',#{productName,jdbcType=VARCHAR},'%')
       </if>
-      <if test="brandName != null">
+      <if test="brandName != null and brandName != ''">
         and sc.brand_name = #{brandName,jdbcType=VARCHAR}
       </if>
     </where>
