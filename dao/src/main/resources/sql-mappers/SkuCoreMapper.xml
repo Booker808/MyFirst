@@ -54,6 +54,11 @@
     <result column="brand_id_old" property="brandIdOld" jdbcType="VARCHAR" />
     <result column="min_uint_old" property="minUintOld" jdbcType="VARCHAR" />
   </resultMap>
+  <resultMap id="ExResultMap" type="com.csjscm.core.framework.model.SkuCoreEx" extends="BaseResultMap">
+    <result column="identifying_code" property="identifyingCode" jdbcType="VARCHAR" />
+    <result column="customer_no" property="customerNo" jdbcType="VARCHAR" />
+    <result column="supply_no" property="supplyNo" jdbcType="VARCHAR" />
+  </resultMap>
   <sql id="Base_Column_List" >
     product_no, std_product_no, product_name, product_price, category_id, category_no, 
     isvalidate, approval_status, channel, brand_name, brand_id, unit_id, min_uint, product_pic, 
@@ -62,20 +67,28 @@
     suf1, suf2, suf3, suf4, suf5, suf6, suf7, suf8, suf9, suf10, request_id, category_id_old, 
     create_user_id_old, edit_user_id_old, approval_status_old, brand_id_old, min_uint_old
   </sql>
+  <sql id="Sc_Column_List">
+    sc.product_no, sc.std_product_no, sc.product_name, sc.product_price, sc.category_id, sc.category_no,
+    sc.isvalidate, sc.approval_status, sc.channel, sc.brand_name, sc.brand_id, sc.unit_id, sc.min_uint, sc.product_pic,
+    sc.ean13_code, sc.mnemonic_code, sc.invoice_type, sc.txt_code, sc.rule, sc.size, sc.create_user_id, sc.create_time,
+    sc.edit_user_id, sc.edit_time, sc.udf1, sc.udf2, sc.udf3, sc.udf4, sc.udf5, sc.udf6, sc.udf7, sc.udf8, sc.udf9, sc.udf10,
+    sc.suf1, sc.suf2, sc.suf3, sc.suf4, sc.suf5, sc.suf6, sc.suf7, sc.suf8, sc.suf9, sc.suf10, sc.request_id, sc.category_id_old,
+    sc.create_user_id_old, sc.edit_user_id_old, sc.approval_status_old, sc.brand_id_old, sc.min_uint_old
+  </sql>
   <sql id="Example_Where_Clause">
     <where>
       1=1
       <if test="productNo != null">
-        and product_no = #{productNo,jdbcType=VARCHAR}
+        and sc.product_no = #{productNo,jdbcType=VARCHAR}
       </if>
       <if test="brandId != null">
-        and brand_id=#{brandId,jdbcType=INTEGER}
+        and sc.brand_id=#{brandId,jdbcType=INTEGER}
       </if>
       <if test="productName != null">
-        and product_name LIKE CONCAT('%',#{productName,jdbcType=VARCHAR},'%')
+        and sc.product_name LIKE CONCAT('%',#{productName,jdbcType=VARCHAR},'%')
       </if>
       <if test="brandName != null">
-        and brand_name = #{brandName,jdbcType=VARCHAR}
+        and sc.brand_name = #{brandName,jdbcType=VARCHAR}
       </if>
     </where>
   </sql>
@@ -87,8 +100,18 @@
   </select>
   <select id="selectByExample" parameterType="map" resultMap="BaseResultMap">
     select
-      <include refid="Base_Column_List"/>
-    from sku_core
+      <include refid="Sc_Column_List"/>
+    from sku_core sc
+    <include refid="Example_Where_Clause"/>
+  </select>
+  <select id="selectExByExample" parameterType="map" resultMap="ExResultMap">
+    select
+      <include refid="Sc_Column_List"/>,
+      upc.identifying_code,customer.customer_no,partner.supply_no
+    from
+      sku_core sc left join sku_upc upc on sc.product_no=upc.product_no
+      left join sku_customer customer on sc.product_no=customer.product_no
+      left join sku_partner partner on sc.product_no=partner.product_no
     <include refid="Example_Where_Clause"/>
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">

@@ -3,6 +3,7 @@ package com.csjscm.core.framework.controller;
 import com.alibaba.fastjson.JSON;
 import com.csjscm.core.framework.example.SkuCoreExample;
 import com.csjscm.core.framework.model.SkuCore;
+import com.csjscm.core.framework.model.SkuCoreEx;
 import com.csjscm.core.framework.service.product.ProductCoreService;
 import com.csjscm.sweet.framework.core.mvc.APIResponse;
 import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
@@ -23,14 +24,14 @@ public class ProductCoreController {
     private ProductCoreService productCoreService;
 
     @RequestMapping(value = "/core",method = RequestMethod.GET)
-    public APIResponse<QueryResult<SkuCore>> queryCoreProduct(@RequestParam(required = false,defaultValue = "1")int page,
+    public APIResponse<QueryResult<SkuCoreEx>> queryCoreProduct(@RequestParam(required = false,defaultValue = "1")int page,
                                         @RequestParam(required = false,defaultValue = "10")int rpp,
                                         @RequestParam Map<String,String> condition){
         SkuCoreExample skuCoreExample=new SkuCoreExample();
         if(condition!=null){
             skuCoreExample=JSON.parseObject(JSON.toJSONString(condition),SkuCoreExample.class);
         }
-        QueryResult<SkuCore> result=productCoreService.queryCoreProduct(page,rpp,skuCoreExample);
+        QueryResult<SkuCoreEx> result=productCoreService.queryCoreProduct(page,rpp,skuCoreExample);
         return APIResponse.success(result);
     }
 }
