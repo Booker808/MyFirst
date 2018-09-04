@@ -17,9 +17,9 @@
             <artifactId>service</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.csjscm.sweet.framework</groupId>
-            <artifactId>sweet-framework-redis-autoconfiguration</artifactId>
-        </dependency>
+        <groupId>com.csjscm.sweet.framework</groupId>
+        <artifactId>sweet-framework-redis-autoconfiguration</artifactId>
+    </dependency>
     </dependencies>
     <build>
 

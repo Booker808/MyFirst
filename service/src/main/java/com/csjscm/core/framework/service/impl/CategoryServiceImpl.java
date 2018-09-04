@@ -1,12 +1,16 @@
 package com.csjscm.core.framework.service.impl;
 
+import com.csjscm.core.framework.common.constant.Constant;
+import com.csjscm.core.framework.common.enums.CategoryLevelEnum;
 import com.csjscm.core.framework.common.util.BussinessException;
 import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
+import com.csjscm.sweet.framework.redis.RedisServiceFacade;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 
@@ -36,11 +40,23 @@ public class CategoryServiceImpl implements CategoryService {
    
     @Autowired
     private CategoryMapper categoryMapper;
+    @Autowired
+    private RedisServiceFacade redisServiceFacade;
 
 
     @Override
     public int save(Category t) {
+        Map<String,Object> map=new HashMap<>();
+        map.put("classCode",t.getClassCode());
+        int count = categoryMapper.findCount(map);
+        if(count>0){
+            throw  new  BussinessException("分类编码不能重复");
+        }
         t.setCreateTime(new Date());
+        if(t.getLevelNum().intValue()== CategoryLevelEnum.三级.getState().intValue()){
+            RedisTemplate redisTemplate = redisServiceFacade.getRedisTemplate();
+            redisTemplate.opsForValue().increment(Constant.REDIS_KEY_PRODUCT_NO+t.getClassCode(),1);
+        }
        return categoryMapper.insertSelective(t);
     }
 

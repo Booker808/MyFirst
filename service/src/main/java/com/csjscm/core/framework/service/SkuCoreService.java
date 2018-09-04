@@ -25,9 +25,9 @@ public interface SkuCoreService {
 
     /**
      * 保存导入的商品信息
-     * @param data
+     * @param jsonData
      */
-    void saveImportSkuCore(String data);
+    void saveImportSkuCore(String jsonData);
 
     /**
      * 查询商品最大分类
