@@ -852,6 +852,6 @@
     <include refid="searchBy"/>
   </select>
   <select id="selectByProductNoList" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select max(product_no) as product_no from sku_core where category_no is not null group by category_no
+    select max(substring(product_no,1,8)) as product_no,category_no from sku_core where category_no is not null group by category_no
   </select>
 </mapper>

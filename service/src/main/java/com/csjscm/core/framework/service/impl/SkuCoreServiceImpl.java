@@ -308,16 +308,7 @@ public class SkuCoreServiceImpl implements SkuCoreService {
 
     @Override
     public List<SkuCore> selectByProductNoList() {
-        List<SkuCore> coreList = skuCoreMapper.selectByProductNoList();
-        List list = new ArrayList();
-        if(null != coreList && !coreList.isEmpty()){
-            for (SkuCore skuCore : coreList) {
-                Map map = new HashMap();
-                map.put("product_no", skuCore.getProductNo());
-                list.add(map);
-            }
-        }
-        return list;
+        return skuCoreMapper.selectByProductNoList();
     }
 
     @Override
