@@ -232,7 +232,6 @@
     sc.edit_user_id, sc.edit_time, sc.udf1, sc.udf2, sc.udf3, sc.udf4, sc.udf5, sc.udf6, sc.udf7, sc.udf8, sc.udf9, sc.udf10,
     sc.suf1, sc.suf2, sc.suf3, sc.suf4, sc.suf5, sc.suf6, sc.suf7, sc.suf8, sc.suf9, sc.suf10, sc.request_id, sc.category_id_old,
     sc.create_user_id_old, sc.edit_user_id_old, sc.approval_status_old, sc.brand_id_old, sc.min_uint_old
->>>>>>> origin/dev
   </sql>
   <sql id="Example_Where_Clause">
     <where>
