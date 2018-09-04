@@ -22,7 +22,7 @@ import java.util.Map;
 
 @Api("客户商品")
 @Controller
-@RequestMapping("/product/product")
+@RequestMapping("/product/productCustomer")
 @ResponseBody
 public class ProductCustomerController {
     @Autowired
@@ -38,7 +38,7 @@ public class ProductCustomerController {
             @ApiImplicitParam(name="brandId",value="品牌ID",dataType = "String",paramType = "query"),
             @ApiImplicitParam(name="brandName",value="品牌名",dataType = "String",paramType = "query")
     })
-    @RequestMapping(value = "/customer",method = RequestMethod.GET)
+    @RequestMapping(value = "/product",method = RequestMethod.GET)
     public APIResponse<QueryResult<SkuCustomerEx>> queryCoreProduct(
             @RequestParam(required = false,defaultValue = "1")int page,
             @RequestParam(required = false,defaultValue = "10")int rpp,

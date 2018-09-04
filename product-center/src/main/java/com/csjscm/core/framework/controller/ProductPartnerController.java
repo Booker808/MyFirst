@@ -19,14 +19,14 @@ import java.util.Map;
 
 @Api("供应商商品")
 @Controller
-@RequestMapping("/product/product")
+@RequestMapping("/product/productPartner")
 @ResponseBody
 public class ProductPartnerController {
     @Autowired
     private ProductPartnerService productPartnerService;
 
     @ApiOperation("获取供应商品列表")
-    @RequestMapping(value = "/partner",method = RequestMethod.GET)
+    @RequestMapping(value = "/product",method = RequestMethod.GET)
     @ApiImplicitParams({
             @ApiImplicitParam(name="page",value = "当前页码（起始为1）",dataType = "Integer",defaultValue = "1",paramType = "query"),
             @ApiImplicitParam(name="rpp",value = "每页数量",dataType = "Integer",defaultValue = "10",paramType = "query"),
