@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
@@ -48,5 +49,17 @@ public class SkuCoreController {
     public APIResponse sortData(){
         List<SkuCore> coreList = skuCoreService.selectByProductNoList();
         return APIResponse.success(coreList);
+    }
+
+    /**
+     * 保存商品对象
+     * @param skuCore
+     * @return
+     */
+    @ApiOperation("保存商品对象")
+    @RequestMapping(value = "/saveProduct",method = RequestMethod.POST)
+    public APIResponse saveProduct(@Valid SkuCore skuCore){
+        skuCoreService.insertSelective(skuCore);
+        return APIResponse.success();
     }
 }

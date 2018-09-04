@@ -310,13 +310,19 @@ public class SkuCoreServiceImpl implements SkuCoreService {
     public List<SkuCore> selectByProductNoList() {
         List<SkuCore> coreList = skuCoreMapper.selectByProductNoList();
         List list = new ArrayList();
-        Map map = new HashMap();
         if(null != coreList && !coreList.isEmpty()){
             for (SkuCore skuCore : coreList) {
+                Map map = new HashMap();
                 map.put("product_no", skuCore.getProductNo());
                 list.add(map);
             }
         }
         return list;
+    }
+
+    @Override
+    public int insertSelective(SkuCore record) {
+        record.setCreateTime(new Date());
+        return skuCoreMapper.insertSelective(record);
     }
 }

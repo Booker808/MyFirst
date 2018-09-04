@@ -9,10 +9,7 @@ import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by zjc on 2018/8/31.
@@ -67,6 +64,7 @@ public class BrandMasterServiceImpl implements BrandMasterService {
 
     @Override
     public int insertSelective(BrandMaster record) {
+        record.setCreateTime(new Date());
         return brandMasterMapper.insertSelective(record);
     }
 
