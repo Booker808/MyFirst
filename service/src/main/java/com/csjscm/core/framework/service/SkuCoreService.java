@@ -35,10 +35,10 @@ public interface SkuCoreService {
      */
     List<SkuCore> selectByProductNoList();
 
+
     /**
-     * 保持商品
-     * @param record
-     * @return
+     * 创建商品对象
+     * @param skuCore
      */
-    int insertSelective(SkuCore record);
+    void insertSelective(SkuCore skuCore);
 }

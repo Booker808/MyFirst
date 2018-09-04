@@ -3,29 +3,28 @@ package com.csjscm.core.framework.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.csjscm.core.framework.common.constant.Constant;
-import com.csjscm.core.framework.common.enums.SkuCoreChannelEnum;
 import com.csjscm.core.framework.common.util.BussinessException;
 import com.csjscm.core.framework.common.util.ExportExcel;
 import com.csjscm.core.framework.model.SkuCore;
+import com.csjscm.core.framework.model.SkuUom;
+import com.csjscm.core.framework.model.SkuUpc;
 import com.csjscm.core.framework.service.SkuCoreService;
+import com.csjscm.core.framework.service.SkuUomService;
+import com.csjscm.core.framework.service.SkuUpcService;
 import com.csjscm.core.framework.vo.SkuCoreVo;
 import com.csjscm.sweet.framework.core.mvc.APIResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -38,6 +37,10 @@ public class SkuCoreController {
 
     @Autowired
     private SkuCoreService skuCoreService;
+    @Autowired
+    private SkuUomService skuUomService;
+    @Autowired
+    private SkuUpcService skuUpcService;
 
 
 
@@ -90,14 +93,33 @@ public class SkuCoreController {
     }
 
     /**
-     * 保存商品对象
-     * @param skuCore
+     * 创建商品
+     * @param jsonObject
      * @return
      */
-    @ApiOperation("保存商品对象")
-    @RequestMapping(value = "/saveProduct",method = RequestMethod.POST)
-    public APIResponse saveProduct(@Valid SkuCore skuCore){
-        skuCoreService.insertSelective(skuCore);
+    @ApiOperation("创建商品对象")
+    @RequestMapping(value = "/saveProduct", method = RequestMethod.POST)
+    public APIResponse createProduct(@ApiParam(name="jsonObject",value="商品对象",required=true) @RequestBody JSONObject jsonObject){
+        String skuCore = jsonObject.toJSONString();
+        String skuUom = jsonObject.getString("skuUom");
+        String skuUpc = jsonObject.getString("skuUpc");
+        SkuCore skuCores = JSON.parseObject(skuCore, SkuCore.class);
+        skuCoreService.insertSelective(skuCores);
+        if (null != skuUom){
+            JSONArray skuUomArray = JSONArray.parseArray(skuUom);
+            for (Object object : skuUomArray) {
+                SkuUom skuUoms = JSONObject.parseObject(object.toString(), SkuUom.class);
+                skuUomService.insertSelective(skuUoms);
+            }
+        }
+        if (null != skuUpc){
+            JSONArray skuUpcArray = JSONArray.parseArray(skuUpc);
+            for (Object object : skuUpcArray) {
+                SkuUpc skuUpcs = JSONObject.parseObject(object.toString(), SkuUpc.class);
+                skuUpcService.insertSelective(skuUpcs);
+            }
+        }
         return APIResponse.success();
     }
+
 }

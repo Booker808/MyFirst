@@ -8,7 +8,6 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.*;
 
 /**
@@ -30,10 +29,10 @@ public class BrandMasterServiceImpl implements BrandMasterService {
     @Override
     public List<BrandMaster> selectByBrandName(String brandName) {
         List<BrandMaster> brandList = brandMasterMapper.selectByBrandName(brandName);
-        Map map = new HashMap();
         List list = new ArrayList();
         if(null != brandList && !brandList.isEmpty()){
             for (BrandMaster brandMaster : brandList) {
+                Map<String, Object> map = new HashMap();
                 map.put("id", brandMaster.getId());
                 map.put("brand_name", brandMaster.getBrandName());
                 list.add(map);

@@ -54,6 +54,8 @@ public class SkuCoreServiceImpl implements SkuCoreService {
     @Autowired
     private RedisServiceFacade redisServiceFacade;
 
+
+
     /**
      * 取读excel 默认的开始读取的行位置为第几行
      */
@@ -367,8 +369,16 @@ public class SkuCoreServiceImpl implements SkuCoreService {
     }
 
     @Override
-    public int insertSelective(SkuCore record) {
-        record.setCreateTime(new Date());
-        return skuCoreMapper.insertSelective(record);
+    public void insertSelective(SkuCore skuCore) {
+        // 获取商品编码
+        RedisTemplate redisTemplate = redisServiceFacade.getRedisTemplate();
+        String  increment = redisTemplate.opsForValue().increment(Constant.REDIS_KEY_PRODUCT_NO + skuCore.getCategoryNo(), 1).toString();
+        String str="";
+        for(int j=0;j<5-increment.length();j++){
+            str+="0";
+        }
+        str+=increment;
+        skuCore.setProductNo(skuCore.getCategoryNo()+str);
+        skuCoreMapper.insertSelective(skuCore);
     }
 }
