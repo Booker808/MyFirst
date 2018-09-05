@@ -40,5 +40,5 @@ public interface SkuCoreService {
      * 创建商品对象
      * @param map
      */
-    void insertSelective(Map<String, Object> map);
+    boolean insertSelective(Map<String, Object> map);
 }

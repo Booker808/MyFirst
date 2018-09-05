@@ -91,7 +91,7 @@ public class SkuCoreController {
     @ApiOperation("创建商品对象")
     @RequestMapping(value = "/saveProduct", method = RequestMethod.POST)
     public APIResponse createProduct(@ApiParam(name="map",value="商品对象",required=true) @RequestBody Map<String, Object> map){
-        skuCoreService.insertSelective(map);
+        boolean b = skuCoreService.insertSelective(map);
         return APIResponse.success();
     }
 

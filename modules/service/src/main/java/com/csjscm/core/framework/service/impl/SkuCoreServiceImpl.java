@@ -371,25 +371,28 @@ public class SkuCoreServiceImpl implements SkuCoreService {
 
     @Override
     @Transactional(rollbackFor=Exception.class)
-    public void insertSelective(Map<String, Object> map) {
+    public boolean insertSelective(Map<String, Object> map) {
         JSONObject jsonObject = new JSONObject(map);
-        String skuCores = jsonObject.toJSONString();
-        SkuCore skuCore = JSON.parseObject(skuCores, SkuCore.class);
+        SkuCore skuCore = JSON.parseObject(jsonObject.toJSONString(), SkuCore.class);
         /**Redis获取商品编码*/
         String  count = String.valueOf(redisServiceFacade.increase(new RedisDistributedCounterObject("category_" + skuCore.getCategoryNo())));
         String str = "";
-        for(int j = 0; j < 5 - count.length(); j++){
+        for(int i = 0; i < 5 - count.length(); i++){
             str += "0";
         }
         str += count;
         skuCore.setProductNo(skuCore.getCategoryNo() + str);
+        SkuCore skuCores = skuCoreMapper.selectByPrimaryKey(skuCore.getProductNo());
+        /**校验productNo*/
+        if (skuCores.getProductNo().equals(skuCore.getProductNo())) {
+            return false;
+        }
         skuCoreMapper.insertSelective(skuCore);
         JSONArray jsonArray = new JSONArray(jsonObject.getJSONArray("skuUom"));
         if (null != jsonArray) {
             for (int i = 0; i < jsonArray.size(); i++) {
                 JSONObject object = jsonArray.getJSONObject(i);
-                String jsonString = object.toJSONString();
-                SkuUom skuUom = JSONObject.parseObject(jsonString, SkuUom.class);
+                SkuUom skuUom = JSONObject.parseObject(object.toJSONString(), SkuUom.class);
                 skuUomMapper.insertSelective(skuUom);
             }
         }
@@ -397,10 +400,10 @@ public class SkuCoreServiceImpl implements SkuCoreService {
         if (null != jsonArray) {
             for (int i = 0; i < jsonArray.size(); i++) {
                 JSONObject object = jsonArray.getJSONObject(i);
-                String jsonString = object.toJSONString();
-                SkuUpc skuUpc = JSONObject.parseObject(jsonString, SkuUpc.class);
+                SkuUpc skuUpc = JSONObject.parseObject(object.toJSONString(), SkuUpc.class);
                 skuUpcMapper.insertSelective(skuUpc);
             }
         }
+        return true;
     }
 }
