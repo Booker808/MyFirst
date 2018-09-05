@@ -22,6 +22,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.csjscm.core.framework.common.constant.Constant.REDIS_KEY_PRODUCT_NO;
+
 @WebListener
 @Configuration
 public class ServletContextInitListener implements ServletContextListener {
@@ -33,8 +35,6 @@ public class ServletContextInitListener implements ServletContextListener {
     private SkuCoreService skuCoreService;
     @Autowired
     private InvUnitService invUnitService;
-
-    private static final String CATEGORY = "category_";
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
@@ -51,15 +51,15 @@ public class ServletContextInitListener implements ServletContextListener {
         for (SkuCore skuCore : coreList) {
             String categoryNo = skuCore.getCategoryNo();
             String productNo = skuCore.getProductNo();
-            String redisCategoryNo = redisServiceFacade.get(CATEGORY + categoryNo);
+            String redisCategoryNo = redisServiceFacade.get(REDIS_KEY_PRODUCT_NO + categoryNo);
             if (StringUtils.isEmpty(productNo)) {
-                redisServiceFacade.set(CATEGORY + categoryNo, 0);
+                redisServiceFacade.set(REDIS_KEY_PRODUCT_NO + categoryNo, 0);
             } else if (StringUtils.isEmpty(redisCategoryNo)) {
-                redisServiceFacade.set(CATEGORY + categoryNo, Integer.parseInt(productNo.substring(3)));
+                redisServiceFacade.set(REDIS_KEY_PRODUCT_NO + categoryNo, Integer.parseInt(productNo.substring(3)));
             } else {
                 int pId = Integer.parseInt(productNo.substring(3));
                 int rID = Integer.parseInt(redisCategoryNo);
-                redisServiceFacade.set(CATEGORY + categoryNo, pId > rID ? pId : rID);
+                redisServiceFacade.set(REDIS_KEY_PRODUCT_NO + categoryNo, pId > rID ? pId : rID);
             }
         }
 

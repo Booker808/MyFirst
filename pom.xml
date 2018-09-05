@@ -21,7 +21,7 @@
 
     <properties>
         <sweet.version>1.1.0-SNAPSHOT</sweet.version>
-        <b2b.version>1.0.0-SNAPSHOT</b2b.version>
+        <core.version>1.0.0-SNAPSHOT</core.version>
     </properties>
 
     <dependencyManagement>
@@ -29,37 +29,37 @@
             <dependency>
                 <groupId>com.csjscm.core.framework</groupId>
                 <artifactId>common</artifactId>
-                <version>${b2b.version}</version>
+                <version>${core.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.csjscm.core.framework</groupId>
                 <artifactId>service</artifactId>
-                <version>${b2b.version}</version>
+                <version>${core.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.csjscm.core.framework</groupId>
                 <artifactId>outerface</artifactId>
-                <version>${b2b.version}</version>
+                <version>${core.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.csjscm.core.framework</groupId>
                 <artifactId>dao</artifactId>
-                <version>${b2b.version}</version>
+                <version>${core.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.csjscm.core.framework</groupId>
                 <artifactId>demo</artifactId>
-                <version>${b2b.version}</version>
+                <version>${core.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.csjscm.core.framework</groupId>
                 <artifactId>enterprice-center</artifactId>
-                <version>${b2b.version}</version>
+                <version>${core.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.csjscm.core.framework</groupId>
                 <artifactId>product-center</artifactId>
-                <version>${b2b.version}</version>
+                <version>${core.version}</version>
             </dependency>
 
             <!--sweet-->
@@ -70,7 +70,7 @@
             </dependency>
             <dependency>
                 <groupId>com.csjscm.sweet.framework</groupId>
-                <artifactId>sweet-framework-auth</artifactId>
+                <artifactId>sweet-framework-cas</artifactId>
                 <version>${sweet.version}</version>
             </dependency>
             <dependency>
