@@ -13,4 +13,6 @@ public class SkuCoreEx extends SkuCore {
     private String customerNo;
     @ApiModelProperty(value = "供应商编码")
     private String supplyNo;
+    @ApiModelProperty(value = "最小分类名称")
+    private String className;
 }

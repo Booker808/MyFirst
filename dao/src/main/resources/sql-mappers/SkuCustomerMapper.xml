@@ -42,6 +42,7 @@
     <result column="min_uint" property="minUint" jdbcType="VARCHAR" />
     <result column="brand_id" property="brandId" jdbcType="INTEGER" />
     <result column="brand_name" property="brandName" jdbcType="VARCHAR"/>
+    <result column="class_name" property="className" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List">
     id, product_no, customer_id, customer_no, customer_pd_no, customer_pd_name, customer_pd_rule,
@@ -85,9 +86,10 @@
   <select id="selectExByExample" parameterType="map" resultMap="ExResultMap">
     select
       <include refid="Customer_Column_List"/>,
-      upc.identifying_code,sku.min_uint,sku.brand_id,sku.brand_name
+      upc.identifying_code,sku.min_uint,sku.brand_id,sku.brand_name,ca.class_name
     from sku_customer c left join sku_core sku on c.product_no=sku.product_no
     left join sku_upc upc on c.product_no=upc.product_no
+    left join category ca on sku.category_no=ca.class_code
     <include refid="Example_Where_Clause"/>
     <if test="brandId != null">
       and sku.brand_id=#{brandId,jdbcType=INTEGER}

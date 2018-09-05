@@ -18,4 +18,7 @@ public class SkuCustomerEx extends SkuCustomer {
 
     @ApiModelProperty("品牌名")
     private String brandName;
+
+    @ApiModelProperty(value = "最小分类名称")
+    private String className;
 }

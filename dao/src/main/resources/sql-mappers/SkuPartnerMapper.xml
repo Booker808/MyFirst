@@ -40,6 +40,7 @@
   <resultMap id="ExResultMap" type="com.csjscm.core.framework.model.SkuPartnerEx" extends="BaseResultMap">
     <result column="identifying_code" property="identifyingCode" jdbcType="VARCHAR" />
     <result column="min_uint" property="minUint" jdbcType="VARCHAR" />
+    <result column="class_name" property="className" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List">
     id, product_no, supply_no, supply_name, supply_rule, supply_size, brand_id, brand_name, 
@@ -90,9 +91,10 @@
   <select id="selectExByExample" parameterType="map" resultMap="ExResultMap">
     select
       <include refid="Partner_Column_List"/>,
-      sku.min_uint,upc.identifying_code
+      sku.min_uint,upc.identifying_code,ca.class_name
     from sku_partner p left join sku_core sku on p.product_no=sku.product_no
     left join sku_upc upc on upc.product_no=p.product_no
+    left join category ca on sku.category_no=ca.class_code
     <include refid="Example_Where_Clause"/>
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">

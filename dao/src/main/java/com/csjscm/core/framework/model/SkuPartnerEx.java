@@ -12,4 +12,7 @@ public class SkuPartnerEx extends SkuPartner {
 
     @ApiModelProperty("识别码")
     private String identifyingCode;
+
+    @ApiModelProperty(value = "最小分类名称")
+    private String className;
 }

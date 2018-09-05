@@ -58,6 +58,7 @@
     <result column="identifying_code" property="identifyingCode" jdbcType="VARCHAR" />
     <result column="customer_no" property="customerNo" jdbcType="VARCHAR" />
     <result column="supply_no" property="supplyNo" jdbcType="VARCHAR" />
+    <result column="class_name" property="className" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     product_no, std_product_no, product_name, product_price, category_id, category_no, 
@@ -265,11 +266,12 @@
   <select id="selectExByExample" parameterType="map" resultMap="ExResultMap">
     select
       <include refid="Sc_Column_List"/>,
-      upc.identifying_code,customer.customer_no,partner.supply_no
+      upc.identifying_code,customer.customer_no,partner.supply_no,ca.class_name
     from
       sku_core sc left join sku_upc upc on sc.product_no=upc.product_no
       left join sku_customer customer on sc.product_no=customer.product_no
       left join sku_partner partner on sc.product_no=partner.product_no
+      left join category ca on sc.category_no=ca.class_code
     <include refid="Example_Where_Clause"/>
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
