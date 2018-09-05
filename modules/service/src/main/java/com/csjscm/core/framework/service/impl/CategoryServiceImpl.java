@@ -52,7 +52,7 @@ public class CategoryServiceImpl implements CategoryService {
         }
         t.setCreateTime(new Date());
         if(t.getLevelNum().intValue()== CategoryLevelEnum.三级.getState().intValue()){
-            Long increase = redisServiceFacade.increase(new RedisDistributedCounterObject(Constant.REDIS_KEY_PRODUCT_NO+t.getClassCode()), 1);
+            Long increase = redisServiceFacade.increase(new RedisDistributedCounterObject(Constant.REDIS_KEY_PRODUCT_NO+t.getClassCode()), 0);
         }
        return categoryMapper.insertSelective(t);
     }

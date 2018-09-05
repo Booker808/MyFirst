@@ -259,7 +259,6 @@ public class SkuCoreServiceImpl implements SkuCoreService {
                     skuCore.setRule(rule);
                     skuCore.setSize(rule);
                     // 获取商品编码
-                    RedisTemplate redisTemplate = redisServiceFacade.getRedisTemplate();
                     Long increase = redisServiceFacade.increase(new RedisDistributedCounterObject(Constant.REDIS_KEY_PRODUCT_NO + skuCore.getCategoryNo()), 1);
                     String  increment =increase.toString();
                     String str="";

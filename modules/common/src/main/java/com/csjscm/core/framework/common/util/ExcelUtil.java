@@ -80,7 +80,7 @@ public class ExcelUtil {
     /** 
      * 默认打印各种信息 
      */  
-    private final static boolean PRINT_MSG = true;  
+    private final static boolean PRINT_MSG = false;
       
     //%%%%%%%%-------常量部分 结束----------%%%%%%%%%  
       
