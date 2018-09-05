@@ -63,7 +63,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public int update(Category t) {
         t.setEditTime(new Date());
-        return categoryMapper.update(t);
+        return categoryMapper.updateSelective(t);
     }
 
     @Override

@@ -44,6 +44,7 @@ public class SkuCoreController {
 
 
 
+
     @ApiOperation("导入商品excel")
     @RequestMapping(value = "importSkuCoreExcel",method = RequestMethod.POST)
     public APIResponse importExcel(@ApiParam(name = "file",value = "excel文件") @RequestParam(value="file") MultipartFile  file){
@@ -51,7 +52,7 @@ public class SkuCoreController {
         return  APIResponse.success(map);
     }
     @ApiOperation("下载失败数据模板")
-    @RequestMapping(value = "downloadFailSkuCore",method = RequestMethod.POST)
+    @RequestMapping(value = "downloadFailSkuCore")
     public void downloadFailSkuCore(@ApiParam(name = "jsonData",value = "失败的数据") @RequestParam(value="jsonData") String  jsonData, HttpServletRequest request, HttpServletResponse response)throws Exception{
         List<SkuCoreVo> list = new ArrayList<>();
         JSONArray jsonArray = JSON.parseArray(jsonData);
