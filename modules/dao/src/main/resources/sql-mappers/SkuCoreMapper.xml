@@ -265,14 +265,18 @@
   </select>
   <select id="selectExByExample" parameterType="map" resultMap="ExResultMap">
     select
-      <include refid="Sc_Column_List"/>,
-      upc.identifying_code,customer.customer_no,partner.supply_no,ca.class_name
+      <include refid="Sc_Column_List"/>
+    ,group_concat(upc.identifying_code)identifying_code
+    ,group_concat(customer.customer_no)customer_no
+    ,group_concat(partner.supply_no)supply_no
+    ,group_concat(ca.class_name)class_name
     from
       sku_core sc left join sku_upc upc on sc.product_no=upc.product_no
       left join sku_customer customer on sc.product_no=customer.product_no
       left join sku_partner partner on sc.product_no=partner.product_no
       left join category ca on sc.category_no=ca.class_code
     <include refid="Example_Where_Clause"/>
+    group by product_no
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from sku_core
