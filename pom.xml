@@ -9,13 +9,14 @@
     <packaging>pom</packaging>
     <version>1.0.0-SNAPSHOT</version>
     <modules>
-        <module>common</module>
-        <module>outerface</module>
-        <module>enterprice-center</module>
-        <module>product-center</module>
-        <module>service</module>
-        <module>demo</module>
-        <module>dao</module>
+        <module>modules/common</module>
+        <module>modules/outerface</module>
+        <module>modules/enterprice-center</module>
+        <module>modules/product-center</module>
+        <module>modules/service</module>
+        <module>modules/demo</module>
+        <module>modules/dao</module>
+        <module>root</module>
     </modules>
 
     <properties>
