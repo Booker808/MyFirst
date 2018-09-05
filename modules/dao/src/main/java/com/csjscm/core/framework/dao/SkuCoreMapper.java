@@ -48,5 +48,5 @@ public interface SkuCoreMapper {
      * @param query
      * @return
      */
-    SkuCore selectBySkuCoreList(Map<String, Object> query);
+    List<SkuCore> selectBySkuCoreList(Map<String, Object> query);
 }

@@ -386,9 +386,9 @@ public class SkuCoreServiceImpl implements SkuCoreService {
         query.put("productName",skuCore.getProductName());
         query.put("rule",skuCore.getProductName());
         query.put("size",skuCore.getProductName());
-        SkuCore skuCores = skuCoreMapper.selectBySkuCoreList(query);
-        /**校验productNo*/
-        if (skuCores.getProductName().equals(skuCore.getProductName()) && skuCores.getRule().equals(skuCore.getRule()) && skuCores.getSize().equals(skuCore.getSize())) {
+        List<SkuCore> skuCoreList = skuCoreMapper.selectBySkuCoreList(query);
+        /**校验productName,rule,rule*/
+        if (null != skuCoreList && !skuCoreList.isEmpty()) {
             return false;
         }
         skuCoreMapper.insertSelective(skuCore);

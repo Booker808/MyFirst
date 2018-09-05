@@ -249,6 +249,12 @@
       <if test="brandName != null and brandName != ''">
         and sc.brand_name = #{brandName,jdbcType=VARCHAR}
       </if>
+      <if test="rule != null and rule != ''">
+        and sc.rule = #{rule,jdbcType=VARCHAR}
+      </if>
+      <if test="size != null and size != ''">
+        and sc.size = #{size,jdbcType=VARCHAR}
+      </if>
     </where>
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
