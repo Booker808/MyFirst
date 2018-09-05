@@ -3,20 +3,18 @@ package com.csjscm.core.framework.service.impl;
 import com.csjscm.core.framework.common.constant.Constant;
 import com.csjscm.core.framework.common.enums.CategoryLevelEnum;
 import com.csjscm.core.framework.common.util.BussinessException;
+import com.csjscm.core.framework.dao.CategoryMapper;
+import com.csjscm.core.framework.model.Category;
+import com.csjscm.core.framework.service.CategoryService;
 import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
+import com.csjscm.sweet.framework.redis.RedisDistributedCounterObject;
 import com.csjscm.sweet.framework.redis.RedisServiceFacade;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-
-
-import com.csjscm.core.framework.dao.CategoryMapper;
-import com.csjscm.core.framework.model.Category;
-import com.csjscm.core.framework.service.CategoryService;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
@@ -54,8 +52,7 @@ public class CategoryServiceImpl implements CategoryService {
         }
         t.setCreateTime(new Date());
         if(t.getLevelNum().intValue()== CategoryLevelEnum.三级.getState().intValue()){
-            RedisTemplate redisTemplate = redisServiceFacade.getRedisTemplate();
-            redisTemplate.opsForValue().increment(Constant.REDIS_KEY_PRODUCT_NO+t.getClassCode(),1);
+            Long increase = redisServiceFacade.increase(new RedisDistributedCounterObject(Constant.REDIS_KEY_PRODUCT_NO+t.getClassCode()), 1);
         }
        return categoryMapper.insertSelective(t);
     }

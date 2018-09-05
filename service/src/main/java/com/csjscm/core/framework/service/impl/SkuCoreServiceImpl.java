@@ -16,6 +16,7 @@ import com.csjscm.core.framework.model.Category;
 import com.csjscm.core.framework.model.SkuCore;
 import com.csjscm.core.framework.service.SkuCoreService;
 import com.csjscm.core.framework.vo.SkuCoreVo;
+import com.csjscm.sweet.framework.redis.RedisDistributedCounterObject;
 import com.csjscm.sweet.framework.redis.RedisServiceFacade;
 import org.apache.commons.lang.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
@@ -259,7 +260,8 @@ public class SkuCoreServiceImpl implements SkuCoreService {
                     skuCore.setSize(rule);
                     // 获取商品编码
                     RedisTemplate redisTemplate = redisServiceFacade.getRedisTemplate();
-                    String  increment = redisTemplate.opsForValue().increment(Constant.REDIS_KEY_PRODUCT_NO + skuCore.getCategoryNo(), 1).toString();
+                    Long increase = redisServiceFacade.increase(new RedisDistributedCounterObject(Constant.REDIS_KEY_PRODUCT_NO + skuCore.getCategoryNo()), 1);
+                    String  increment =increase.toString();
                     String str="";
                     for(int j=0;j<5-increment.length();j++){
                         str+="0";

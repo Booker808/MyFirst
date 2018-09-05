@@ -41,9 +41,7 @@ public class ServletContextInitListener implements ServletContextListener {
         Map<String,Object> map=new HashMap<>();
         map.put("isvalid", InvUnitIsvalidEnum.有效.getState());
         List<InvUnit> invUnits = invUnitService.findListByMap(map);
-        RedisTemplate redisTemplate = redisServiceFacade.getRedisTemplate();
-        redisTemplate.delete(Constant.REDIS_KEY_UNIT);
-        redisTemplate.opsForList().rightPushAll(Constant.REDIS_KEY_UNIT,invUnits);
+        redisServiceFacade.set(Constant.REDIS_KEY_UNIT,invUnits);
 
         //商品编码—redis初始化
         List<SkuCore> coreList = skuCoreService.selectByProductNoList();
