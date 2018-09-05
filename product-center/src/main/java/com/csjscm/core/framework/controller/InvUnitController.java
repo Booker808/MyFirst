@@ -39,8 +39,7 @@ public class InvUnitController {
     @ApiOperation("查询可用的计量单位列表")
     @RequestMapping(value = "/list",method = RequestMethod.GET)
     public APIResponse queryList(){
-        RedisTemplate redisTemplate = redisServiceFacade.getRedisTemplate();
-        return APIResponse.success(redisTemplate.opsForList().range(Constant.REDIS_KEY_UNIT,0,-1));
+        return APIResponse.success(redisServiceFacade.get(Constant.REDIS_KEY_UNIT));
     }
 
     /**

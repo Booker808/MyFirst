@@ -1,6 +1,8 @@
 package com.csjscm.core.framework.configuation;
 
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.csjscm.core.framework.common.constant.Constant;
 import com.csjscm.core.framework.common.enums.InvUnitIsvalidEnum;
 import com.csjscm.core.framework.model.InvUnit;
@@ -41,7 +43,8 @@ public class ServletContextInitListener implements ServletContextListener {
         Map<String,Object> map=new HashMap<>();
         map.put("isvalid", InvUnitIsvalidEnum.有效.getState());
         List<InvUnit> invUnits = invUnitService.findListByMap(map);
-        redisServiceFacade.set(Constant.REDIS_KEY_UNIT,invUnits);
+        String s = JSON.toJSONString(invUnits);
+        redisServiceFacade.set(Constant.REDIS_KEY_UNIT,s);
 
         //商品编码—redis初始化
         List<SkuCore> coreList = skuCoreService.selectByProductNoList();
