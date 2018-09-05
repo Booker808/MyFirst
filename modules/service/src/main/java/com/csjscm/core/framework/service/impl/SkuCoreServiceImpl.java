@@ -382,9 +382,13 @@ public class SkuCoreServiceImpl implements SkuCoreService {
         }
         str += count;
         skuCore.setProductNo(skuCore.getCategoryNo() + str);
-        SkuCore skuCores = skuCoreMapper.selectByPrimaryKey(skuCore.getProductNo());
+        Map<String, Object> query = new HashMap<>();
+        query.put("productName",skuCore.getProductName());
+        query.put("rule",skuCore.getProductName());
+        query.put("size",skuCore.getProductName());
+        SkuCore skuCores = skuCoreMapper.selectBySkuCoreList(query);
         /**校验productNo*/
-        if (skuCores.getProductNo().equals(skuCore.getProductNo())) {
+        if (skuCores.getProductName().equals(skuCore.getProductName()) && skuCores.getRule().equals(skuCore.getRule()) && skuCores.getSize().equals(skuCore.getSize())) {
             return false;
         }
         skuCoreMapper.insertSelective(skuCore);

@@ -262,6 +262,11 @@
       <include refid="Sc_Column_List"/>
     from sku_core sc
     <include refid="Example_Where_Clause"/>
+  </select><select id="selectBySkuCoreList" parameterType="map" resultMap="BaseResultMap">
+    select
+      <include refid="Sc_Column_List"/>
+    from sku_core sc
+    <include refid="Example_Where_Clause"/>
   </select>
   <select id="selectExByExample" parameterType="map" resultMap="ExResultMap">
     select

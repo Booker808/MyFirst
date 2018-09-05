@@ -42,4 +42,11 @@ public interface SkuCoreMapper {
     List<SkuCoreEx> selectExByExample(SkuCoreExample example);
 
     List<SkuCore> selectByProductNoList();
+
+    /**
+     * 查询检验
+     * @param query
+     * @return
+     */
+    SkuCore selectBySkuCoreList(Map<String, Object> query);
 }
