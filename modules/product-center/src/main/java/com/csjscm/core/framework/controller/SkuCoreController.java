@@ -6,11 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.csjscm.core.framework.common.util.BussinessException;
 import com.csjscm.core.framework.common.util.ExportExcel;
 import com.csjscm.core.framework.model.SkuCore;
-import com.csjscm.core.framework.model.SkuUom;
-import com.csjscm.core.framework.model.SkuUpc;
 import com.csjscm.core.framework.service.SkuCoreService;
-import com.csjscm.core.framework.service.SkuUomService;
-import com.csjscm.core.framework.service.SkuUpcService;
 import com.csjscm.core.framework.vo.SkuCoreVo;
 import com.csjscm.sweet.framework.core.mvc.APIResponse;
 import io.swagger.annotations.Api;
@@ -37,12 +33,6 @@ public class SkuCoreController {
 
     @Autowired
     private SkuCoreService skuCoreService;
-    @Autowired
-    private SkuUomService skuUomService;
-    @Autowired
-    private SkuUpcService skuUpcService;
-
-
 
 
     @ApiOperation("导入商品excel")
@@ -95,31 +85,13 @@ public class SkuCoreController {
 
     /**
      * 创建商品
-     * @param jsonObject
+     * @param map
      * @return
      */
     @ApiOperation("创建商品对象")
     @RequestMapping(value = "/saveProduct", method = RequestMethod.POST)
-    public APIResponse createProduct(@ApiParam(name="jsonObject",value="商品对象",required=true) @RequestBody JSONObject jsonObject){
-        String skuCore = jsonObject.toJSONString();
-        String skuUom = jsonObject.getString("skuUom");
-        String skuUpc = jsonObject.getString("skuUpc");
-        SkuCore skuCores = JSON.parseObject(skuCore, SkuCore.class);
-        skuCoreService.insertSelective(skuCores);
-        if (null != skuUom){
-            JSONArray skuUomArray = JSONArray.parseArray(skuUom);
-            for (Object object : skuUomArray) {
-                SkuUom skuUoms = JSONObject.parseObject(object.toString(), SkuUom.class);
-                skuUomService.insertSelective(skuUoms);
-            }
-        }
-        if (null != skuUpc){
-            JSONArray skuUpcArray = JSONArray.parseArray(skuUpc);
-            for (Object object : skuUpcArray) {
-                SkuUpc skuUpcs = JSONObject.parseObject(object.toString(), SkuUpc.class);
-                skuUpcService.insertSelective(skuUpcs);
-            }
-        }
+    public APIResponse createProduct(@ApiParam(name="map",value="商品对象",required=true) @RequestBody Map<String, Object> map){
+        skuCoreService.insertSelective(map);
         return APIResponse.success();
     }
 

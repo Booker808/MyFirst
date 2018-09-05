@@ -38,7 +38,7 @@ public interface SkuCoreService {
 
     /**
      * 创建商品对象
-     * @param skuCore
+     * @param map
      */
-    void insertSelective(SkuCore skuCore);
+    void insertSelective(Map<String, Object> map);
 }

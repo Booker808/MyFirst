@@ -8,12 +8,8 @@ import com.csjscm.core.framework.common.enums.CategoryLevelEnum;
 import com.csjscm.core.framework.common.enums.SkuCoreChannelEnum;
 import com.csjscm.core.framework.common.util.BussinessException;
 import com.csjscm.core.framework.common.util.ExcelUtil;
-import com.csjscm.core.framework.dao.BrandMasterMapper;
-import com.csjscm.core.framework.dao.CategoryMapper;
-import com.csjscm.core.framework.dao.SkuCoreMapper;
-import com.csjscm.core.framework.model.BrandMaster;
-import com.csjscm.core.framework.model.Category;
-import com.csjscm.core.framework.model.SkuCore;
+import com.csjscm.core.framework.dao.*;
+import com.csjscm.core.framework.model.*;
 import com.csjscm.core.framework.service.SkuCoreService;
 import com.csjscm.core.framework.vo.SkuCoreVo;
 import com.csjscm.sweet.framework.redis.RedisDistributedCounterObject;
@@ -54,6 +50,10 @@ public class SkuCoreServiceImpl implements SkuCoreService {
     private BrandMasterMapper brandMasterMapper;
     @Autowired
     private RedisServiceFacade redisServiceFacade;
+    @Autowired
+    private SkuUomMapper skuUomMapper;
+    @Autowired
+    private SkuUpcMapper skuUpcMapper;
 
 
 
@@ -371,16 +371,37 @@ public class SkuCoreServiceImpl implements SkuCoreService {
     }
 
     @Override
-    public void insertSelective(SkuCore skuCore) {
-        // 获取商品编码
-        RedisTemplate redisTemplate = redisServiceFacade.getRedisTemplate();
-        String  increment = redisTemplate.opsForValue().increment(Constant.REDIS_KEY_PRODUCT_NO + skuCore.getCategoryNo(), 1).toString();
-        String str="";
-        for(int j=0;j<5-increment.length();j++){
-            str+="0";
+    @Transactional(rollbackFor=Exception.class)
+    public void insertSelective(Map<String, Object> map) {
+        JSONObject jsonObject = new JSONObject(map);
+        String skuCores = jsonObject.toJSONString();
+        SkuCore skuCore = JSON.parseObject(skuCores, SkuCore.class);
+        /**Redis获取商品编码*/
+        String  count = String.valueOf(redisServiceFacade.increase(new RedisDistributedCounterObject("category_" + skuCore.getCategoryNo())));
+        String str = "";
+        for(int j = 0; j < 5 - count.length(); j++){
+            str += "0";
         }
-        str+=increment;
-        skuCore.setProductNo(skuCore.getCategoryNo()+str);
+        str += count;
+        skuCore.setProductNo(skuCore.getCategoryNo() + str);
         skuCoreMapper.insertSelective(skuCore);
+        JSONArray jsonArray = new JSONArray(jsonObject.getJSONArray("skuUom"));
+        if (null != jsonArray) {
+            for (int i = 0; i < jsonArray.size(); i++) {
+                JSONObject object = jsonArray.getJSONObject(i);
+                String jsonString = object.toJSONString();
+                SkuUom skuUom = JSONObject.parseObject(jsonString, SkuUom.class);
+                skuUomMapper.insertSelective(skuUom);
+            }
+        }
+        jsonArray = new JSONArray(jsonObject.getJSONArray("skuUpc"));
+        if (null != jsonArray) {
+            for (int i = 0; i < jsonArray.size(); i++) {
+                JSONObject object = jsonArray.getJSONObject(i);
+                String jsonString = object.toJSONString();
+                SkuUpc skuUpc = JSONObject.parseObject(jsonString, SkuUpc.class);
+                skuUpcMapper.insertSelective(skuUpc);
+            }
+        }
     }
 }
