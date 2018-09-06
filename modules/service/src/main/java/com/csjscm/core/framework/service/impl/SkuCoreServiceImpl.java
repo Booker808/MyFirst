@@ -374,6 +374,17 @@ public class SkuCoreServiceImpl implements SkuCoreService {
     public boolean insertSelective(Map<String, Object> map) {
         JSONObject jsonObject = new JSONObject(map);
         SkuCore skuCore = JSON.parseObject(jsonObject.toJSONString(), SkuCore.class);
+        Map<String, Object> query = new HashMap<>();
+        query.put("productName",skuCore.getProductName());
+        query.put("rule",skuCore.getProductName());
+        query.put("size",skuCore.getProductName());
+        query.put("brandName",skuCore.getProductName());
+        query.put("minUint",skuCore.getProductName());
+        List<SkuCore> skuCoreList = skuCoreMapper.selectBySkuCoreList(query);
+        /**校验productName,rule,rule*/
+        if (null != skuCoreList && !skuCoreList.isEmpty()) {
+            return false;
+        }
         /**Redis获取商品编码*/
         String  count = String.valueOf(redisServiceFacade.increase(new RedisDistributedCounterObject("category_" + skuCore.getCategoryNo())));
         String str = "";
@@ -382,15 +393,6 @@ public class SkuCoreServiceImpl implements SkuCoreService {
         }
         str += count;
         skuCore.setProductNo(skuCore.getCategoryNo() + str);
-        Map<String, Object> query = new HashMap<>();
-        query.put("productName",skuCore.getProductName());
-        query.put("rule",skuCore.getProductName());
-        query.put("size",skuCore.getProductName());
-        List<SkuCore> skuCoreList = skuCoreMapper.selectBySkuCoreList(query);
-        /**校验productName,rule,rule*/
-        if (null != skuCoreList && !skuCoreList.isEmpty()) {
-            return false;
-        }
         skuCoreMapper.insertSelective(skuCore);
         JSONArray jsonArray = new JSONArray(jsonObject.getJSONArray("skuUom"));
         if (null != jsonArray) {

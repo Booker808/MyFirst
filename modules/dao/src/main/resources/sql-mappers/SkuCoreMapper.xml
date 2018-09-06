@@ -255,6 +255,9 @@
       <if test="size != null and size != ''">
         and sc.size = #{size,jdbcType=VARCHAR}
       </if>
+      <if test="minUint != null and minUint != ''">
+        and sc.min_uint = #{minUint,jdbcType=VARCHAR}
+      </if>
     </where>
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
