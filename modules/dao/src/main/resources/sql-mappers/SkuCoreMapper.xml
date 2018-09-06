@@ -134,13 +134,13 @@
       <if test="createUserId != null and createUserId != '' ">
         and create_user_id = #{createUserId,jdbcType=VARCHAR}
       </if>
-      <if test="createTime != null and createTime != '' ">
+      <if test="createTime != null  ">
         and create_time = #{createTime,jdbcType=TIMESTAMP}
       </if>
       <if test="editUserId != null and editUserId != '' ">
         and edit_user_id = #{editUserId,jdbcType=VARCHAR}
       </if>
-      <if test="editTime != null and editTime != '' ">
+      <if test="editTime != null  ">
         and edit_time = #{editTime,jdbcType=TIMESTAMP}
       </if>
       <if test="udf1 != null and udf1 != '' ">

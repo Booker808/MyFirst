@@ -41,6 +41,10 @@ public interface CategoryMapper{
       *
       */
      int findCount(Map<String, Object> map);
-
+    /**
+     * 编辑udf
+     * @param map
+     */
+    void updateUdf(Map<String,Object> map);
 
 }

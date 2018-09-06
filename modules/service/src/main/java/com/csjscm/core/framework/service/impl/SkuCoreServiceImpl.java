@@ -15,6 +15,7 @@ import com.csjscm.core.framework.vo.SkuCoreVo;
 import com.csjscm.sweet.framework.redis.RedisDistributedCounterObject;
 import com.csjscm.sweet.framework.redis.RedisServiceFacade;
 import org.apache.commons.lang.StringUtils;
+import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.slf4j.Logger;
@@ -108,22 +109,14 @@ public class SkuCoreServiceImpl implements SkuCoreService {
                     continue;
                 }
                 //获取普通字段
-                String productNo = "";
-                String productName = "";
-                String brandName = "";
-                String minUint = "";
-                String rule = "";
-                String ean13Code = "";
-                String mnemonicCode = "";
-                String categoryNo = "";
-                categoryNo = getCellValue(row.getCell(0)).trim();
-                productNo = getCellValue(row.getCell(1));
-                productName = getCellValue(row.getCell(2)).trim();
-                brandName = getCellValue(row.getCell(3)).trim();
-                rule = getCellValue(row.getCell(4)).trim();
-                minUint = getCellValue(row.getCell(5)).trim();
-                mnemonicCode = getCellValue(row.getCell(6)).trim();
-                ean13Code = getCellValue(row.getCell(7)).trim();
+                String  categoryNo = getCellValue(row.getCell(0)).trim();
+                String  productNo = getCellValue(row.getCell(1));
+                String  productName = getCellValue(row.getCell(2)).trim();
+                String  brandName = getCellValue(row.getCell(3)).trim();
+                String rule = getCellValue(row.getCell(4)).trim();
+                String minUint = getCellValue(row.getCell(5)).trim();
+                String mnemonicCode = getCellValue(row.getCell(6)).trim();
+                String  ean13Code = getCellValue(row.getCell(7)).trim();
                 //suf
                 Map<String, String> sufMap = new HashMap<>();
                 // 获取suf
@@ -132,6 +125,10 @@ public class SkuCoreServiceImpl implements SkuCoreService {
                     index++;
                     String sufKey = "suf" + index;
                     String sufVaule = getCellValue(row.getCell(j));
+                    if(StringUtils.isNotBlank(sufVaule)){
+                        row.getCell(j).setCellType(HSSFCell.CELL_TYPE_STRING);
+                        sufVaule = getCellValue(row.getCell(j));
+                    }
                     if (sufVaule.length() > 256) {
                         failMsg = "字段长度不能大于256";
                         failCell = j + 1;
@@ -169,6 +166,9 @@ public class SkuCoreServiceImpl implements SkuCoreService {
                     failList.add(getFailMsg(failRow, failCell, failMsg));
                     failMsgStr+=getFailMsg(failRow, failCell, failMsg);
                     issuccess=false;
+                }else {
+                    row.getCell(0).setCellType(HSSFCell.CELL_TYPE_STRING);
+                    categoryNo = getCellValue(row.getCell(0));
                 }
                 Map<String, Object> categoryNomap = new HashMap<>();
                 categoryNomap.put("levelNum", CategoryLevelEnum.三级.getState());
@@ -188,6 +188,9 @@ public class SkuCoreServiceImpl implements SkuCoreService {
                     failList.add(getFailMsg(failRow, failCell, failMsg));
                     failMsgStr+=getFailMsg(failRow, failCell, failMsg);
                     issuccess=false;
+                }else {
+                    row.getCell(2).setCellType(HSSFCell.CELL_TYPE_STRING);
+                    productName = getCellValue(row.getCell(2));
                 }
 
                 //校验品牌
@@ -197,6 +200,9 @@ public class SkuCoreServiceImpl implements SkuCoreService {
                     failList.add(getFailMsg(failRow, failCell, failMsg));
                     failMsgStr+=getFailMsg(failRow, failCell, failMsg);
                     issuccess=false;
+                }else {
+                    row.getCell(3).setCellType(HSSFCell.CELL_TYPE_STRING);
+                    brandName = getCellValue(row.getCell(3));
                 }
                 Map<String, Object> brandNamemap = new HashMap<>();
                 brandNamemap.put("brandName", brandName);
@@ -215,9 +221,16 @@ public class SkuCoreServiceImpl implements SkuCoreService {
                     failList.add(getFailMsg(failRow, failCell, failMsg));
                     failMsgStr+=getFailMsg(failRow, failCell, failMsg);
                     issuccess=false;
+                }else {
+                    row.getCell(4).setCellType(HSSFCell.CELL_TYPE_STRING);
+                    rule = getCellValue(row.getCell(4));
+                    row.getCell(5).setCellType(HSSFCell.CELL_TYPE_STRING);
+                    minUint = getCellValue(row.getCell(5));
                 }
                 //校验69码（EAN13码）助记码
                 if(StringUtils.isNotBlank(mnemonicCode)){
+                    row.getCell(6).setCellType(HSSFCell.CELL_TYPE_STRING);
+                    mnemonicCode = getCellValue(row.getCell(6));
                     if(mnemonicCode.length()>255){
                         failMsg = "助记码段长度超过255";
                         failCell = 6;
@@ -227,6 +240,8 @@ public class SkuCoreServiceImpl implements SkuCoreService {
                     }
                 }
                 if(StringUtils.isNotBlank(ean13Code)){
+                    row.getCell(7).setCellType(HSSFCell.CELL_TYPE_STRING);
+                    ean13Code = getCellValue(row.getCell(7));
                     if(ean13Code.length()>255){
                         failMsg = "69码（EAN13码）段长度超过255";
                         failCell = 7;

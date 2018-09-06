@@ -52,5 +52,16 @@ public interface CategoryService {
      */
     void deleteByIds(String ids);
 
+    /**
+     * 更新状态
+     * @param ids
+     * @param state
+     */
     void updateState(List<Integer> ids , Integer state);
+
+    /**
+     * 编辑udf
+     * @param map
+     */
+    void updateUdf(Map<String,Object> map);
 }

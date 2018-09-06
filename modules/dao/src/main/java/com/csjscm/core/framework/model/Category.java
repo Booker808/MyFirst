@@ -39,7 +39,6 @@ import java.util.Date;
     /**
     * 分类简写
     */
-    @NotBlank(message = "分类简写不能为空")
     private String simpleName;
 
     /**

@@ -81,7 +81,8 @@ public class CategoryServiceImpl implements CategoryService {
             }
         }
         t.setEditTime(new Date());
-        return categoryMapper.updateSelective(t);
+        int i = categoryMapper.updateSelective(t);
+        return i;
     }
 
     @Override
@@ -115,6 +116,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Transactional
     public void deleteByIds(String ids) {
         String[] strings=ids.split(",");
+        StringBuffer stringBuffer=new StringBuffer();
         for(String strId:strings){
             Map<String,Object> map= new HashMap<>();
             map.put("parentClass",strId);
@@ -132,9 +134,16 @@ public class CategoryServiceImpl implements CategoryService {
                     }else {
                         categoryMapper.deleteByPrimaryKey(Integer.parseInt(strId));
                     }
+                    stringBuffer.append(Constant.REDIS_KEY_PRODUCT_NO).append(primary.getClassCode()).append(",");
                 }
             }
         }
+        String s = stringBuffer.toString();
+        String[] split = s.substring(0, s.length() - 1).split(",");
+        if(split.length>0){
+            redisServiceFacade.delete(split);
+        }
+
     }
 
     @Override
@@ -155,6 +164,11 @@ public class CategoryServiceImpl implements CategoryService {
         if(nextIds.size()>0){
             updateState(nextIds,state);
         }
+    }
+
+    @Override
+    public void updateUdf(Map<String, Object> map) {
+        categoryMapper.updateUdf(map);
     }
 
 }

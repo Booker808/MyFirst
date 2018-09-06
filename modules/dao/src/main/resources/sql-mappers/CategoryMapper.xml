@@ -62,13 +62,13 @@
             <if test="createUserId != null and createUserId != '' ">
                 and create_user_id = #{createUserId,jdbcType=VARCHAR}
             </if>
-            <if test="createTime != null and createTime != '' ">
+            <if test="createTime != null ">
                 and create_time = #{createTime,jdbcType=TIMESTAMP}
             </if>
             <if test="editUserId != null and editUserId != '' ">
                 and edit_user_id = #{editUserId,jdbcType=VARCHAR}
             </if>
-            <if test="editTime != null and editTime != '' ">
+            <if test="editTime != null">
                 and edit_time = #{editTime,jdbcType=TIMESTAMP}
             </if>
             <if test="udf1 != null and udf1 != '' ">
@@ -104,10 +104,10 @@
             <if test="requestId != null and requestId != '' ">
                 and request_id = #{requestId,jdbcType=VARCHAR}
             </if>
-            <if test=" sort != null and sort != '' ">
+            <if test=" sort != null ">
                 and  sort  = #{sort,jdbcType=INTEGER}
             </if>
-            <if test=" state != null and state != '' ">
+            <if test=" state != null ">
                 and  state  = #{state,jdbcType=INTEGER}
             </if>
         </trim>
@@ -322,13 +322,13 @@
             <if test="createUserId != null and createUserId != '' ">        
                 create_user_id = #{createUserId,jdbcType=VARCHAR},                
             </if>
-            <if test="createTime != null and createTime != '' ">        
+            <if test="createTime != null  ">
                 create_time = #{createTime,jdbcType=TIMESTAMP},                
             </if>
             <if test="editUserId != null and editUserId != '' ">        
                 edit_user_id = #{editUserId,jdbcType=VARCHAR},                
             </if>
-            <if test="editTime != null and editTime != '' ">        
+            <if test="editTime != null ">
                 edit_time = #{editTime,jdbcType=TIMESTAMP},                
             </if>
             <if test="udf1 != null and udf1 != '' ">        
@@ -364,17 +364,17 @@
             <if test="requestId != null and requestId != '' ">        
                 request_id = #{requestId,jdbcType=VARCHAR},
             </if>
-            <if test="sort != null and sort != '' ">
+            <if test="sort != null  ">
                 sort = #{sort,jdbcType=INTEGER},
             </if>
-            <if test="state != null and state != '' ">
+            <if test="state != null ">
                 state = #{state,jdbcType=INTEGER}
             </if>
         </set>
         where id = #{id ,jdbcType=INTEGER}
     </update>
 
-   <delete id="deleteById" parameterType="java.lang.Integer">
+   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
        delete  from category where id=#{id}
    </delete>
     <select id="findByPrimary" resultMap="BaseResultMap" parameterType="java.lang.Integer">
@@ -402,5 +402,14 @@
         from category
         <include refid="searchBy"/>
     </select>
-
+  <update id="updateUdf" parameterType="java.util.HashMap">
+      update  category set ${udf} =
+      <if test="type== '1'.toString()">
+          #{udfValue}
+      </if>
+      <if test="type== '2'.toString()">
+        null
+      </if>
+      where id=#{id}
+  </update>
 </mapper>

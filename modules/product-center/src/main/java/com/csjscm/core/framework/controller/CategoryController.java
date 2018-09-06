@@ -99,7 +99,7 @@ public class CategoryController{
      */
     @ApiOperation("删除分类接口")
     @RequestMapping(value = "deleteCategory",method = RequestMethod.POST)
-    public APIResponse deleteCategoryList(@ApiParam(name="ids",value="要删除的id，多个以逗号隔开",required=true) String ids){
+    public APIResponse deleteCategoryList(@ApiParam(name="ids",value="要删除的id，多个以逗号隔开",required=true) @RequestParam(value = "ids") String ids){
         categoryService.deleteByIds(ids);
         return APIResponse.success();
     }
@@ -111,13 +111,25 @@ public class CategoryController{
      */
     @ApiOperation("启用停用分类接口")
     @RequestMapping(value = "updateState",method = RequestMethod.POST)
-    public APIResponse updateState(@ApiParam(name="ids",value="要停用启用的id，多个以逗号隔开",required=true) String ids,@ApiParam(name="state",value="1启用 0停用",required=true) Integer state){
+    public APIResponse updateState(@ApiParam(name="ids",value="要停用启用的id，多个以逗号隔开",required=true) @RequestParam(value = "ids")  String ids,@ApiParam(name="state",value="1启用 0停用",required=true) @RequestParam(value = "state")  Integer state){
         List<Integer> idList=new ArrayList<>();
         String[] strings=ids.split(",");
         for (String s : strings) {
             idList.add(Integer.parseInt(s));
         }
         categoryService.updateState(idList,state);
+        return APIResponse.success();
+    }
+    @ApiOperation("编辑修改删除ufd")
+    @RequestMapping(value = "editUdf",method = RequestMethod.POST)
+    public APIResponse editUdf(@ApiParam(name="id",value="主键id",required=true)@RequestParam(value = "id") String id,@ApiParam(name="udf",value="要操作的udf名称",required=true)@RequestParam(value = "udf") String udf,
+                               @ApiParam(name="type",value="操作类型 ：1新增修改，2删除",required=true)@RequestParam(value = "type") String type,@ApiParam(name="udfValue",value="udf的值,type=2时传空字符",required=false)@RequestParam(value = "udfValue",required = false) String udfValue){
+        Map<String,Object> map=new HashMap<>();
+        map.put("id",id);
+        map.put("udf",udf);
+        map.put("type",type);
+        map.put("udfValue",udfValue);
+        categoryService.updateUdf(map);
         return APIResponse.success();
     }
 
