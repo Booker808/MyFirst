@@ -374,46 +374,10 @@ public class SkuCoreServiceImpl implements SkuCoreService {
 
     @Override
     @Transactional(rollbackFor=Exception.class)
-    public Map<String, Object> insertSelective(Map<String, Object> map) {
+    public void insertSelective(Map<String, Object> map) {
         JSONObject jsonObject = new JSONObject(map);
         SkuCore skuCore = JSON.parseObject(jsonObject.toJSONString(), SkuCore.class);
-        /**校验productName,brandName,rule,size,minUint,categoryNo*/
-        List<String> listMsg = new ArrayList<>();
-        String message = "";
-        Map<String, Object> response = new HashMap<>();
-        if (StringUtils.isBlank(skuCore.getProductName())) {
-            message = "商品名称为空";
-            listMsg.add(message);
-        }
-        if (StringUtils.isBlank(skuCore.getCategoryNo())) {
-            message = "分类编码为空";
-            listMsg.add(message);
-        }
-        if (StringUtils.isBlank(skuCore.getBrandName())) {
-            message = "品牌名称为空";
-            listMsg.add(message);
-        }
-        if (null == skuCore.getBrandId()) {
-            message = "品牌ID为空";
-            listMsg.add(message);
-        }
-        if (StringUtils.isBlank(skuCore.getRule())) {
-            message = "规格为空";
-            listMsg.add(message);
-        }
-        if (StringUtils.isBlank(skuCore.getSize())) {
-            message = "型号为空";
-            listMsg.add(message);
-        }
-        if (StringUtils.isBlank(skuCore.getMinUint())) {
-            message = "最小库存单位为空";
-            listMsg.add(message);
-        }
-        if (null != listMsg && !listMsg.isEmpty()) {
-            response.put("code", "fail");
-            response.put("message",listMsg);
-            return response;
-        }
+        /**校验商品名称,规格,型号,品牌,单位*/
         Map<String, Object> query = new HashMap<>();
         query.put("productName",skuCore.getProductName());
         query.put("rule",skuCore.getRule());
@@ -422,9 +386,7 @@ public class SkuCoreServiceImpl implements SkuCoreService {
         query.put("minUint",skuCore.getMinUint());
         List<SkuCore> skuCoreList = skuCoreMapper.listSelective(query);
         if (null != skuCoreList && !skuCoreList.isEmpty()) {
-            response.put("code", "fail");
-            response.put("message", "商品已存在");
-            return response;
+            throw  new BussinessException("商品已存在");
         }
         /**Redis获取商品编码*/
         String  count = String.valueOf(redisServiceFacade.increase(new RedisDistributedCounterObject("category_" + skuCore.getCategoryNo())));
@@ -451,7 +413,5 @@ public class SkuCoreServiceImpl implements SkuCoreService {
                 skuUpcMapper.insertSelective(skuUpc);
             }
         }
-        response.put("code", "success");
-        return response;
     }
 }
