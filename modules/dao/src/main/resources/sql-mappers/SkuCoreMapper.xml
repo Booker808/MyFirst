@@ -249,15 +249,6 @@
       <if test="brandName != null and brandName != ''">
         and sc.brand_name = #{brandName,jdbcType=VARCHAR}
       </if>
-      <if test="rule != null and rule != ''">
-        and sc.rule = #{rule,jdbcType=VARCHAR}
-      </if>
-      <if test="size != null and size != ''">
-        and sc.size = #{size,jdbcType=VARCHAR}
-      </if>
-      <if test="minUint != null and minUint != ''">
-        and sc.min_uint = #{minUint,jdbcType=VARCHAR}
-      </if>
     </where>
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
@@ -273,9 +264,9 @@
     <include refid="Example_Where_Clause"/>
   </select><select id="selectBySkuCoreList" parameterType="map" resultMap="BaseResultMap">
     select
-      <include refid="Sc_Column_List"/>
-    from sku_core sc
-    <include refid="Example_Where_Clause"/>
+      <include refid="Base_Column_List"/>
+    from sku_core
+    <include refid="searchBy"/>
   </select>
   <select id="selectExByExample" parameterType="map" resultMap="ExResultMap">
     select
