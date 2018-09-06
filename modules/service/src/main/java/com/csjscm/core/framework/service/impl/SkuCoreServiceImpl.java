@@ -378,32 +378,32 @@ public class SkuCoreServiceImpl implements SkuCoreService {
         List<String> listMsg = new ArrayList<>();
         String message = "";
         Map<String, Object> response = new HashMap<>();
-        if (StringUtils.isBlank(skuCore.getProductName()) || skuCore.getProductName().length() > 255) {
-            message = "商品名称为空或超出长度";
+        if (StringUtils.isBlank(skuCore.getProductName())) {
+            message = "商品名称为空";
             listMsg.add(message);
         }
-        if (StringUtils.isBlank(skuCore.getCategoryNo()) || skuCore.getCategoryNo().length() > 255) {
-            message = "分类编码为空或超出长度";
+        if (StringUtils.isBlank(skuCore.getCategoryNo())) {
+            message = "分类编码为空";
             listMsg.add(message);
         }
-        if (StringUtils.isBlank(skuCore.getBrandName()) || skuCore.getBrandName().length() > 255) {
-            message = "品牌名称为空或超出长度";
+        if (StringUtils.isBlank(skuCore.getBrandName())) {
+            message = "品牌名称为空";
             listMsg.add(message);
         }
         if (null == skuCore.getBrandId()) {
             message = "品牌ID为空";
             listMsg.add(message);
         }
-        if (StringUtils.isBlank(skuCore.getRule()) || skuCore.getRule().length() > 255) {
-            message = "规格为空或超出长度";
+        if (StringUtils.isBlank(skuCore.getRule())) {
+            message = "规格为空";
             listMsg.add(message);
         }
-        if (StringUtils.isBlank(skuCore.getSize()) || skuCore.getSize().length() > 255) {
-            message = "型号为空或超出长度";
+        if (StringUtils.isBlank(skuCore.getSize())) {
+            message = "型号为空";
             listMsg.add(message);
         }
-        if (StringUtils.isBlank(skuCore.getMinUint()) || skuCore.getMinUint().length() > 255) {
-            message = "最小库存单位为空或超出长度";
+        if (StringUtils.isBlank(skuCore.getMinUint())) {
+            message = "最小库存单位为空";
             listMsg.add(message);
         }
         if (null != listMsg && !listMsg.isEmpty()) {
@@ -413,7 +413,7 @@ public class SkuCoreServiceImpl implements SkuCoreService {
         Map<String, Object> query = new HashMap<>();
         query.put("productName",skuCore.getProductName());
         query.put("rule",skuCore.getRule());
-        query.put("size",skuCore.getSize());
+        query.put("sizes",skuCore.getSize());
         query.put("brandName",skuCore.getBrandName());
         query.put("minUint",skuCore.getMinUint());
         List<SkuCore> skuCoreList = skuCoreMapper.listSelective(query);

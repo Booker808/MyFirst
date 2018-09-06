@@ -128,8 +128,8 @@
       <if test="rule != null and rule != '' ">
         and rule = #{rule,jdbcType=VARCHAR}
       </if>
-      <if test="size != null and size != '' ">
-        and size = #{size,jdbcType=VARCHAR}
+      <if test="sizes != null and sizes != '' ">
+        and `size` = #{sizes}
       </if>
       <if test="createUserId != null and createUserId != '' ">
         and create_user_id = #{createUserId,jdbcType=VARCHAR}
@@ -262,6 +262,11 @@
       <include refid="Sc_Column_List"/>
     from sku_core sc
     <include refid="Example_Where_Clause"/>
+  </select><select id="selectBySkuCoreList" parameterType="map" resultMap="BaseResultMap">
+    select
+      <include refid="Base_Column_List"/>
+    from sku_core
+    <include refid="searchBy"/>
   </select>
   <select id="selectExByExample" parameterType="map" resultMap="ExResultMap">
     select

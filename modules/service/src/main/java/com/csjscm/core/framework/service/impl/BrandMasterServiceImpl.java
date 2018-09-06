@@ -73,7 +73,7 @@ public class BrandMasterServiceImpl implements BrandMasterService {
         List<BrandMaster> list = brandMasterMapper.selectByBrand(map);
         if (null != list && !list.isEmpty()) {
             map.clear();
-            map.put("false", "品牌已存在");
+            map.put("message", "品牌已存在");
             return map;
         }
         brandMasterMapper.insertSelective(record);
