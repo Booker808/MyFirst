@@ -410,6 +410,7 @@ public class SkuCoreServiceImpl implements SkuCoreService {
             listMsg.add(message);
         }
         if (null != listMsg && !listMsg.isEmpty()) {
+            response.put("code", "fail");
             response.put("message",listMsg);
             return response;
         }
@@ -421,6 +422,7 @@ public class SkuCoreServiceImpl implements SkuCoreService {
         query.put("minUint",skuCore.getMinUint());
         List<SkuCore> skuCoreList = skuCoreMapper.listSelective(query);
         if (null != skuCoreList && !skuCoreList.isEmpty()) {
+            response.put("code", "fail");
             response.put("message", "商品已存在");
             return response;
         }
@@ -449,6 +451,7 @@ public class SkuCoreServiceImpl implements SkuCoreService {
                 skuUpcMapper.insertSelective(skuUpc);
             }
         }
-        return null;
+        response.put("code", "success");
+        return response;
     }
 }

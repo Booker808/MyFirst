@@ -44,14 +44,14 @@ public interface BrandMasterService {
      * @param record
      * @return
      */
-    Map<String, Object> insertSelective(BrandMaster record);
+    int insertSelective(BrandMaster record);
 
     /**
      * 更新指定品牌
      * @param record
      * @return
      */
-    Map<String, Object> updateByPrimaryKeySelective(BrandMaster record);
+    int updateByPrimaryKeySelective(BrandMaster record);
 
     /**
      * 删除指定品牌列表
