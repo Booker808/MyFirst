@@ -402,7 +402,11 @@ public class SkuCoreServiceImpl implements SkuCoreService {
             for (int i = 0; i < jsonArray.size(); i++) {
                 JSONObject object = jsonArray.getJSONObject(i);
                 SkuUom skuUom = JSONObject.parseObject(object.toJSONString(), SkuUom.class);
-                skuUomMapper.insertSelective(skuUom);
+                try {
+                    skuUomMapper.insertSelective(skuUom);
+                } catch (Exception e) {
+                    throw  new BussinessException("包装规格为空");
+                }
             }
         }
         jsonArray = new JSONArray(jsonObject.getJSONArray("skuUpc"));
@@ -410,7 +414,11 @@ public class SkuCoreServiceImpl implements SkuCoreService {
             for (int i = 0; i < jsonArray.size(); i++) {
                 JSONObject object = jsonArray.getJSONObject(i);
                 SkuUpc skuUpc = JSONObject.parseObject(object.toJSONString(), SkuUpc.class);
-                skuUpcMapper.insertSelective(skuUpc);
+                try {
+                    skuUpcMapper.insertSelective(skuUpc);
+                } catch (Exception e) {
+                    throw  new BussinessException("商品识别码为空");
+                }
             }
         }
     }
