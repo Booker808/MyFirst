@@ -65,8 +65,8 @@ public class BrandMasterServiceImpl implements BrandMasterService {
     @Override
     public Map<String, Object> insertSelective(BrandMaster record) {
         Map<String, Object> map = new HashMap<>();
-        if (StringUtils.isBlank(record.getBrandName()) || record.getBrandName().length() > 255){
-            map.put("message", "品牌名称为空或超出长度");
+        if (StringUtils.isBlank(record.getBrandName())){
+            map.put("message", "品牌名称为空");
             return map;
         }
         map.put("brandName", record.getBrandName());
@@ -89,12 +89,19 @@ public class BrandMasterServiceImpl implements BrandMasterService {
             message = "品牌ID为空";
             listMsg.add(message);
         }
-        if (StringUtils.isBlank(record.getBrandName()) || record.getBrandName().length() > 255){
-            message = "品牌名称为空或超出长度";
+        if (StringUtils.isBlank(record.getBrandName())){
+            message = "品牌名称为空";
             listMsg.add(message);
         }
         if (null != listMsg && !listMsg.isEmpty()){
             response.put("message", listMsg);
+            return response;
+        }
+        response.put("brandName", record.getBrandName());
+        List<BrandMaster> brandMasterList = brandMasterMapper.selectByBrand(response);
+        if (null != brandMasterList && !brandMasterList.isEmpty()){
+            response.clear();
+            response.put("message", "修改品牌已存在");
             return response;
         }
         brandMasterMapper.updateByPrimaryKeySelective(record);
