@@ -92,8 +92,8 @@ public class BrandController {
     @ApiOperation("创建品牌对象")
     @RequestMapping(value = "/brandObject",method = RequestMethod.POST)
     public APIResponse createBrand(@Valid BrandMaster brand){
-        brandMasterService.insertSelective(brand);
-        return APIResponse.success();
+        Map<String, Object> response = brandMasterService.insertSelective(brand);
+        return APIResponse.success(response);
     }
 
     /**
@@ -105,10 +105,8 @@ public class BrandController {
     @ApiOperation("更新指定品牌")
     @RequestMapping(value = "/brandUpdate/{id}",method = RequestMethod.PUT)
     public APIResponse updateBrand(@RequestBody BrandMaster brand){
-        if (null != brand.getId()) {
-            brandMasterService.updateByPrimaryKeySelective(brand);
-        }
-        return APIResponse.success();
+        Map<String, Object> response = brandMasterService.updateByPrimaryKeySelective(brand);
+        return APIResponse.success(response);
     }
 
     /**

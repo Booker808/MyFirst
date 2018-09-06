@@ -38,15 +38,8 @@ public interface SkuCoreMapper {
      */
     int findCount(Map<String,Object> map);
 
-
     List<SkuCoreEx> selectExByExample(SkuCoreExample example);
 
     List<SkuCore> selectByProductNoList();
 
-    /**
-     * 查询检验
-     * @param query
-     * @return
-     */
-    List<SkuCore> selectBySkuCoreList(Map<String, Object> query);
 }

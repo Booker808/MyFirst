@@ -371,19 +371,55 @@ public class SkuCoreServiceImpl implements SkuCoreService {
 
     @Override
     @Transactional(rollbackFor=Exception.class)
-    public boolean insertSelective(Map<String, Object> map) {
+    public Map<String, Object> insertSelective(Map<String, Object> map) {
         JSONObject jsonObject = new JSONObject(map);
         SkuCore skuCore = JSON.parseObject(jsonObject.toJSONString(), SkuCore.class);
+        /**校验productName,brandName,rule,size,minUint,categoryNo*/
+        List<String> listMsg = new ArrayList<>();
+        String message = "";
+        Map<String, Object> response = new HashMap<>();
+        if (StringUtils.isBlank(skuCore.getProductName()) || skuCore.getProductName().length() > 255) {
+            message = "商品名称为空或超出长度";
+            listMsg.add(message);
+        }
+        if (StringUtils.isBlank(skuCore.getCategoryNo()) || skuCore.getCategoryNo().length() > 255) {
+            message = "分类编码为空或超出长度";
+            listMsg.add(message);
+        }
+        if (StringUtils.isBlank(skuCore.getBrandName()) || skuCore.getBrandName().length() > 255) {
+            message = "品牌名称为空或超出长度";
+            listMsg.add(message);
+        }
+        if (null == skuCore.getBrandId()) {
+            message = "品牌ID为空";
+            listMsg.add(message);
+        }
+        if (StringUtils.isBlank(skuCore.getRule()) || skuCore.getRule().length() > 255) {
+            message = "规格为空或超出长度";
+            listMsg.add(message);
+        }
+        if (StringUtils.isBlank(skuCore.getSize()) || skuCore.getSize().length() > 255) {
+            message = "型号为空或超出长度";
+            listMsg.add(message);
+        }
+        if (StringUtils.isBlank(skuCore.getMinUint()) || skuCore.getMinUint().length() > 255) {
+            message = "最小库存单位为空或超出长度";
+            listMsg.add(message);
+        }
+        if (null != listMsg && !listMsg.isEmpty()) {
+            response.put("message",listMsg);
+            return response;
+        }
         Map<String, Object> query = new HashMap<>();
         query.put("productName",skuCore.getProductName());
         query.put("rule",skuCore.getRule());
         query.put("size",skuCore.getSize());
         query.put("brandName",skuCore.getBrandName());
         query.put("minUint",skuCore.getMinUint());
-        List<SkuCore> skuCoreList = skuCoreMapper.selectBySkuCoreList(query);
-        /**校验productName,rule,rule*/
+        List<SkuCore> skuCoreList = skuCoreMapper.listSelective(query);
         if (null != skuCoreList && !skuCoreList.isEmpty()) {
-            return false;
+            response.put("message", "商品已存在");
+            return response;
         }
         /**Redis获取商品编码*/
         String  count = String.valueOf(redisServiceFacade.increase(new RedisDistributedCounterObject("category_" + skuCore.getCategoryNo())));
@@ -410,6 +446,6 @@ public class SkuCoreServiceImpl implements SkuCoreService {
                 skuUpcMapper.insertSelective(skuUpc);
             }
         }
-        return true;
+        return null;
     }
 }

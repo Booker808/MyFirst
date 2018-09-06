@@ -6,6 +6,7 @@ import com.csjscm.core.framework.service.BrandMasterService;
 import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.*;
@@ -47,7 +48,7 @@ public class BrandMasterServiceImpl implements BrandMasterService {
         List list = new ArrayList();
         if(null != brandList && !brandList.isEmpty()){
             for (BrandMaster brandMaster : brandList) {
-                Map map = new HashMap();
+                Map<String, Object> map = new HashMap<>();
                 map.put("id", brandMaster.getId());
                 map.put("brand_name", brandMaster.getBrandName());
                 list.add(map);
@@ -62,14 +63,42 @@ public class BrandMasterServiceImpl implements BrandMasterService {
     }
 
     @Override
-    public int insertSelective(BrandMaster record) {
-        record.setCreateTime(new Date());
-        return brandMasterMapper.insertSelective(record);
+    public Map<String, Object> insertSelective(BrandMaster record) {
+        Map<String, Object> map = new HashMap<>();
+        if (StringUtils.isBlank(record.getBrandName()) || record.getBrandName().length() > 255){
+            map.put("message", "品牌名称为空或超出长度");
+            return map;
+        }
+        map.put("brandName", record.getBrandName());
+        List<BrandMaster> list = brandMasterMapper.selectByBrand(map);
+        if (null != list && !list.isEmpty()) {
+            map.clear();
+            map.put("false", "品牌已存在");
+            return map;
+        }
+        brandMasterMapper.insertSelective(record);
+        return null;
     }
 
     @Override
-    public int updateByPrimaryKeySelective(BrandMaster record) {
-        return brandMasterMapper.updateByPrimaryKeySelective(record);
+    public Map<String, Object> updateByPrimaryKeySelective(BrandMaster record) {
+        Map<String, Object> response = new HashMap<>();
+        List<String> listMsg = new ArrayList<>();
+        String message = "";
+        if (null == record.getId()){
+            message = "品牌ID为空";
+            listMsg.add(message);
+        }
+        if (StringUtils.isBlank(record.getBrandName()) || record.getBrandName().length() > 255){
+            message = "品牌名称为空或超出长度";
+            listMsg.add(message);
+        }
+        if (null != listMsg && !listMsg.isEmpty()){
+            response.put("message", listMsg);
+            return response;
+        }
+        brandMasterMapper.updateByPrimaryKeySelective(record);
+        return null;
     }
 
     @Override

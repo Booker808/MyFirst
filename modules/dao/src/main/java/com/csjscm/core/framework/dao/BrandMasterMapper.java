@@ -17,9 +17,6 @@ public interface BrandMasterMapper {
     int updateByPrimaryKeySelective(BrandMaster record);
 
     int updateByPrimaryKey(BrandMaster record);
-
-
-    List<BrandMaster> selectByBrand (String condition);
     /**
      * 按条件查询单个
      *
