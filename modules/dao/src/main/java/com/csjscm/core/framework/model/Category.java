@@ -133,6 +133,14 @@ import java.util.Date;
     * 迁移数据标识
     */
     private String requestId;
+    /**
+     * 排序
+     */
+    private Integer sort;
+    /**
+     * 1启用 0停用
+     */
+    private Integer state;
 
 
     /**
@@ -523,4 +531,19 @@ import java.util.Date;
         this.requestId = requestId;
     }
 
+    public Integer getSort() {
+        return sort;
+    }
+
+    public void setSort(Integer sort) {
+        this.sort = sort;
+    }
+
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
+    }
 }

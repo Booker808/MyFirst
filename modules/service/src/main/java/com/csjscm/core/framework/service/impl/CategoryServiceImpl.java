@@ -4,6 +4,7 @@ import com.csjscm.core.framework.common.constant.Constant;
 import com.csjscm.core.framework.common.enums.CategoryLevelEnum;
 import com.csjscm.core.framework.common.util.BussinessException;
 import com.csjscm.core.framework.dao.CategoryMapper;
+import com.csjscm.core.framework.dao.SkuCoreMapper;
 import com.csjscm.core.framework.model.Category;
 import com.csjscm.core.framework.service.CategoryService;
 import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
@@ -17,10 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -40,6 +38,8 @@ public class CategoryServiceImpl implements CategoryService {
     private CategoryMapper categoryMapper;
     @Autowired
     private RedisServiceFacade redisServiceFacade;
+    @Autowired
+    private SkuCoreMapper skuCoreMapper;
 
 
     @Override
@@ -52,13 +52,34 @@ public class CategoryServiceImpl implements CategoryService {
         }
         t.setCreateTime(new Date());
         if(t.getLevelNum().intValue()== CategoryLevelEnum.三级.getState().intValue()){
-            Long increase = redisServiceFacade.increase(new RedisDistributedCounterObject(Constant.REDIS_KEY_PRODUCT_NO+t.getClassCode()), 0);
+            redisServiceFacade.set(Constant.REDIS_KEY_PRODUCT_NO+t.getClassCode(), 0);
         }
        return categoryMapper.insertSelective(t);
     }
 
     @Override
     public int update(Category t) {
+        Category old = categoryMapper.findByPrimary(t.getId());
+        //校验编码是否重复
+        Map<String,Object> map= new HashMap<>();
+        map.put("classCode",t.getClassCode());
+        Category category1 = categoryMapper.findSelective(map);
+        if(category1!=null && t.getId().intValue()!=category1.getId().intValue()){
+            throw  new  BussinessException("分类编码不能重复");
+        }
+        //查看编码是否可以修改
+        if(old.getLevelNum().intValue()==CategoryLevelEnum.三级.getState().intValue()){
+            if(!t.getClassCode().equals(old.getClassCode())){
+                Map<String,Object> productMap= new HashMap<>();
+                productMap.put("categoryNo",old.getClassCode());
+                int count = skuCoreMapper.findCount(productMap);
+                if(count>0){
+                    throw  new  BussinessException("该分类下存在商品，无法修改编码");
+                }
+                redisServiceFacade.set(Constant.REDIS_KEY_PRODUCT_NO+t.getClassCode(), 0);
+                redisServiceFacade.delete(Constant.REDIS_KEY_PRODUCT_NO+old.getClassCode());
+            }
+        }
         t.setEditTime(new Date());
         return categoryMapper.updateSelective(t);
     }
@@ -101,8 +122,38 @@ public class CategoryServiceImpl implements CategoryService {
             if(count>0){
                 throw  new  BussinessException("存在下级分类无法，请先删除下级分类");
             }else {
-                categoryMapper.deleteByPrimaryKey(Integer.parseInt(strId));
+                Category primary = categoryMapper.findByPrimary(Integer.parseInt(strId));
+                if(primary.getLevelNum().intValue()==CategoryLevelEnum.三级.getState().intValue()){
+                    Map<String,Object> productMap= new HashMap<>();
+                    productMap.put("categoryNo",primary.getClassCode());
+                    int count1 = skuCoreMapper.findCount(productMap);
+                    if(count1>0){
+                        throw  new  BussinessException("该分类下存在商品，无法删除分类");
+                    }else {
+                        categoryMapper.deleteByPrimaryKey(Integer.parseInt(strId));
+                    }
+                }
             }
+        }
+    }
+
+    @Override
+    @Transactional
+    public void updateState(List<Integer> ids, Integer state) {
+        List<Integer> nextIds=new ArrayList<>();
+        for (Integer id : ids) {
+            Category category = categoryMapper.findByPrimary(id);
+            category.setState(state);
+            categoryMapper.updateSelective(category);
+            Map<String,Object> map=new HashMap<>();
+            map.put("parentClass",category.getId());
+            List<Category> categories = categoryMapper.listSelective(map);
+            for (Category c : categories) {
+                nextIds.add(c.getId());
+            }
+        }
+        if(nextIds.size()>0){
+            updateState(nextIds,state);
         }
     }
 

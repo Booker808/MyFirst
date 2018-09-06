@@ -3,6 +3,7 @@ package com.csjscm.core.framework.service;
 import com.csjscm.core.framework.model.Category;
 import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
 import com.github.pagehelper.Page;
+import io.swagger.models.auth.In;
 
 import java.util.List;
 import java.util.Map;
@@ -50,4 +51,6 @@ public interface CategoryService {
      * @param ids
      */
     void deleteByIds(String ids);
+
+    void updateState(List<Integer> ids , Integer state);
 }

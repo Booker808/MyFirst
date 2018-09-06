@@ -83,8 +83,7 @@ public class SkuCoreServiceImpl implements SkuCoreService {
         List<String> failList = new ArrayList<>();
         //失败的数据
         List<SkuCoreVo> failSkuCores = new ArrayList<>();
-        //商品名称数据
-        List<String> productNameList = new ArrayList<>();
+
         ExcelUtil excelUtil = new ExcelUtil();
         List<Row> rows = excelUtil.readExcel(file);
         total = rows.size() - READ_START_POS;
@@ -190,17 +189,7 @@ public class SkuCoreServiceImpl implements SkuCoreService {
                     failMsgStr+=getFailMsg(failRow, failCell, failMsg);
                     issuccess=false;
                 }
-                Map<String, Object> productNamemap = new HashMap<>();
-                productNamemap.put("productName", productName);
-                int productCount = skuCoreMapper.findCount(productNamemap);
-                if(productCount>0 || productNameList.contains(productName)){
-                    failMsg = "商品名称重复";
-                    failCell = 3;
-                    failList.add(getFailMsg(failRow, failCell, failMsg));
-                    failMsgStr+=getFailMsg(failRow, failCell, failMsg);
-                    issuccess=false;
-                }
-                productNameList.add(productName);
+
                 //校验品牌
                 if(StringUtils.isBlank(brandName) || brandName.length()>255){
                     failMsg = "品牌名称不能为空或者字段长度超过255";
@@ -246,6 +235,20 @@ public class SkuCoreServiceImpl implements SkuCoreService {
                         issuccess=false;
                     }
                 }
+                Map<String, Object> productNamemap = new HashMap<>();
+                productNamemap.put("productName", productName);
+                productNamemap.put("minUint", minUint);
+                productNamemap.put("brandName", brandName);
+                productNamemap.put("rule", rule);
+                int productCount = skuCoreMapper.findCount(productNamemap);
+                if(productCount>0 ){
+                    failMsg = "商品已存在";
+                    failCell = 0;
+                    failList.add(getFailMsg(failRow, failCell, failMsg));
+                    failMsgStr+=getFailMsg(failRow, failCell, failMsg);
+                    issuccess=false;
+                }
+
                 //组装成功数据
                 if(issuccess){
                     skuCore.setCategoryNo(categoryNo);

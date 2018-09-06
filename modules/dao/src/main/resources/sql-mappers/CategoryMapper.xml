@@ -26,11 +26,13 @@
         <result column="udf9" property="udf9" jdbcType="VARCHAR" />
         <result column="udf10" property="udf10" jdbcType="VARCHAR" />
         <result column="request_id" property="requestId" jdbcType="VARCHAR" />
+        <result column="sort" property="sort" jdbcType="INTEGER" />
+        <result column="state" property="state" jdbcType="INTEGER" />
     </resultMap>
     
     <!--基本的sql查询字段 公共引用...-->
     <sql id="Base_Column_List">
-        id,class_code,class_name,simple_name,parent_class,level_num,memos,create_user_id,create_time,edit_user_id,edit_time,udf1,udf2,udf3,udf4,udf5,udf6,udf7,udf8,udf9,udf10,request_id 
+        id,class_code,class_name,simple_name,parent_class,level_num,memos,create_user_id,create_time,edit_user_id,edit_time,udf1,udf2,udf3,udf4,udf5,udf6,udf7,udf8,udf9,udf10,request_id,sort,state
     </sql>
     
     <!-- 基本的sql查询条件公共引用 -->
@@ -102,12 +104,18 @@
             <if test="requestId != null and requestId != '' ">
                 and request_id = #{requestId,jdbcType=VARCHAR}
             </if>
+            <if test=" sort != null and sort != '' ">
+                and  sort  = #{sort,jdbcType=INTEGER}
+            </if>
+            <if test=" state != null and state != '' ">
+                and  state  = #{state,jdbcType=INTEGER}
+            </if>
         </trim>
     </sql>
     
     
     <insert id="insert" parameterType="com.csjscm.core.framework.model.Category">
-        insert into category(class_code,class_name,simple_name,parent_class,level_num,memos,create_user_id,create_time,edit_user_id,edit_time,udf1,udf2,udf3,udf4,udf5,udf6,udf7,udf8,udf9,udf10,request_id)values(#{classCode,jdbcType=VARCHAR},#{className,jdbcType=VARCHAR},#{simpleName,jdbcType=VARCHAR},#{parentClass,jdbcType=VARCHAR},#{levelNum,jdbcType=INTEGER},#{memos,jdbcType=VARCHAR},#{createUserId,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},#{editUserId,jdbcType=VARCHAR},#{editTime,jdbcType=TIMESTAMP},#{udf1,jdbcType=VARCHAR},#{udf2,jdbcType=VARCHAR},#{udf3,jdbcType=VARCHAR},#{udf4,jdbcType=VARCHAR},#{udf5,jdbcType=VARCHAR},#{udf6,jdbcType=VARCHAR},#{udf7,jdbcType=VARCHAR},#{udf8,jdbcType=VARCHAR},#{udf9,jdbcType=VARCHAR},#{udf10,jdbcType=VARCHAR},#{requestId,jdbcType=VARCHAR})
+        insert into category(class_code,class_name,simple_name,parent_class,level_num,memos,create_user_id,create_time,edit_user_id,edit_time,udf1,udf2,udf3,udf4,udf5,udf6,udf7,udf8,udf9,udf10,request_id,sort,state)values(#{classCode,jdbcType=VARCHAR},#{className,jdbcType=VARCHAR},#{simpleName,jdbcType=VARCHAR},#{parentClass,jdbcType=VARCHAR},#{levelNum,jdbcType=INTEGER},#{memos,jdbcType=VARCHAR},#{createUserId,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},#{editUserId,jdbcType=VARCHAR},#{editTime,jdbcType=TIMESTAMP},#{udf1,jdbcType=VARCHAR},#{udf2,jdbcType=VARCHAR},#{udf3,jdbcType=VARCHAR},#{udf4,jdbcType=VARCHAR},#{udf5,jdbcType=VARCHAR},#{udf6,jdbcType=VARCHAR},#{udf7,jdbcType=VARCHAR},#{udf8,jdbcType=VARCHAR},#{udf9,jdbcType=VARCHAR},#{udf10,jdbcType=VARCHAR},#{requestId,jdbcType=VARCHAR},#{sort,jdbcType=INTEGER},#{state,jdbcType=INTEGER})
     </insert>
     <insert id="insertSelective" parameterType="com.csjscm.core.framework.model.Category">
         insert into category
@@ -178,6 +186,12 @@
             <if test="requestId != null">
                 request_id,
             </if>
+            <if test="sort != null">
+                sort,
+            </if>
+            <if test="state != null">
+                state,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -246,6 +260,12 @@
             <if test="requestId != null">
                 #{requestId,jdbcType=VARCHAR},
             </if>
+            <if test="sort != null">
+                #{sort,jdbcType=INTEGER},
+            </if>
+            <if test="state != null">
+                #{state,jdbcType=INTEGER},
+            </if>
         </trim>
     </insert>
 
@@ -271,7 +291,9 @@
             udf8 = #{udf8,jdbcType=VARCHAR},
             udf9 = #{udf9,jdbcType=VARCHAR},
             udf10 = #{udf10,jdbcType=VARCHAR},
-            request_id = #{requestId,jdbcType=VARCHAR}
+            request_id = #{requestId,jdbcType=VARCHAR},
+            sort = #{sort,jdbcType=INTEGER},
+            state = #{state,jdbcType=INTEGER}
         where id = #{id ,jdbcType=INTEGER}
     </update>
 
@@ -340,9 +362,15 @@
                 udf10 = #{udf10,jdbcType=VARCHAR},                
             </if>
             <if test="requestId != null and requestId != '' ">        
-                request_id = #{requestId,jdbcType=VARCHAR}                
+                request_id = #{requestId,jdbcType=VARCHAR},
             </if>
-        </set>    
+            <if test="sort != null and sort != '' ">
+                sort = #{sort,jdbcType=INTEGER},
+            </if>
+            <if test="state != null and state != '' ">
+                state = #{state,jdbcType=INTEGER}
+            </if>
+        </set>
         where id = #{id ,jdbcType=INTEGER}
     </update>
 

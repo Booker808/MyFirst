@@ -16,7 +16,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -54,8 +56,8 @@ public class CategoryController{
      * @return
      */
     @ApiOperation("查询目标为ID的分类")
-    @RequestMapping(value = "/category/{id}",method = RequestMethod.GET)
-    public APIResponse queryCategory(@ApiParam(name="id",value="主键id",required=true) @PathVariable Integer id){
+    @RequestMapping(value = "getCategory",method = RequestMethod.GET)
+    public APIResponse queryCategory(@ApiParam(name="id",value="主键id",required=true) Integer id){
         return APIResponse.success(categoryService.findByPrimary(id));
     }
 
@@ -65,8 +67,8 @@ public class CategoryController{
      * @param category
      * @return
      */
-    @ApiOperation("创建分类对象")
-    @RequestMapping(value = "/category",method = RequestMethod.POST)
+    @ApiOperation("新增分类对象")
+    @RequestMapping(value = "saveCategory",method = RequestMethod.POST)
     public APIResponse createCategory(@Valid Category category){
         categoryService.save(category);
         return APIResponse.success();
@@ -79,9 +81,10 @@ public class CategoryController{
      * @param category 分类对象
      * @return
      */
-    @RequestMapping(value = "/category/{id}",method = RequestMethod.PUT)
+    @ApiOperation("编辑分类接口")
+    @RequestMapping(value = "editCategory",method = RequestMethod.POST)
     public APIResponse updateCategory(
-            @RequestBody Category category){
+            @Valid  Category category){
         if(category.getId()!=null){
             categoryService.update(category);
         }
@@ -89,26 +92,32 @@ public class CategoryController{
     }
 
     /**
-     * 删除指定ID的分类对象
-     *
-     * @param id
-     * @return
-     */
-/*    @RequestMapping(value = "/category/{id}",method = RequestMethod.DELETE)
-    public APIResponse deleteCategory(@PathVariable Integer id){
-        System.out.println("----------删除指定ID分类："+id);
-        return APIResponse.success();
-    }*/
-
-    /**
      * 删除指定分类列表
      *
      * @param ids
      * @return
      */
-    @RequestMapping(value = "/category",method = RequestMethod.DELETE)
-    public APIResponse deleteCategoryList(@ApiParam(name="ids",value="要删除的id，多个以逗号隔开",required=true)@RequestParam String ids){
+    @ApiOperation("删除分类接口")
+    @RequestMapping(value = "deleteCategory",method = RequestMethod.POST)
+    public APIResponse deleteCategoryList(@ApiParam(name="ids",value="要删除的id，多个以逗号隔开",required=true) String ids){
         categoryService.deleteByIds(ids);
+        return APIResponse.success();
+    }
+    /**
+     * 启用停用分类接口
+     *
+     * @param ids
+     * @return
+     */
+    @ApiOperation("启用停用分类接口")
+    @RequestMapping(value = "updateState",method = RequestMethod.POST)
+    public APIResponse updateState(@ApiParam(name="ids",value="要停用启用的id，多个以逗号隔开",required=true) String ids,@ApiParam(name="state",value="1启用 0停用",required=true) Integer state){
+        List<Integer> idList=new ArrayList<>();
+        String[] strings=ids.split(",");
+        for (String s : strings) {
+            idList.add(Integer.parseInt(s));
+        }
+        categoryService.updateState(idList,state);
         return APIResponse.success();
     }
 
