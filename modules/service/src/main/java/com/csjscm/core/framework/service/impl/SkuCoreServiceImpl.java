@@ -376,10 +376,10 @@ public class SkuCoreServiceImpl implements SkuCoreService {
         SkuCore skuCore = JSON.parseObject(jsonObject.toJSONString(), SkuCore.class);
         Map<String, Object> query = new HashMap<>();
         query.put("productName",skuCore.getProductName());
-        query.put("rule",skuCore.getProductName());
-        query.put("size",skuCore.getProductName());
-        query.put("brandName",skuCore.getProductName());
-        query.put("minUint",skuCore.getProductName());
+        query.put("rule",skuCore.getRule());
+        query.put("size",skuCore.getSize());
+        query.put("brandName",skuCore.getBrandName());
+        query.put("minUint",skuCore.getMinUint());
         List<SkuCore> skuCoreList = skuCoreMapper.selectBySkuCoreList(query);
         /**校验productName,rule,rule*/
         if (null != skuCoreList && !skuCoreList.isEmpty()) {
