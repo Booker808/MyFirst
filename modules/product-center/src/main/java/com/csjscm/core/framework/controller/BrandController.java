@@ -58,14 +58,11 @@ public class BrandController {
      */
     @ApiOperation("查询品牌接口")
     @RequestMapping(value = "/brandPage",method = RequestMethod.GET)
-    public APIResponse <QueryResult<BrandMaster>> queryBrandList(@ApiParam(name="condition",value="品牌参数",required=true)@RequestParam String condition,
+    public APIResponse <QueryResult<BrandMaster>> queryBrandList(@ApiParam(name="brandName",value="品牌名称",required=false)@RequestParam String brandName,
                                       @ApiParam(name="current",value="当前页",required=true) @RequestParam(value = "current") int current,
                                       @ApiParam(name="pageSize",value="页面大小",required=true) @RequestParam(value = "pageSize") int pageSize){
-        if(StringUtils.isBlank(condition)){
-            condition = "condition";
-        }
         Map<String, Object> map = new HashMap<>();
-        map.put("condition",condition);
+        map.put("brandName",brandName);
         QueryResult<BrandMaster> page = brandMasterService.queryBrandMasterList(map, current, pageSize);
         return APIResponse.success(page);
     }
