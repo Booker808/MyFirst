@@ -46,13 +46,6 @@
     <result column="suf8" property="suf8" jdbcType="VARCHAR" />
     <result column="suf9" property="suf9" jdbcType="VARCHAR" />
     <result column="suf10" property="suf10" jdbcType="VARCHAR" />
-    <result column="request_id" property="requestId" jdbcType="VARCHAR" />
-    <result column="category_id_old" property="categoryIdOld" jdbcType="VARCHAR" />
-    <result column="create_user_id_old" property="createUserIdOld" jdbcType="VARCHAR" />
-    <result column="edit_user_id_old" property="editUserIdOld" jdbcType="VARCHAR" />
-    <result column="approval_status_old" property="approvalStatusOld" jdbcType="VARCHAR" />
-    <result column="brand_id_old" property="brandIdOld" jdbcType="VARCHAR" />
-    <result column="min_uint_old" property="minUintOld" jdbcType="VARCHAR" />
   </resultMap>
   <resultMap id="ExResultMap" type="com.csjscm.core.framework.model.SkuCoreEx" extends="BaseResultMap">
     <result column="identifying_code" property="identifyingCode" jdbcType="VARCHAR" />
@@ -65,8 +58,7 @@
     isvalidate, approval_status, channel, brand_name, brand_id, unit_id, min_uint, product_pic, 
     ean13_code, mnemonic_code, invoice_type, txt_code, rule, size, create_user_id, create_time, 
     edit_user_id, edit_time, udf1, udf2, udf3, udf4, udf5, udf6, udf7, udf8, udf9, udf10, 
-    suf1, suf2, suf3, suf4, suf5, suf6, suf7, suf8, suf9, suf10, request_id, category_id_old, 
-    create_user_id_old, edit_user_id_old, approval_status_old, brand_id_old, min_uint_old
+    suf1, suf2, suf3, suf4, suf5, suf6, suf7, suf8, suf9, suf10
   </sql>
   <!-- 基本的sql查询条件公共引用 -->
   <sql id="searchBy">
@@ -203,27 +195,6 @@
       <if test="suf10 != null and suf10 != '' ">
         and suf10 = #{suf10,jdbcType=VARCHAR}
       </if>
-      <if test="requestId != null and requestId != '' ">
-        and request_id = #{requestId,jdbcType=VARCHAR}
-      </if>
-      <if test="categoryIdOld != null and categoryIdOld != '' ">
-        and category_id_old = #{categoryIdOld,jdbcType=VARCHAR}
-      </if>
-      <if test="createUserIdOld != null and createUserIdOld != '' ">
-        and create_user_id_old = #{createUserIdOld,jdbcType=VARCHAR}
-      </if>
-      <if test="editUserIdOld != null and editUserIdOld != '' ">
-        and edit_user_id_old = #{editUserIdOld,jdbcType=VARCHAR}
-      </if>
-      <if test="approvalStatusOld != null and approvalStatusOld != '' ">
-        and approval_status_old = #{approvalStatusOld,jdbcType=VARCHAR}
-      </if>
-      <if test="brandIdOld != null and brandIdOld != '' ">
-        and brand_id_old = #{brandIdOld,jdbcType=VARCHAR}
-      </if>
-      <if test="minUintOld != null and minUintOld != '' ">
-        and min_uint_old = #{minUintOld,jdbcType=VARCHAR}
-      </if>
     </trim>
   </sql>
   <sql id="Sc_Column_List">
@@ -231,8 +202,7 @@
     sc.isvalidate, sc.approval_status, sc.channel, sc.brand_name, sc.brand_id, sc.unit_id, sc.min_uint, sc.product_pic,
     sc.ean13_code, sc.mnemonic_code, sc.invoice_type, sc.txt_code, sc.rule, sc.size, sc.create_user_id, sc.create_time,
     sc.edit_user_id, sc.edit_time, sc.udf1, sc.udf2, sc.udf3, sc.udf4, sc.udf5, sc.udf6, sc.udf7, sc.udf8, sc.udf9, sc.udf10,
-    sc.suf1, sc.suf2, sc.suf3, sc.suf4, sc.suf5, sc.suf6, sc.suf7, sc.suf8, sc.suf9, sc.suf10, sc.request_id, sc.category_id_old,
-    sc.create_user_id_old, sc.edit_user_id_old, sc.approval_status_old, sc.brand_id_old, sc.min_uint_old
+    sc.suf1, sc.suf2, sc.suf3, sc.suf4, sc.suf5, sc.suf6, sc.suf7, sc.suf8, sc.suf9, sc.suf10
   </sql>
   <sql id="Example_Where_Clause">
     <where>
@@ -262,11 +232,6 @@
       <include refid="Sc_Column_List"/>
     from sku_core sc
     <include refid="Example_Where_Clause"/>
-  </select><select id="selectBySkuCoreList" parameterType="map" resultMap="BaseResultMap">
-    select
-      <include refid="Base_Column_List"/>
-    from sku_core
-    <include refid="searchBy"/>
   </select>
   <select id="selectExByExample" parameterType="map" resultMap="ExResultMap">
     select
@@ -302,9 +267,7 @@
       udf9, udf10, suf1, 
       suf2, suf3, suf4, suf5, 
       suf6, suf7, suf8, suf9, 
-      suf10, request_id, category_id_old, 
-      create_user_id_old, edit_user_id_old, approval_status_old, 
-      brand_id_old, min_uint_old)
+      suf10)
     values (#{productNo,jdbcType=VARCHAR}, #{stdProductNo,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, 
       #{productPrice,jdbcType=DECIMAL}, #{categoryId,jdbcType=INTEGER}, #{categoryNo,jdbcType=VARCHAR}, 
       #{isvalidate,jdbcType=INTEGER}, #{approvalStatus,jdbcType=INTEGER}, #{channel,jdbcType=INTEGER}, 
@@ -318,9 +281,7 @@
       #{udf9,jdbcType=VARCHAR}, #{udf10,jdbcType=VARCHAR}, #{suf1,jdbcType=VARCHAR}, 
       #{suf2,jdbcType=VARCHAR}, #{suf3,jdbcType=VARCHAR}, #{suf4,jdbcType=VARCHAR}, #{suf5,jdbcType=VARCHAR}, 
       #{suf6,jdbcType=VARCHAR}, #{suf7,jdbcType=VARCHAR}, #{suf8,jdbcType=VARCHAR}, #{suf9,jdbcType=VARCHAR}, 
-      #{suf10,jdbcType=VARCHAR}, #{requestId,jdbcType=VARCHAR}, #{categoryIdOld,jdbcType=VARCHAR}, 
-      #{createUserIdOld,jdbcType=VARCHAR}, #{editUserIdOld,jdbcType=VARCHAR}, #{approvalStatusOld,jdbcType=VARCHAR}, 
-      #{brandIdOld,jdbcType=VARCHAR}, #{minUintOld,jdbcType=VARCHAR})
+      #{suf10,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.csjscm.core.framework.model.SkuCore" >
     insert into sku_core
@@ -457,27 +418,6 @@
       <if test="suf10 != null" >
         suf10,
       </if>
-      <if test="requestId != null" >
-        request_id,
-      </if>
-      <if test="categoryIdOld != null" >
-        category_id_old,
-      </if>
-      <if test="createUserIdOld != null" >
-        create_user_id_old,
-      </if>
-      <if test="editUserIdOld != null" >
-        edit_user_id_old,
-      </if>
-      <if test="approvalStatusOld != null" >
-        approval_status_old,
-      </if>
-      <if test="brandIdOld != null" >
-        brand_id_old,
-      </if>
-      <if test="minUintOld != null" >
-        min_uint_old,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="productNo != null" >
@@ -611,27 +551,6 @@
       </if>
       <if test="suf10 != null" >
         #{suf10,jdbcType=VARCHAR},
-      </if>
-      <if test="requestId != null" >
-        #{requestId,jdbcType=VARCHAR},
-      </if>
-      <if test="categoryIdOld != null" >
-        #{categoryIdOld,jdbcType=VARCHAR},
-      </if>
-      <if test="createUserIdOld != null" >
-        #{createUserIdOld,jdbcType=VARCHAR},
-      </if>
-      <if test="editUserIdOld != null" >
-        #{editUserIdOld,jdbcType=VARCHAR},
-      </if>
-      <if test="approvalStatusOld != null" >
-        #{approvalStatusOld,jdbcType=VARCHAR},
-      </if>
-      <if test="brandIdOld != null" >
-        #{brandIdOld,jdbcType=VARCHAR},
-      </if>
-      <if test="minUintOld != null" >
-        #{minUintOld,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -767,27 +686,6 @@
       <if test="suf10 != null" >
         suf10 = #{suf10,jdbcType=VARCHAR},
       </if>
-      <if test="requestId != null" >
-        request_id = #{requestId,jdbcType=VARCHAR},
-      </if>
-      <if test="categoryIdOld != null" >
-        category_id_old = #{categoryIdOld,jdbcType=VARCHAR},
-      </if>
-      <if test="createUserIdOld != null" >
-        create_user_id_old = #{createUserIdOld,jdbcType=VARCHAR},
-      </if>
-      <if test="editUserIdOld != null" >
-        edit_user_id_old = #{editUserIdOld,jdbcType=VARCHAR},
-      </if>
-      <if test="approvalStatusOld != null" >
-        approval_status_old = #{approvalStatusOld,jdbcType=VARCHAR},
-      </if>
-      <if test="brandIdOld != null" >
-        brand_id_old = #{brandIdOld,jdbcType=VARCHAR},
-      </if>
-      <if test="minUintOld != null" >
-        min_uint_old = #{minUintOld,jdbcType=VARCHAR},
-      </if>
     </set>
     where product_no = #{productNo,jdbcType=VARCHAR}
   </update>
@@ -835,14 +733,7 @@
       suf7 = #{suf7,jdbcType=VARCHAR},
       suf8 = #{suf8,jdbcType=VARCHAR},
       suf9 = #{suf9,jdbcType=VARCHAR},
-      suf10 = #{suf10,jdbcType=VARCHAR},
-      request_id = #{requestId,jdbcType=VARCHAR},
-      category_id_old = #{categoryIdOld,jdbcType=VARCHAR},
-      create_user_id_old = #{createUserIdOld,jdbcType=VARCHAR},
-      edit_user_id_old = #{editUserIdOld,jdbcType=VARCHAR},
-      approval_status_old = #{approvalStatusOld,jdbcType=VARCHAR},
-      brand_id_old = #{brandIdOld,jdbcType=VARCHAR},
-      min_uint_old = #{minUintOld,jdbcType=VARCHAR}
+      suf10 = #{suf10,jdbcType=VARCHAR}
     where product_no = #{productNo,jdbcType=VARCHAR}
   </update>
   <select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">

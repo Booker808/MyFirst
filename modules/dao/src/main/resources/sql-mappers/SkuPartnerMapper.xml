@@ -5,9 +5,10 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="product_no" jdbcType="VARCHAR" property="productNo" />
     <result column="supply_no" jdbcType="VARCHAR" property="supplyNo" />
-    <result column="supply_name" jdbcType="VARCHAR" property="supplyName" />
-    <result column="supply_rule" jdbcType="VARCHAR" property="supplyRule" />
-    <result column="supply_size" jdbcType="VARCHAR" property="supplySize" />
+    <result column="supply_pd_no" jdbcType="VARCHAR" property="supplyPdNo" />
+    <result column="supply_pd_name" jdbcType="VARCHAR" property="supplyPdName" />
+    <result column="supply_pd_rule" jdbcType="VARCHAR" property="supplyPdRule" />
+    <result column="supply_pd_size" jdbcType="VARCHAR" property="supplyPdSize" />
     <result column="brand_id" jdbcType="VARCHAR" property="brandId" />
     <result column="brand_name" jdbcType="VARCHAR" property="brandName" />
     <result column="refrence_price" jdbcType="DECIMAL" property="refrencePrice" />
@@ -43,14 +44,14 @@
     <result column="class_name" property="className" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, product_no, supply_no, supply_name, supply_rule, supply_size, brand_id, brand_name, 
+    id, product_no, supply_no,supply_pd_no, supply_pd_name, supply_pd_rule, supply_pd_size, brand_id, brand_name,
     refrence_price, recent_enquiry, create_user_id, create_time, edit_user_id, edit_time, 
     udf1, udf2, udf3, udf4, udf5, udf6, udf7, udf8, udf9, udf10, udf11, udf12, udf13, 
     udf14, udf15, udf16, udf17, udf18, udf19, udf20
   </sql>
 
   <sql id="Partner_Column_List">
-    p.id, p.product_no, p.supply_no, p.supply_name, p.supply_rule, p.supply_size, p.brand_id, p.brand_name,
+    p.id, p.product_no, p.supply_no, p.supply_pd_no, p.supply_pd_name, p.supply_pd_rule, p.supply_pd_size, p.brand_id, p.brand_name,
     p.refrence_price, p.recent_enquiry, p.create_user_id, p.create_time, p.edit_user_id, p.edit_time,
     p.udf1, p.udf2, p.udf3, p.udf4, p.udf5, p.udf6, p.udf7, p.udf8, p.udf9, p.udf10, p.udf11, p.udf12, p.udf13,
     p.udf14, p.udf15, p.udf16, p.udf17, p.udf18, p.udf19, p.udf20
@@ -102,8 +103,8 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.csjscm.core.framework.model.SkuPartner">
-    insert into sku_partner (id, product_no, supply_no, 
-      supply_name, supply_rule, supply_size, 
+    insert into sku_partner (id, product_no, supply_no, supply_pd_no,
+      supply_pd_name, supply_pd_rule, supply_pd_size,
       brand_id, brand_name, refrence_price, 
       recent_enquiry, create_user_id, create_time, 
       edit_user_id, edit_time, udf1, 
@@ -113,8 +114,8 @@
       udf13, udf14, udf15, 
       udf16, udf17, udf18, 
       udf19, udf20)
-    values (#{id,jdbcType=INTEGER}, #{productNo,jdbcType=VARCHAR}, #{supplyNo,jdbcType=VARCHAR}, 
-      #{supplyName,jdbcType=VARCHAR}, #{supplyRule,jdbcType=VARCHAR}, #{supplySize,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=INTEGER}, #{productNo,jdbcType=VARCHAR}, #{supplyNo,jdbcType=VARCHAR}, #{supplyPdNo,jdbcType=VARCHAR},
+      #{supplyPdName,jdbcType=VARCHAR}, #{supplyPdRule,jdbcType=VARCHAR}, #{supplyPdSize,jdbcType=VARCHAR},
       #{brandId,jdbcType=VARCHAR}, #{brandName,jdbcType=VARCHAR}, #{refrencePrice,jdbcType=DECIMAL}, 
       #{recentEnquiry,jdbcType=DECIMAL}, #{createUserId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
       #{editUserId,jdbcType=VARCHAR}, #{editTime,jdbcType=TIMESTAMP}, #{udf1,jdbcType=VARCHAR}, 
@@ -137,14 +138,17 @@
       <if test="supplyNo != null">
         supply_no,
       </if>
-      <if test="supplyName != null">
-        supply_name,
+      <if test="supplyPdNo != null">
+        supply_pd_no,
       </if>
-      <if test="supplyRule != null">
-        supply_rule,
+      <if test="supplyPdName != null">
+        supply_pd_name,
       </if>
-      <if test="supplySize != null">
-        supply_size,
+      <if test="supplyPdRule != null">
+        supply_pd_rule,
+      </if>
+      <if test="supplyPdSize != null">
+        supply_pd_size,
       </if>
       <if test="brandId != null">
         brand_id,
@@ -241,14 +245,17 @@
       <if test="supplyNo != null">
         #{supplyNo,jdbcType=VARCHAR},
       </if>
-      <if test="supplyName != null">
-        #{supplyName,jdbcType=VARCHAR},
+      <if test="supplyPdNo != null">
+        #{supplyPdNo,jdbcType=VARCHAR},
       </if>
-      <if test="supplyRule != null">
-        #{supplyRule,jdbcType=VARCHAR},
+      <if test="supplyPdName != null">
+        #{supplyPdName,jdbcType=VARCHAR},
       </if>
-      <if test="supplySize != null">
-        #{supplySize,jdbcType=VARCHAR},
+      <if test="supplyPdRule != null">
+        #{supplyPdRule,jdbcType=VARCHAR},
+      </if>
+      <if test="supplyPdSize != null">
+        #{supplyPdSize,jdbcType=VARCHAR},
       </if>
       <if test="brandId != null">
         #{brandId,jdbcType=VARCHAR},
@@ -345,14 +352,17 @@
       <if test="supplyNo != null">
         supply_no = #{supplyNo,jdbcType=VARCHAR},
       </if>
-      <if test="supplyName != null">
-        supply_name = #{supplyName,jdbcType=VARCHAR},
+      <if test="supplyPdNo != null">
+        supply_pd_no = #{supplyPdNo,jdbcType=VARCHAR},
       </if>
-      <if test="supplyRule != null">
-        supply_rule = #{supplyRule,jdbcType=VARCHAR},
+      <if test="supplyPdName != null">
+        supply_pd_name = #{supplyPdName,jdbcType=VARCHAR},
       </if>
-      <if test="supplySize != null">
-        supply_size = #{supplySize,jdbcType=VARCHAR},
+      <if test="supplyPdRule != null">
+        supply_pd_rule = #{supplyPdRule,jdbcType=VARCHAR},
+      </if>
+      <if test="supplyPdSize != null">
+        supply_pd_size = #{supplyPdSize,jdbcType=VARCHAR},
       </if>
       <if test="brandId != null">
         brand_id = #{brandId,jdbcType=VARCHAR},
@@ -445,9 +455,10 @@
     update sku_partner
     set product_no = #{productNo,jdbcType=VARCHAR},
       supply_no = #{supplyNo,jdbcType=VARCHAR},
-      supply_name = #{supplyName,jdbcType=VARCHAR},
-      supply_rule = #{supplyRule,jdbcType=VARCHAR},
-      supply_size = #{supplySize,jdbcType=VARCHAR},
+      supply_pd_no = #{supplyPdNo,jdbcType=VARCHAR},
+      supply_pd_name = #{supplyPdName,jdbcType=VARCHAR},
+      supply_pd_rule = #{supplyPdRule,jdbcType=VARCHAR},
+      supply_pd_size = #{supplyPdSize,jdbcType=VARCHAR},
       brand_id = #{brandId,jdbcType=VARCHAR},
       brand_name = #{brandName,jdbcType=VARCHAR},
       refrence_price = #{refrencePrice,jdbcType=DECIMAL},
