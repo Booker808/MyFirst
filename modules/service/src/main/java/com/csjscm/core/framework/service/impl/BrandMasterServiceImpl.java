@@ -11,10 +11,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by zjc on 2018/8/31.
@@ -69,6 +66,7 @@ public class BrandMasterServiceImpl implements BrandMasterService {
 
     @Override
     public int insertSelective(BrandMaster record) {
+        record.setCreateTime(new Date());
         Map<String, Object> map = new HashMap<>();
         if (StringUtils.isBlank(record.getBrandName())){
             throw  new BussinessException("品牌为空");
@@ -83,11 +81,17 @@ public class BrandMasterServiceImpl implements BrandMasterService {
 
     @Override
     public int updateByPrimaryKeySelective(BrandMaster record) {
+        if(record.getId()==null){
+            throw  new BussinessException("id不能为空");
+        }
         Map<String, Object> response = new HashMap<>();
         response.put("brandName", record.getBrandName());
         List<BrandMaster> brandMasterList = brandMasterMapper.selectByBrand(response);
-        if (null != brandMasterList && !brandMasterList.isEmpty()){
-            throw  new BussinessException("修改品牌已存在");
+        if (brandMasterList.size()>0){
+            BrandMaster brandMaster = brandMasterList.get(0);
+            if(brandMaster.getId().intValue()!=record.getId().intValue()){
+                throw  new BussinessException("修改品牌已存在");
+            }
         }
         return brandMasterMapper.updateByPrimaryKeySelective(record);
     }

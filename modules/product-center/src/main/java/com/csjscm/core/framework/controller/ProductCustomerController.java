@@ -1,23 +1,32 @@
 package com.csjscm.core.framework.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.csjscm.core.framework.common.util.BussinessException;
+import com.csjscm.core.framework.common.util.ExportExcel;
 import com.csjscm.core.framework.example.SkuCustomerExample;
+import com.csjscm.core.framework.model.BrandMaster;
+import com.csjscm.core.framework.model.SkuCustomer;
 import com.csjscm.core.framework.model.SkuCustomerEx;
 import com.csjscm.core.framework.service.product.ProductCustomerService;
+import com.csjscm.core.framework.vo.SkuCoreVo;
+import com.csjscm.core.framework.vo.SkuCustomerVo;
 import com.csjscm.sweet.framework.core.mvc.APIResponse;
 import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.annotations.ApiIgnore;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Api("客户商品")
@@ -49,5 +58,51 @@ public class ProductCustomerController {
         }
         QueryResult<SkuCustomerEx> result=productCustomerService.queryCustomerProduct(page,rpp,skuCustomerExample);
         return APIResponse.success(result);
+    }
+    @ApiOperation("导入客户物料excel")
+    @RequestMapping(value = "importCustomerExcel",method = RequestMethod.POST)
+    public APIResponse importExcel(@ApiParam(name = "file",value = "excel文件") @RequestParam(value="file") MultipartFile  file,@ApiParam(name = "customerNo",value = "customerNo") @RequestParam(value="customerNo")String customerNo){
+        Map<String, Object> map = productCustomerService.importCustomerExcel(file,customerNo);
+        return  APIResponse.success(map);
+    }
+    @ApiOperation("下载客户物料失败数据模板")
+    @RequestMapping(value = "downloadFailCustomer")
+    public void downloadFailCustomer(@ApiParam(name = "jsonData",value = "失败的数据") @RequestParam(value="jsonData") String  jsonData, HttpServletRequest request, HttpServletResponse response)throws Exception{
+        List<SkuCustomerVo> list = new ArrayList<>();
+        JSONArray jsonArray = JSON.parseArray(jsonData);
+        for (int i=0;i<jsonArray.size();i++) {
+            SkuCustomerVo skuCustomerVo = JSONObject.toJavaObject(jsonArray.getJSONObject(i), SkuCustomerVo.class);
+            list.add(skuCustomerVo);
+        }
+        ExportExcel<SkuCustomerVo> ex = new ExportExcel<SkuCustomerVo>();
+        String[] header =
+                { "失败原因","商品编码", "客户物料编码","客户物料名称","客户物料规格", "客户物料型号"};
+        String[] line =
+                {"failMessage", "productNo","customerPdNo", "customerPdName","customerPdRule","customerPdSize"};
+        OutputStream out;
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("application/x-download");
+        String fileName=new String("失败数据模板.xlsx".getBytes("UTF-8"),"iso-8859-1");
+        response.addHeader("Content-Disposition", "attachment;filename="+fileName);
+        out = response.getOutputStream();
+        ex.exportExcelBigData("失败数据模板",header,line, list, out,"yyyy-MM-dd HH:mm:ss");
+        out.flush();
+        out.close();
+    }
+
+    /**
+     * 新增客户商品
+     * @param skuCustomer
+     * @return
+     */
+    @ApiOperation("新增客户商品")
+    @RequestMapping(value = "/saveCustomer",method = RequestMethod.POST)
+    public APIResponse createBrand(@RequestBody @Valid SkuCustomer skuCustomer){
+        productCustomerService.save(skuCustomer);
+        return APIResponse.success();
+    }
+    @ExceptionHandler({BussinessException.class})
+    public APIResponse exceptionHandler(Exception e, HttpServletResponse response) {
+        return APIResponse.fail(e.getMessage());
     }
 }

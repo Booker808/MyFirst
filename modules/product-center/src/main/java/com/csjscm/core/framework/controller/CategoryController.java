@@ -3,6 +3,7 @@ package com.csjscm.core.framework.controller;
 import com.csjscm.core.framework.common.util.BussinessException;
 import com.csjscm.core.framework.model.Category;
 import com.csjscm.core.framework.service.CategoryService;
+import com.csjscm.core.framework.vo.CategoryModel;
 import com.csjscm.sweet.framework.core.mvc.APIResponse;
 import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
 import io.swagger.annotations.Api;
@@ -11,9 +12,11 @@ import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.HttpRequestHandler;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -69,7 +72,7 @@ public class CategoryController{
      */
     @ApiOperation("新增分类对象")
     @RequestMapping(value = "saveCategory",method = RequestMethod.POST)
-    public APIResponse createCategory(@Valid Category category){
+    public APIResponse createCategory(@RequestBody @Valid Category category){
         categoryService.save(category);
         return APIResponse.success();
     }
@@ -84,7 +87,7 @@ public class CategoryController{
     @ApiOperation("编辑分类接口")
     @RequestMapping(value = "editCategory",method = RequestMethod.POST)
     public APIResponse updateCategory(
-            @Valid  Category category){
+            @RequestBody  @Valid  Category category){
         if(category.getId()!=null){
             categoryService.update(category);
         }
@@ -98,7 +101,7 @@ public class CategoryController{
      * @return
      */
     @ApiOperation("删除分类接口")
-    @RequestMapping(value = "deleteCategory",method = RequestMethod.POST)
+    @RequestMapping(value = "deleteCategory",method = RequestMethod.GET)
     public APIResponse deleteCategoryList(@ApiParam(name="ids",value="要删除的id，多个以逗号隔开",required=true) @RequestParam(value = "ids") String ids){
         categoryService.deleteByIds(ids);
         return APIResponse.success();
@@ -106,30 +109,24 @@ public class CategoryController{
     /**
      * 启用停用分类接口
      *
-     * @param ids
+     * @param
      * @return
      */
     @ApiOperation("启用停用分类接口")
     @RequestMapping(value = "updateState",method = RequestMethod.POST)
-    public APIResponse updateState(@ApiParam(name="ids",value="要停用启用的id，多个以逗号隔开",required=true) @RequestParam(value = "ids")  String ids,@ApiParam(name="state",value="1启用 0停用",required=true) @RequestParam(value = "state")  Integer state){
+    public APIResponse updateState(@RequestBody CategoryModel categoryModel){
         List<Integer> idList=new ArrayList<>();
-        String[] strings=ids.split(",");
+        String[] strings=categoryModel.getIds().split(",");
         for (String s : strings) {
             idList.add(Integer.parseInt(s));
         }
-        categoryService.updateState(idList,state);
+        categoryService.updateState(idList,categoryModel.getState());
         return APIResponse.success();
     }
     @ApiOperation("编辑修改删除ufd")
     @RequestMapping(value = "editUdf",method = RequestMethod.POST)
-    public APIResponse editUdf(@ApiParam(name="id",value="主键id",required=true)@RequestParam(value = "id") String id,@ApiParam(name="udf",value="要操作的udf名称",required=true)@RequestParam(value = "udf") String udf,
-                               @ApiParam(name="type",value="操作类型 ：1新增修改，2删除",required=true)@RequestParam(value = "type") String type,@ApiParam(name="udfValue",value="udf的值,type=2时传空字符",required=false)@RequestParam(value = "udfValue",required = false) String udfValue){
-        Map<String,Object> map=new HashMap<>();
-        map.put("id",id);
-        map.put("udf",udf);
-        map.put("type",type);
-        map.put("udfValue",udfValue);
-        categoryService.updateUdf(map);
+    public APIResponse editUdf(@RequestBody Map<String,Object> mnp){
+        categoryService.updateUdf(mnp);
         return APIResponse.success();
     }
 

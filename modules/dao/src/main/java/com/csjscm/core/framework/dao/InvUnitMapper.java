@@ -41,5 +41,7 @@ public interface InvUnitMapper{
       */
      int findCount(Map<String, Object> map);
 
+    int deleteByPrimaryKey(Integer id);
+
 
 }

@@ -40,11 +40,7 @@ public class ServletContextInitListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent sce) {
         sce.getServletContext().log("==================MyServletContextListener Start=============");
         //初始化最小单位
-        Map<String,Object> map=new HashMap<>();
-        map.put("isvalid", InvUnitIsvalidEnum.有效.getState());
-        List<InvUnit> invUnits = invUnitService.findListByMap(map);
-        String s = JSON.toJSONString(invUnits);
-        redisServiceFacade.set(Constant.REDIS_KEY_UNIT,s);
+        invUnitService.reloadRedisInvUnit();
 
         //商品编码—redis初始化
         List<SkuCore> coreList = skuCoreService.selectByProductNoList();

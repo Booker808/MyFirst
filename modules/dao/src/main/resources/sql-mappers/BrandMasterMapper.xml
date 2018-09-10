@@ -21,7 +21,7 @@
   <!-- 基本的sql查询条件公共引用 -->
   <sql id="searchBy">
     <trim prefix="where" prefixOverrides="and|or">
-      <if test=" id != null and id != '' ">
+      <if test=" id != null  ">
         id  = #{id,jdbcType=INTEGER}
       </if>
       <if test="brandId != null and brandId != '' ">
@@ -42,13 +42,13 @@
       <if test="createUserId != null and createUserId != '' ">
         and create_user_id = #{createUserId,jdbcType=VARCHAR}
       </if>
-      <if test="createTime != null and createTime != '' ">
+      <if test="createTime != null ">
         and create_time = #{createTime,jdbcType=TIMESTAMP}
       </if>
       <if test="editUserId != null and editUserId != '' ">
         and edit_user_id = #{editUserId,jdbcType=VARCHAR}
       </if>
-      <if test="editTime != null and editTime != '' ">
+      <if test="editTime != null ">
         and edit_time = #{editTime,jdbcType=TIMESTAMP}
       </if>
       <if test="requestId != null and requestId != '' ">

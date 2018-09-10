@@ -1,5 +1,8 @@
 package com.csjscm.core.framework.model;
 
+import org.hibernate.validator.constraints.NotBlank;
+
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -23,6 +26,7 @@ import java.util.Date;
     /**
     * 单位名称
     */
+    @NotBlank(message = "单位名称不能为空")
     private String objName;
 
     /**

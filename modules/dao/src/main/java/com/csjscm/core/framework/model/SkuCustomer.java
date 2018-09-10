@@ -2,6 +2,7 @@ package com.csjscm.core.framework.model;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.hibernate.validator.constraints.NotBlank;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -11,15 +12,19 @@ public class SkuCustomer {
     private Integer id;
 
     @ApiModelProperty("商品编码")
+    @NotBlank(message = "商品编码不能为空")
     private String productNo;
 
     @ApiModelProperty("客户编码")
+    @NotBlank(message = "客户编码不能为空")
     private String customerNo;
 
     @ApiModelProperty("客户商品编码")
+    @NotBlank(message = "客户商品编码不能为空")
     private String customerPdNo;
 
     @ApiModelProperty("客户商品名")
+    @NotBlank(message = "客户商品名不能为空")
     private String customerPdName;
 
     @ApiModelProperty("客户商品规格")

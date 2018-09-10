@@ -10,12 +10,14 @@ import com.csjscm.sweet.framework.redis.RedisServiceFacade;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +42,31 @@ public class InvUnitController {
     @RequestMapping(value = "/list",method = RequestMethod.GET)
     public APIResponse queryList(){
         return APIResponse.success(redisServiceFacade.get(Constant.REDIS_KEY_UNIT));
+    }
+    @ApiOperation("新增单位")
+    @RequestMapping(value = "/saveInvUnit",method = RequestMethod.POST)
+    public APIResponse saveInvUnit(@RequestBody  @Valid InvUnit invUnit){
+        invUnitService.save(invUnit);
+        return APIResponse.success();
+    }
+    @ApiOperation("删除单位")
+    @RequestMapping(value = "deleteInvUnit",method = RequestMethod.GET)
+    public APIResponse deleteInvUnit(@ApiParam(name="id",value="要删除的id",required=true) @RequestParam(value = "id") Integer id){
+        invUnitService.delete(id);
+        return APIResponse.success();
+    }
+    @ApiOperation("单位状态变更")
+    @RequestMapping(value = "/updateIsvalid",method = RequestMethod.GET)
+    public APIResponse updateIsvalid(@ApiParam(name="id",value="主键id",required=true) @RequestParam(value = "id") Integer id,
+                                     @ApiParam(name="isvalid",value="是否有效，1-有效，0-失效",required=true) @RequestParam(value = "isvalid") Integer isvalid){
+        invUnitService.updateIsvalid(id,isvalid);
+        return APIResponse.success();
+    }
+    @ApiOperation("编辑单位")
+    @RequestMapping(value = "/updateInvUnit",method = RequestMethod.POST)
+    public APIResponse updateInvUnit(@RequestBody  @Valid InvUnit invUnit){
+        invUnitService.update(invUnit);
+        return APIResponse.success();
     }
 
     /**

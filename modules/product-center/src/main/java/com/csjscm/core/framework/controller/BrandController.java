@@ -1,17 +1,19 @@
 package com.csjscm.core.framework.controller;
 
+import com.csjscm.core.framework.common.util.BussinessException;
 import com.csjscm.core.framework.model.BrandMaster;
 import com.csjscm.core.framework.service.BrandMasterService;
 import com.csjscm.sweet.framework.core.mvc.APIResponse;
 import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
+import com.csjscm.sweet.framework.storage.StorageService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
@@ -24,6 +26,9 @@ public class BrandController {
 
     @Autowired
     private BrandMasterService brandMasterService;
+    @Autowired
+    private StorageService storageService;
+
 
     /**
      * 查询品牌名称
@@ -51,14 +56,14 @@ public class BrandController {
 
     /**
      * 查询品牌接口
-     * @param condition
+     * @param
      * @param current
      * @param pageSize
      * @return
      */
     @ApiOperation("查询品牌接口")
     @RequestMapping(value = "/brandPage",method = RequestMethod.GET)
-    public APIResponse <QueryResult<BrandMaster>> queryBrandList(@ApiParam(name="brandName",value="品牌名称",required=false)@RequestParam String brandName,
+    public APIResponse <QueryResult<BrandMaster>> queryBrandList(@ApiParam(name="brandName",value="品牌名称")@RequestParam(required=false) String brandName,
                                       @ApiParam(name="current",value="当前页",required=true) @RequestParam(value = "current") int current,
                                       @ApiParam(name="pageSize",value="页面大小",required=true) @RequestParam(value = "pageSize") int pageSize){
         Map<String, Object> map = new HashMap<>();
@@ -88,7 +93,7 @@ public class BrandController {
      */
     @ApiOperation("创建品牌对象")
     @RequestMapping(value = "/brandObject",method = RequestMethod.POST)
-    public APIResponse createBrand(@Valid BrandMaster brand){
+    public APIResponse createBrand(@RequestBody @Valid BrandMaster brand){
         brandMasterService.insertSelective(brand);
         return APIResponse.success();
     }
@@ -100,8 +105,8 @@ public class BrandController {
      * @return
      */
     @ApiOperation("更新指定品牌")
-    @RequestMapping(value = "/brandUpdate/{id}",method = RequestMethod.PUT)
-    public APIResponse updateBrand(@RequestBody BrandMaster brand){
+    @RequestMapping(value = "/brandUpdate/{id}",method = RequestMethod.POST)
+    public APIResponse updateBrand(@RequestBody  @Valid  BrandMaster brand){
         brandMasterService.updateByPrimaryKeySelective(brand);
         return APIResponse.success();
     }
@@ -113,7 +118,7 @@ public class BrandController {
      * @return
      */
     @ApiOperation("删除指定ID的品牌对象")
-    @RequestMapping(value = "/brandDelete/{id}",method = RequestMethod.DELETE)
+    @RequestMapping(value = "brandDelete",method = RequestMethod.GET)
     public APIResponse deleteBrand(@PathVariable Integer id){
         brandMasterService.deleteByPrimaryKey(id);
         return APIResponse.success();
@@ -126,22 +131,26 @@ public class BrandController {
      * @return
      */
     @ApiOperation("删除指定品牌列表")
-    @RequestMapping(value = "/brand",method = RequestMethod.DELETE)
+    @RequestMapping(value = "brandDeleteIds",method = RequestMethod.GET)
     public APIResponse deleteBrandList(@ApiParam(name="ids",value="要删除的id，多个以逗号隔开",required=true) @RequestParam String ids){
         brandMasterService.deleteByIds(ids);
         return APIResponse.success();
     }
 
     /**
-     * 从文件导入品牌
+     * 保存品牌的图片
      *
      * @param file
      * @return
      */
-    @ApiOperation("从文件导入品牌")
+    @ApiOperation("保存品牌的图片")
     @RequestMapping(value = "/import",method = RequestMethod.POST)
-    public APIResponse importBrand(MultipartFile file){
-        System.out.println("---------------从文件导入品牌"+file.getName());
-        return APIResponse.success();
+    public APIResponse importBrand(  @ApiParam(name="file",value="保存品牌的图片",required=true) @RequestParam(value = "file")MultipartFile file) throws  Exception{
+       String store = storageService.store(file.getOriginalFilename(), file.getInputStream());
+        return APIResponse.success(System.getProperty("sweet.framework.storage.fastdfs.tracker-domain")+store);
+    }
+    @ExceptionHandler({BussinessException.class})
+    public APIResponse exceptionHandler(Exception e, HttpServletResponse response) {
+        return APIResponse.fail(e.getMessage());
     }
 }

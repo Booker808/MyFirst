@@ -148,5 +148,8 @@
         from inv_unit
         <include refid="searchBy"/>
     </select>
-
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from inv_unit
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
 </mapper>

@@ -5,6 +5,7 @@ import com.csjscm.core.framework.model.SkuCustomer;
 import com.csjscm.core.framework.model.SkuCustomerEx;
 
 import java.util.List;
+import java.util.Map;
 
 public interface SkuCustomerMapper {
     int deleteByPrimaryKey(Integer id);
@@ -22,5 +23,21 @@ public interface SkuCustomerMapper {
     List<SkuCustomer> selectByExample(SkuCustomerExample example);
 
     List<SkuCustomerEx> selectExByExample(SkuCustomerExample example);
+
+    /**
+     * 按条件查询单个
+     *
+     */
+    SkuCustomer findSelective(Map<String,Object> map);
+    /**
+     * 按条件查询list
+     *
+     */
+    List<SkuCustomer> listSelective(Map<String,Object> map);
+    /**
+     * 按条件查询条数
+     *
+     */
+    int findCount(Map<String,Object> map);
 
 }

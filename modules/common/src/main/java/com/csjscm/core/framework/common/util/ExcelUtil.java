@@ -694,7 +694,7 @@ public class ExcelUtil {
      * @param cell 
      * @return 
      */  
-    private String getCellValue(Cell cell) {
+    public static String getCellValue(Cell cell) {
         Object result = "";
         if (cell != null) {  
             switch (cell.getCellType()) {  
@@ -719,7 +719,7 @@ public class ExcelUtil {
                 break;  
             }  
         }
-        return result.toString();  
+        return result.toString().trim();
     }  
   
     /** 
@@ -960,7 +960,12 @@ public class ExcelUtil {
         if(printMsg){  
             System.out.print(msg+(tr?"\n":""));  
         }  
-    }  
+    }
+    public static String getFailMsg(int failRow, int failCell, String failMsg) {
+        StringBuffer stringBuffer = new StringBuffer();
+        stringBuffer.append("失败：行=》 ").append(failRow).append(",").append("列=》").append(failCell).append(",原因=》").append(failMsg).append("...");
+        return stringBuffer.toString();
+    }
   
     public String getExcelPath() {  
         return this.excelPath;  

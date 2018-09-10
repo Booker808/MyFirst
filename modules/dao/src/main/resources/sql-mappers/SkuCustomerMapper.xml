@@ -468,4 +468,129 @@
       udf20 = #{udf20,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <!-- 基本的sql查询条件公共引用 -->
+  <sql id="searchBy">
+    <trim prefix="where" prefixOverrides="and|or">
+      <if test=" id != null and id != '' ">
+        id  = #{id,jdbcType=INTEGER}
+      </if>
+      <if test="productNo != null and productNo != '' ">
+        and product_no = #{productNo,jdbcType=VARCHAR}
+      </if>
+      <if test="customerNo != null and customerNo != '' ">
+        and customer_no = #{customerNo,jdbcType=VARCHAR}
+      </if>
+      <if test="customerPdNo != null and customerPdNo != '' ">
+        and customer_pd_no = #{customerPdNo,jdbcType=VARCHAR}
+      </if>
+      <if test="customerPdName != null and customerPdName != '' ">
+        and customer_pd_name = #{customerPdName,jdbcType=VARCHAR}
+      </if>
+      <if test="customerPdRule != null and customerPdRule != '' ">
+        and customer_pd_rule = #{customerPdRule,jdbcType=VARCHAR}
+      </if>
+      <if test="customerPdSize != null and customerPdSize != '' ">
+        and customer_pd_size = #{customerPdSize,jdbcType=VARCHAR}
+      </if>
+      <if test="referencePrice != null">
+        and reference_price = #{referencePrice,jdbcType=DECIMAL}
+      </if>
+      <if test="recentQuotation != null  ">
+        and recent_quotation = #{recentQuotation,jdbcType=DECIMAL}
+      </if>
+      <if test="createUserId != null and createUserId != '' ">
+        and create_user_id = #{createUserId,jdbcType=VARCHAR}
+      </if>
+      <if test="createTime != null ">
+        and create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="editUserId != null and editUserId != '' ">
+        and edit_user_id = #{editUserId,jdbcType=VARCHAR}
+      </if>
+      <if test="editTime != null  ">
+        and edit_time = #{editTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="udf1 != null and udf1 != '' ">
+        and udf1 = #{udf1,jdbcType=VARCHAR}
+      </if>
+      <if test="udf2 != null and udf2 != '' ">
+        and udf2 = #{udf2,jdbcType=VARCHAR}
+      </if>
+      <if test="udf3 != null and udf3 != '' ">
+        and udf3 = #{udf3,jdbcType=VARCHAR}
+      </if>
+      <if test="udf4 != null and udf4 != '' ">
+        and udf4 = #{udf4,jdbcType=VARCHAR}
+      </if>
+      <if test="udf5 != null and udf5 != '' ">
+        and udf5 = #{udf5,jdbcType=VARCHAR}
+      </if>
+      <if test="udf6 != null and udf6 != '' ">
+        and udf6 = #{udf6,jdbcType=VARCHAR}
+      </if>
+      <if test="udf7 != null and udf7 != '' ">
+        and udf7 = #{udf7,jdbcType=VARCHAR}
+      </if>
+      <if test="udf8 != null and udf8 != '' ">
+        and udf8 = #{udf8,jdbcType=VARCHAR}
+      </if>
+      <if test="udf9 != null and udf9 != '' ">
+        and udf9 = #{udf9,jdbcType=VARCHAR}
+      </if>
+      <if test="udf10 != null and udf10 != '' ">
+        and udf10 = #{udf10,jdbcType=VARCHAR}
+      </if>
+      <if test="udf11 != null and udf11 != '' ">
+        and udf11 = #{udf11,jdbcType=VARCHAR}
+      </if>
+      <if test="udf12 != null and udf12 != '' ">
+        and udf12 = #{udf12,jdbcType=VARCHAR}
+      </if>
+      <if test="udf13 != null and udf13 != '' ">
+        and udf13 = #{udf13,jdbcType=VARCHAR}
+      </if>
+      <if test="udf14 != null and udf14 != '' ">
+        and udf14 = #{udf14,jdbcType=VARCHAR}
+      </if>
+      <if test="udf15 != null and udf15 != '' ">
+        and udf15 = #{udf15,jdbcType=VARCHAR}
+      </if>
+      <if test="udf16 != null and udf16 != '' ">
+        and udf16 = #{udf16,jdbcType=VARCHAR}
+      </if>
+      <if test="udf17 != null and udf17 != '' ">
+        and udf17 = #{udf17,jdbcType=VARCHAR}
+      </if>
+      <if test="udf18 != null and udf18 != '' ">
+        and udf18 = #{udf18,jdbcType=VARCHAR}
+      </if>
+      <if test="udf19 != null and udf19 != '' ">
+        and udf19 = #{udf19,jdbcType=VARCHAR}
+      </if>
+      <if test="udf20 != null and udf20 != '' ">
+        and udf20 = #{udf20,jdbcType=VARCHAR}
+      </if>
+      <if test="requestId != null and requestId != '' ">
+        and request_id = #{requestId,jdbcType=VARCHAR}
+      </if>
+    </trim>
+  </sql>
+  <select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+    select
+    <include refid="Base_Column_List" />
+    from sku_customer
+    <include refid="searchBy"/>
+  </select>
+
+  <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+    select
+    <include refid="Base_Column_List" />
+    from sku_customer
+    <include refid="searchBy"/>
+  </select>
+  <select id="findCount" resultType="java.lang.Integer" parameterType="java.util.HashMap">
+    select count(id)
+    from sku_customer
+    <include refid="searchBy"/>
+  </select>
 </mapper>
