@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- sys_dict表:数据字典表模块 -->
+<mapper namespace="com.csjscm.core.framework.dao.SysDictMapper">
+    <!--返回Map-->        
+    <resultMap id="BaseResultMap" type="com.csjscm.core.framework.model.SysDict">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="type_code" property="typeCode" jdbcType="VARCHAR" />
+        <result column="type_name" property="typeName" jdbcType="VARCHAR" />
+        <result column="sort" property="sort" jdbcType="INTEGER" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+    
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="Base_Column_List">
+        id,type_code,type_name,sort,remark 
+    </sql>
+    
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="searchBy">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test=" id != null and id != '' ">
+                id  = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="typeCode != null and typeCode != '' ">
+                and type_code = #{typeCode,jdbcType=VARCHAR}
+            </if>
+            <if test="typeName != null and typeName != '' ">
+                and type_name = #{typeName,jdbcType=VARCHAR}
+            </if>
+            <if test="sort != null and sort != '' ">
+                and sort = #{sort,jdbcType=INTEGER}
+            </if>
+            <if test="remark != null and remark != '' ">
+                and remark = #{remark,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </sql>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from  sys_dict
+        where id =   #{id,jdbcType=INTEGER}
+    </delete>
+    
+    <insert id="insert" parameterType="com.csjscm.core.framework.model.SysDict">
+        insert into sys_dict(type_code,type_name,sort,remark)values(#{typeCode,jdbcType=VARCHAR},#{typeName,jdbcType=VARCHAR},#{sort,jdbcType=INTEGER},#{remark,jdbcType=VARCHAR})
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.csjscm.core.framework.model.SysDict">
+        insert into sys_dict
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null ">
+                id,
+            </if>
+            <if test="typeCode != null ">
+                type_code,
+            </if>
+            <if test="typeName != null ">
+                type_name,
+            </if>
+            <if test="sort != null ">
+                sort,
+            </if>
+            <if test="remark != null ">
+                remark,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                     <if test="id != null ">
+                        #{id,jdbcType=INTEGER},
+                     </if>
+                     <if test="typeCode != null ">
+                        #{typeCode,jdbcType=VARCHAR},
+                     </if>
+                     <if test="typeName != null ">
+                        #{typeName,jdbcType=VARCHAR},
+                     </if>
+                     <if test="sort != null ">
+                        #{sort,jdbcType=INTEGER},
+                     </if>
+                     <if test="remark != null ">
+                        #{remark,jdbcType=VARCHAR},
+                     </if>
+        </trim>
+    </insert>
+    <update id="update" parameterType="com.csjscm.core.framework.model.SysDict">
+        update sys_dict set 
+            type_code = #{typeCode,jdbcType=VARCHAR},
+            type_name = #{typeName,jdbcType=VARCHAR},
+            sort = #{sort,jdbcType=INTEGER},
+            remark = #{remark,jdbcType=VARCHAR}
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <update id="updateSelective"  parameterType="com.csjscm.core.framework.model.SysDict">
+        update sys_dict
+          <set>
+            <if test="typeCode != null and typeCode != '' ">        
+                type_code = #{typeCode,jdbcType=VARCHAR},                
+            </if>
+            <if test="typeName != null and typeName != '' ">        
+                type_name = #{typeName,jdbcType=VARCHAR},                
+            </if>
+            <if test="sort != null and sort != '' ">        
+                sort = #{sort,jdbcType=INTEGER},                
+            </if>
+            <if test="remark != null and remark != '' ">        
+                remark = #{remark,jdbcType=VARCHAR}                
+            </if>
+        </set>    
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <select id="findByPrimary" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List" />
+        from sys_dict
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+	<select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from sys_dict
+        <include refid="searchBy"/>
+    </select>
+               
+    <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from sys_dict
+        <include refid="searchBy"/>
+    </select>
+    <select id="findCount" resultType="java.lang.Integer" parameterType="java.util.HashMap">
+        select count(id)
+        from sys_dict
+        <include refid="searchBy"/>
+    </select>
+
+</mapper>

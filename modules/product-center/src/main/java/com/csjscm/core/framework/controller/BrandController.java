@@ -124,18 +124,6 @@ public class BrandController {
         return APIResponse.success();
     }
 
-    /**
-     * 删除指定品牌列表
-     *
-     * @param ids
-     * @return
-     */
-/*    @ApiOperation("删除指定品牌列表")
-    @RequestMapping(value = "brandDeleteIds",method = RequestMethod.GET)
-    public APIResponse deleteBrandList(@ApiParam(name="ids",value="要删除的id，多个以逗号隔开",required=true) @RequestParam String ids){
-        brandMasterService.deleteByIds(ids);
-        return APIResponse.success();
-    }*/
 
     /**
      * 保存品牌的图片

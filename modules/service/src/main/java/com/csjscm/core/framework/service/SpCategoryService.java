@@ -1,10 +1,8 @@
 package com.csjscm.core.framework.service;
 
-import com.csjscm.core.framework.model.Category;
-import com.csjscm.core.framework.vo.CategoryJsonModel;
+import com.csjscm.core.framework.model.SpCategory;
+import com.csjscm.core.framework.vo.SpCategoryJsonModel;
 import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
-import com.github.pagehelper.Page;
-import io.swagger.models.auth.In;
 
 import java.util.List;
 import java.util.Map;
@@ -17,35 +15,35 @@ import java.util.Map;
  * @date 2018-08-31 13:14:18
  */
 
-public interface CategoryService {
-    int save(Category t);
+public interface SpCategoryService {
+    int save(SpCategory t);
 
 
-    int update(Category t);
+    int update(SpCategory t);
 
-    Category findByPrimary(Integer id);
+    SpCategory findByPrimary(Integer id);
      /**
       * 按条件查询单个
       *
       */
-     Category findSelective(Map<String,Object> map);
+     SpCategory findSelective(Map<String, Object> map);
      /**
       * 按条件查询list
       *
       */
-     List<Category> listSelective(Map<String,Object> map);
+     List<SpCategory> listSelective(Map<String, Object> map);
      /**
       * 按条件查询条数
       *
       */
-     int findCount(Map<String,Object> map);
+     int findCount(Map<String, Object> map);
 
     /**
      * 分页查询
      * @param map
      * @return
      */
-    QueryResult<Category> findPage(Map<String,Object> map, int current, int pageSize);
+    QueryResult<SpCategory> findPage(Map<String, Object> map, int current, int pageSize);
 
     /**
      * 按id删除 多个id 以逗号隔开
@@ -58,17 +56,17 @@ public interface CategoryService {
      * @param ids
      * @param state
      */
-    void updateState(List<Integer> ids , Integer state);
+    void updateState(List<Integer> ids, Integer state);
 
     /**
      * 编辑udf
      * @param map
      */
-    void updateUdf(Map<String,Object> map);
+    void updateUdf(Map<String, Object> map);
 
     /**
      * 一个分类接口  三级树状结构 把所有的分类集成起来, 并且缓存到 redis里面
      * @return
      */
-    List<CategoryJsonModel>  getJsonCategory();
+    List<SpCategoryJsonModel>  getJsonCategory();
 }

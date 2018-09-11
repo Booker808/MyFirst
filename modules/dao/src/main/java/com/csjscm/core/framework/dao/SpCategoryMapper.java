@@ -2,7 +2,8 @@ package com.csjscm.core.framework.dao;
 
 
 import com.csjscm.core.framework.model.Category;
-import com.csjscm.core.framework.vo.CategoryJsonModel;
+import com.csjscm.core.framework.model.SpCategory;
+import com.csjscm.core.framework.vo.SpCategoryJsonModel;
 
 import java.util.List;
 import java.util.Map;
@@ -16,28 +17,28 @@ import java.util.Map;
  */
 
 
-public interface CategoryMapper{
+public interface SpCategoryMapper {
     int deleteByPrimaryKey(Integer id);
 
-    int insert(Category t);
+    int insert(SpCategory t);
 
-    int insertSelective(Category t);
+    int insertSelective(SpCategory t);
 
-    int updateSelective(Category t);
+    int updateSelective(SpCategory t);
 
-    int update(Category t);
+    int update(SpCategory t);
 
-    Category findByPrimary(Integer id);
+    SpCategory findByPrimary(Integer id);
      /**
       * 按条件查询单个
       *
       */
-     Category findSelective(Map<String, Object> map);
+     SpCategory findSelective(Map<String, Object> map);
      /**
       * 按条件查询list
       *
       */
-     List<Category> listSelective(Map<String, Object> map);
+     List<SpCategory> listSelective(Map<String, Object> map);
      /**
       * 按条件查询条数
       *
@@ -47,12 +48,12 @@ public interface CategoryMapper{
      * 编辑udf
      * @param map
      */
-    void updateUdf(Map<String,Object> map);
+    void updateUdf(Map<String, Object> map);
 
     /**
      * 查询全部
      * @return
      */
-    List<CategoryJsonModel>  findModelAll();
+    List<SpCategoryJsonModel>  findModelAll();
 
 }

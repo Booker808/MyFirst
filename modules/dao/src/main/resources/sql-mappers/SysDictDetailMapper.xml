@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- sys_dict_detail表:字典表数据明细模块 -->
+<mapper namespace="com.csjscm.core.framework.dao.SysDictDetailMapper">
+    <!--返回Map-->        
+    <resultMap id="BaseResultMap" type="com.csjscm.core.framework.model.SysDictDetail">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="item_code" property="itemCode" jdbcType="VARCHAR" />
+        <result column="item_value" property="itemValue" jdbcType="VARCHAR" />
+        <result column="parent_id" property="parentId" jdbcType="INTEGER" />
+        <result column="state" property="state" jdbcType="VARCHAR" />
+    </resultMap>
+    
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="Base_Column_List">
+        id,item_code,item_value,parent_id,state 
+    </sql>
+    
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="searchBy">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test=" id != null and id != '' ">
+                id  = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="itemCode != null and itemCode != '' ">
+                and item_code = #{itemCode,jdbcType=VARCHAR}
+            </if>
+            <if test="itemValue != null and itemValue != '' ">
+                and item_value = #{itemValue,jdbcType=VARCHAR}
+            </if>
+            <if test="itemValueLike != null and itemValueLike != '' ">
+                and item_value like concat('%',#{itemValueLike,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="parentId != null and parentId != '' ">
+                and parent_id = #{parentId,jdbcType=INTEGER}
+            </if>
+            <if test="state != null and state != '' ">
+                and state = #{state,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </sql>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from  sys_dict_detail
+        where id =   #{id,jdbcType=INTEGER}
+    </delete>
+    
+    <insert id="insert" parameterType="com.csjscm.core.framework.model.SysDictDetail">
+        insert into sys_dict_detail(item_code,item_value,parent_id,state)values(#{itemCode,jdbcType=VARCHAR},#{itemValue,jdbcType=VARCHAR},#{parentId,jdbcType=INTEGER},#{state,jdbcType=VARCHAR})
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.csjscm.core.framework.model.SysDictDetail">
+        insert into sys_dict_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null ">
+                id,
+            </if>
+            <if test="itemCode != null ">
+                item_code,
+            </if>
+            <if test="itemValue != null ">
+                item_value,
+            </if>
+            <if test="parentId != null ">
+                parent_id,
+            </if>
+            <if test="state != null ">
+                state,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                     <if test="id != null ">
+                        #{id,jdbcType=INTEGER},
+                     </if>
+                     <if test="itemCode != null ">
+                        #{itemCode,jdbcType=VARCHAR},
+                     </if>
+                     <if test="itemValue != null ">
+                        #{itemValue,jdbcType=VARCHAR},
+                     </if>
+                     <if test="parentId != null ">
+                        #{parentId,jdbcType=INTEGER},
+                     </if>
+                     <if test="state != null ">
+                        #{state,jdbcType=VARCHAR},
+                     </if>
+        </trim>
+    </insert>
+    <update id="update" parameterType="com.csjscm.core.framework.model.SysDictDetail">
+        update sys_dict_detail set 
+            item_code = #{itemCode,jdbcType=VARCHAR},
+            item_value = #{itemValue,jdbcType=VARCHAR},
+            parent_id = #{parentId,jdbcType=INTEGER},
+            state = #{state,jdbcType=VARCHAR}
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <update id="updateSelective"  parameterType="com.csjscm.core.framework.model.SysDictDetail">
+        update sys_dict_detail
+          <set>
+            <if test="itemCode != null and itemCode != '' ">        
+                item_code = #{itemCode,jdbcType=VARCHAR},                
+            </if>
+            <if test="itemValue != null and itemValue != '' ">        
+                item_value = #{itemValue,jdbcType=VARCHAR},                
+            </if>
+            <if test="parentId != null and parentId != '' ">        
+                parent_id = #{parentId,jdbcType=INTEGER},                
+            </if>
+            <if test="state != null and state != '' ">        
+                state = #{state,jdbcType=VARCHAR}                
+            </if>
+        </set>    
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <select id="findByPrimary" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List" />
+        from sys_dict_detail
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+	<select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from sys_dict_detail
+        <include refid="searchBy"/>
+    </select>
+               
+    <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from sys_dict_detail
+        <include refid="searchBy"/>
+    </select>
+    <select id="findCount" resultType="java.lang.Integer" parameterType="java.util.HashMap">
+        select count(id)
+        from sys_dict_detail
+        <include refid="searchBy"/>
+    </select>
+
+</mapper>

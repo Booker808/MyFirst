@@ -14,4 +14,20 @@ public class Constant {
      * redis中最小单位的key
      */
     public static final String REDIS_KEY_UNIT = "unitList";
+    /**
+     * redis中 商品分类json数据的 key
+     */
+    public static final String REDIS_KEY_JSON_CATEGORY = "categoryJsonStr";
+    /**
+     * redis中 SP商品分类json数据的 key
+     */
+    public static final String REDIS_KEY_JSON_SP_CATEGORY = "spCategoryJsonStr";
+    /**
+     * 企业编码前缀
+     */
+    public static final String  ENTNUMBER_INDEX = "EP";
+    /**
+     * 字典表中银行的code
+     */
+    public static final String  DICT_CODE_BANK = "bankName";
 }
