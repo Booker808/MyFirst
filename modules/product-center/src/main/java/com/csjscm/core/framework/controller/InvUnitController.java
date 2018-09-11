@@ -3,14 +3,17 @@ package com.csjscm.core.framework.controller;
 import com.csjscm.core.framework.common.constant.Constant;
 import com.csjscm.core.framework.common.enums.InvUnitIsvalidEnum;
 import com.csjscm.core.framework.common.util.BussinessException;
+import com.csjscm.core.framework.model.Category;
 import com.csjscm.core.framework.model.InvUnit;
 import com.csjscm.core.framework.service.InvUnitService;
 import com.csjscm.sweet.framework.core.mvc.APIResponse;
+import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
 import com.csjscm.sweet.framework.redis.RedisServiceFacade;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.models.auth.In;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
@@ -68,7 +71,24 @@ public class InvUnitController {
         invUnitService.update(invUnit);
         return APIResponse.success();
     }
-
+    @ApiOperation("单位查询分类接口")
+    @RequestMapping(value = "InvUnitPage",method = RequestMethod.GET)
+    public APIResponse<QueryResult<InvUnit>> queryCategoryList(@ApiParam(name="objName",value="单位名称",required=false) @RequestParam(value = "objName",required = false) String objName,
+                                                                @ApiParam(name="current",value="当前页",required=true) @RequestParam(value = "current") int current,
+                                                                @ApiParam(name="pageSize",value="页面大小",required=true) @RequestParam(value = "pageSize") int pageSize){
+        Map<String,Object> map=new HashMap<>();
+        if(StringUtils.isNotBlank(objName)){
+            map.put("objName",objName);
+        }
+        QueryResult<InvUnit> page = invUnitService.findPage(map, current, pageSize);
+        return APIResponse.success(page);
+    }
+    @ApiOperation("获取单位")
+    @RequestMapping(value = "getInvUnit",method = RequestMethod.GET)
+    public APIResponse getInvUnit(@ApiParam(name="id",value="主键id",required=true) @RequestParam(value = "id") Integer id){
+        InvUnit byPrimary = invUnitService.findByPrimary(id);
+        return APIResponse.success(byPrimary);
+    }
     /**
      * 自定义异常捕获
      * @param e

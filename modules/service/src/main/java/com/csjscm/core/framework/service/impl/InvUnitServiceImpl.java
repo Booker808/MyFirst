@@ -7,7 +7,10 @@ import com.csjscm.core.framework.common.util.BussinessException;
 import com.csjscm.core.framework.dao.InvUnitMapper;
 import com.csjscm.core.framework.model.InvUnit;
 import com.csjscm.core.framework.service.InvUnitService;
+import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
 import com.csjscm.sweet.framework.redis.RedisServiceFacade;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import org.apache.cxf.Bus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -95,5 +98,17 @@ public class InvUnitServiceImpl implements InvUnitService {
         byPrimary.setIsvalid(isvalid);
         invUnitMapper.updateSelective(byPrimary);
         reloadRedisInvUnit();
+    }
+
+    @Override
+    public QueryResult<InvUnit> findPage(Map<String, Object> map, int current, int pageSize) {
+        PageHelper.startPage(current,pageSize);
+        Page<InvUnit> invUnits =(Page<InvUnit>) invUnitMapper.listSelective(map);
+        return new QueryResult(invUnits);
+    }
+
+    @Override
+    public InvUnit findByPrimary(Integer id) {
+        return invUnitMapper.findByPrimary(id);
     }
 }

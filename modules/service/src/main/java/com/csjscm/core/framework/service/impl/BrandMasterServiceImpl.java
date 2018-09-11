@@ -2,6 +2,7 @@ package com.csjscm.core.framework.service.impl;
 
 import com.csjscm.core.framework.common.util.BussinessException;
 import com.csjscm.core.framework.dao.BrandMasterMapper;
+import com.csjscm.core.framework.dao.SkuCoreMapper;
 import com.csjscm.core.framework.model.BrandMaster;
 import com.csjscm.core.framework.service.BrandMasterService;
 import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
@@ -21,6 +22,8 @@ public class BrandMasterServiceImpl implements BrandMasterService {
 
     @Autowired
     private BrandMasterMapper brandMasterMapper;
+    @Autowired
+    private SkuCoreMapper skuCoreMapper;
 
     @Override
     public QueryResult<BrandMaster> queryBrandMasterList(Map<String, Object> map, int current, int pageSize) {
@@ -98,6 +101,12 @@ public class BrandMasterServiceImpl implements BrandMasterService {
 
     @Override
     public int deleteByPrimaryKey(Integer id) {
+        Map<String,Object> map=new HashMap<>();
+        map.put("brandId",id);
+        int count = skuCoreMapper.findCount(map);
+        if(count>0){
+            throw  new  BussinessException("该品牌已关联商品，无法删除");
+        }
         return brandMasterMapper.deleteByPrimaryKey(id);
     }
 

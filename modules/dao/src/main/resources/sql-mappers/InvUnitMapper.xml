@@ -109,7 +109,7 @@
             <if test="objType != null and objType != '' ">        
                 obj_type = #{objType,jdbcType=INTEGER},                
             </if>
-            <if test="isvalid != null and isvalid != '' ">        
+            <if test="isvalid != null">
                 isvalid = #{isvalid,jdbcType=INTEGER},                
             </if>
             <if test="memo != null and memo != '' ">        

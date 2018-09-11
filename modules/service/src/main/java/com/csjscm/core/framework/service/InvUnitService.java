@@ -1,6 +1,8 @@
 package com.csjscm.core.framework.service;
 
+import com.csjscm.core.framework.model.Category;
 import com.csjscm.core.framework.model.InvUnit;
+import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
 import io.swagger.models.auth.In;
 
 import java.util.List;
@@ -31,5 +33,14 @@ public interface InvUnitService {
     void reloadRedisInvUnit();
 
     void  updateIsvalid(Integer id,Integer isvalid);
+
+    /**
+     * 分页查询
+     * @param map
+     * @return
+     */
+    QueryResult<InvUnit> findPage(Map<String,Object> map, int current, int pageSize);
+
+    InvUnit findByPrimary(Integer id);
 
 }

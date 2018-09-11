@@ -105,7 +105,7 @@ public class BrandController {
      * @return
      */
     @ApiOperation("更新指定品牌")
-    @RequestMapping(value = "/brandUpdate/{id}",method = RequestMethod.POST)
+    @RequestMapping(value = "brandUpdate",method = RequestMethod.POST)
     public APIResponse updateBrand(@RequestBody  @Valid  BrandMaster brand){
         brandMasterService.updateByPrimaryKeySelective(brand);
         return APIResponse.success();
@@ -119,7 +119,7 @@ public class BrandController {
      */
     @ApiOperation("删除指定ID的品牌对象")
     @RequestMapping(value = "brandDelete",method = RequestMethod.GET)
-    public APIResponse deleteBrand(@PathVariable Integer id){
+    public APIResponse deleteBrand(@ApiParam(name="id",value="要删除的id",required=true)Integer id){
         brandMasterService.deleteByPrimaryKey(id);
         return APIResponse.success();
     }
@@ -130,12 +130,12 @@ public class BrandController {
      * @param ids
      * @return
      */
-    @ApiOperation("删除指定品牌列表")
+/*    @ApiOperation("删除指定品牌列表")
     @RequestMapping(value = "brandDeleteIds",method = RequestMethod.GET)
     public APIResponse deleteBrandList(@ApiParam(name="ids",value="要删除的id，多个以逗号隔开",required=true) @RequestParam String ids){
         brandMasterService.deleteByIds(ids);
         return APIResponse.success();
-    }
+    }*/
 
     /**
      * 保存品牌的图片
