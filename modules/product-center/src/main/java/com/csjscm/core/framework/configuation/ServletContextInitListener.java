@@ -7,8 +7,10 @@ import com.csjscm.core.framework.common.constant.Constant;
 import com.csjscm.core.framework.common.enums.InvUnitIsvalidEnum;
 import com.csjscm.core.framework.model.InvUnit;
 import com.csjscm.core.framework.model.SkuCore;
+import com.csjscm.core.framework.service.CategoryService;
 import com.csjscm.core.framework.service.InvUnitService;
 import com.csjscm.core.framework.service.SkuCoreService;
+import com.csjscm.core.framework.service.SpCategoryService;
 import com.csjscm.sweet.framework.redis.RedisServiceFacade;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,12 +37,19 @@ public class ServletContextInitListener implements ServletContextListener {
     private SkuCoreService skuCoreService;
     @Autowired
     private InvUnitService invUnitService;
+    @Autowired
+    private CategoryService categoryService;
+    @Autowired
+    private SpCategoryService spCategoryService;
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         sce.getServletContext().log("==================MyServletContextListener Start=============");
         //初始化最小单位
         invUnitService.reloadRedisInvUnit();
+        //初始化分类
+        categoryService.getJsonCategory();
+        spCategoryService.getJsonCategory();
 
         //商品编码—redis初始化
         List<SkuCore> coreList = skuCoreService.selectByProductNoList();

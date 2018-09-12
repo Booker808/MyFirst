@@ -120,4 +120,5 @@ public class EnterpriseMemberController {
     public APIResponse exceptionHandler(Exception e, HttpServletResponse response) {
           return APIResponse.fail(e.getMessage());
     }
+
 }

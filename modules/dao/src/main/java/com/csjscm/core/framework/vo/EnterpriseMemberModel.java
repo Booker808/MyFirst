@@ -1,5 +1,6 @@
 package com.csjscm.core.framework.vo;
 
+
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
@@ -19,13 +20,13 @@ public class EnterpriseMemberModel {
     /**
      * 企业名称
      */
-    @NotBlank(message = "企业名称")
+    @NotBlank(message = "不能为空企业名称")
     private String entName;
 
     /**
      * 法人
      */
-    @NotBlank(message = "法人")
+    @NotBlank(message = "不能为空法人")
     private String legalPerson;
 
     /**
