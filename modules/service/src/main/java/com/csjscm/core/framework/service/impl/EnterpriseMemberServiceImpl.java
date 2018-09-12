@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,7 +51,16 @@ public class EnterpriseMemberServiceImpl implements EnterpriseMemberService {
     @Transactional
     public int saveEnterpriseMember(EnterpriseMemberModel enterpriseMemberModel) {
          //暂定 企业编码生成规则
-        String  entNumber= Constant.ENTNUMBER_INDEX+System.currentTimeMillis()+(int)((Math.random()*9+1)*100000);
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyyMMdd");
+        String format = simpleDateFormat.format(new Date())+"0001";
+        Long newno=Long.parseLong(format);
+        String maxEntNumber = enterpriseMemberMapper.findMaxEntNumber().replace(Constant.ENTNUMBER_INDEX,"").trim();
+        Long oldno=Long.parseLong(maxEntNumber);
+        String  entNumber=Constant.ENTNUMBER_INDEX+format;
+        if(oldno>=newno){
+            Long i = oldno + 1;
+            entNumber=Constant.ENTNUMBER_INDEX+i;
+        }
         if(TradeTypeEnum.供应商采购商.getState().intValue()==enterpriseMemberModel.getTradeType().intValue()){
             if(enterpriseMemberModel.getPartnerType()==null){
                 throw  new BussinessException("供应商类型不能为空");

@@ -44,4 +44,5 @@ public interface EnterpriseMemberService {
      * @return
      */
     int updateEnterpriseMember(EnterpriseMemberModel enterpriseMemberModel);
+
 }

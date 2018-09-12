@@ -5,6 +5,7 @@ import com.csjscm.core.framework.common.util.BussinessException;
 import com.csjscm.core.framework.model.SkuPartner;
 import com.csjscm.core.framework.model.SpCategory;
 import com.csjscm.core.framework.service.CategoryService;
+import com.csjscm.core.framework.service.EnterpriseMemberService;
 import com.csjscm.core.framework.service.SpCategoryService;
 import com.csjscm.core.framework.service.product.ProductPartnerService;
 import com.csjscm.sweet.framework.core.mvc.APIResponse;
@@ -33,6 +34,8 @@ public class ShoppingCenterController {
     private RedisServiceFacade redisServiceFacade;
     @Autowired
     private ProductPartnerService productPartnerService;
+    @Autowired
+    private EnterpriseMemberService enterpriseMemberService;
     /**
      * 获取商城分类json
      *
@@ -40,6 +43,9 @@ public class ShoppingCenterController {
      */
     @RequestMapping(value = "/getJsonSpCategory",method = RequestMethod.GET)
     public APIResponse getJsonSpCategory(){
+        if(!redisServiceFacade.exists(Constant.REDIS_KEY_JSON_SP_CATEGORY)){
+            spCategoryService.getJsonCategory();
+        }
         return APIResponse.success(redisServiceFacade.get(Constant.REDIS_KEY_JSON_SP_CATEGORY));
     }
 
@@ -60,7 +66,7 @@ public class ShoppingCenterController {
     }
 
     /**
-     * 校验
+     * 校验供应商企业、客户企业是否存在的接口
      * @param name
      * @param type
      * @return

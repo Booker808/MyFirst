@@ -69,9 +69,8 @@
                 and trade_type = #{tradeType,jdbcType=INTEGER}
             </if>
             <if test="tradeTypeIn != null and tradeTypeIn != '' ">
-                and tradeTypeIn in ${tradeTypeIn}
+                and trade_type in ${tradeTypeIn}
             </if>
-
             <if test="partnerType != null and partnerType != '' ">
                 and partner_type = #{partnerType,jdbcType=INTEGER}
             </if>
@@ -368,5 +367,8 @@
         from enterprise_member
         <include refid="searchBy"/>
     </select>
-
+    <select id="findMaxEntNumber" resultType="java.lang.String">
+   SELECT max(ent_number)
+   FROM `enterprise_member`
+    </select>
 </mapper>

@@ -42,5 +42,11 @@ public interface EnterpriseMemberMapper{
       */
      int findCount(Map<String, Object> map);
 
+    /**
+     * 查询最大编码
+     * @return
+     */
+     String findMaxEntNumber();
+
 
 }
