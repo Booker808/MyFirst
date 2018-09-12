@@ -2,30 +2,23 @@ package com.csjscm.core.framework.controller;
 
 import com.csjscm.core.framework.common.constant.Constant;
 import com.csjscm.core.framework.common.util.BussinessException;
-import com.csjscm.core.framework.model.Category;
+import com.csjscm.core.framework.model.SkuPartner;
 import com.csjscm.core.framework.model.SpCategory;
 import com.csjscm.core.framework.service.CategoryService;
 import com.csjscm.core.framework.service.SpCategoryService;
-import com.csjscm.core.framework.vo.CategoryModel;
+import com.csjscm.core.framework.service.product.ProductPartnerService;
 import com.csjscm.sweet.framework.core.mvc.APIResponse;
-import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
 import com.csjscm.sweet.framework.redis.RedisServiceFacade;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 import javax.validation.ValidationException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 
 
 @Controller
@@ -38,7 +31,8 @@ public class ShoppingCenterController {
     private SpCategoryService spCategoryService;
     @Autowired
     private RedisServiceFacade redisServiceFacade;
-
+    @Autowired
+    private ProductPartnerService productPartnerService;
     /**
      * 获取商城分类json
      *
@@ -48,10 +42,6 @@ public class ShoppingCenterController {
     public APIResponse getJsonSpCategory(){
         return APIResponse.success(redisServiceFacade.get(Constant.REDIS_KEY_JSON_SP_CATEGORY));
     }
-/*    @RequestMapping(value = "/getJsonSpCategoryList",method = RequestMethod.GET)
-    public APIResponse getJsonSpCategoryList(){
-        return APIResponse.success(spCategoryService.getJsonCategory());
-    }*/
 
     /**
      * 根据parentClass查询分类
@@ -80,10 +70,35 @@ public class ShoppingCenterController {
 
         return APIResponse.success();
     }
+
+    /**
+     * 创建供应商 客户企业
+     * @return
+     */
     @RequestMapping(value = "/createEnterprise",method = RequestMethod.POST)
     public APIResponse createEnterprise(){
 
         return APIResponse.success();
+    }
+    /**
+     * 新建供应商商品档案接口
+     * @return
+     */
+    @RequestMapping(value = "/createSkuPartner",method = RequestMethod.POST)
+    public APIResponse createSkuPartner(){
+
+        return APIResponse.success();
+    }
+    /**
+     * 获取供应商列表
+     * @return
+     */
+    @RequestMapping(value = "/getSkuPartnerList",method = RequestMethod.GET)
+    public APIResponse getSkuPartnerList(@RequestParam(value = "supplyNo",required =true) String supplyNo){
+        Map<String,Object> map=new HashMap<>();
+        map.put("supplyNo",supplyNo);
+        List<SkuPartner> skuPartners = productPartnerService.listSelective(map);
+        return APIResponse.success(skuPartners);
     }
 
 

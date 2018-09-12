@@ -7,6 +7,7 @@ import com.csjscm.core.framework.model.SkuPartnerEx;
 import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Map;
 
 public interface ProductPartnerService {
@@ -25,4 +26,9 @@ public interface ProductPartnerService {
      * @param skuPartner
      */
     void  save(SkuPartner skuPartner);
+    /**
+     * 按条件查询list
+     *
+     */
+    List<SkuPartner> listSelective(Map<String,Object> map);
 }

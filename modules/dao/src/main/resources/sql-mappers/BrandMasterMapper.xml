@@ -30,6 +30,9 @@
       <if test="brandName != null and brandName != '' ">
         and brand_name = #{brandName,jdbcType=VARCHAR}
       </if>
+      <if test="brandNameLike != null and brandNameLike != '' ">
+        and brand_name like concat('%',#{brandNameLike,jdbcType=VARCHAR},'%')
+      </if>
       <if test="brandPic != null and brandPic != '' ">
         and brand_pic = #{brandPic,jdbcType=VARCHAR}
       </if>

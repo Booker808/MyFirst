@@ -41,6 +41,7 @@ public class EnterpriseMemberController {
     private SysDictDetailService sysDictDetailService;
 
 
+
     /**
      * 查询分类接口
      *
@@ -51,12 +52,12 @@ public class EnterpriseMemberController {
     public APIResponse<QueryResult<EnterpriseMember>> queryCategoryList(@ApiParam(name="entName",value="企业名称",required=false) @RequestParam(value = "entName",required = false) String entName,
                                                                         @ApiParam(name="current",value="当前页",required=true) @RequestParam(value = "current") int current,
                                                                         @ApiParam(name="pageSize",value="页面大小",required=true) @RequestParam(value = "pageSize") int pageSize,
-                                                                        @ApiParam(name="partnerType",value="供应商类型 1标准型  2战略型  3独家/客户指定型",required=false) @RequestParam(value = "partnerType",required = false) Integer partnerType,
+                                                                        @ApiParam(name="tradeType",value=" 1供应商  2采购商 3供应商&采购商",required=false) @RequestParam(value = "tradeType",required = false) Integer tradeType,
                                                                         @ApiParam(name="entNumber",value="企业编号",required=false) @RequestParam(value = "entNumber",required = false) String entNumber){
 
         Map<String,Object> map=new HashMap<>();
-        map.put("entName",entName);
-        map.put("partnerType",partnerType);
+        map.put("entNameLike",entName);
+        map.put("tradeType",tradeType);
         map.put("entNumber",entNumber);
         QueryResult<EnterpriseMember> page = enterpriseMemberService.findPage(map, current, pageSize);
         return APIResponse.success(page);
@@ -77,6 +78,7 @@ public class EnterpriseMemberController {
     @ApiOperation("获取银行集合")
     @RequestMapping(value = "getBankList",method = RequestMethod.GET)
     public APIResponse getBankList(@ApiParam(name="bankName",value="筛选的银行名称，不传查询全部银行",required=false)String bankName){
+        String  entNumber= Constant.ENTNUMBER_INDEX+System.currentTimeMillis()+(int)((Math.random()*9+1)*100000);
         SysDict byCode = sysDictService.findByCode(Constant.DICT_CODE_BANK);
         if(byCode==null){
             return APIResponse.success();

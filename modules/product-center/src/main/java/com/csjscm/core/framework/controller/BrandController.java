@@ -67,7 +67,7 @@ public class BrandController {
                                       @ApiParam(name="current",value="当前页",required=true) @RequestParam(value = "current") int current,
                                       @ApiParam(name="pageSize",value="页面大小",required=true) @RequestParam(value = "pageSize") int pageSize){
         Map<String, Object> map = new HashMap<>();
-        map.put("brandName",brandName);
+        map.put("brandNameLike",brandName);
         QueryResult<BrandMaster> page = brandMasterService.queryBrandMasterList(map, current, pageSize);
         return APIResponse.success(page);
     }

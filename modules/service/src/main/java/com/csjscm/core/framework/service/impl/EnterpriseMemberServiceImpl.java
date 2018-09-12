@@ -1,6 +1,7 @@
 package com.csjscm.core.framework.service.impl;
 
 import com.csjscm.core.framework.common.constant.Constant;
+import com.csjscm.core.framework.common.enums.TradeTypeEnum;
 import com.csjscm.core.framework.common.util.BussinessException;
 import com.csjscm.core.framework.dao.EnterpriseMemberMapper;
 import com.csjscm.core.framework.dao.EnterpriseSettlementInfoMapper;
@@ -49,8 +50,21 @@ public class EnterpriseMemberServiceImpl implements EnterpriseMemberService {
     @Transactional
     public int saveEnterpriseMember(EnterpriseMemberModel enterpriseMemberModel) {
          //暂定 企业编码生成规则
-        String  entNumber= Constant.ENTNUMBER_INDEX+System.currentTimeMillis()+((Math.random()*9+1)*100000);
-
+        String  entNumber= Constant.ENTNUMBER_INDEX+System.currentTimeMillis()+(int)((Math.random()*9+1)*100000);
+        if(TradeTypeEnum.供应商采购商.getState().intValue()==enterpriseMemberModel.getTradeType().intValue()){
+            if(enterpriseMemberModel.getPartnerType()==null){
+                throw  new BussinessException("供应商类型不能为空");
+            }
+        }
+       //校验企业名称是否存在
+       Map<String,Object> map=new HashMap<>();
+        String tradeTypeIn="("+enterpriseMemberModel.getTradeType()+","+TradeTypeEnum.供应商采购商.getState()+")";
+        map.put("entName",enterpriseMemberModel.getEntName());
+        map.put("tradeTypeIn",tradeTypeIn);
+        int count = enterpriseMemberMapper.findCount(map);
+        if(count>0){
+            throw  new BussinessException("企业名称重复");
+        }
         Date date=new Date();
         // 企业-会员表实体
         EnterpriseMember enterpriseMember=new EnterpriseMember();
