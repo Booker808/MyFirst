@@ -19,6 +19,10 @@
         </dependency>
         <dependency>
             <groupId>com.csjscm.core.framework</groupId>
+            <artifactId>outerface</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.csjscm.core.framework</groupId>
             <artifactId>enterprice-center</artifactId>
         </dependency>
     </dependencies>
