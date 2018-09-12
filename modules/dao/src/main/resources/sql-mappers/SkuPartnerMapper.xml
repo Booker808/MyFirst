@@ -69,8 +69,8 @@
       <if test="brandId != null">
         and p.brand_id=#{brandId,jdbcType=INTEGER}
       </if>
-      <if test="productName != null and productName != ''">
-        and p.product_name LIKE CONCAT('%',#{productName,jdbcType=VARCHAR},'%')
+      <if test="supplyPdName != null and supplyPdName != ''">
+        and p.supply_pd_name LIKE CONCAT('%',#{supplyPdName,jdbcType=VARCHAR},'%')
       </if>
       <if test="brandName != null and brandName != ''">
         and p.brand_name = #{brandName,jdbcType=VARCHAR}

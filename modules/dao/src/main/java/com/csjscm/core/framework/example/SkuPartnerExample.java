@@ -4,9 +4,9 @@ import lombok.Data;
 
 @Data
 public class SkuPartnerExample {
-    private String supplyNo;
-    private String productName;
     private String productNo;
+    private String supplyNo;
+    private String supplyPdName;
     private Integer brandId;
     private String brandName;
 }

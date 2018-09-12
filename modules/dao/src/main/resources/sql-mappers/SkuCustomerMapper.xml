@@ -65,8 +65,8 @@
       <if test="customerNo != null and customerNo != ''">
         and c.customer_no=#{customerNo,jdbcType=VARCHAR}
       </if>
-      <if test="productName != null and productName != ''">
-        and c.product_name LIKE CONCAT('%',#{productName,jdbcType=VARCHAR},'%')
+      <if test="customerPdName != null and customerPdName != ''">
+        and c.customer_pd_name LIKE CONCAT('%',#{customerPdName,jdbcType=VARCHAR},'%')
       </if>
     </where>
   </sql>
