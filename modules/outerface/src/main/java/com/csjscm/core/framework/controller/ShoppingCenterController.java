@@ -1,6 +1,7 @@
 package com.csjscm.core.framework.controller;
 
 import com.csjscm.core.framework.common.constant.Constant;
+import com.csjscm.core.framework.common.util.BeanValidator;
 import com.csjscm.core.framework.common.util.BussinessException;
 import com.csjscm.core.framework.model.SkuPartner;
 import com.csjscm.core.framework.model.SpCategory;
@@ -8,6 +9,7 @@ import com.csjscm.core.framework.service.CategoryService;
 import com.csjscm.core.framework.service.EnterpriseMemberService;
 import com.csjscm.core.framework.service.SpCategoryService;
 import com.csjscm.core.framework.service.product.ProductPartnerService;
+import com.csjscm.core.framework.vo.EnterpriseMemberModel;
 import com.csjscm.sweet.framework.core.mvc.APIResponse;
 import com.csjscm.sweet.framework.redis.RedisServiceFacade;
 import org.apache.commons.lang.StringUtils;
@@ -26,8 +28,6 @@ import java.util.Map;
 @RequestMapping("/shopping/center")
 @ResponseBody
 public class ShoppingCenterController {
-    @Autowired
-    private CategoryService categoryService;
     @Autowired
     private SpCategoryService spCategoryService;
     @Autowired
@@ -72,8 +72,11 @@ public class ShoppingCenterController {
      * @return
      */
     @RequestMapping(value = "/checkEnterpriseName",method = RequestMethod.GET)
-    public APIResponse checkPartnerName(@RequestParam(value = "name",required =true) String name,@RequestParam(value = "type",required =true) String type){
-
+    public APIResponse checkPartnerName(@RequestParam(value = "name",required =true) String name,@RequestParam(value = "type",required =true) Integer type){
+        boolean b = enterpriseMemberService.checkPartnerName(name, type);
+        if(b){
+            return APIResponse.fail("企业名称已存在");
+        }
         return APIResponse.success();
     }
 
@@ -82,8 +85,9 @@ public class ShoppingCenterController {
      * @return
      */
     @RequestMapping(value = "/createEnterprise",method = RequestMethod.POST)
-    public APIResponse createEnterprise(){
-
+    public APIResponse createEnterprise(EnterpriseMemberModel enterpriseMemberModel){
+        BeanValidator.validate(enterpriseMemberModel);
+        enterpriseMemberService.saveEnterpriseMember(enterpriseMemberModel);
         return APIResponse.success();
     }
     /**
@@ -107,7 +111,12 @@ public class ShoppingCenterController {
         return APIResponse.success(skuPartners);
     }
 
-
+    /**
+     * 自定义异常捕获
+     * @param e
+     * @param response
+     * @return
+     */
     @ExceptionHandler({BussinessException.class})
     public APIResponse exceptionHandler(Exception e, HttpServletResponse response) {
           return APIResponse.fail(e.getMessage());

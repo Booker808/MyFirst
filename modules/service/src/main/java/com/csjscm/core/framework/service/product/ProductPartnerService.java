@@ -4,6 +4,7 @@ import com.csjscm.core.framework.common.util.BussinessException;
 import com.csjscm.core.framework.example.SkuPartnerExample;
 import com.csjscm.core.framework.model.SkuPartner;
 import com.csjscm.core.framework.model.SkuPartnerEx;
+import com.csjscm.core.framework.vo.SkuPartnerModel;
 import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -31,4 +32,11 @@ public interface ProductPartnerService {
      *
      */
     List<SkuPartner> listSelective(Map<String,Object> map);
+
+    /**
+     * 对 对外接口 新增
+     * @param skuPartnerModel
+     * @return
+     */
+    int savePartner(SkuPartnerModel skuPartnerModel);
 }

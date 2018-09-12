@@ -45,4 +45,14 @@ public interface EnterpriseMemberService {
      */
     int updateEnterpriseMember(EnterpriseMemberModel enterpriseMemberModel);
 
+    /**
+     * 校验供应商企业、客户企业是否存在的接口  true 表示存在
+     * @param name  企业名称
+     * @param type  type=1 校验供应
+     * 商 type=2 校验客
+     * 户企业
+     * @return
+     */
+    boolean checkPartnerName(String name,Integer type);
+
 }

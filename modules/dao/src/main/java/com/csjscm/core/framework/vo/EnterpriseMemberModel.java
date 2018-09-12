@@ -3,6 +3,8 @@ package com.csjscm.core.framework.vo;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * 保存，编辑企业会员的数据model
  */
@@ -32,7 +34,7 @@ public class EnterpriseMemberModel {
     /**
      * 注册地址
      */
-
+    @NotBlank(message = "registerAddress注册地址不能为空")
     private String registerAddress;
 
     /**
@@ -58,6 +60,7 @@ public class EnterpriseMemberModel {
     /**
      * 交易类型 1供应商  2采购商 3供应商&采购商
      */
+    @NotNull(message = "tradeType不能为空")
     private Integer tradeType;
 
     /**
@@ -68,11 +71,13 @@ public class EnterpriseMemberModel {
     /**
      * 联系人
      */
+    @NotBlank(message = "linkman联系人不能为空")
     private String linkman;
 
     /**
      * 联系人电话
      */
+    @NotBlank(message = "linkmanPhone联系人电话不能为空")
     private String linkmanPhone;
 
     /**

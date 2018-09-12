@@ -10,10 +10,9 @@ import javax.validation.Validator;
 import java.util.Set;
 
 /**
- * @author robin
+ * @author yinzy
  * @version v1.0.0
  * 描述：表单校验工具类
- * @since 2017/11/24 下午3:07
  */
 public class BeanValidator {
     /**

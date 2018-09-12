@@ -206,9 +206,9 @@ public class SkuCoreServiceImpl implements SkuCoreService {
                 }
                 Map<String, Object> brandNamemap = new HashMap<>();
                 brandNamemap.put("brandName", brandName);
-                BrandMaster brandMaster = brandMasterMapper.findSelective(brandNamemap);
-                if (brandMaster == null) {
-                    failMsg = "品牌名称不存在";
+                List<BrandMaster> brandMasters = brandMasterMapper.listSelective(brandNamemap);
+                if (brandMasters.size()==0 || brandMasters.size()>1) {
+                    failMsg = "品牌名称不存在或者存在多个相同品牌名称";
                     failCell = 4;
                     failList.add(getFailMsg(failRow, failCell, failMsg));
                     failMsgStr+=getFailMsg(failRow, failCell, failMsg);
@@ -267,7 +267,7 @@ public class SkuCoreServiceImpl implements SkuCoreService {
                 //组装成功数据
                 if(issuccess){
                     skuCore.setCategoryNo(categoryNo);
-                    skuCore.setBrandId(brandMaster.getId());
+                    skuCore.setBrandId(brandMasters.get(0).getId());
                     skuCore.setBrandName(brandName);
                     skuCore.setCategoryId(category.getId());
                     skuCore.setEan13Code(ean13Code);

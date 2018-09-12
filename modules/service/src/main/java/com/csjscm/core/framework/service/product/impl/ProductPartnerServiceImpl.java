@@ -5,10 +5,12 @@ import com.csjscm.core.framework.common.util.ExcelUtil;
 import com.csjscm.core.framework.dao.BrandMasterMapper;
 import com.csjscm.core.framework.dao.SkuCoreMapper;
 import com.csjscm.core.framework.dao.SkuPartnerMapper;
+import com.csjscm.core.framework.dao.SpCategoryMapper;
 import com.csjscm.core.framework.example.SkuPartnerExample;
 import com.csjscm.core.framework.model.*;
 import com.csjscm.core.framework.service.product.ProductPartnerService;
 import com.csjscm.core.framework.vo.SkuCustomerVo;
+import com.csjscm.core.framework.vo.SkuPartnerModel;
 import com.csjscm.core.framework.vo.SkuPartnerVo;
 import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
 import com.github.pagehelper.PageHelper;
@@ -33,6 +35,8 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
     private BrandMasterMapper brandMasterMapper;
     @Autowired
     private SkuCoreMapper skuCoreMapper;
+    @Autowired
+    private SpCategoryMapper spCategoryMapper;
     /**
      * 取读excel 默认的开始读取的行位置为第几行
      */
@@ -256,6 +260,12 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
         if(count>0){
           throw  new  BussinessException("该商品已存在");
         }
+        parrnerMap.clear();
+        parrnerMap.put("supplyPdNo",skuPartner.getSupplyPdNo());
+        int count1 = skuPartnerMapper.findCount(parrnerMap);
+        if(count1>0){
+            throw  new  BussinessException("供应商商品编码已存在");
+        }
         Map<String, Object> productNomap = new HashMap<>();
         productNomap.put("productNo", skuPartner.getProductNo());
         SkuCore skuCore = skuCoreMapper.findSelective(productNomap);
@@ -268,5 +278,47 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
     @Override
     public List<SkuPartner> listSelective(Map<String, Object> map) {
         return skuPartnerMapper.listSelective(map);
+    }
+
+    @Override
+    public int savePartner(SkuPartnerModel skuPartnerModel) {
+        Map<String, Object> parrnerMap = new HashMap<>();
+        if(StringUtils.isNotBlank(skuPartnerModel.getSupplyPdNo())){
+            parrnerMap.put("supplyPdNo",skuPartnerModel.getSupplyPdNo());
+            int count1 = skuPartnerMapper.findCount(parrnerMap);
+            if(count1>0){
+                throw  new  BussinessException("供应商商品编码已存在");
+            }
+        }
+        parrnerMap.clear();
+        parrnerMap.put("brandName", skuPartnerModel.getBrandName());
+        int count = brandMasterMapper.findCount(parrnerMap);
+        if(count<1){
+            throw  new  BussinessException("品牌名称信息有误，不存在该品牌名称");
+        }
+        parrnerMap.clear();
+        parrnerMap.put("classCode",skuPartnerModel.getClassCode());
+        spCategoryMapper.findCount(parrnerMap);
+
+        parrnerMap.clear();
+        parrnerMap.put("supplyNo",skuPartnerModel.getSupplyNo());
+        parrnerMap.put("supplyPdName",skuPartnerModel.getSupplyPdName());
+        parrnerMap.put("brandName",skuPartnerModel.getBrandName());
+        parrnerMap.put("supplyPdRule",skuPartnerModel.getSupplyPdRule());
+        parrnerMap.put("supplyPdSize",skuPartnerModel.getSupplyPdSize());
+        int count2 = skuPartnerMapper.findCount(parrnerMap);
+        if(count2>0){
+            throw  new  BussinessException("该商品已存在");
+        }
+        Map<String, Object> productNamemap = new HashMap<>();
+        productNamemap.put("productName", skuPartnerModel.getSupplyPdName());
+        productNamemap.put("brandName", skuPartnerModel.getBrandName());
+        productNamemap.put("rule", skuPartnerModel.getSupplyPdRule());
+        productNamemap.put("size", skuPartnerModel.getSupplyPdSize());
+        List<SkuCore> skuCores = skuCoreMapper.listSelective(productNamemap);
+        if(skuCores.size()<1){
+
+        }
+        return 0;
     }
 }

@@ -195,4 +195,18 @@ public class EnterpriseMemberServiceImpl implements EnterpriseMemberService {
         enterpriseTicketInfoMapper.updateSelective(enterpriseTicketInfo);
         return i;
     }
+
+    @Override
+    public boolean checkPartnerName(String name, Integer type) {
+        //校验企业名称是否存在
+        Map<String,Object> map=new HashMap<>();
+        String tradeTypeIn="("+type+","+TradeTypeEnum.供应商采购商.getState()+")";
+        map.put("entName",name);
+        map.put("tradeTypeIn",tradeTypeIn);
+        int count = enterpriseMemberMapper.findCount(map);
+        if(count>0){
+            return true;
+        }
+        return false;
+    }
 }
