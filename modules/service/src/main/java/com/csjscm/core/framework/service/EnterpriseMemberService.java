@@ -2,6 +2,7 @@ package com.csjscm.core.framework.service;
 
 import com.csjscm.core.framework.model.EnterpriseMember;
 import com.csjscm.core.framework.vo.EnterpriseMemberModel;
+import com.csjscm.core.framework.vo.EnterpriseUpdateModel;
 import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
 
 import java.util.Map;
@@ -44,6 +45,12 @@ public interface EnterpriseMemberService {
      * @return
      */
     int updateEnterpriseMember(EnterpriseMemberModel enterpriseMemberModel);
+    /**
+     * 更新 企业-会员 model信息
+     * @param enterpriseUpdateModel
+     * @return
+     */
+    int updateEnterpriseModel(EnterpriseUpdateModel enterpriseUpdateModel);
 
     /**
      * 校验供应商企业、客户企业是否存在的接口  true 表示存在

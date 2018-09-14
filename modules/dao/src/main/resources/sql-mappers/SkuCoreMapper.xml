@@ -8,6 +8,8 @@
     <result column="product_price" property="productPrice" jdbcType="DECIMAL" />
     <result column="category_id" property="categoryId" jdbcType="INTEGER" />
     <result column="category_no" property="categoryNo" jdbcType="VARCHAR" />
+    <result column="category_sp_id" property="categorySpId" jdbcType="INTEGER" />
+    <result column="category_sp_no" property="categorySpNo" jdbcType="VARCHAR" />
     <result column="isvalidate" property="isvalidate" jdbcType="INTEGER" />
     <result column="approval_status" property="approvalStatus" jdbcType="INTEGER" />
     <result column="channel" property="channel" jdbcType="INTEGER" />
@@ -54,7 +56,7 @@
     <result column="class_name" property="className" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    product_no, std_product_no, product_name, product_price, category_id, category_no, 
+    product_no, std_product_no, product_name, product_price, category_id, category_no,category_sp_id,category_sp_no,
     isvalidate, approval_status, channel, brand_name, brand_id, unit_id, min_uint, product_pic, 
     ean13_code, mnemonic_code, invoice_type, txt_code, rule, size, create_user_id, create_time, 
     edit_user_id, edit_time, udf1, udf2, udf3, udf4, udf5, udf6, udf7, udf8, udf9, udf10, 
@@ -80,6 +82,12 @@
       </if>
       <if test="categoryNo != null and categoryNo != '' ">
         and category_no = #{categoryNo,jdbcType=VARCHAR}
+      </if>
+      <if test="categorySpId != null ">
+        and category_sp_id = #{categorySpId,jdbcType=INTEGER}
+      </if>
+      <if test="categorySpNo != null and categorySpNo != '' ">
+        and category_sp_no = #{categorySpNo,jdbcType=VARCHAR}
       </if>
       <if test="isvalidate != null and isvalidate != '' ">
         and isvalidate = #{isvalidate,jdbcType=INTEGER}
@@ -255,7 +263,7 @@
   </delete>
   <insert id="insert" parameterType="com.csjscm.core.framework.model.SkuCore" >
     insert into sku_core (product_no, std_product_no, product_name, 
-      product_price, category_id, category_no, 
+      product_price, category_id, category_no, category_sp_id,category_sp_no,
       isvalidate, approval_status, channel, 
       brand_name, brand_id, unit_id, 
       min_uint, product_pic, ean13_code, 
@@ -269,7 +277,7 @@
       suf6, suf7, suf8, suf9, 
       suf10)
     values (#{productNo,jdbcType=VARCHAR}, #{stdProductNo,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, 
-      #{productPrice,jdbcType=DECIMAL}, #{categoryId,jdbcType=INTEGER}, #{categoryNo,jdbcType=VARCHAR}, 
+      #{productPrice,jdbcType=DECIMAL}, #{categoryId,jdbcType=INTEGER}, #{categoryNo,jdbcType=VARCHAR}, #{categorySpId,jdbcType=INTEGER}, #{categorySpNo,jdbcType=VARCHAR},
       #{isvalidate,jdbcType=INTEGER}, #{approvalStatus,jdbcType=INTEGER}, #{channel,jdbcType=INTEGER}, 
       #{brandName,jdbcType=VARCHAR}, #{brandId,jdbcType=INTEGER}, #{unitId,jdbcType=INTEGER}, 
       #{minUint,jdbcType=VARCHAR}, #{productPic,jdbcType=VARCHAR}, #{ean13Code,jdbcType=VARCHAR}, 
@@ -303,6 +311,12 @@
       </if>
       <if test="categoryNo != null" >
         category_no,
+      </if>
+      <if test="categorySpId != null" >
+        category_sp_id,
+      </if>
+      <if test="categorySpNo != null" >
+        category_sp_no,
       </if>
       <if test="isvalidate != null" >
         isvalidate,
@@ -438,6 +452,12 @@
       <if test="categoryNo != null" >
         #{categoryNo,jdbcType=VARCHAR},
       </if>
+      <if test="categorySpId != null" >
+        #{categorySpId,jdbcType=INTEGER},
+      </if>
+      <if test="categorySpNo != null" >
+        #{categorySpNo,jdbcType=VARCHAR},
+      </if>
       <if test="isvalidate != null" >
         #{isvalidate,jdbcType=INTEGER},
       </if>
@@ -572,6 +592,12 @@
       <if test="categoryNo != null" >
         category_no = #{categoryNo,jdbcType=VARCHAR},
       </if>
+      <if test="categorySpId != null" >
+        category_sp_id = #{categorySpId,jdbcType=INTEGER},
+      </if>
+      <if test="categorySpNo != null" >
+        category_sp_no = #{categorySpNo,jdbcType=VARCHAR},
+      </if>
       <if test="isvalidate != null" >
         isvalidate = #{isvalidate,jdbcType=INTEGER},
       </if>
@@ -696,6 +722,8 @@
       product_price = #{productPrice,jdbcType=DECIMAL},
       category_id = #{categoryId,jdbcType=INTEGER},
       category_no = #{categoryNo,jdbcType=VARCHAR},
+      category_sp_id = #{categorySpId,jdbcType=INTEGER},
+      category_sp_no = #{categorySpNo,jdbcType=VARCHAR},
       isvalidate = #{isvalidate,jdbcType=INTEGER},
       approval_status = #{approvalStatus,jdbcType=INTEGER},
       channel = #{channel,jdbcType=INTEGER},

@@ -8,6 +8,7 @@ import com.csjscm.core.framework.model.EnterpriseTicketInfo;
 import com.csjscm.core.framework.model.SysDict;
 import com.csjscm.core.framework.service.*;
 import com.csjscm.core.framework.vo.EnterpriseMemberModel;
+import com.csjscm.core.framework.vo.EnterpriseUpdateModel;
 import com.csjscm.sweet.framework.core.mvc.APIResponse;
 import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
 import io.swagger.annotations.Api;
@@ -102,18 +103,18 @@ public class EnterpriseMemberController {
         result.put("enterpriseMember",enterpriseMember);
         result.put("enterpriseSettlementInfo",enterpriseSettlementInfo);
         result.put("enterpriseTicketInfo",enterpriseTicketInfo);
-        return APIResponse.success();
+        return APIResponse.success(result);
     }
     /**
      * 更新企业会员
      *
-     * @param enterpriseMemberModel
+     * @param enterpriseUpdateModel
      * @return
      */
     @ApiOperation("更新企业会员")
     @RequestMapping(value = "updateEnterpriseMember",method = RequestMethod.POST)
-    public APIResponse updateEnterpriseMember(@RequestBody @Valid EnterpriseMemberModel enterpriseMemberModel){
-        enterpriseMemberService.updateEnterpriseMember(enterpriseMemberModel);
+    public APIResponse updateEnterpriseMember(@RequestBody @Valid EnterpriseUpdateModel enterpriseUpdateModel){
+        enterpriseMemberService.updateEnterpriseModel(enterpriseUpdateModel);
         return APIResponse.success();
     }
 

@@ -10,6 +10,7 @@ import com.csjscm.core.framework.service.EnterpriseMemberService;
 import com.csjscm.core.framework.service.SpCategoryService;
 import com.csjscm.core.framework.service.product.ProductPartnerService;
 import com.csjscm.core.framework.vo.EnterpriseMemberModel;
+import com.csjscm.core.framework.vo.SkuPartnerModel;
 import com.csjscm.sweet.framework.core.mvc.APIResponse;
 import com.csjscm.sweet.framework.redis.RedisServiceFacade;
 import org.apache.commons.lang.StringUtils;
@@ -95,9 +96,9 @@ public class ShoppingCenterController {
      * @return
      */
     @RequestMapping(value = "/createSkuPartner",method = RequestMethod.POST)
-    public APIResponse createSkuPartner(){
-
-        return APIResponse.success();
+    public APIResponse createSkuPartner(SkuPartnerModel skuPartnerModel){
+        BeanValidator.validate(skuPartnerModel);
+        return APIResponse.success(productPartnerService.savePartner(skuPartnerModel));
     }
     /**
      * 获取供应商列表

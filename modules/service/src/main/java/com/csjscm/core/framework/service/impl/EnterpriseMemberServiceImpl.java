@@ -11,6 +11,7 @@ import com.csjscm.core.framework.model.EnterpriseSettlementInfo;
 import com.csjscm.core.framework.model.EnterpriseTicketInfo;
 import com.csjscm.core.framework.service.EnterpriseMemberService;
 import com.csjscm.core.framework.vo.EnterpriseMemberModel;
+import com.csjscm.core.framework.vo.EnterpriseUpdateModel;
 import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -61,7 +62,7 @@ public class EnterpriseMemberServiceImpl implements EnterpriseMemberService {
             Long i = oldno + 1;
             entNumber=Constant.ENTNUMBER_INDEX+i;
         }
-        if(TradeTypeEnum.供应商采购商.getState().intValue()==enterpriseMemberModel.getTradeType().intValue()){
+        if(TradeTypeEnum.供应商采购商.getState().intValue()==enterpriseMemberModel.getTradeType().intValue() ||enterpriseMemberModel.getTradeType().intValue()==TradeTypeEnum.供应商.getState().intValue()){
             if(enterpriseMemberModel.getPartnerType()==null){
                 throw  new BussinessException("供应商类型不能为空");
             }
@@ -96,6 +97,7 @@ public class EnterpriseMemberServiceImpl implements EnterpriseMemberService {
         enterpriseMember.setSell(enterpriseMemberModel.getSell());
         enterpriseMember.setRegisterMoney(enterpriseMemberModel.getRegisterMoney());
         enterpriseMember.setTender(enterpriseMemberModel.getTender());
+        enterpriseMember.setTradeType(enterpriseMemberModel.getTradeType());
         enterpriseMember.setWebAddress(enterpriseMemberModel.getWebAddress());
         //结算信息表实体
         EnterpriseSettlementInfo enterpriseSettlementInfo=new EnterpriseSettlementInfo();
@@ -168,6 +170,7 @@ public class EnterpriseMemberServiceImpl implements EnterpriseMemberService {
         enterpriseMember.setSell(enterpriseMemberModel.getSell());
         enterpriseMember.setRegisterMoney(enterpriseMemberModel.getRegisterMoney());
         enterpriseMember.setTender(enterpriseMemberModel.getTender());
+        enterpriseMember.setTradeType(enterpriseMemberModel.getTradeType());
         enterpriseMember.setWebAddress(enterpriseMemberModel.getWebAddress());
         //结算信息表实体
         Map<String, Object> map=new HashMap<>();
@@ -196,6 +199,24 @@ public class EnterpriseMemberServiceImpl implements EnterpriseMemberService {
         return i;
     }
 
+    @Override
+    public int updateEnterpriseModel(EnterpriseUpdateModel enterpriseUpdateModel) {
+        Date date=new Date();
+        // 企业-会员表实体
+        EnterpriseMember enterpriseMember=new EnterpriseMember();
+        enterpriseMember.setId(enterpriseUpdateModel.getId());
+        enterpriseMember.setEditTime(date);
+        enterpriseMember.setBusinessAddress(enterpriseUpdateModel.getBusinessAddress());
+        enterpriseMember.setDefaultEntrepot(enterpriseUpdateModel.getDefaultEntrepot());
+        enterpriseMember.setLegalPerson(enterpriseUpdateModel.getLegalPerson());
+        enterpriseMember.setLinkman(enterpriseUpdateModel.getLinkman());
+        enterpriseMember.setLinkmanPhone(enterpriseUpdateModel.getLinkmanPhone());
+        enterpriseMember.setRegisterAddress(enterpriseUpdateModel.getRegisterAddress());
+        enterpriseMember.setRegisterMoney(enterpriseUpdateModel.getRegisterMoney());
+        enterpriseMember.setRegisterMoney(enterpriseUpdateModel.getRegisterMoney());
+        enterpriseMember.setWebAddress(enterpriseUpdateModel.getWebAddress());
+        return enterpriseMemberMapper.updateSelective(enterpriseMember);
+    }
     @Override
     public boolean checkPartnerName(String name, Integer type) {
         //校验企业名称是否存在

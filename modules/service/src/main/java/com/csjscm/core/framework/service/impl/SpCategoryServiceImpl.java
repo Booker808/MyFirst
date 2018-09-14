@@ -13,6 +13,7 @@ import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
 import com.csjscm.sweet.framework.redis.RedisServiceFacade;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +54,7 @@ public class SpCategoryServiceImpl implements SpCategoryService {
         }
         t.setCreateTime(new Date());
         if (t.getLevelNum().intValue() == CategoryLevelEnum.三级.getState().intValue()) {
-          //  redisServiceFacade.set(Constant.REDIS_KEY_PRODUCT_NO + t.getClassCode(), 0);
+            redisServiceFacade.set(Constant.REDIS_KEY_PRODUCT_NO + t.getClassCode(), 0);
         }
         int i = spCategoryMapper.insertSelective(t);
         getJsonCategory();
@@ -79,8 +80,8 @@ public class SpCategoryServiceImpl implements SpCategoryService {
                 if (count > 0) {
                     throw new BussinessException("该分类下存在商品，无法修改编码");
                 }
-             //   redisServiceFacade.set(Constant.REDIS_KEY_PRODUCT_NO + t.getClassCode(), 0);
-              //  redisServiceFacade.delete(Constant.REDIS_KEY_PRODUCT_NO + old.getClassCode());
+                redisServiceFacade.set(Constant.REDIS_KEY_PRODUCT_NO + t.getClassCode(), 0);
+                redisServiceFacade.delete(Constant.REDIS_KEY_PRODUCT_NO + old.getClassCode());
             }
         }
         t.setEditTime(new Date());
@@ -120,7 +121,7 @@ public class SpCategoryServiceImpl implements SpCategoryService {
     @Transactional
     public void deleteByIds(String ids) {
         String[] strings = ids.split(",");
-     //   StringBuffer stringBuffer = new StringBuffer();
+        StringBuffer stringBuffer = new StringBuffer();
         for (String strId : strings) {
             Map<String, Object> map = new HashMap<>();
             map.put("parentClass", strId);
@@ -136,17 +137,17 @@ public class SpCategoryServiceImpl implements SpCategoryService {
                 if (count1 > 0) {
                     throw new BussinessException("该分类下存在商品，无法删除分类");
                 }
-              //  stringBuffer.append(Constant.REDIS_KEY_PRODUCT_NO).append(primary.getClassCode()).append(",");
+                stringBuffer.append(Constant.REDIS_KEY_PRODUCT_NO).append(primary.getClassCode()).append(",");
             }
             spCategoryMapper.deleteByPrimaryKey(Integer.parseInt(strId));
         }
-/*        String s = stringBuffer.toString();
+        String s = stringBuffer.toString();
         if (StringUtils.isNotBlank(s)) {
             String[] split = s.substring(0, s.length() - 1).split(",");
             if (split.length > 0) {
-             //   redisServiceFacade.delete(split);
+               redisServiceFacade.delete(split);
             }
-        }*/
+        }
         getJsonCategory();
     }
 

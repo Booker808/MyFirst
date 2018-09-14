@@ -25,6 +25,11 @@ public class SkuCore {
 
     @ApiModelProperty("分类编码")
     private String categoryNo;
+    @ApiModelProperty("分类ID")
+    private Integer categorySpId;
+
+    @ApiModelProperty("分类编码")
+    private String categorySpNo;
 
     @ApiModelProperty("是否有效0：有效，1无效")
     private Integer isvalidate;

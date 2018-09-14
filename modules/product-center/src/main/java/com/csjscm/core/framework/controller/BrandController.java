@@ -1,10 +1,13 @@
 package com.csjscm.core.framework.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.csjscm.core.framework.common.constant.Constant;
 import com.csjscm.core.framework.common.util.BussinessException;
 import com.csjscm.core.framework.model.BrandMaster;
 import com.csjscm.core.framework.service.BrandMasterService;
 import com.csjscm.sweet.framework.core.mvc.APIResponse;
 import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
+import com.csjscm.sweet.framework.redis.RedisServiceFacade;
 import com.csjscm.sweet.framework.storage.StorageService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -28,6 +31,8 @@ public class BrandController {
     private BrandMasterService brandMasterService;
     @Autowired
     private StorageService storageService;
+    @Autowired
+    private RedisServiceFacade redisServiceFacade;
 
 
     /**
@@ -50,8 +55,11 @@ public class BrandController {
     @ApiOperation("查询品牌名称列表")
     @RequestMapping(value = "/brandNameList",method = RequestMethod.GET)
     public APIResponse queryBrandNameListSky(){
-        List<BrandMaster> brandList = brandMasterService.selectByBrandNameSky();
-        return APIResponse.success(brandList);
+        if(!redisServiceFacade.exists(Constant.REDIS_KEY_JSONSTR_BRAND)){
+            List<BrandMaster> brandList = brandMasterService.selectByBrandNameSky();
+            redisServiceFacade.set(Constant.REDIS_KEY_JSONSTR_BRAND, JSON.toJSONString(brandList));
+        }
+        return APIResponse.success(redisServiceFacade.get(Constant.REDIS_KEY_JSONSTR_BRAND));
     }
 
     /**

@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.csjscm.core.framework.model.SkuPartner">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="product_no" jdbcType="VARCHAR" property="productNo" />
+    <result column="uuid" jdbcType="VARCHAR" property="uuid" />
     <result column="supply_no" jdbcType="VARCHAR" property="supplyNo" />
     <result column="supply_pd_no" jdbcType="VARCHAR" property="supplyPdNo" />
     <result column="supply_pd_name" jdbcType="VARCHAR" property="supplyPdName" />
@@ -47,7 +48,7 @@
     id, product_no, supply_no,supply_pd_no, supply_pd_name, supply_pd_rule, supply_pd_size, brand_id, brand_name,
     refrence_price, recent_enquiry, create_user_id, create_time, edit_user_id, edit_time, 
     udf1, udf2, udf3, udf4, udf5, udf6, udf7, udf8, udf9, udf10, udf11, udf12, udf13, 
-    udf14, udf15, udf16, udf17, udf18, udf19, udf20
+    udf14, udf15, udf16, udf17, udf18, udf19, udf20,uuid
   </sql>
 
   <sql id="Partner_Column_List">
@@ -113,7 +114,7 @@
       udf10, udf11, udf12, 
       udf13, udf14, udf15, 
       udf16, udf17, udf18, 
-      udf19, udf20)
+      udf19, udf20,uuid)
     values (#{id,jdbcType=INTEGER}, #{productNo,jdbcType=VARCHAR}, #{supplyNo,jdbcType=VARCHAR}, #{supplyPdNo,jdbcType=VARCHAR},
       #{supplyPdName,jdbcType=VARCHAR}, #{supplyPdRule,jdbcType=VARCHAR}, #{supplyPdSize,jdbcType=VARCHAR},
       #{brandId,jdbcType=VARCHAR}, #{brandName,jdbcType=VARCHAR}, #{refrencePrice,jdbcType=DECIMAL}, 
@@ -124,9 +125,12 @@
       #{udf10,jdbcType=VARCHAR}, #{udf11,jdbcType=VARCHAR}, #{udf12,jdbcType=VARCHAR}, 
       #{udf13,jdbcType=VARCHAR}, #{udf14,jdbcType=VARCHAR}, #{udf15,jdbcType=VARCHAR}, 
       #{udf16,jdbcType=VARCHAR}, #{udf17,jdbcType=VARCHAR}, #{udf18,jdbcType=VARCHAR}, 
-      #{udf19,jdbcType=VARCHAR}, #{udf20,jdbcType=VARCHAR})
+      #{udf19,jdbcType=VARCHAR}, #{udf20,jdbcType=VARCHAR}, #{uuid,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.csjscm.core.framework.model.SkuPartner">
+    <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+      SELECT LAST_INSERT_ID() AS id
+    </selectKey>
     insert into sku_partner
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -134,6 +138,9 @@
       </if>
       <if test="productNo != null">
         product_no,
+      </if>
+      <if test="uuid != null">
+        uuid,
       </if>
       <if test="supplyNo != null">
         supply_no,
@@ -242,6 +249,9 @@
       <if test="productNo != null">
         #{productNo,jdbcType=VARCHAR},
       </if>
+      <if test="uuid != null">
+        #{uuid,jdbcType=VARCHAR},
+      </if>
       <if test="supplyNo != null">
         #{supplyNo,jdbcType=VARCHAR},
       </if>
@@ -349,6 +359,9 @@
       <if test="productNo != null">
         product_no = #{productNo,jdbcType=VARCHAR},
       </if>
+      <if test="uuid != null">
+        uuid = #{uuid,jdbcType=VARCHAR},
+      </if>
       <if test="supplyNo != null">
         supply_no = #{supplyNo,jdbcType=VARCHAR},
       </if>
@@ -455,6 +468,7 @@
     update sku_partner
     set product_no = #{productNo,jdbcType=VARCHAR},
       supply_no = #{supplyNo,jdbcType=VARCHAR},
+      uuid = #{uuid,jdbcType=VARCHAR},
       supply_pd_no = #{supplyPdNo,jdbcType=VARCHAR},
       supply_pd_name = #{supplyPdName,jdbcType=VARCHAR},
       supply_pd_rule = #{supplyPdRule,jdbcType=VARCHAR},
@@ -596,6 +610,9 @@
       </if>
       <if test="udf20 != null and udf20 != '' ">
         and udf20 = #{udf20,jdbcType=VARCHAR}
+      </if>
+      <if test="uuid != null and uuid != '' ">
+        and uuid = #{uuid,jdbcType=VARCHAR}
       </if>
       <if test="requestId != null">
         and request_id = #{requestId,jdbcType=VARCHAR}

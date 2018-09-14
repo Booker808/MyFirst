@@ -255,6 +255,7 @@ public class SkuCoreServiceImpl implements SkuCoreService {
                 productNamemap.put("minUint", minUint);
                 productNamemap.put("brandName", brandName);
                 productNamemap.put("rule", rule);
+                productNamemap.put("size", rule);
                 int productCount = skuCoreMapper.findCount(productNamemap);
                 if(productCount>0 ){
                     failMsg = "商品已存在";

@@ -11,6 +11,7 @@ import com.csjscm.core.framework.model.SkuPartner;
 import com.csjscm.core.framework.model.SkuPartnerEx;
 import com.csjscm.core.framework.service.product.ProductPartnerService;
 import com.csjscm.core.framework.vo.SkuCustomerVo;
+import com.csjscm.core.framework.vo.SkuPartnerAddModel;
 import com.csjscm.core.framework.vo.SkuPartnerVo;
 import com.csjscm.sweet.framework.core.mvc.APIResponse;
 import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
@@ -77,9 +78,9 @@ public class ProductPartnerController {
         }
         ExportExcel<SkuPartnerVo> ex = new ExportExcel<SkuPartnerVo>();
         String[] header =
-                { "失败原因","企业商品编码", "商品名称","品牌","规格", "型号","参数描述","川商品编码"};
+                { "失败原因","企业商品编码", "商品名称","品牌","规格", "型号","参数描述","川商品编码","川小类编码","最小库存单位"};
         String[] line =
-                {"failMessage", "supplyPdNo","supplyPdName", "brandName","supplyPdRule","supplyPdSize","free","productNo"};
+                {"failMessage", "supplyPdNo","supplyPdName", "brandName","supplyPdRule","supplyPdSize","free","productNo","categoryNo","minUint"};
         OutputStream out;
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/x-download");
@@ -93,13 +94,13 @@ public class ProductPartnerController {
 
     /**
      * 新增供应商商品
-     * @param skuPartner
+     * @param skuPartnerAddModel
      * @return
      */
     @ApiOperation("新增客户商品")
     @RequestMapping(value = "/saveSkuPartner",method = RequestMethod.POST)
-    public APIResponse saveSkuPartner(@RequestBody @Valid SkuPartner skuPartner){
-        productPartnerService.save(skuPartner);
+    public APIResponse saveSkuPartner(@RequestBody @Valid SkuPartnerAddModel skuPartnerAddModel){
+        productPartnerService.save(skuPartnerAddModel);
         return APIResponse.success();
     }
     @ExceptionHandler({BussinessException.class})

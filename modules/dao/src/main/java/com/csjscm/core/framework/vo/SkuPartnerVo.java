@@ -22,6 +22,24 @@ public class SkuPartnerVo {
     private String brandName;
 
     private String free;
+    private String categoryNo;
+    private String minUint;
+
+    public String getCategoryNo() {
+        return categoryNo;
+    }
+
+    public void setCategoryNo(String categoryNo) {
+        this.categoryNo = categoryNo;
+    }
+
+    public String getMinUint() {
+        return minUint;
+    }
+
+    public void setMinUint(String minUint) {
+        this.minUint = minUint;
+    }
 
     public String getFree() {
         return free;

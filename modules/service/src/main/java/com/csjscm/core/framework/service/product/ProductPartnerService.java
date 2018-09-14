@@ -4,6 +4,7 @@ import com.csjscm.core.framework.common.util.BussinessException;
 import com.csjscm.core.framework.example.SkuPartnerExample;
 import com.csjscm.core.framework.model.SkuPartner;
 import com.csjscm.core.framework.model.SkuPartnerEx;
+import com.csjscm.core.framework.vo.SkuPartnerAddModel;
 import com.csjscm.core.framework.vo.SkuPartnerModel;
 import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,9 +25,9 @@ public interface ProductPartnerService {
 
     /**
      * 保存
-     * @param skuPartner
+     * @param skuPartnerAddModel
      */
-    void  save(SkuPartner skuPartner);
+    void  save(SkuPartnerAddModel skuPartnerAddModel);
     /**
      * 按条件查询list
      *
@@ -38,5 +39,5 @@ public interface ProductPartnerService {
      * @param skuPartnerModel
      * @return
      */
-    int savePartner(SkuPartnerModel skuPartnerModel);
+    Integer savePartner(SkuPartnerModel skuPartnerModel);
 }

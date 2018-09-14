@@ -10,7 +10,7 @@ import java.util.Date;
 @Data
 public class SkuPartner {
     private Integer id;
-
+    private  String uuid;
     @ApiModelProperty("商品编码")
     @NotBlank(message = "商品编码不能为空")
     private String productNo;
