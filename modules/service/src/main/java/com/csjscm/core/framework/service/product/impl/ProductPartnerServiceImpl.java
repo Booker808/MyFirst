@@ -3,6 +3,7 @@ package com.csjscm.core.framework.service.product.impl;
 import com.alibaba.fastjson.JSONArray;
 import com.csjscm.core.framework.common.constant.Constant;
 import com.csjscm.core.framework.common.enums.CategoryLevelEnum;
+import com.csjscm.core.framework.common.enums.InvUnitIsvalidEnum;
 import com.csjscm.core.framework.common.enums.SkuCoreChannelEnum;
 import com.csjscm.core.framework.common.util.BeanutilsCopy;
 import com.csjscm.core.framework.common.util.BussinessException;
@@ -48,6 +49,8 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
     private SkuPartnerUomMapper skuPartnerUomMapper;
     @Autowired
     private CategoryMapper categoryMapper;
+    @Autowired
+    private InvUnitMapper invUnitMapper;
     /**
      * 取读excel 默认的开始读取的行位置为第几行
      */
@@ -213,6 +216,17 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
                             categoryId=category.getId();
                         }
 
+                    }
+                    Map<String, Object> minUintMap = new HashMap<>();
+                    minUintMap.put("objName",invUnit);
+                    minUintMap.put("isvalid", InvUnitIsvalidEnum.有效.getState());
+                    int count = invUnitMapper.findCount(minUintMap);
+                    if(count<1){
+                        failCell = 9;
+                        failMsg = ExcelUtil.getFailMsg(failRow, failCell, "最小单位有误");
+                        failList.add(failMsg);
+                        failMsgStr+=failMsg;
+                        issuccess=false;
                     }
                 }else {
                     row.getCell(6).setCellType(HSSFCell.CELL_TYPE_STRING);

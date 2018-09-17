@@ -65,4 +65,9 @@ public interface BrandMasterService {
      * @param ids
      */
     void deleteByIds(String ids);
+
+    /**
+     * 刷新 品牌 redis
+     */
+    void reloadBrandList();
 }

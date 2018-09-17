@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.csjscm.core.framework.common.constant.Constant;
 import com.csjscm.core.framework.common.enums.CategoryLevelEnum;
+import com.csjscm.core.framework.common.enums.InvUnitIsvalidEnum;
 import com.csjscm.core.framework.common.enums.SkuCoreChannelEnum;
 import com.csjscm.core.framework.common.util.BussinessException;
 import com.csjscm.core.framework.common.util.ExcelUtil;
@@ -55,6 +56,8 @@ public class SkuCoreServiceImpl implements SkuCoreService {
     private SkuUomMapper skuUomMapper;
     @Autowired
     private SkuUpcMapper skuUpcMapper;
+    @Autowired
+    private InvUnitMapper invUnitMapper;
 
 
 
@@ -227,6 +230,19 @@ public class SkuCoreServiceImpl implements SkuCoreService {
                     row.getCell(5).setCellType(HSSFCell.CELL_TYPE_STRING);
                     minUint = getCellValue(row.getCell(5));
                 }
+
+                Map<String, Object> minUintMap = new HashMap<>();
+                minUintMap.put("objName",minUint);
+                minUintMap.put("isvalid", InvUnitIsvalidEnum.有效.getState());
+                int count = invUnitMapper.findCount(minUintMap);
+                if(count<1){
+                    failMsg = "最小单位有误";
+                    failCell = 5;
+                    failList.add(getFailMsg(failRow, failCell, failMsg));
+                    failMsgStr+=getFailMsg(failRow, failCell, failMsg);
+                    issuccess=false;
+                }
+
                 //校验69码（EAN13码）助记码
                 if(StringUtils.isNotBlank(mnemonicCode)){
                     row.getCell(6).setCellType(HSSFCell.CELL_TYPE_STRING);

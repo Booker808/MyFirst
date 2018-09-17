@@ -1,11 +1,15 @@
 package com.csjscm.core.framework.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.csjscm.core.framework.common.constant.Constant;
 import com.csjscm.core.framework.common.util.BussinessException;
 import com.csjscm.core.framework.dao.BrandMasterMapper;
 import com.csjscm.core.framework.dao.SkuCoreMapper;
 import com.csjscm.core.framework.model.BrandMaster;
 import com.csjscm.core.framework.service.BrandMasterService;
 import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
+import com.csjscm.sweet.framework.redis.RedisServiceFacade;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.apache.commons.lang.StringUtils;
@@ -24,6 +28,8 @@ public class BrandMasterServiceImpl implements BrandMasterService {
     private BrandMasterMapper brandMasterMapper;
     @Autowired
     private SkuCoreMapper skuCoreMapper;
+    @Autowired
+    private RedisServiceFacade redisServiceFacade;
 
     @Override
     public QueryResult<BrandMaster> queryBrandMasterList(Map<String, Object> map, int current, int pageSize) {
@@ -79,7 +85,9 @@ public class BrandMasterServiceImpl implements BrandMasterService {
         if (null != list && !list.isEmpty()) {
             throw  new BussinessException("品牌已存在");
         }
-        return brandMasterMapper.insertSelective(record);
+        int i = brandMasterMapper.insertSelective(record);
+        reloadBrandList();
+        return i;
     }
 
     @Override
@@ -96,7 +104,9 @@ public class BrandMasterServiceImpl implements BrandMasterService {
                 throw  new BussinessException("修改品牌已存在");
             }
         }
-        return brandMasterMapper.updateByPrimaryKeySelective(record);
+        int i = brandMasterMapper.updateByPrimaryKeySelective(record);
+        reloadBrandList();
+        return i;
     }
 
     @Override
@@ -107,7 +117,9 @@ public class BrandMasterServiceImpl implements BrandMasterService {
         if(count>0){
             throw  new  BussinessException("该品牌已关联商品，无法删除");
         }
-        return brandMasterMapper.deleteByPrimaryKey(id);
+        int i = brandMasterMapper.deleteByPrimaryKey(id);
+        reloadBrandList();
+        return i;
     }
 
     @Override
@@ -116,6 +128,13 @@ public class BrandMasterServiceImpl implements BrandMasterService {
         for (String s : str) {
             brandMasterMapper.deleteByPrimaryKey(Integer.valueOf(s));
         }
+        reloadBrandList();
+    }
+
+    @Override
+    public void reloadBrandList() {
+        List<BrandMaster> brandList = selectByBrandNameSky();
+        redisServiceFacade.set(Constant.REDIS_KEY_JSONSTR_BRAND,  JSONArray.parseArray(JSON.toJSONString(brandList)));
     }
 
 }

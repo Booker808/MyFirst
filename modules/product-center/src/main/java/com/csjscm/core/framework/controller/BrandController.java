@@ -19,6 +19,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.*;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -132,19 +135,49 @@ public class BrandController {
         brandMasterService.deleteByPrimaryKey(id);
         return APIResponse.success();
     }
-
-
     /**
-     * 保存品牌的图片
+     * 保存文件
      *
      * @param file
      * @return
      */
-    @ApiOperation("保存品牌的图片")
+    @ApiOperation("保存文件")
     @RequestMapping(value = "/import",method = RequestMethod.POST)
     public APIResponse importBrand(  @ApiParam(name="file",value="保存品牌的图片",required=true) @RequestParam(value = "file")MultipartFile file) throws  Exception{
        String store = storageService.store(file.getOriginalFilename(), file.getInputStream());
         return APIResponse.success(System.getProperty("sweet.framework.storage.fastdfs.tracker-domain")+store);
+    }
+    @ApiOperation("下载文件")
+    @RequestMapping(value = "/downloadFile")
+    public APIResponse downloadFile(HttpServletResponse response,String name,String url ) throws  Exception{
+        String substring = url.substring(url.lastIndexOf("."), url.length());
+        String fileNames=name+substring;
+        URL url1 = new URL(url);
+        try {
+            URLConnection conn = url1.openConnection();
+            InputStream inStream = conn.getInputStream();
+            ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+            byte[] buffer = new byte[2048];
+            int len = 0;
+            while( (len=inStream.read(buffer)) != -1 ){
+                outStream.write(buffer, 0, len);
+            }
+            inStream.close();
+            byte data[] =outStream.toByteArray();
+            inStream.close();
+            OutputStream out;
+            response.setCharacterEncoding("UTF-8");
+            response.setContentType("application/x-download");
+            String fileName=new String(fileNames.getBytes("UTF-8"),"iso-8859-1");
+            response.addHeader("Content-Disposition", "attachment;filename="+fileName);
+            out=response.getOutputStream();
+            out.write(data);
+            out.flush();
+            out.close();
+        } catch (FileNotFoundException e) {
+            throw  new BussinessException("文件下载异常");
+        }
+        return APIResponse.success();
     }
     @ExceptionHandler({BussinessException.class})
     public APIResponse exceptionHandler(Exception e, HttpServletResponse response) {
