@@ -1,5 +1,6 @@
 package com.csjscm.core.framework.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.csjscm.core.framework.common.constant.Constant;
 import com.csjscm.core.framework.common.util.BeanValidator;
 import com.csjscm.core.framework.common.util.BussinessException;
@@ -47,7 +48,7 @@ public class ShoppingCenterController {
         if(!redisServiceFacade.exists(Constant.REDIS_KEY_JSON_SP_CATEGORY)){
             spCategoryService.getJsonCategory();
         }
-        return APIResponse.success(redisServiceFacade.get(Constant.REDIS_KEY_JSON_SP_CATEGORY));
+        return APIResponse.success(redisServiceFacade.get(Constant.REDIS_KEY_JSON_SP_CATEGORY, JSONArray.class));
     }
 
     /**

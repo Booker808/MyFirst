@@ -3,13 +3,14 @@ package com.csjscm.core.framework.vo;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 /**
  * sp 1-3级分类 json model
  */
-public class SpCategoryJsonModel implements Comparable<SpCategoryJsonModel>{
+public class SpCategoryJsonModel implements Comparable<SpCategoryJsonModel>, Serializable {
 
     /**
      * 主键Id
@@ -338,9 +339,9 @@ public class SpCategoryJsonModel implements Comparable<SpCategoryJsonModel>{
 
     @Override
     public int compareTo(SpCategoryJsonModel o) {
-        if(this.sort==null || o.sort==null){
+        if (this.sort == null || o.sort == null) {
             return 0;
         }
-        return this.sort-o.sort;
+        return this.sort - o.sort;
     }
 }
