@@ -438,4 +438,14 @@ public class SkuCoreServiceImpl implements SkuCoreService {
             }
         }
     }
+
+    @Override
+    public SkuCore findSelective(Map<String, Object> map) {
+        return skuCoreMapper.findSelective(map);
+    }
+
+    @Override
+    public List<SkuCore> listSelective(Map<String, Object> map) {
+        return skuCoreMapper.listSelective(map);
+    }
 }

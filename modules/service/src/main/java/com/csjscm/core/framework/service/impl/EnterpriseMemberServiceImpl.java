@@ -50,7 +50,7 @@ public class EnterpriseMemberServiceImpl implements EnterpriseMemberService {
 
     @Override
     @Transactional
-    public int saveEnterpriseMember(EnterpriseMemberModel enterpriseMemberModel) {
+    public EnterpriseMember saveEnterpriseMember(EnterpriseMemberModel enterpriseMemberModel) {
          //暂定 企业编码生成规则
         SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyyMMdd");
         String format = simpleDateFormat.format(new Date())+"0001";
@@ -114,10 +114,10 @@ public class EnterpriseMemberServiceImpl implements EnterpriseMemberService {
         enterpriseTicketInfo.setCreateTime(date);
         enterpriseTicketInfo.setEntNumber(entNumber);
         enterpriseTicketInfo.setTaxpayerId(enterpriseMemberModel.getTaxpayerId());
-        int i = enterpriseMemberMapper.insertSelective(enterpriseMember);
+        enterpriseMemberMapper.insertSelective(enterpriseMember);
         enterpriseSettlementInfoMapper.insertSelective(enterpriseSettlementInfo);
         enterpriseTicketInfoMapper.insertSelective(enterpriseTicketInfo);
-        return i;
+        return enterpriseMember;
     }
 
     @Override
@@ -218,16 +218,13 @@ public class EnterpriseMemberServiceImpl implements EnterpriseMemberService {
         return enterpriseMemberMapper.updateSelective(enterpriseMember);
     }
     @Override
-    public boolean checkPartnerName(String name, Integer type) {
+    public EnterpriseMember checkPartnerName(String name, Integer type) {
         //校验企业名称是否存在
         Map<String,Object> map=new HashMap<>();
         String tradeTypeIn="("+type+","+TradeTypeEnum.供应商采购商.getState()+")";
         map.put("entName",name);
         map.put("tradeTypeIn",tradeTypeIn);
-        int count = enterpriseMemberMapper.findCount(map);
-        if(count>0){
-            return true;
-        }
-        return false;
+        EnterpriseMember member = enterpriseMemberMapper.findSelective(map);
+        return  member;
     }
 }

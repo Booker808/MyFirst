@@ -11,10 +11,7 @@ import com.csjscm.core.framework.dao.*;
 import com.csjscm.core.framework.example.SkuPartnerExample;
 import com.csjscm.core.framework.model.*;
 import com.csjscm.core.framework.service.product.ProductPartnerService;
-import com.csjscm.core.framework.vo.SkuCustomerVo;
-import com.csjscm.core.framework.vo.SkuPartnerAddModel;
-import com.csjscm.core.framework.vo.SkuPartnerModel;
-import com.csjscm.core.framework.vo.SkuPartnerVo;
+import com.csjscm.core.framework.vo.*;
 import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
 import com.csjscm.sweet.framework.redis.RedisDistributedCounterObject;
 import com.csjscm.sweet.framework.redis.RedisServiceFacade;
@@ -473,6 +470,7 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
         productNamemap.put("brandName", skuPartnerModel.getBrandName());
         productNamemap.put("rule", skuPartnerModel.getSupplyPdRule());
         productNamemap.put("size", skuPartnerModel.getSupplyPdSize());
+        productNamemap.put("minUint", skuPartnerModel.getMinUint());
         List<SkuCore> skuCores = skuCoreMapper.listSelective(productNamemap);
         String productNo="";
         if(skuCores.size()<1){
@@ -496,12 +494,15 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
             skuCore.setBrandId(brandMasters.get(0).getId());
             skuCore.setCategorySpId(spCategories.get(0).getId());
             skuCore.setCategorySpNo(spCategories.get(0).getClassCode());
+            skuCore.setMinUint(skuPartnerModel.getMinUint());
             skuCoreMapper.insertSelective(skuCore);
         }else {
             productNo=skuCores.get(0).getProductNo();
         }
+        String uuid = UUID.randomUUID().toString().replace("-", "");
         SkuPartner skuPartner=new  SkuPartner();
         skuPartner.setCreateTime(new Date());
+        skuPartner.setUuid(uuid);
         skuPartner.setSupplyPdSize(skuPartnerModel.getSupplyPdSize());
         skuPartner.setSupplyPdRule(skuPartnerModel.getSupplyPdRule());
         skuPartner.setSupplyPdNo(skuPartnerModel.getSupplyPdNo());
@@ -514,5 +515,10 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
         skuPartner.setRefrencePrice(skuPartnerModel.getRefrencePrice());
         skuPartnerMapper.insertSelective(skuPartner);
         return skuPartner.getId();
+    }
+
+    @Override
+    public SkuPartnerDetailsModel getSkuPartnerModel(Map<String, Object> map) {
+        return skuPartnerMapper.getSkuPartnerModel(map);
     }
 }

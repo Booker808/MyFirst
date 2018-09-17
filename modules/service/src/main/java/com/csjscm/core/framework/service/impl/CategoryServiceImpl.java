@@ -1,6 +1,7 @@
 package com.csjscm.core.framework.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.csjscm.core.framework.common.constant.Constant;
 import com.csjscm.core.framework.common.enums.CategoryLevelEnum;
 import com.csjscm.core.framework.common.util.BussinessException;
@@ -196,7 +197,7 @@ public class CategoryServiceImpl implements CategoryService {
                 }
             }
         }
-        redisServiceFacade.set(Constant.REDIS_KEY_JSON_CATEGORY, JSON.toJSONString(list));
+        redisServiceFacade.set(Constant.REDIS_KEY_JSON_CATEGORY,  JSONArray.parseArray(JSON.toJSONString(list)));
         return list;
     }
 

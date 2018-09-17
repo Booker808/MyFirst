@@ -5,6 +5,7 @@ import com.csjscm.core.framework.example.SkuPartnerExample;
 import com.csjscm.core.framework.model.SkuPartner;
 import com.csjscm.core.framework.model.SkuPartnerEx;
 import com.csjscm.core.framework.vo.SkuPartnerAddModel;
+import com.csjscm.core.framework.vo.SkuPartnerDetailsModel;
 import com.csjscm.core.framework.vo.SkuPartnerModel;
 import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
 import org.springframework.web.multipart.MultipartFile;
@@ -40,4 +41,8 @@ public interface ProductPartnerService {
      * @return
      */
     Integer savePartner(SkuPartnerModel skuPartnerModel);
+    /**
+     * 获取详情
+     */
+    SkuPartnerDetailsModel getSkuPartnerModel(Map<String,Object> map);
 }

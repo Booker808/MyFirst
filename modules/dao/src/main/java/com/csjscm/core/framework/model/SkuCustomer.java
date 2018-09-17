@@ -20,7 +20,6 @@ public class SkuCustomer {
     private String customerNo;
 
     @ApiModelProperty("客户商品编码")
-    @NotBlank(message = "客户商品编码不能为空")
     private String customerPdNo;
 
     @ApiModelProperty("客户商品名")

@@ -6,16 +6,23 @@ import com.alibaba.fastjson.JSONObject;
 import com.csjscm.core.framework.common.util.BussinessException;
 import com.csjscm.core.framework.common.util.ExportExcel;
 import com.csjscm.core.framework.example.SkuPartnerExample;
-import com.csjscm.core.framework.model.SkuCustomer;
-import com.csjscm.core.framework.model.SkuPartner;
+import com.csjscm.core.framework.model.Category;
+import com.csjscm.core.framework.model.SkuCore;
 import com.csjscm.core.framework.model.SkuPartnerEx;
+import com.csjscm.core.framework.model.SpCategory;
+import com.csjscm.core.framework.service.CategoryService;
+import com.csjscm.core.framework.service.SkuCoreService;
+import com.csjscm.core.framework.service.SpCategoryService;
+import com.csjscm.core.framework.service.product.ProductCoreService;
 import com.csjscm.core.framework.service.product.ProductPartnerService;
-import com.csjscm.core.framework.vo.SkuCustomerVo;
 import com.csjscm.core.framework.vo.SkuPartnerAddModel;
+import com.csjscm.core.framework.vo.SkuPartnerDetailsModel;
 import com.csjscm.core.framework.vo.SkuPartnerVo;
+import com.csjscm.sweet.framework.auth.AuthUtils;
 import com.csjscm.sweet.framework.core.mvc.APIResponse;
 import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
 import io.swagger.annotations.*;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +34,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -37,7 +45,12 @@ import java.util.Map;
 public class ProductPartnerController {
     @Autowired
     private ProductPartnerService productPartnerService;
-
+    @Autowired
+    private SkuCoreService skuCoreService;
+    @Autowired
+    private CategoryService categoryService;
+    @Autowired
+    private SpCategoryService spCategoryService;
     @ApiOperation("获取供应商品列表")
     @RequestMapping(value = "/product",method = RequestMethod.GET)
     @ApiImplicitParams({
@@ -103,6 +116,41 @@ public class ProductPartnerController {
         productPartnerService.save(skuPartnerAddModel);
         return APIResponse.success();
     }
+    @ApiOperation("获取供应商商品详情")
+    @RequestMapping(value = "skuPartnerDetails",method = RequestMethod.GET)
+    public APIResponse skuPartnerDetails(@ApiParam(name = "id" ,value = "id") @RequestParam(value = "id") String id){
+        Map<String, Object> map=new HashMap<>();
+        map.put("id",id);
+        SkuPartnerDetailsModel skuPartnerModel = productPartnerService.getSkuPartnerModel(map);
+        if(skuPartnerModel!=null && StringUtils.isNotBlank(skuPartnerModel.getProductNo())){
+            map.clear();
+            map.put("productNo",skuPartnerModel.getProductNo());
+            SkuCore skuCore = skuCoreService.findSelective(map);
+            if(skuCore!=null){
+                skuPartnerModel.setMinUint(skuCore.getMinUint());
+                if(StringUtils.isNotBlank(skuCore.getCategoryNo())){
+                    map.clear();
+                    map.put("classCode",skuCore.getCategoryNo());
+                    Category category = categoryService.findSelective(map);
+                    if(category!=null){
+                        skuPartnerModel.setClassCode(category.getClassCode());
+                        skuPartnerModel.setClassName(category.getClassName());
+                    }
+                }else if(StringUtils.isNotBlank(skuCore.getCategorySpNo())){
+                    map.clear();
+                    map.put("classCode",skuCore.getCategorySpNo());
+                    SpCategory spCategory = spCategoryService.findSelective(map);
+                    if(spCategory!=null){
+                        skuPartnerModel.setClassCode(spCategory.getClassCode());
+                        skuPartnerModel.setClassName(spCategory.getClassName());
+                    }
+                }
+            }
+        }
+        return APIResponse.success(skuPartnerModel);
+    }
+
+
     @ExceptionHandler({BussinessException.class})
     public APIResponse exceptionHandler(Exception e, HttpServletResponse response) {
         return APIResponse.fail(e.getMessage());

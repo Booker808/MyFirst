@@ -599,5 +599,4 @@
         from sku_partner_uom
         <include refid="searchBy"/>
     </select>
-
 </mapper>

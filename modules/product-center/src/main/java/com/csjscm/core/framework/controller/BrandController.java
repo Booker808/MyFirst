@@ -1,6 +1,7 @@
 package com.csjscm.core.framework.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.csjscm.core.framework.common.constant.Constant;
 import com.csjscm.core.framework.common.util.BussinessException;
 import com.csjscm.core.framework.model.BrandMaster;
@@ -57,9 +58,9 @@ public class BrandController {
     public APIResponse queryBrandNameListSky(){
         if(!redisServiceFacade.exists(Constant.REDIS_KEY_JSONSTR_BRAND)){
             List<BrandMaster> brandList = brandMasterService.selectByBrandNameSky();
-            redisServiceFacade.set(Constant.REDIS_KEY_JSONSTR_BRAND, JSON.toJSONString(brandList));
+            redisServiceFacade.set(Constant.REDIS_KEY_JSONSTR_BRAND,  JSONArray.parseArray(JSON.toJSONString(brandList)));
         }
-        return APIResponse.success(redisServiceFacade.get(Constant.REDIS_KEY_JSONSTR_BRAND));
+        return APIResponse.success(redisServiceFacade.get(Constant.REDIS_KEY_JSONSTR_BRAND,JSONArray.class));
     }
 
     /**

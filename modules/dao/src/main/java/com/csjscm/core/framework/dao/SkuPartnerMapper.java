@@ -3,6 +3,7 @@ package com.csjscm.core.framework.dao;
 import com.csjscm.core.framework.example.SkuPartnerExample;
 import com.csjscm.core.framework.model.SkuPartner;
 import com.csjscm.core.framework.model.SkuPartnerEx;
+import com.csjscm.core.framework.vo.SkuPartnerDetailsModel;
 
 import java.util.List;
 import java.util.Map;
@@ -38,4 +39,9 @@ public interface SkuPartnerMapper {
      *
      */
     int findCount(Map<String,Object> map);
+
+    /**
+     * 获取详情
+     */
+    SkuPartnerDetailsModel getSkuPartnerModel(Map<String,Object> map);
 }

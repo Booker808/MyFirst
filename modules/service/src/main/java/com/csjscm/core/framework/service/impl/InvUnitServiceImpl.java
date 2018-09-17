@@ -1,6 +1,7 @@
 package com.csjscm.core.framework.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.csjscm.core.framework.common.constant.Constant;
 import com.csjscm.core.framework.common.enums.InvUnitIsvalidEnum;
 import com.csjscm.core.framework.common.util.BussinessException;
@@ -85,8 +86,7 @@ public class InvUnitServiceImpl implements InvUnitService {
         Map<String,Object> map=new HashMap<>();
         map.put("isvalid", InvUnitIsvalidEnum.有效.getState());
         List<InvUnit> invUnits = invUnitMapper.listSelective(map);
-        String s = JSON.toJSONString(invUnits);
-        redisServiceFacade.set(Constant.REDIS_KEY_UNIT,s);
+        redisServiceFacade.set(Constant.REDIS_KEY_UNIT,  JSONArray.parseArray(JSON.toJSONString(invUnits)));
     }
 
     @Override

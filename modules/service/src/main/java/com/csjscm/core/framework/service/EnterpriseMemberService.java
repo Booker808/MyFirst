@@ -21,7 +21,7 @@ public interface EnterpriseMemberService {
      * @param enterpriseMemberModel
      * @return
      */
-    int saveEnterpriseMember(EnterpriseMemberModel enterpriseMemberModel);
+    EnterpriseMember saveEnterpriseMember(EnterpriseMemberModel enterpriseMemberModel);
 
     /**
      * 删除 企业会员
@@ -60,6 +60,6 @@ public interface EnterpriseMemberService {
      * 户企业
      * @return
      */
-    boolean checkPartnerName(String name,Integer type);
+    EnterpriseMember checkPartnerName(String name,Integer type);
 
 }

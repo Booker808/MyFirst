@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.csjscm.core.framework.common.constant.Constant;
 import com.csjscm.core.framework.common.util.BeanValidator;
 import com.csjscm.core.framework.common.util.BussinessException;
+import com.csjscm.core.framework.model.EnterpriseMember;
 import com.csjscm.core.framework.model.SkuPartner;
 import com.csjscm.core.framework.model.SpCategory;
 import com.csjscm.core.framework.service.CategoryService;
@@ -75,9 +76,13 @@ public class ShoppingCenterController {
      */
     @RequestMapping(value = "/checkEnterpriseName",method = RequestMethod.GET)
     public APIResponse checkPartnerName(@RequestParam(value = "name",required =true) String name,@RequestParam(value = "type",required =true) Integer type){
-        boolean b = enterpriseMemberService.checkPartnerName(name, type);
-        if(b){
-            return APIResponse.fail("企业名称已存在");
+        EnterpriseMember enterpriseMember = enterpriseMemberService.checkPartnerName(name, type);
+        if(enterpriseMember!=null){
+            APIResponse apiResponse=new APIResponse();
+            apiResponse.setMessage("企业名称已存在");
+            apiResponse.setCode("fail");
+            apiResponse.setData(enterpriseMember.getEntNumber());
+            return apiResponse;
         }
         return APIResponse.success();
     }
@@ -89,8 +94,8 @@ public class ShoppingCenterController {
     @RequestMapping(value = "/createEnterprise",method = RequestMethod.POST)
     public APIResponse createEnterprise(EnterpriseMemberModel enterpriseMemberModel){
         BeanValidator.validate(enterpriseMemberModel);
-        enterpriseMemberService.saveEnterpriseMember(enterpriseMemberModel);
-        return APIResponse.success();
+        EnterpriseMember enterpriseMember = enterpriseMemberService.saveEnterpriseMember(enterpriseMemberModel);
+        return APIResponse.success(enterpriseMember.getEntNumber());
     }
     /**
      * 新建供应商商品档案接口

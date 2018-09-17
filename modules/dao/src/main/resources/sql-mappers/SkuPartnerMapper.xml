@@ -44,6 +44,55 @@
     <result column="min_uint" property="minUint" jdbcType="VARCHAR" />
     <result column="class_name" property="className" jdbcType="VARCHAR" />
   </resultMap>
+  <resultMap id="DetailMap" type="com.csjscm.core.framework.vo.SkuPartnerDetailsModel" extends="BaseResultMap">
+    <result column="class_code" property="classCode" jdbcType="VARCHAR" />
+    <result column="class_name" property="className" jdbcType="VARCHAR" />
+    <result column="brand_name" jdbcType="VARCHAR" property="brandName" />
+
+     <collection property="uoms" javaType="java.util.ArrayList" ofType="com.csjscm.core.framework.model.SkuPartnerUom" select="findListByuuid" column="uuid">
+     </collection>
+  </resultMap>
+
+  <resultMap id="UomMap" type="com.csjscm.core.framework.model.SkuPartnerUom">
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="partner_uuid" property="partnerUuid" jdbcType="VARCHAR" />
+    <result column="pack_no" property="packNo" jdbcType="VARCHAR" />
+    <result column="inv_unit_name" property="invUnitName" jdbcType="VARCHAR" />
+    <result column="pack_unit_name" property="packUnitName" jdbcType="VARCHAR" />
+    <result column="pack_rate" jdbcType="DECIMAL" property="packRate" />
+    <result column="pack_standard" jdbcType="VARCHAR" property="packStandard" />
+    <result column="std_zy_price" jdbcType="DECIMAL" property="stdZyPrice" />
+    <result column="pcs_length" jdbcType="DECIMAL" property="pcsLength" />
+    <result column="pcs_width" jdbcType="DECIMAL" property="pcsWidth" />
+    <result column="pcs_height" jdbcType="DECIMAL" property="pcsHeight" />
+    <result column="net_weight" jdbcType="DOUBLE" property="netWeight" />
+    <result column="gross_weight" jdbcType="DOUBLE" property="grossWeight" />
+    <result column="size_type" jdbcType="VARCHAR" property="sizeType" />
+    <result column="create_user_id" property="createUserId" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="edit_user_id" property="editUserId" jdbcType="VARCHAR" />
+    <result column="edit_time" property="editTime" jdbcType="TIMESTAMP" />
+    <result column="udf1" property="udf1" jdbcType="VARCHAR" />
+    <result column="udf2" property="udf2" jdbcType="VARCHAR" />
+    <result column="udf3" property="udf3" jdbcType="VARCHAR" />
+    <result column="udf4" property="udf4" jdbcType="VARCHAR" />
+    <result column="udf5" property="udf5" jdbcType="VARCHAR" />
+    <result column="udf6" property="udf6" jdbcType="VARCHAR" />
+    <result column="udf7" property="udf7" jdbcType="VARCHAR" />
+    <result column="udf8" property="udf8" jdbcType="VARCHAR" />
+    <result column="udf9" property="udf9" jdbcType="VARCHAR" />
+    <result column="udf10" property="udf10" jdbcType="VARCHAR" />
+    <result column="udf11" property="udf11" jdbcType="VARCHAR" />
+    <result column="udf12" property="udf12" jdbcType="VARCHAR" />
+    <result column="udf13" property="udf13" jdbcType="VARCHAR" />
+    <result column="udf14" property="udf14" jdbcType="VARCHAR" />
+    <result column="udf15" property="udf15" jdbcType="VARCHAR" />
+    <result column="udf16" property="udf16" jdbcType="VARCHAR" />
+    <result column="udf17" property="udf17" jdbcType="VARCHAR" />
+    <result column="udf18" property="udf18" jdbcType="VARCHAR" />
+    <result column="udf19" property="udf19" jdbcType="VARCHAR" />
+    <result column="udf20" property="udf20" jdbcType="VARCHAR" />
+  </resultMap>
   <sql id="Base_Column_List">
     id, product_no, supply_no,supply_pd_no, supply_pd_name, supply_pd_rule, supply_pd_size, brand_id, brand_name,
     refrence_price, recent_enquiry, create_user_id, create_time, edit_user_id, edit_time, 
@@ -637,5 +686,16 @@
     select count(id)
     from sku_partner
     <include refid="searchBy"/>
+  </select>
+  <select id="getSkuPartnerModel" resultMap="DetailMap" parameterType="java.util.HashMap">
+    select
+    <include refid="Base_Column_List" />
+    from sku_partner
+    <include refid="searchBy"/>
+  </select>
+  <select id="findListByuuid" resultMap="UomMap" parameterType="java.lang.String">
+    select *
+    from sku_partner_uom where
+    partner_uuid=#{uuid}
   </select>
 </mapper>

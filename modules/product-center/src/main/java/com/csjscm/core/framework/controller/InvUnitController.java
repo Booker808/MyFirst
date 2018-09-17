@@ -1,5 +1,6 @@
 package com.csjscm.core.framework.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.csjscm.core.framework.common.constant.Constant;
 import com.csjscm.core.framework.common.enums.InvUnitIsvalidEnum;
 import com.csjscm.core.framework.common.util.BussinessException;
@@ -44,7 +45,10 @@ public class InvUnitController {
     @ApiOperation("查询可用的计量单位列表")
     @RequestMapping(value = "/list",method = RequestMethod.GET)
     public APIResponse queryList(){
-        return APIResponse.success(redisServiceFacade.get(Constant.REDIS_KEY_UNIT));
+        if(!redisServiceFacade.exists(Constant.REDIS_KEY_UNIT)){
+            invUnitService.reloadRedisInvUnit();
+        }
+        return APIResponse.success(redisServiceFacade.get(Constant.REDIS_KEY_UNIT, JSONArray.class));
     }
     @ApiOperation("新增单位")
     @RequestMapping(value = "/saveInvUnit",method = RequestMethod.POST)

@@ -141,6 +141,25 @@ import java.util.Date;
      */
     private Integer state;
 
+    private String bigImg;
+
+    private String midImg;
+
+    public String getBigImg() {
+        return bigImg;
+    }
+
+    public void setBigImg(String bigImg) {
+        this.bigImg = bigImg;
+    }
+
+    public String getMidImg() {
+        return midImg;
+    }
+
+    public void setMidImg(String midImg) {
+        this.midImg = midImg;
+    }
 
     /**
     * 获取主键Id

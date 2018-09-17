@@ -41,4 +41,14 @@ public interface SkuCoreService {
      * @param map
      */
     void insertSelective(Map<String, Object> map);
+    /**
+     * 按条件查询单个
+     *
+     */
+    SkuCore findSelective(Map<String,Object> map);
+    /**
+     * 按条件查询list
+     *
+     */
+    List<SkuCore> listSelective(Map<String,Object> map);
 }

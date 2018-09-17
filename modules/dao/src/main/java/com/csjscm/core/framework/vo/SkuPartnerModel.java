@@ -22,9 +22,11 @@ public class SkuPartnerModel {
     private String supplyPdName;
 
     @ApiModelProperty("供应商商品规格")
+    @NotBlank(message = "供应商商品规格不能为空")
     private String supplyPdRule;
 
     @ApiModelProperty("供应商商品型号")
+    @NotBlank(message = "供应商商品型号不能为空")
     private String supplyPdSize;
 
     @ApiModelProperty("品牌名")
@@ -38,7 +40,11 @@ public class SkuPartnerModel {
     private BigDecimal recentEnquiry;
 
     @ApiModelProperty("商城分类编码")
+    @NotBlank(message = "商城分类编码不能为空")
     private  String classCode;
+    @ApiModelProperty("最小单位")
+    @NotBlank(message = "最小单位不能为空")
+    private String minUint;
 
     public String getSupplyNo() {
         return supplyNo;
@@ -110,5 +116,13 @@ public class SkuPartnerModel {
 
     public void setClassCode(String classCode) {
         this.classCode = classCode;
+    }
+
+    public String getMinUint() {
+        return minUint;
+    }
+
+    public void setMinUint(String minUint) {
+        this.minUint = minUint;
     }
 }

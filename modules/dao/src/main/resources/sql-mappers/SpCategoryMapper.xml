@@ -25,6 +25,8 @@
         <result column="udf8" property="udf8" jdbcType="VARCHAR" />
         <result column="udf9" property="udf9" jdbcType="VARCHAR" />
         <result column="udf10" property="udf10" jdbcType="VARCHAR" />
+        <result column="big_img" property="bigImg" jdbcType="VARCHAR" />
+        <result column="mid_img" property="midImg" jdbcType="VARCHAR" />
         <result column="request_id" property="requestId" jdbcType="VARCHAR" />
         <result column="sort" property="sort" jdbcType="INTEGER" />
         <result column="state" property="state" jdbcType="INTEGER" />
@@ -34,7 +36,7 @@
     </resultMap>
     <!--基本的sql查询字段 公共引用...-->
     <sql id="Base_Column_List">
-        id,class_code,class_name,simple_name,parent_class,level_num,memos,create_user_id,create_time,edit_user_id,edit_time,udf1,udf2,udf3,udf4,udf5,udf6,udf7,udf8,udf9,udf10,request_id,sort,state
+        id,class_code,class_name,simple_name,parent_class,level_num,memos,create_user_id,create_time,edit_user_id,edit_time,udf1,udf2,udf3,udf4,udf5,udf6,udf7,udf8,udf9,udf10,request_id,sort,state,big_img,mid_img
     </sql>
     
     <!-- 基本的sql查询条件公共引用 -->
@@ -117,7 +119,7 @@
     
     
     <insert id="insert" parameterType="com.csjscm.core.framework.model.SpCategory">
-        insert into sp_category(class_code,class_name,simple_name,parent_class,level_num,memos,create_user_id,create_time,edit_user_id,edit_time,udf1,udf2,udf3,udf4,udf5,udf6,udf7,udf8,udf9,udf10,request_id,sort,state)values(#{classCode,jdbcType=VARCHAR},#{className,jdbcType=VARCHAR},#{simpleName,jdbcType=VARCHAR},#{parentClass,jdbcType=VARCHAR},#{levelNum,jdbcType=INTEGER},#{memos,jdbcType=VARCHAR},#{createUserId,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},#{editUserId,jdbcType=VARCHAR},#{editTime,jdbcType=TIMESTAMP},#{udf1,jdbcType=VARCHAR},#{udf2,jdbcType=VARCHAR},#{udf3,jdbcType=VARCHAR},#{udf4,jdbcType=VARCHAR},#{udf5,jdbcType=VARCHAR},#{udf6,jdbcType=VARCHAR},#{udf7,jdbcType=VARCHAR},#{udf8,jdbcType=VARCHAR},#{udf9,jdbcType=VARCHAR},#{udf10,jdbcType=VARCHAR},#{requestId,jdbcType=VARCHAR},#{sort,jdbcType=INTEGER},#{state,jdbcType=INTEGER})
+        insert into sp_category(class_code,class_name,simple_name,parent_class,level_num,memos,create_user_id,create_time,edit_user_id,edit_time,udf1,udf2,udf3,udf4,udf5,udf6,udf7,udf8,udf9,udf10,request_id,sort,state,big_img,mid_img)values(#{classCode,jdbcType=VARCHAR},#{className,jdbcType=VARCHAR},#{simpleName,jdbcType=VARCHAR},#{parentClass,jdbcType=VARCHAR},#{levelNum,jdbcType=INTEGER},#{memos,jdbcType=VARCHAR},#{createUserId,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},#{editUserId,jdbcType=VARCHAR},#{editTime,jdbcType=TIMESTAMP},#{udf1,jdbcType=VARCHAR},#{udf2,jdbcType=VARCHAR},#{udf3,jdbcType=VARCHAR},#{udf4,jdbcType=VARCHAR},#{udf5,jdbcType=VARCHAR},#{udf6,jdbcType=VARCHAR},#{udf7,jdbcType=VARCHAR},#{udf8,jdbcType=VARCHAR},#{udf9,jdbcType=VARCHAR},#{udf10,jdbcType=VARCHAR},#{requestId,jdbcType=VARCHAR},#{sort,jdbcType=INTEGER},#{state,jdbcType=INTEGER},,#{bigImg,jdbcType=VARCHAR},,#{midImg,jdbcType=VARCHAR})
     </insert>
     <insert id="insertSelective" parameterType="com.csjscm.core.framework.model.SpCategory">
         insert into sp_category
@@ -194,6 +196,12 @@
             <if test="state != null">
                 state,
             </if>
+            <if test="state != null">
+                big_img,
+            </if>
+            <if test="state != null">
+                mid_img,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -268,6 +276,12 @@
             <if test="state != null">
                 #{state,jdbcType=INTEGER},
             </if>
+            <if test="bigImg != null">
+                #{bigImg,jdbcType=VARCHAR},
+            </if>
+            <if test="midImg != null">
+                #{midImg,jdbcType=VARCHAR},
+            </if>
         </trim>
     </insert>
 
@@ -295,7 +309,9 @@
             udf10 = #{udf10,jdbcType=VARCHAR},
             request_id = #{requestId,jdbcType=VARCHAR},
             sort = #{sort,jdbcType=INTEGER},
-            state = #{state,jdbcType=INTEGER}
+            state = #{state,jdbcType=INTEGER},
+            big_img = #{bigImg,jdbcType=VARCHAR},
+             mid_img = #{midImg,jdbcType=VARCHAR}
         where id = #{id ,jdbcType=INTEGER}
     </update>
 
@@ -370,8 +386,14 @@
                 sort = #{sort,jdbcType=INTEGER},
             </if>
             <if test="state != null ">
-                state = #{state,jdbcType=INTEGER}
+                state = #{state,jdbcType=INTEGER},
             </if>
+              <if test="bigImg != null and bigImg != '' ">
+                  big_img = #{bigImg,jdbcType=VARCHAR},
+              </if>
+              <if test="midImg != null and midImg != '' ">
+                  mid_img = #{midImg,jdbcType=VARCHAR}
+              </if>
         </set>
         where id = #{id ,jdbcType=INTEGER}
     </update>
