@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.csjscm.core.framework.dao.EnterpriseInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.csjscm.core.framework.model.EnterpriseInfo" >
+    <id column="ent_number" property="entNumber" jdbcType="VARCHAR" />
+    <result column="ent_type" property="entType" jdbcType="INTEGER" />
+    <result column="ent_name" property="entName" jdbcType="VARCHAR" />
+    <result column="register_address" property="registerAddress" jdbcType="VARCHAR" />
+    <result column="bussiness_address" property="bussinessAddress" jdbcType="VARCHAR" />
+    <result column="web_address" property="webAddress" jdbcType="VARCHAR" />
+    <result column="register_money" property="registerMoney" jdbcType="VARCHAR" />
+    <result column="taxpayer_id" property="taxpayerId" jdbcType="VARCHAR" />
+    <result column="purchase" property="purchase" jdbcType="INTEGER" />
+    <result column="sell" property="sell" jdbcType="INTEGER" />
+    <result column="tender" property="tender" jdbcType="INTEGER" />
+    <result column="bid" property="bid" jdbcType="INTEGER" />
+    <result column="check_state" property="checkState" jdbcType="INTEGER" />
+    <result column="isvalid" property="isvalid" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="edit_time" property="editTime" jdbcType="TIMESTAMP" />
+    <result column="edit_user" property="editUser" jdbcType="VARCHAR" />
+    <result column="isdelete" property="isdelete" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ent_number, ent_type, ent_name, register_address, bussiness_address, web_address, 
+    register_money, taxpayer_id, purchase, sell, tender, bid, check_state, isvalid, create_time, 
+    edit_time, edit_user, isdelete
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from enterprise_info
+    where ent_number = #{entNumber,jdbcType=VARCHAR}
+  </select>
+  <select id="findMaxEntNumber" resultType="java.lang.String">
+    SELECT max(ent_number)
+    FROM `enterprise_info`
+  </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from enterprise_info
+    where ent_number = #{entNumber,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.csjscm.core.framework.model.EnterpriseInfo" >
+    insert into enterprise_info (ent_number, ent_type, ent_name, 
+      register_address, bussiness_address, web_address, 
+      register_money, taxpayer_id, purchase, 
+      sell, tender, bid, 
+      check_state, isvalid, create_time, 
+      edit_time, edit_user, isdelete
+      )
+    values (#{entNumber,jdbcType=VARCHAR}, #{entType,jdbcType=INTEGER}, #{entName,jdbcType=VARCHAR}, 
+      #{registerAddress,jdbcType=VARCHAR}, #{bussinessAddress,jdbcType=VARCHAR}, #{webAddress,jdbcType=VARCHAR}, 
+      #{registerMoney,jdbcType=VARCHAR}, #{taxpayerId,jdbcType=VARCHAR}, #{purchase,jdbcType=INTEGER}, 
+      #{sell,jdbcType=INTEGER}, #{tender,jdbcType=INTEGER}, #{bid,jdbcType=INTEGER}, 
+      #{checkState,jdbcType=INTEGER}, #{isvalid,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{editTime,jdbcType=TIMESTAMP}, #{editUser,jdbcType=VARCHAR}, #{isdelete,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.csjscm.core.framework.model.EnterpriseInfo" >
+    insert into enterprise_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="entNumber != null" >
+        ent_number,
+      </if>
+      <if test="entType != null" >
+        ent_type,
+      </if>
+      <if test="entName != null" >
+        ent_name,
+      </if>
+      <if test="registerAddress != null" >
+        register_address,
+      </if>
+      <if test="bussinessAddress != null" >
+        bussiness_address,
+      </if>
+      <if test="webAddress != null" >
+        web_address,
+      </if>
+      <if test="registerMoney != null" >
+        register_money,
+      </if>
+      <if test="taxpayerId != null" >
+        taxpayer_id,
+      </if>
+      <if test="purchase != null" >
+        purchase,
+      </if>
+      <if test="sell != null" >
+        sell,
+      </if>
+      <if test="tender != null" >
+        tender,
+      </if>
+      <if test="bid != null" >
+        bid,
+      </if>
+      <if test="checkState != null" >
+        check_state,
+      </if>
+      <if test="isvalid != null" >
+        isvalid,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="editTime != null" >
+        edit_time,
+      </if>
+      <if test="editUser != null" >
+        edit_user,
+      </if>
+      <if test="isdelete != null" >
+        isdelete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="entNumber != null" >
+        #{entNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="entType != null" >
+        #{entType,jdbcType=INTEGER},
+      </if>
+      <if test="entName != null" >
+        #{entName,jdbcType=VARCHAR},
+      </if>
+      <if test="registerAddress != null" >
+        #{registerAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="bussinessAddress != null" >
+        #{bussinessAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="webAddress != null" >
+        #{webAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="registerMoney != null" >
+        #{registerMoney,jdbcType=VARCHAR},
+      </if>
+      <if test="taxpayerId != null" >
+        #{taxpayerId,jdbcType=VARCHAR},
+      </if>
+      <if test="purchase != null" >
+        #{purchase,jdbcType=INTEGER},
+      </if>
+      <if test="sell != null" >
+        #{sell,jdbcType=INTEGER},
+      </if>
+      <if test="tender != null" >
+        #{tender,jdbcType=INTEGER},
+      </if>
+      <if test="bid != null" >
+        #{bid,jdbcType=INTEGER},
+      </if>
+      <if test="checkState != null" >
+        #{checkState,jdbcType=INTEGER},
+      </if>
+      <if test="isvalid != null" >
+        #{isvalid,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="editTime != null" >
+        #{editTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="editUser != null" >
+        #{editUser,jdbcType=VARCHAR},
+      </if>
+      <if test="isdelete != null" >
+        #{isdelete,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.csjscm.core.framework.model.EnterpriseInfo" >
+    update enterprise_info
+    <set >
+      <if test="entType != null" >
+        ent_type = #{entType,jdbcType=INTEGER},
+      </if>
+      <if test="entName != null" >
+        ent_name = #{entName,jdbcType=VARCHAR},
+      </if>
+      <if test="registerAddress != null" >
+        register_address = #{registerAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="bussinessAddress != null" >
+        bussiness_address = #{bussinessAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="webAddress != null" >
+        web_address = #{webAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="registerMoney != null" >
+        register_money = #{registerMoney,jdbcType=VARCHAR},
+      </if>
+      <if test="taxpayerId != null" >
+        taxpayer_id = #{taxpayerId,jdbcType=VARCHAR},
+      </if>
+      <if test="purchase != null" >
+        purchase = #{purchase,jdbcType=INTEGER},
+      </if>
+      <if test="sell != null" >
+        sell = #{sell,jdbcType=INTEGER},
+      </if>
+      <if test="tender != null" >
+        tender = #{tender,jdbcType=INTEGER},
+      </if>
+      <if test="bid != null" >
+        bid = #{bid,jdbcType=INTEGER},
+      </if>
+      <if test="checkState != null" >
+        check_state = #{checkState,jdbcType=INTEGER},
+      </if>
+      <if test="isvalid != null" >
+        isvalid = #{isvalid,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="editTime != null" >
+        edit_time = #{editTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="editUser != null" >
+        edit_user = #{editUser,jdbcType=VARCHAR},
+      </if>
+      <if test="isdelete != null" >
+        isdelete = #{isdelete,jdbcType=INTEGER},
+      </if>
+    </set>
+    where ent_number = #{entNumber,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.csjscm.core.framework.model.EnterpriseInfo" >
+    update enterprise_info
+    set ent_type = #{entType,jdbcType=INTEGER},
+      ent_name = #{entName,jdbcType=VARCHAR},
+      register_address = #{registerAddress,jdbcType=VARCHAR},
+      bussiness_address = #{bussinessAddress,jdbcType=VARCHAR},
+      web_address = #{webAddress,jdbcType=VARCHAR},
+      register_money = #{registerMoney,jdbcType=VARCHAR},
+      taxpayer_id = #{taxpayerId,jdbcType=VARCHAR},
+      purchase = #{purchase,jdbcType=INTEGER},
+      sell = #{sell,jdbcType=INTEGER},
+      tender = #{tender,jdbcType=INTEGER},
+      bid = #{bid,jdbcType=INTEGER},
+      check_state = #{checkState,jdbcType=INTEGER},
+      isvalid = #{isvalid,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      edit_time = #{editTime,jdbcType=TIMESTAMP},
+      edit_user = #{editUser,jdbcType=VARCHAR},
+      isdelete = #{isdelete,jdbcType=INTEGER}
+    where ent_number = #{entNumber,jdbcType=VARCHAR}
+  </update>
+</mapper>
