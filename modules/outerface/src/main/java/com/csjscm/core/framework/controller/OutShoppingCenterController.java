@@ -4,14 +4,10 @@ import com.alibaba.fastjson.JSONArray;
 import com.csjscm.core.framework.common.constant.Constant;
 import com.csjscm.core.framework.common.util.BeanValidator;
 import com.csjscm.core.framework.common.util.BussinessException;
-import com.csjscm.core.framework.model.EnterpriseMember;
 import com.csjscm.core.framework.model.SkuPartner;
 import com.csjscm.core.framework.model.SpCategory;
-import com.csjscm.core.framework.service.CategoryService;
-import com.csjscm.core.framework.service.EnterpriseMemberService;
 import com.csjscm.core.framework.service.SpCategoryService;
 import com.csjscm.core.framework.service.product.ProductPartnerService;
-import com.csjscm.core.framework.vo.EnterpriseMemberModel;
 import com.csjscm.core.framework.vo.SkuPartnerModel;
 import com.csjscm.sweet.framework.core.mvc.APIResponse;
 import com.csjscm.sweet.framework.redis.RedisServiceFacade;
@@ -28,17 +24,15 @@ import java.util.Map;
 
 
 @Controller
-@RequestMapping("/shopping/center")
+@RequestMapping("/outerface/shopping/center")
 @ResponseBody
-public class ShoppingCenterController {
+public class OutShoppingCenterController {
     @Autowired
     private SpCategoryService spCategoryService;
     @Autowired
     private RedisServiceFacade redisServiceFacade;
     @Autowired
     private ProductPartnerService productPartnerService;
-    @Autowired
-    private EnterpriseMemberService enterpriseMemberService;
     /**
      * 获取商城分类json
      *
@@ -74,7 +68,7 @@ public class ShoppingCenterController {
      * @param type
      * @return
      */
-    @RequestMapping(value = "/checkEnterpriseName",method = RequestMethod.GET)
+/*    @RequestMapping(value = "/checkEnterpriseName",method = RequestMethod.GET)
     public APIResponse checkPartnerName(@RequestParam(value = "name",required =true) String name,@RequestParam(value = "type",required =true) Integer type){
         EnterpriseMember enterpriseMember = enterpriseMemberService.checkPartnerName(name, type);
         if(enterpriseMember!=null){
@@ -87,16 +81,16 @@ public class ShoppingCenterController {
         return APIResponse.success();
     }
 
-    /**
+    *//**
      * 创建供应商 客户企业
      * @return
-     */
+     *//*
     @RequestMapping(value = "/createEnterprise",method = RequestMethod.POST)
     public APIResponse createEnterprise(EnterpriseMemberModel enterpriseMemberModel){
         BeanValidator.validate(enterpriseMemberModel);
         EnterpriseMember enterpriseMember = enterpriseMemberService.saveEnterpriseMember(enterpriseMemberModel);
         return APIResponse.success(enterpriseMember.getEntNumber());
-    }
+    }*/
     /**
      * 新建供应商商品档案接口
      * @return

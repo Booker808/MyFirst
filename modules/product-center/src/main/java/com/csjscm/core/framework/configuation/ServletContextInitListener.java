@@ -39,7 +39,6 @@ public class ServletContextInitListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         sce.getServletContext().log("==================MyServletContextListener Start=============");
-        sce.getServletContext().log("==================最小单位-redis初始化成功=============");
         //商品编码—redis初始化
         List<SkuCore> coreList = skuCoreService.selectByProductNoList();
         for (SkuCore skuCore : coreList) {
