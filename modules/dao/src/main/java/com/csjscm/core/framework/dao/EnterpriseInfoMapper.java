@@ -6,6 +6,9 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
+import java.util.List;
+import java.util.Map;
+
 public interface EnterpriseInfoMapper {
     int deleteByPrimaryKey(String entNumber);
 
@@ -22,6 +25,22 @@ public interface EnterpriseInfoMapper {
     int updateByPrimaryKey(EnterpriseInfo record);
 
     String findMaxEntNumber();
+
+    /**
+     * 按条件查询单个
+     *
+     */
+    EnterpriseInfo findSelective(Map<String,Object> map);
+    /**
+     * 按条件查询list
+     *
+     */
+    List<EnterpriseInfo> listSelective(Map<String,Object> map);
+    /**
+     * 按条件查询条数
+     *
+     */
+    int findCount(Map<String,Object> map);
 
     /**
      * 根据企业名称精确搜索企业ID

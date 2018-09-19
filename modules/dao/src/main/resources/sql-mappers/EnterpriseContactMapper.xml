@@ -22,6 +22,56 @@
     id, ent_number, name, job, contact_type, sex, phone, email, identity_no, identity_img0, 
     identity_img1, create_time, edit_time, edit_user, isdelete
   </sql>
+  <!-- 基本的sql查询条件公共引用 -->
+  <sql id="searchBy">
+    <trim prefix="where" prefixOverrides="and|or">
+      <if test=" id != null and id != '' ">
+        id  = #{id,jdbcType=INTEGER}
+      </if>
+      <if test="entNumber != null and entNumber != '' ">
+        and ent_number = #{entNumber,jdbcType=VARCHAR}
+      </if>
+      <if test="name != null and name != '' ">
+        and name = #{name,jdbcType=VARCHAR}
+      </if>
+      <if test="job != null and job != '' ">
+        and job = #{job,jdbcType=VARCHAR}
+      </if>
+      <if test="contactType != null and contactType != '' ">
+        and contact_type = #{contactType,jdbcType=INTEGER}
+      </if>
+      <if test="sex != null and sex != '' ">
+        and sex = #{sex,jdbcType=INTEGER}
+      </if>
+      <if test="phone != null and phone != '' ">
+        and phone = #{phone,jdbcType=VARCHAR}
+      </if>
+      <if test="email != null and email != '' ">
+        and email = #{email,jdbcType=VARCHAR}
+      </if>
+      <if test="identityNo != null and identityNo != '' ">
+        and identity_no = #{identityNo,jdbcType=VARCHAR}
+      </if>
+      <if test="identityImg0 != null and identityImg0 != '' ">
+        and identity_img0 = #{identityImg0,jdbcType=VARCHAR}
+      </if>
+      <if test="identityImg1 != null and identityImg1 != '' ">
+        and identity_img1 = #{identityImg1,jdbcType=VARCHAR}
+      </if>
+      <if test="createTime != null">
+        and create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="editTime != null">
+        and edit_time = #{editTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="editUser != null and editUser != '' ">
+        and edit_user = #{editUser,jdbcType=VARCHAR}
+      </if>
+      <if test="isdelete != null and isdelete != '' ">
+        and isdelete = #{isdelete,jdbcType=INTEGER}
+      </if>
+    </trim>
+  </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
@@ -216,4 +266,22 @@
       isdelete = #{isdelete,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+    select
+    <include refid="Base_Column_List" />
+    from enterprise_contact
+    <include refid="searchBy"/>
+  </select>
+
+  <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+    select
+    <include refid="Base_Column_List" />
+    from enterprise_contact
+    <include refid="searchBy"/>
+  </select>
+  <select id="findCount" resultType="java.lang.Integer" parameterType="java.util.HashMap">
+    select count(id)
+    from enterprise_contact
+    <include refid="searchBy"/>
+  </select>
 </mapper>

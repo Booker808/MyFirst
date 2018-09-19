@@ -1,22 +1,19 @@
-package com.csjscm.core.framework.dao;
+package com.csjscm.core.framework.service.enterprise;
 
 import com.csjscm.core.framework.model.EnterpriseReceive;
 
 import java.util.List;
 import java.util.Map;
 
-public interface EnterpriseReceiveMapper {
-    int deleteByPrimaryKey(Integer id);
+/**
+ * 收发信息Service
+ * 
+ * @author yinzy
+ * @version 1.0.0
+ * @date 2018-09-19 10:29:29
+ */
 
-    int insert(EnterpriseReceive record);
-
-    int insertSelective(EnterpriseReceive record);
-
-    EnterpriseReceive selectByPrimaryKey(Integer id);
-
-    int updateByPrimaryKeySelective(EnterpriseReceive record);
-
-    int updateByPrimaryKey(EnterpriseReceive record);
+public interface EnterpriseReceiveService {
 
     /**
      * 按条件查询单个
@@ -33,4 +30,11 @@ public interface EnterpriseReceiveMapper {
      *
      */
     int findCount(Map<String,Object> map);
+
+    int save(EnterpriseReceive enterpriseReceive);
+
+    int update(EnterpriseReceive enterpriseReceive);
+
+    int updateIsdelete(Integer id);
+
 }

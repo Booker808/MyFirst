@@ -1,22 +1,20 @@
-package com.csjscm.core.framework.dao;
+package com.csjscm.core.framework.service.enterprise;
+
 
 import com.csjscm.core.framework.model.EnterpriseContract;
 
 import java.util.List;
 import java.util.Map;
 
-public interface EnterpriseContractMapper {
-    int deleteByPrimaryKey(Integer id);
+/**
+ * 合同模板Service
+ * 
+ * @author yinzy
+ * @version 1.0.0
+ * @date 2018-09-19 11:25:02
+ */
 
-    int insert(EnterpriseContract record);
-
-    int insertSelective(EnterpriseContract record);
-
-    EnterpriseContract selectByPrimaryKey(Integer id);
-
-    int updateByPrimaryKeySelective(EnterpriseContract record);
-
-    int updateByPrimaryKey(EnterpriseContract record);
+public interface EnterpriseContractService {
 
     /**
      * 按条件查询单个
@@ -33,4 +31,7 @@ public interface EnterpriseContractMapper {
      *
      */
     int findCount(Map<String,Object> map);
+
+    int save(EnterpriseContract enterpriseContract);
+    int update(EnterpriseContract enterpriseContract);
 }

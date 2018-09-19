@@ -1,22 +1,19 @@
-package com.csjscm.core.framework.dao;
+package com.csjscm.core.framework.service.enterprise;
 
 import com.csjscm.core.framework.model.EnterpriseSettle;
 
 import java.util.List;
 import java.util.Map;
 
-public interface EnterpriseSettleMapper {
-    int deleteByPrimaryKey(Integer id);
+/**
+ * 结算信息Service
+ * 
+ * @author yinzy
+ * @version 1.0.0
+ * @date 2018-09-19 11:03:25
+ */
 
-    int insert(EnterpriseSettle record);
-
-    int insertSelective(EnterpriseSettle record);
-
-    EnterpriseSettle selectByPrimaryKey(Integer id);
-
-    int updateByPrimaryKeySelective(EnterpriseSettle record);
-
-    int updateByPrimaryKey(EnterpriseSettle record);
+public interface EnterpriseSettleService {
 
     /**
      * 按条件查询单个
@@ -33,4 +30,8 @@ public interface EnterpriseSettleMapper {
      *
      */
     int findCount(Map<String,Object> map);
+
+    int save(EnterpriseSettle enterpriseSettle);
+    int update(EnterpriseSettle enterpriseSettle);
+
 }

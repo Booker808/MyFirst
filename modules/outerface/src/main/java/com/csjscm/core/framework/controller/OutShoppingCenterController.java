@@ -3,11 +3,15 @@ package com.csjscm.core.framework.controller;
 import com.alibaba.fastjson.JSONArray;
 import com.csjscm.core.framework.common.constant.Constant;
 import com.csjscm.core.framework.common.util.BeanValidator;
+import com.csjscm.core.framework.common.util.BeanutilsCopy;
 import com.csjscm.core.framework.common.util.BussinessException;
+import com.csjscm.core.framework.model.EnterpriseInfo;
 import com.csjscm.core.framework.model.SkuPartner;
 import com.csjscm.core.framework.model.SpCategory;
 import com.csjscm.core.framework.service.SpCategoryService;
+import com.csjscm.core.framework.service.enterprise.EnterpriseInfoService;
 import com.csjscm.core.framework.service.product.ProductPartnerService;
+import com.csjscm.core.framework.vo.EnterpriseInfoSPModel;
 import com.csjscm.core.framework.vo.SkuPartnerModel;
 import com.csjscm.sweet.framework.core.mvc.APIResponse;
 import com.csjscm.sweet.framework.redis.RedisServiceFacade;
@@ -33,6 +37,9 @@ public class OutShoppingCenterController {
     private RedisServiceFacade redisServiceFacade;
     @Autowired
     private ProductPartnerService productPartnerService;
+    @Autowired
+    private EnterpriseInfoService enterpriseInfoService;
+
     /**
      * 获取商城分类json
      *
@@ -68,29 +75,30 @@ public class OutShoppingCenterController {
      * @param type
      * @return
      */
-/*    @RequestMapping(value = "/checkEnterpriseName",method = RequestMethod.GET)
+    @RequestMapping(value = "/checkEnterpriseName",method = RequestMethod.GET)
     public APIResponse checkPartnerName(@RequestParam(value = "name",required =true) String name,@RequestParam(value = "type",required =true) Integer type){
-        EnterpriseMember enterpriseMember = enterpriseMemberService.checkPartnerName(name, type);
-        if(enterpriseMember!=null){
+        EnterpriseInfo enterpriseInfo = enterpriseInfoService.checkPartnerName(name, type);
+        if(enterpriseInfo!=null){
             APIResponse apiResponse=new APIResponse();
             apiResponse.setMessage("企业名称已存在");
             apiResponse.setCode("fail");
-            apiResponse.setData(enterpriseMember.getEntNumber());
+            apiResponse.setData(enterpriseInfo.getEntNumber());
             return apiResponse;
         }
         return APIResponse.success();
     }
 
-    *//**
+    /**
      * 创建供应商 客户企业
      * @return
-     *//*
+     */
     @RequestMapping(value = "/createEnterprise",method = RequestMethod.POST)
-    public APIResponse createEnterprise(EnterpriseMemberModel enterpriseMemberModel){
-        BeanValidator.validate(enterpriseMemberModel);
-        EnterpriseMember enterpriseMember = enterpriseMemberService.saveEnterpriseMember(enterpriseMemberModel);
-        return APIResponse.success(enterpriseMember.getEntNumber());
-    }*/
+    public APIResponse createEnterprise(EnterpriseInfoSPModel enterpriseInfoSPModel){
+        BeanValidator.validate(enterpriseInfoSPModel);
+        EnterpriseInfo enterpriseInfo = new EnterpriseInfo();
+        BeanutilsCopy.copyProperties(enterpriseInfoSPModel,enterpriseInfo);
+        return APIResponse.success();
+    }
     /**
      * 新建供应商商品档案接口
      * @return
@@ -101,7 +109,7 @@ public class OutShoppingCenterController {
         return APIResponse.success(productPartnerService.savePartner(skuPartnerModel));
     }
     /**
-     * 获取供应商列表
+     * 获取供应商商品列表列表
      * @return
      */
     @RequestMapping(value = "/getSkuPartnerList",method = RequestMethod.GET)

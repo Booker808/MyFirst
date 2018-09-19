@@ -1,22 +1,19 @@
-package com.csjscm.core.framework.dao;
+package com.csjscm.core.framework.service.enterprise;
 
 import com.csjscm.core.framework.model.EnterpriseCategory;
 
 import java.util.List;
 import java.util.Map;
 
-public interface EnterpriseCategoryMapper {
-    int deleteByPrimaryKey(Integer id);
+/**
+ * 供应商分类Service
+ * 
+ * @author yinzy
+ * @version 1.0.0
+ * @date 2018-09-19 11:16:27
+ */
 
-    int insert(EnterpriseCategory record);
-
-    int insertSelective(EnterpriseCategory record);
-
-    EnterpriseCategory selectByPrimaryKey(Integer id);
-
-    int updateByPrimaryKeySelective(EnterpriseCategory record);
-
-    int updateByPrimaryKey(EnterpriseCategory record);
+public interface EnterpriseCategoryService {
 
     /**
      * 按条件查询单个
@@ -33,4 +30,8 @@ public interface EnterpriseCategoryMapper {
      *
      */
     int findCount(Map<String,Object> map);
+
+    int  save (EnterpriseCategory enterpriseCategory);
+    int  update (EnterpriseCategory enterpriseCategory);
+
 }

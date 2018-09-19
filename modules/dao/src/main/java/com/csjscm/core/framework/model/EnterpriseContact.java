@@ -1,16 +1,19 @@
 package com.csjscm.core.framework.model;
 
+import org.hibernate.validator.constraints.NotBlank;
+
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 public class EnterpriseContact {
     private Integer id;
-
+    @NotBlank(message ="entNumber不能为空" )
     private String entNumber;
-
+    @NotBlank(message ="name不能为空" )
     private String name;
 
     private String job;
-
+    @NotNull(message ="contactType不能为空" )
     private Integer contactType;
 
     private Integer sex;

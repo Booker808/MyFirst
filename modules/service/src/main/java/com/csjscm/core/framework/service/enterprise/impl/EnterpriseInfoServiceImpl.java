@@ -1,14 +1,20 @@
 package com.csjscm.core.framework.service.enterprise.impl;
 
 import com.csjscm.core.framework.common.constant.Constant;
+import com.csjscm.core.framework.common.enums.TradeTypeEnum;
+import com.csjscm.core.framework.common.util.BeanutilsCopy;
+import com.csjscm.core.framework.common.util.BussinessException;
 import com.csjscm.core.framework.dao.EnterpriseAccountMapper;
 import com.csjscm.core.framework.dao.EnterpriseAttachmentMapper;
 import com.csjscm.core.framework.dao.EnterpriseContactMapper;
 import com.csjscm.core.framework.dao.EnterpriseInfoMapper;
+import com.csjscm.core.framework.model.EnterpriseInfo;
 import com.csjscm.core.framework.example.EnterpriseInfoExample;
 import com.csjscm.core.framework.model.*;
 import com.csjscm.core.framework.service.enterprise.EnterpriseInfoService;
 import com.csjscm.core.framework.service.enterprise.dto.EnterpriseInfoDto;
+import com.csjscm.core.framework.vo.EnterpriseInfoSPModel;
+import com.csjscm.sweet.framework.redis.RedisServiceFacade;
 import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -21,6 +27,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.List;
 
 @Service
@@ -296,5 +304,29 @@ public class EnterpriseInfoServiceImpl implements EnterpriseInfoService {
      */
     private String getEpNoByEpName(String enterpriseName){
         return enterpriseInfoMapper.selectEpNoByEpName(enterpriseName.trim());
+    }
+
+    @Override
+    public EnterpriseInfo checkPartnerName(String name, Integer type) {
+        String entTypeIn="("+ TradeTypeEnum.供应商采购商.getState()+","+type+")";
+        Map<String,Object> map=new HashMap<>();
+        map.put("entName",name);
+        map.put("entTypeIn",entTypeIn);
+        EnterpriseInfo selective = enterpriseInfoMapper.findSelective(map);
+        return selective;
+    }
+
+    @Override
+    @Transactional
+    public EnterpriseInfoSPModel saveSPEnterpriseInfo(EnterpriseInfoSPModel enterpriseInfoSPModel) {
+        EnterpriseInfo e = checkPartnerName(enterpriseInfoSPModel.getEntName(), enterpriseInfoSPModel.getEntType());
+        if(e!=null){
+            throw  new BussinessException("企业名称已存在");
+        }
+        String enterpriseNo = createEnterpriseNo();
+        EnterpriseInfo enterpriseInfo = new EnterpriseInfo();
+        BeanutilsCopy.copyProperties(enterpriseInfoSPModel,enterpriseInfo);
+        enterpriseInfo.setEntNumber(enterpriseNo);
+        return null;
     }
 }
