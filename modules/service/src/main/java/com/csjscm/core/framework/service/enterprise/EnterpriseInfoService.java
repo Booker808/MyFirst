@@ -1,6 +1,7 @@
 package com.csjscm.core.framework.service.enterprise;
 
 import com.csjscm.core.framework.example.EnterpriseInfoExample;
+import com.csjscm.core.framework.model.EnterpriseInfo;
 import com.csjscm.core.framework.service.enterprise.dto.EnterpriseInfoDto;
 import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
 
@@ -14,4 +15,6 @@ public interface EnterpriseInfoService {
     List<String> queryEnterpriseName(String name);
 
     QueryResult<EnterpriseInfoDto> queryEnterpriseInfo(int page, int rpp, EnterpriseInfoExample enterpriseInfoExample);
+
+    String updateEnterpriseInfo(EnterpriseInfo enterpriseInfo);
 }

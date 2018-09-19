@@ -224,6 +224,18 @@ public class EnterpriseInfoServiceImpl implements EnterpriseInfoService {
         return result;
     }
 
+    @Override
+    public String updateEnterpriseInfo(EnterpriseInfo enterpriseInfo) {
+        if(enterpriseInfo.getEntNumber().equals(getEpNoByEpName(enterpriseInfo.getEntName()))){
+            return "该企业已存在";
+        }
+        int count=enterpriseInfoMapper.updateByPrimaryKeySelective(enterpriseInfo);
+        if(count>0)
+            return "";
+        else
+            return "更新失败";
+    }
+
     /**
      * 校验供应商必填项是否为空
      *

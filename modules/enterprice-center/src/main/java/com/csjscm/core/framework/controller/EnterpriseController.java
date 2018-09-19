@@ -2,6 +2,7 @@ package com.csjscm.core.framework.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.csjscm.core.framework.example.EnterpriseInfoExample;
+import com.csjscm.core.framework.model.EnterpriseInfo;
 import com.csjscm.core.framework.service.enterprise.EnterpriseInfoService;
 import com.csjscm.core.framework.service.enterprise.dto.EnterpriseInfoDto;
 import com.csjscm.sweet.framework.core.mvc.APIResponse;
@@ -42,6 +43,18 @@ public class EnterpriseController {
             return APIResponse.fail(result);
         }
     }
+
+    @ApiOperation("更新企业基本信息")
+    @RequestMapping(value = "/enterpriseInfo",method = RequestMethod.PUT)
+    public APIResponse<String> updateEnterpriseInfo(@RequestBody EnterpriseInfo enterpriseInfo){
+        String result=enterpriseInfoService.updateEnterpriseInfo(enterpriseInfo);
+        if(StringUtils.isEmpty(result)){
+            return APIResponse.success("更新成功");
+        }else{
+            return APIResponse.fail(result);
+        }
+    }
+
     @ApiOperation("模糊查询企业名称")
     @RequestMapping(value = "/enterpriseName",method = RequestMethod.GET)
     public APIResponse<List<String>> queryEnterpriseName(@RequestParam(required = false) String name){
