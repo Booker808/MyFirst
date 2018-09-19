@@ -1,6 +1,9 @@
 package com.csjscm.core.framework.service.enterprise.impl;
 
 import com.csjscm.core.framework.common.constant.Constant;
+import com.csjscm.core.framework.common.enums.AccountTypeEnum;
+import com.csjscm.core.framework.common.enums.AttachmentTypeEnum;
+import com.csjscm.core.framework.common.enums.ContactTypeEnum;
 import com.csjscm.core.framework.common.enums.TradeTypeEnum;
 import com.csjscm.core.framework.common.util.BeanutilsCopy;
 import com.csjscm.core.framework.common.util.BussinessException;
@@ -8,13 +11,14 @@ import com.csjscm.core.framework.dao.EnterpriseAccountMapper;
 import com.csjscm.core.framework.dao.EnterpriseAttachmentMapper;
 import com.csjscm.core.framework.dao.EnterpriseContactMapper;
 import com.csjscm.core.framework.dao.EnterpriseInfoMapper;
-import com.csjscm.core.framework.model.EnterpriseInfo;
 import com.csjscm.core.framework.example.EnterpriseInfoExample;
-import com.csjscm.core.framework.model.*;
+import com.csjscm.core.framework.model.EnterpriseAccount;
+import com.csjscm.core.framework.model.EnterpriseAttachment;
+import com.csjscm.core.framework.model.EnterpriseContact;
+import com.csjscm.core.framework.model.EnterpriseInfo;
 import com.csjscm.core.framework.service.enterprise.EnterpriseInfoService;
 import com.csjscm.core.framework.service.enterprise.dto.EnterpriseInfoDto;
 import com.csjscm.core.framework.vo.EnterpriseInfoSPModel;
-import com.csjscm.sweet.framework.redis.RedisServiceFacade;
 import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -28,8 +32,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Slf4j
@@ -318,7 +322,7 @@ public class EnterpriseInfoServiceImpl implements EnterpriseInfoService {
 
     @Override
     @Transactional
-    public EnterpriseInfoSPModel saveSPEnterpriseInfo(EnterpriseInfoSPModel enterpriseInfoSPModel) {
+    public String saveSPEnterpriseInfo(EnterpriseInfoSPModel enterpriseInfoSPModel) {
         EnterpriseInfo e = checkPartnerName(enterpriseInfoSPModel.getEntName(), enterpriseInfoSPModel.getEntType());
         if(e!=null){
             throw  new BussinessException("企业名称已存在");
@@ -327,6 +331,38 @@ public class EnterpriseInfoServiceImpl implements EnterpriseInfoService {
         EnterpriseInfo enterpriseInfo = new EnterpriseInfo();
         BeanutilsCopy.copyProperties(enterpriseInfoSPModel,enterpriseInfo);
         enterpriseInfo.setEntNumber(enterpriseNo);
-        return null;
+        enterpriseInfoMapper.insertSelective(enterpriseInfo);
+
+        EnterpriseContact contactPerson=new EnterpriseContact();
+        contactPerson.setEntNumber(enterpriseNo);
+        contactPerson.setName(enterpriseInfoSPModel.getContactName());
+        contactPerson.setPhone(enterpriseInfoSPModel.getContactPhone());
+        contactPerson.setEmail(enterpriseInfoSPModel.getContactEmail());
+        contactPerson.setContactType(ContactTypeEnum.联系人.getState());
+        enterpriseContactMapper.insertSelective(contactPerson);
+        if(StringUtils.isNotBlank(enterpriseInfoSPModel.getLegalPerson())){
+            EnterpriseContact legalPerson=new EnterpriseContact();
+            legalPerson.setEntNumber(enterpriseNo);
+            legalPerson.setContactType(ContactTypeEnum.法人代表.getState());
+            legalPerson.setName(enterpriseInfoSPModel.getLegalPerson());
+            enterpriseContactMapper.insertSelective(legalPerson);
+        }
+        if(StringUtils.isNotBlank(enterpriseInfoSPModel.getBankName()) && StringUtils.isNotBlank(enterpriseInfoSPModel.getBankNo())){
+            EnterpriseAccount account=new EnterpriseAccount();
+            account.setEntNumber(enterpriseNo);
+            account.setAccountType(AccountTypeEnum.基本户.getState());
+            account.setBankNo(enterpriseInfoSPModel.getBankNo());
+            account.setBankName(enterpriseInfoSPModel.getBankName());
+            enterpriseAccountMapper.insertSelective(account);
+        }
+        if(StringUtils.isNotBlank(enterpriseInfoSPModel.getBusinessImg())){
+            EnterpriseAttachment attachment=new EnterpriseAttachment();
+            attachment.setEntNumber(enterpriseNo);
+            attachment.setAttachmentName("营业执照");
+            attachment.setAttachmentType(AttachmentTypeEnum.营业执照.getState());
+            attachment.setAttachmentUrl(enterpriseInfoSPModel.getBusinessImg());
+            enterpriseAttachmentMapper.insertSelective(attachment);
+        }
+        return enterpriseNo;
     }
 }

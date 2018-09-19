@@ -95,9 +95,7 @@ public class OutShoppingCenterController {
     @RequestMapping(value = "/createEnterprise",method = RequestMethod.POST)
     public APIResponse createEnterprise(EnterpriseInfoSPModel enterpriseInfoSPModel){
         BeanValidator.validate(enterpriseInfoSPModel);
-        EnterpriseInfo enterpriseInfo = new EnterpriseInfo();
-        BeanutilsCopy.copyProperties(enterpriseInfoSPModel,enterpriseInfo);
-        return APIResponse.success();
+        return APIResponse.success(enterpriseInfoService.saveSPEnterpriseInfo(enterpriseInfoSPModel));
     }
     /**
      * 新建供应商商品档案接口

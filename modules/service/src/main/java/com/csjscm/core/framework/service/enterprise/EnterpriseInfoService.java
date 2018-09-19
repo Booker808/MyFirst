@@ -28,7 +28,7 @@ public interface EnterpriseInfoService {
      * @param enterpriseInfoSPModel
      * @return
      */
-    EnterpriseInfoSPModel saveSPEnterpriseInfo(EnterpriseInfoSPModel enterpriseInfoSPModel);
+    String saveSPEnterpriseInfo(EnterpriseInfoSPModel enterpriseInfoSPModel);
 
 
     String insertEnterpriseInfo(EnterpriseInfoDto enterpriseInfoDto);
