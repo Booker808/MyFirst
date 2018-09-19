@@ -226,9 +226,6 @@ public class EnterpriseInfoServiceImpl implements EnterpriseInfoService {
 
     @Override
     public String updateEnterpriseInfo(EnterpriseInfo enterpriseInfo) {
-        if(enterpriseInfo.getEntNumber().equals(getEpNoByEpName(enterpriseInfo.getEntName()))){
-            return "该企业已存在";
-        }
         int count=enterpriseInfoMapper.updateByPrimaryKeySelective(enterpriseInfo);
         if(count>0)
             return "";
