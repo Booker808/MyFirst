@@ -2,6 +2,8 @@ package com.csjscm.core.framework.dao;
 
 import com.csjscm.core.framework.model.EnterpriseAccount;
 
+import java.util.List;
+
 public interface EnterpriseAccountMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -14,4 +16,6 @@ public interface EnterpriseAccountMapper {
     int updateByPrimaryKeySelective(EnterpriseAccount record);
 
     int updateByPrimaryKey(EnterpriseAccount record);
+
+    List<EnterpriseAccount> selectByEpNumber(String entNumber);
 }

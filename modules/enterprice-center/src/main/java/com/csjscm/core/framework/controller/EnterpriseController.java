@@ -1,14 +1,22 @@
 package com.csjscm.core.framework.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.csjscm.core.framework.example.EnterpriseInfoExample;
 import com.csjscm.core.framework.service.enterprise.EnterpriseInfoService;
+import com.csjscm.core.framework.service.enterprise.dto.EnterpriseInfoDto;
 import com.csjscm.sweet.framework.core.mvc.APIResponse;
+import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
+
+import java.util.List;
+import java.util.Map;
 
 @RequestMapping("/enterprise")
 @RestController
@@ -24,4 +32,41 @@ public class EnterpriseController {
         return APIResponse.success(enterpriseInfoService.createEnterpriseNo());
     }
 
+    @ApiOperation("新建企业信息")
+    @RequestMapping(value = "/enterpriseInfo",method = RequestMethod.POST)
+    public APIResponse<String> saveEnterpriseInfo(@RequestBody EnterpriseInfoDto enterpriseInfoDto){
+        String result=enterpriseInfoService.insertEnterpriseInfo(enterpriseInfoDto);
+        if(StringUtils.isEmpty(result)){
+            return APIResponse.success("新建成功");
+        }else{
+            return APIResponse.fail(result);
+        }
+    }
+    @ApiOperation("模糊查询企业名称")
+    @RequestMapping(value = "/enterpriseName",method = RequestMethod.GET)
+    public APIResponse<List<String>> queryEnterpriseName(@RequestParam(required = false) String name){
+        List<String> nameList=enterpriseInfoService.queryEnterpriseName(name);
+        return APIResponse.success(nameList);
+    }
+
+    @ApiOperation("查询企业信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="page",value = "当前页码（起始为1）",dataType = "Integer",defaultValue = "1",paramType = "query"),
+            @ApiImplicitParam(name="rpp",value = "每页数量",dataType = "Integer",defaultValue = "10",paramType = "query"),
+            @ApiImplicitParam(name="entNumber",value="企业编码",dataType = "String",paramType = "query"),
+            @ApiImplicitParam(name="entName",value="企业名称",dataType = "String",paramType = "query"),
+            @ApiImplicitParam(name="entType",value="企业类型",dataType = "Integer",paramType = "query"),
+    })
+    @RequestMapping(value = "/enterpriseInfo",method = RequestMethod.GET)
+    public APIResponse<QueryResult<EnterpriseInfoDto>> queryEnterpriseInfo(
+            @RequestParam(required = false,defaultValue = "1")int page,
+            @RequestParam(required = false,defaultValue = "10")int rpp,
+            @ApiIgnore @RequestParam Map<String,String> condition){
+        EnterpriseInfoExample enterpriseInfoExample=new EnterpriseInfoExample();
+        if(condition!=null){
+            enterpriseInfoExample= JSON.parseObject(JSON.toJSONString(condition),EnterpriseInfoExample.class);
+        }
+        QueryResult<EnterpriseInfoDto> result=enterpriseInfoService.queryEnterpriseInfo(page,rpp,enterpriseInfoExample);
+        return APIResponse.success(result);
+    }
 }

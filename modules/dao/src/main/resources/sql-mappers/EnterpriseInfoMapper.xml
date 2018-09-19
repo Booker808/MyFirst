@@ -22,8 +22,8 @@
     <result column="isdelete" property="isdelete" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    ent_number, ent_type, ent_name, register_address, bussiness_address, web_address, 
-    register_money, taxpayer_id, purchase, sell, tender, bid, check_state, isvalid, create_time, 
+    ent_number, ent_type, ent_name, register_address, bussiness_address, web_address,
+    register_money, taxpayer_id, purchase, sell, tender, bid, check_state, isvalid, create_time,
     edit_time, edit_user, isdelete
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
@@ -36,7 +36,35 @@
     SELECT max(ent_number)
     FROM `enterprise_info`
   </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+  <select id="selectEpNoByEpName" resultType="java.lang.String">
+    SELECT ent_number from enterprise_info where ent_name=#{enterpriseName} and isdelete=0
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.csjscm.core.framework.example.EnterpriseInfoExample">
+    select
+      <include refid="Base_Column_List"/>
+    from
+    enterprise_info
+    where isdelete=0
+    <if test="entNumber!=null and entNumber != ''">
+      and ent_number=#{entNumber}
+    </if>
+    <if test="entName!=null and entName != ''">
+      and ent_name like concat('%',#{entName},'%')
+    </if>
+    <if test="entType!=null">
+      and ent_type=#{entType}
+    </if>
+    order by ent_number desc
+  </select>
+  <select id="selectNameByFuzzyName" parameterType="java.lang.String" resultType="java.lang.String">
+    select ent_name
+    from enterprise_info
+    where isdelete=0
+    <if test="entName!=null and entName !=''">
+      and ent_name like concat('%',#{entName},'%')
+    </if>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from enterprise_info
     where ent_number = #{entNumber,jdbcType=VARCHAR}
   </delete>

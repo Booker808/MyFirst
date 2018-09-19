@@ -28,6 +28,13 @@
     from enterprise_contact
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="selectByEpNumber" resultMap="BaseResultMap" parameterType="java.lang.String">
+    SELECT
+      <include refid="Base_Column_List"/>
+    from enterprise_contact
+    where ent_number=#{entNumber}
+    and isdelete=0
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from enterprise_contact
     where id = #{id,jdbcType=INTEGER}
