@@ -110,6 +110,7 @@ public class EnterpriseInfoServiceImpl implements EnterpriseInfoService {
 
         EnterpriseAttachment attachment=new EnterpriseAttachment();
         attachment.setEntNumber(enterpriseInfoDto.getEntNumber());
+        attachment.setAttachmentName("营业执照");
         attachment.setAttachmentType(1);
         attachment.setAttachmentUrl(enterpriseInfoDto.getBusinessImg());
 
@@ -285,6 +286,6 @@ public class EnterpriseInfoServiceImpl implements EnterpriseInfoService {
      * @return
      */
     private String getEpNoByEpName(String enterpriseName){
-        return enterpriseInfoMapper.selectEpNoByEpName(enterpriseName);
+        return enterpriseInfoMapper.selectEpNoByEpName(enterpriseName.trim());
     }
 }
