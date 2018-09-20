@@ -125,7 +125,7 @@ public class EsUtilImpl implements EsUtil {
                 default:
                     if(StringUtils.isNotEmpty(entry.getKey())){
                         isSearchAll=false;
-                        boolQueryBuilder.must(QueryBuilders.termQuery(entry.getKey(),entry.getValue()));
+                        boolQueryBuilder.must(QueryBuilders.matchQuery(entry.getKey(),entry.getValue()));
                     }
             }
         }
