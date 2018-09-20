@@ -184,7 +184,7 @@ public class EnterpriseInfoServiceImpl implements EnterpriseInfoService {
             enterpriseInfoDto.setRegisterAddress(info.getRegisterAddress());
             enterpriseInfoDto.setBussinessAddress(info.getBussinessAddress());
             enterpriseInfoDto.setWebAddress(info.getWebAddress());
-            enterpriseInfoDto.setRegisterAddress(info.getRegisterAddress());
+            enterpriseInfoDto.setRegisterMoney(info.getRegisterMoney());
             enterpriseInfoDto.setTaxpayerId(info.getTaxpayerId());
             enterpriseInfoDto.setPurchase(info.getPurchase());
             enterpriseInfoDto.setSell(info.getSell());
