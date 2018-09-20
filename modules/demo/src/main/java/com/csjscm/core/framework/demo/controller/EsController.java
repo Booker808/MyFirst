@@ -1,4 +1,4 @@
-package com.csjscm.core.framework.controller;
+package com.csjscm.core.framework.demo.controller;
 
 import com.csjscm.core.framework.elasticsearch.constant.EsObjEnum;
 import com.csjscm.core.framework.elasticsearch.model.ProductPartner;
