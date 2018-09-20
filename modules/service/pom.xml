@@ -17,5 +17,9 @@
             <groupId>com.csjscm.core.framework</groupId>
             <artifactId>dao</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.csjscm.core.framework</groupId>
+            <artifactId>elasticsearch</artifactId>
+        </dependency>
     </dependencies>
 </project>

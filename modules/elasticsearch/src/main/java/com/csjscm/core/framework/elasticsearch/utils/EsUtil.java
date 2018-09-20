@@ -1,17 +1,88 @@
 package com.csjscm.core.framework.elasticsearch.utils;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.apache.poi.ss.formula.functions.T;
+import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 public interface EsUtil {
-    String insert(String index,String type,T object) throws IOException;
-    String insert(String index,String type,String id,T object) throws IOException;
-    long updateById(String index,String type,String id,Map<String,Object> map) throws IOException;
-    int deleteById(String index,String type,String id);
-    T selectById(String index,String type,String id,Class T);
-    List<T> selectByCondition(String index, String type, Map<String,Object> condition,Class T);
+    /**
+     * 插入数据（不指定ID）
+     *
+     * @param index
+     * @param type
+     * @param object
+     * @return
+     * @throws IOException
+     */
+    String insert(String index,String type,Object object) throws IOException;
+
+    /**
+     * 插入数据（指定ID）
+     *
+     * @param index
+     * @param type
+     * @param id
+     * @param object
+     * @return
+     * @throws IOException
+     */
+    String insert(String index,String type,String id,Object object) throws IOException;
+
+    /**
+     * 根据ID更新数据
+     *
+     * @param index
+     * @param type
+     * @param id
+     * @param object
+     * @return
+     * @throws IOException
+     */
+    String updateById(String index, String type, String id, Object object) throws IOException;
+
+    /**
+     * 根据id删除数据
+     *
+     * @param index
+     * @param type
+     * @param id
+     * @return
+     */
+    String deleteById(String index, String type, String id) throws IOException;
+
+    /**
+     * 根据ID查找数据
+     *
+     * @param index
+     * @param type
+     * @param id
+     * @param clazz
+     * @return
+     */
+    <T> T selectById(String index, String type, String id, Class<T> clazz) throws IOException;
+
+    /**
+     * 根据and条件查找数据
+     *
+     * @param index
+     * @param type
+     * @param condition
+     * @param clazz
+     * @return
+     */
+    <T> QueryResult<T> selectByAndCondition(String index, String type, Map<String,String> condition, Class<T> clazz) throws IOException;
+
+
+    /**
+     * 根据and条件查找ID集合
+     *
+     * @param index
+     * @param type
+     * @param condition
+     * @return
+     */
+     QueryResult<String> selectIdsByAndCondition(String index, String type, Map<String,String> condition) throws IOException;
+
+
 }
