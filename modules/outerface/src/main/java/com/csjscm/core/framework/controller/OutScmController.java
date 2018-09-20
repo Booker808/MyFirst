@@ -12,6 +12,7 @@ import com.csjscm.core.framework.vo.SkuCoreSCMMolde;
 import com.csjscm.core.framework.vo.SkuCustomerSCMMolde;
 import com.csjscm.core.framework.vo.SkuPartnerSCMMolde;
 import com.csjscm.sweet.framework.core.mvc.APIResponse;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -79,13 +80,24 @@ public class OutScmController {
      * @return
      */
     @RequestMapping(value = "searchSkuCore",method = RequestMethod.POST)
-    public APIResponse searchSkuCore(@RequestParam(name = "productName",required = true) String productName,String brandName,String rule,String minUint,String size){
+    public APIResponse searchSkuCore(String productName,String brandName,String rule,String minUint,String size ,String productNo){
         Map<String,Object> map=new HashMap<>();
         map.put("productName",productName);
         map.put("brandName",brandName);
         map.put("rule",rule);
         map.put("minUint",minUint);
+        map.put("productNo",productNo);
         map.put("size",size);
+        boolean flag=false;
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            if(entry.getValue()!=null && StringUtils.isNotBlank(entry.getValue().toString())){
+                flag=true;
+                break;
+            }
+        }
+        if(!flag){
+            return  APIResponse.fail("必须要有一个搜索条件");
+        }
         List<SkuCore> skuCores = skuCoreService.listSelective(map);
         return APIResponse.success(skuCores);
     }
@@ -100,13 +112,23 @@ public class OutScmController {
      * @return
      */
     @RequestMapping(value = "searchSkuPartner",method = RequestMethod.POST)
-    public APIResponse searchSkuPartner(@RequestParam(name = "productName",required = true) String productName,String brandName,String rule,String size,String supplyNo){
+    public APIResponse searchSkuPartner(String productName,String brandName,String rule,String size,String supplyNo){
         Map<String,Object> map=new HashMap<>();
         map.put("supplyPdName",productName);
         map.put("brandName",brandName);
         map.put("supplyPdRule",rule);
         map.put("supplyPdSize",size);
         map.put("supplyNo",supplyNo);
+        boolean flag=false;
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            if(entry.getValue()!=null && StringUtils.isNotBlank(entry.getValue().toString())){
+                flag=true;
+                break;
+            }
+        }
+        if(!flag){
+            return  APIResponse.fail("必须要有一个搜索条件");
+        }
         List<SkuPartner> skuPartners = productPartnerService.listSelective(map);
         return APIResponse.success(skuPartners);
     }
@@ -120,12 +142,22 @@ public class OutScmController {
      * @return
      */
     @RequestMapping(value = "searchSkuCustomer",method = RequestMethod.POST)
-    public APIResponse searchSkuCustomer(@RequestParam(name = "productName",required = true) String productName,String rule,String size,String customerNo){
+    public APIResponse searchSkuCustomer(String productName,String rule,String size,String customerNo){
         Map<String,Object> map=new HashMap<>();
         map.put("customerPdName",productName);
         map.put("customerPdRule",rule);
         map.put("customerPdSize",size);
         map.put("customerNo",customerNo);
+        boolean flag=false;
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            if(entry.getValue()!=null && StringUtils.isNotBlank(entry.getValue().toString())){
+                flag=true;
+                break;
+            }
+        }
+        if(!flag){
+            return  APIResponse.fail("必须要有一个搜索条件");
+        }
         List<SkuCustomer> skuCustomers = productCustomerService.listSelective(map);
         return APIResponse.success(skuCustomers);
     }

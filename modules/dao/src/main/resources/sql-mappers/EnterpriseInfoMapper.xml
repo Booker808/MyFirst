@@ -32,7 +32,7 @@
       <if test="entNumber != null and entNumber != '' ">
         and ent_number = #{entNumber,jdbcType=VARCHAR}
       </if>
-      <if test="entType != null and entType != '' ">
+      <if test="entType != null">
         and ent_type = #{entType,jdbcType=INTEGER}
       </if>
       <if test="entTypeIn != null and entTypeIn != '' ">
@@ -56,22 +56,22 @@
       <if test="taxpayerId != null and taxpayerId != '' ">
         and taxpayer_id = #{taxpayerId,jdbcType=VARCHAR}
       </if>
-      <if test="purchase != null and purchase != '' ">
+      <if test="purchase != null">
         and purchase = #{purchase,jdbcType=INTEGER}
       </if>
-      <if test="sell != null and sell != '' ">
+      <if test="sell != null ">
         and sell = #{sell,jdbcType=INTEGER}
       </if>
-      <if test="tender != null and tender != '' ">
+      <if test="tender != null">
         and tender = #{tender,jdbcType=INTEGER}
       </if>
-      <if test="bid != null and bid != '' ">
+      <if test="bid != null ">
         and bid = #{bid,jdbcType=INTEGER}
       </if>
       <if test="checkState != null and checkState != '' ">
         and check_state = #{checkState,jdbcType=INTEGER}
       </if>
-      <if test="isvalid != null and isvalid != '' ">
+      <if test="isvalid != null ">
         and isvalid = #{isvalid,jdbcType=INTEGER}
       </if>
       <if test="createTime != null">
@@ -83,7 +83,7 @@
       <if test="editUser != null and editUser != '' ">
         and edit_user = #{editUser,jdbcType=VARCHAR}
       </if>
-      <if test="isdelete != null and isdelete != '' ">
+      <if test="isdelete != null ">
         and isdelete = #{isdelete,jdbcType=INTEGER}
       </if>
     </trim>

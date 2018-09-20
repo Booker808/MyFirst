@@ -89,7 +89,7 @@
       <if test="categorySpNo != null and categorySpNo != '' ">
         and category_sp_no = #{categorySpNo,jdbcType=VARCHAR}
       </if>
-      <if test="isvalidate != null and isvalidate != '' ">
+      <if test="isvalidate != null">
         and isvalidate = #{isvalidate,jdbcType=INTEGER}
       </if>
       <if test="approvalStatus != null and approvalStatus != '' ">

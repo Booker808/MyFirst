@@ -25,7 +25,7 @@
   <!-- 基本的sql查询条件公共引用 -->
   <sql id="searchBy">
     <trim prefix="where" prefixOverrides="and|or">
-      <if test=" id != null and id != '' ">
+      <if test=" id != null">
         id  = #{id,jdbcType=INTEGER}
       </if>
       <if test="entNumber != null and entNumber != '' ">
@@ -67,7 +67,7 @@
       <if test="editUser != null and editUser != '' ">
         and edit_user = #{editUser,jdbcType=VARCHAR}
       </if>
-      <if test="isdelete != null and isdelete != '' ">
+      <if test="isdelete != null">
         and isdelete = #{isdelete,jdbcType=INTEGER}
       </if>
     </trim>
