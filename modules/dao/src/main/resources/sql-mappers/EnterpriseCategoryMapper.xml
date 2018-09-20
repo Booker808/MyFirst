@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.csjscm.core.framework.dao.EnterpriseCategoryMapper" >
+  <resultMap id="BaseResultMap" type="com.csjscm.core.framework.model.EnterpriseCategory" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="ent_number" property="entNumber" jdbcType="VARCHAR" />
+    <result column="supply_state" property="supplyState" jdbcType="INTEGER" />
+    <result column="supply_business" property="supplyBusiness" jdbcType="INTEGER" />
+    <result column="supply_start_time" property="supplyStartTime" jdbcType="TIMESTAMP" />
+    <result column="supply_end_time" property="supplyEndTime" jdbcType="TIMESTAMP" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="edit_time" property="editTime" jdbcType="TIMESTAMP" />
+    <result column="edit_user" property="editUser" jdbcType="VARCHAR" />
+    <result column="isdelete" property="isdelete" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, ent_number, supply_state, supply_business, supply_start_time, supply_end_time, 
+    create_time, edit_time, edit_user, isdelete
+  </sql>
+  <!-- 基本的sql查询条件公共引用 -->
+  <sql id="searchBy">
+    <trim prefix="where" prefixOverrides="and|or">
+      <if test=" id != null and id != '' ">
+        id  = #{id,jdbcType=INTEGER}
+      </if>
+      <if test="entNumber != null and entNumber != '' ">
+        and ent_number = #{entNumber,jdbcType=VARCHAR}
+      </if>
+      <if test="supplyState != null and supplyState != '' ">
+        and supply_state = #{supplyState,jdbcType=INTEGER}
+      </if>
+      <if test="supplyBusiness != null and supplyBusiness != '' ">
+        and supply_business = #{supplyBusiness,jdbcType=INTEGER}
+      </if>
+      <if test="supplyStartTime != null">
+        and supply_start_time = #{supplyStartTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="supplyEndTime != null">
+        and supply_end_time = #{supplyEndTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="createTime != null">
+        and create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="editTime != null">
+        and edit_time = #{editTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="editUser != null and editUser != '' ">
+        and edit_user = #{editUser,jdbcType=VARCHAR}
+      </if>
+      <if test="isdelete != null and isdelete != '' ">
+        and isdelete = #{isdelete,jdbcType=INTEGER}
+      </if>
+    </trim>
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from enterprise_category
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from enterprise_category
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.csjscm.core.framework.model.EnterpriseCategory" >
+    insert into enterprise_category (id, ent_number, supply_state, 
+      supply_business, supply_start_time, supply_end_time, 
+      create_time, edit_time, edit_user, 
+      isdelete)
+    values (#{id,jdbcType=INTEGER}, #{entNumber,jdbcType=VARCHAR}, #{supplyState,jdbcType=INTEGER}, 
+      #{supplyBusiness,jdbcType=INTEGER}, #{supplyStartTime,jdbcType=TIMESTAMP}, #{supplyEndTime,jdbcType=TIMESTAMP}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{editTime,jdbcType=TIMESTAMP}, #{editUser,jdbcType=VARCHAR}, 
+      #{isdelete,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.csjscm.core.framework.model.EnterpriseCategory" >
+    insert into enterprise_category
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="entNumber != null" >
+        ent_number,
+      </if>
+      <if test="supplyState != null" >
+        supply_state,
+      </if>
+      <if test="supplyBusiness != null" >
+        supply_business,
+      </if>
+      <if test="supplyStartTime != null" >
+        supply_start_time,
+      </if>
+      <if test="supplyEndTime != null" >
+        supply_end_time,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="editTime != null" >
+        edit_time,
+      </if>
+      <if test="editUser != null" >
+        edit_user,
+      </if>
+      <if test="isdelete != null" >
+        isdelete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="entNumber != null" >
+        #{entNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="supplyState != null" >
+        #{supplyState,jdbcType=INTEGER},
+      </if>
+      <if test="supplyBusiness != null" >
+        #{supplyBusiness,jdbcType=INTEGER},
+      </if>
+      <if test="supplyStartTime != null" >
+        #{supplyStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="supplyEndTime != null" >
+        #{supplyEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="editTime != null" >
+        #{editTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="editUser != null" >
+        #{editUser,jdbcType=VARCHAR},
+      </if>
+      <if test="isdelete != null" >
+        #{isdelete,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.csjscm.core.framework.model.EnterpriseCategory" >
+    update enterprise_category
+    <set >
+      <if test="entNumber != null" >
+        ent_number = #{entNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="supplyState != null" >
+        supply_state = #{supplyState,jdbcType=INTEGER},
+      </if>
+      <if test="supplyBusiness != null" >
+        supply_business = #{supplyBusiness,jdbcType=INTEGER},
+      </if>
+      <if test="supplyStartTime != null" >
+        supply_start_time = #{supplyStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="supplyEndTime != null" >
+        supply_end_time = #{supplyEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="editTime != null" >
+        edit_time = #{editTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="editUser != null" >
+        edit_user = #{editUser,jdbcType=VARCHAR},
+      </if>
+      <if test="isdelete != null" >
+        isdelete = #{isdelete,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.csjscm.core.framework.model.EnterpriseCategory" >
+    update enterprise_category
+    set ent_number = #{entNumber,jdbcType=VARCHAR},
+      supply_state = #{supplyState,jdbcType=INTEGER},
+      supply_business = #{supplyBusiness,jdbcType=INTEGER},
+      supply_start_time = #{supplyStartTime,jdbcType=TIMESTAMP},
+      supply_end_time = #{supplyEndTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      edit_time = #{editTime,jdbcType=TIMESTAMP},
+      edit_user = #{editUser,jdbcType=VARCHAR},
+      isdelete = #{isdelete,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+    select
+    <include refid="Base_Column_List" />
+    from enterprise_category
+    <include refid="searchBy"/>
+  </select>
+
+  <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+    select
+    <include refid="Base_Column_List" />
+    from enterprise_category
+    <include refid="searchBy"/>
+  </select>
+  <select id="findCount" resultType="java.lang.Integer" parameterType="java.util.HashMap">
+    select count(id)
+    from enterprise_category
+    <include refid="searchBy"/>
+  </select>
+</mapper>

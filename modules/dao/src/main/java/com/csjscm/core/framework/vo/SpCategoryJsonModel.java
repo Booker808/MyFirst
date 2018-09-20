@@ -134,7 +134,29 @@ public class SpCategoryJsonModel implements Comparable<SpCategoryJsonModel>, Ser
      */
     private Integer state;
 
+    private String bigImg;
+
+    private String midImg;
+
+
+
     private List<SpCategoryJsonModel> children;
+
+    public String getBigImg() {
+        return bigImg;
+    }
+
+    public void setBigImg(String bigImg) {
+        this.bigImg = bigImg;
+    }
+
+    public String getMidImg() {
+        return midImg;
+    }
+
+    public void setMidImg(String midImg) {
+        this.midImg = midImg;
+    }
 
     public Integer getId() {
         return id;

@@ -2,6 +2,7 @@ package com.csjscm.core.framework.service;
 
 import com.csjscm.core.framework.common.util.BussinessException;
 import com.csjscm.core.framework.model.SkuCore;
+import com.csjscm.core.framework.vo.SkuCoreSCMMolde;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -51,4 +52,7 @@ public interface SkuCoreService {
      *
      */
     List<SkuCore> listSelective(Map<String,Object> map);
+
+    SkuCoreSCMMolde saveSCMSkuCore(SkuCoreSCMMolde skuCoreSMMolde);
+
 }

@@ -12,6 +12,7 @@ import com.csjscm.core.framework.model.*;
 import com.csjscm.core.framework.service.impl.SkuCoreServiceImpl;
 import com.csjscm.core.framework.service.product.ProductCustomerService;
 import com.csjscm.core.framework.vo.SkuCoreVo;
+import com.csjscm.core.framework.vo.SkuCustomerSCMMolde;
 import com.csjscm.core.framework.vo.SkuCustomerVo;
 import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
 import com.csjscm.sweet.framework.redis.RedisDistributedCounterObject;
@@ -230,5 +231,48 @@ public class ProductCustomerServiceImpl implements ProductCustomerService {
            throw  new BussinessException("商品编码不存在");
         }
         skuCustomerMapper.insertSelective(skuCustomer);
+    }
+
+    @Override
+    public List<SkuCustomer> listSelective(Map<String, Object> map) {
+        return skuCustomerMapper.listSelective(map);
+    }
+
+    @Override
+    public SkuCustomer saveSCMSkuCustomer(SkuCustomerSCMMolde skuCustomerSCMMolde){
+        SkuCustomer skuCustomer=new SkuCustomer();
+        Map<String, Object> map = new HashMap<>();
+        map.put("productNo",skuCustomerSCMMolde.getProductNo());
+        SkuCore skuCore = skuCoreMapper.findSelective(map);
+        if(skuCore==null){
+            throw  new  BussinessException("商品编码有误");
+        }
+        if(StringUtils.isNotBlank(skuCustomerSCMMolde.getCustomerPdNo())){
+            map.clear();
+            map.put("customerNo", skuCustomerSCMMolde.getCustomerNo());
+            map.put("customerPdNo", skuCustomerSCMMolde.getCustomerPdNo());
+            int count = skuCustomerMapper.findCount(map);
+            if(count>0){
+                throw  new BussinessException("客户商品编码已存在");
+            }
+            skuCustomer.setCustomerPdNo(skuCustomerSCMMolde.getCustomerPdNo());
+        }
+        map.clear();
+        map.put("productNo",skuCustomerSCMMolde.getProductNo());
+        map.put("customerNo",skuCustomerSCMMolde.getCustomerNo());
+        int count = skuCustomerMapper.findCount(map);
+        if(count>0){
+            throw  new  BussinessException("商品编码与该客户编码已有绑定关系");
+        }
+        skuCustomer.setCreateTime(new Date());
+        skuCustomer.setProductNo(skuCustomerSCMMolde.getProductNo());
+        skuCustomer.setCustomerNo(skuCustomerSCMMolde.getCustomerNo());
+        skuCustomer.setRecentQuotation(skuCustomerSCMMolde.getRecentQuotation());
+        skuCustomer.setReferencePrice(skuCustomerSCMMolde.getReferencePrice());
+        skuCustomer.setCustomerPdSize(skuCore.getSize());
+        skuCustomer.setCustomerPdRule(skuCore.getRule());
+        skuCustomer.setCustomerPdName(skuCore.getProductName());
+         skuCustomerMapper.insertSelective(skuCustomer);
+        return skuCustomer;
     }
 }

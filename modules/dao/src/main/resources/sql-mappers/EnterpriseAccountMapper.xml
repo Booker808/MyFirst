@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.csjscm.core.framework.dao.EnterpriseAccountMapper" >
+  <resultMap id="BaseResultMap" type="com.csjscm.core.framework.model.EnterpriseAccount" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="ent_number" property="entNumber" jdbcType="VARCHAR" />
+    <result column="bank_name" property="bankName" jdbcType="VARCHAR" />
+    <result column="account_name" property="accountName" jdbcType="VARCHAR" />
+    <result column="bank_no" property="bankNo" jdbcType="VARCHAR" />
+    <result column="account_type" property="accountType" jdbcType="INTEGER" />
+    <result column="memo" property="memo" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="edit_time" property="editTime" jdbcType="TIMESTAMP" />
+    <result column="edit_user" property="editUser" jdbcType="VARCHAR" />
+    <result column="isdelete" property="isdelete" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, ent_number, bank_name, account_name, bank_no, account_type, memo, create_time, 
+    edit_time, edit_user, isdelete
+  </sql>
+  <!-- 基本的sql查询条件公共引用 -->
+  <sql id="searchBy">
+    <trim prefix="where" prefixOverrides="and|or">
+      <if test=" id != null and id != '' ">
+        id  = #{id,jdbcType=INTEGER}
+      </if>
+      <if test="entNumber != null and entNumber != '' ">
+        and ent_number = #{entNumber,jdbcType=VARCHAR}
+      </if>
+      <if test="bankName != null and bankName != '' ">
+        and bank_name = #{bankName,jdbcType=VARCHAR}
+      </if>
+      <if test="accountName != null and accountName != '' ">
+        and account_name = #{accountName,jdbcType=VARCHAR}
+      </if>
+      <if test="bankNo != null and bankNo != '' ">
+        and bank_no = #{bankNo,jdbcType=VARCHAR}
+      </if>
+      <if test="accountType != null and accountType != '' ">
+        and account_type = #{accountType,jdbcType=INTEGER}
+      </if>
+      <if test="memo != null and memo != '' ">
+        and memo = #{memo,jdbcType=VARCHAR}
+      </if>
+      <if test="createTime != null">
+        and create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="editTime != null">
+        and edit_time = #{editTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="editUser != null and editUser != '' ">
+        and edit_user = #{editUser,jdbcType=VARCHAR}
+      </if>
+      <if test="isdelete != null and isdelete != '' ">
+        and isdelete = #{isdelete,jdbcType=INTEGER}
+      </if>
+    </trim>
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from enterprise_account
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+    <select id="selectByEpNumber" resultMap="BaseResultMap" parameterType="java.lang.String">
+      SELECT
+        <include refid="Base_Column_List"/>
+      from enterprise_account
+      where ent_number=#{entNumber} and isdelete=0
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from enterprise_account
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.csjscm.core.framework.model.EnterpriseAccount" >
+    insert into enterprise_account (id, ent_number, bank_name, 
+      account_name, bank_no, account_type, 
+      memo, create_time, edit_time, 
+      edit_user, isdelete)
+    values (#{id,jdbcType=INTEGER}, #{entNumber,jdbcType=VARCHAR}, #{bankName,jdbcType=VARCHAR}, 
+      #{accountName,jdbcType=VARCHAR}, #{bankNo,jdbcType=VARCHAR}, #{accountType,jdbcType=INTEGER}, 
+      #{memo,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{editTime,jdbcType=TIMESTAMP}, 
+      #{editUser,jdbcType=VARCHAR}, #{isdelete,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.csjscm.core.framework.model.EnterpriseAccount" >
+    insert into enterprise_account
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="entNumber != null" >
+        ent_number,
+      </if>
+      <if test="bankName != null" >
+        bank_name,
+      </if>
+      <if test="accountName != null" >
+        account_name,
+      </if>
+      <if test="bankNo != null" >
+        bank_no,
+      </if>
+      <if test="accountType != null" >
+        account_type,
+      </if>
+      <if test="memo != null" >
+        memo,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="editTime != null" >
+        edit_time,
+      </if>
+      <if test="editUser != null" >
+        edit_user,
+      </if>
+      <if test="isdelete != null" >
+        isdelete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="entNumber != null" >
+        #{entNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="bankName != null" >
+        #{bankName,jdbcType=VARCHAR},
+      </if>
+      <if test="accountName != null" >
+        #{accountName,jdbcType=VARCHAR},
+      </if>
+      <if test="bankNo != null" >
+        #{bankNo,jdbcType=VARCHAR},
+      </if>
+      <if test="accountType != null" >
+        #{accountType,jdbcType=INTEGER},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="editTime != null" >
+        #{editTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="editUser != null" >
+        #{editUser,jdbcType=VARCHAR},
+      </if>
+      <if test="isdelete != null" >
+        #{isdelete,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.csjscm.core.framework.model.EnterpriseAccount" >
+    update enterprise_account
+    <set >
+      <if test="entNumber != null" >
+        ent_number = #{entNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="bankName != null" >
+        bank_name = #{bankName,jdbcType=VARCHAR},
+      </if>
+      <if test="accountName != null" >
+        account_name = #{accountName,jdbcType=VARCHAR},
+      </if>
+      <if test="bankNo != null" >
+        bank_no = #{bankNo,jdbcType=VARCHAR},
+      </if>
+      <if test="accountType != null" >
+        account_type = #{accountType,jdbcType=INTEGER},
+      </if>
+      <if test="memo != null" >
+        memo = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="editTime != null" >
+        edit_time = #{editTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="editUser != null" >
+        edit_user = #{editUser,jdbcType=VARCHAR},
+      </if>
+      <if test="isdelete != null" >
+        isdelete = #{isdelete,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.csjscm.core.framework.model.EnterpriseAccount" >
+    update enterprise_account
+    set ent_number = #{entNumber,jdbcType=VARCHAR},
+      bank_name = #{bankName,jdbcType=VARCHAR},
+      account_name = #{accountName,jdbcType=VARCHAR},
+      bank_no = #{bankNo,jdbcType=VARCHAR},
+      account_type = #{accountType,jdbcType=INTEGER},
+      memo = #{memo,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      edit_time = #{editTime,jdbcType=TIMESTAMP},
+      edit_user = #{editUser,jdbcType=VARCHAR},
+      isdelete = #{isdelete,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+    select
+    <include refid="Base_Column_List" />
+    from enterprise_account
+    <include refid="searchBy"/>
+  </select>
+
+  <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+    select
+    <include refid="Base_Column_List" />
+    from enterprise_account
+    <include refid="searchBy"/>
+  </select>
+  <select id="findCount" resultType="java.lang.Integer" parameterType="java.util.HashMap">
+    select count(id)
+    from enterprise_account
+    <include refid="searchBy"/>
+  </select>
+</mapper>

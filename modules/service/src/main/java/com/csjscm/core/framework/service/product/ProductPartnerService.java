@@ -7,6 +7,7 @@ import com.csjscm.core.framework.model.SkuPartnerEx;
 import com.csjscm.core.framework.vo.SkuPartnerAddModel;
 import com.csjscm.core.framework.vo.SkuPartnerDetailsModel;
 import com.csjscm.core.framework.vo.SkuPartnerModel;
+import com.csjscm.core.framework.vo.SkuPartnerSCMMolde;
 import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -45,4 +46,11 @@ public interface ProductPartnerService {
      * 获取详情
      */
     SkuPartnerDetailsModel getSkuPartnerModel(Map<String,Object> map);
+
+    /**
+     * 新增 来自 scm 的供应商商品
+     * @param skuPartnerSCMMolde
+     * @return
+     */
+    SkuPartner saveSCMSkuPartner(SkuPartnerSCMMolde skuPartnerSCMMolde);
 }

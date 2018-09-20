@@ -12,6 +12,7 @@ import com.csjscm.core.framework.common.util.ExcelUtil;
 import com.csjscm.core.framework.dao.*;
 import com.csjscm.core.framework.model.*;
 import com.csjscm.core.framework.service.SkuCoreService;
+import com.csjscm.core.framework.vo.SkuCoreSCMMolde;
 import com.csjscm.core.framework.vo.SkuCoreVo;
 import com.csjscm.sweet.framework.redis.RedisDistributedCounterObject;
 import com.csjscm.sweet.framework.redis.RedisServiceFacade;
@@ -463,5 +464,64 @@ public class SkuCoreServiceImpl implements SkuCoreService {
     @Override
     public List<SkuCore> listSelective(Map<String, Object> map) {
         return skuCoreMapper.listSelective(map);
+    }
+
+    @Override
+    public SkuCoreSCMMolde saveSCMSkuCore(SkuCoreSCMMolde skuCoreSMMolde) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("levelNum", CategoryLevelEnum.三级.getState());
+        map.put("classCode", skuCoreSMMolde.getCategoryNo());
+        Category category = categoryMapper.findSelective(map);
+        if(category==null){
+            throw  new  BussinessException("分类编码有无，不存在该编码");
+        }
+        map.clear();
+        map.put("brandName", skuCoreSMMolde.getBrandName());
+        List<BrandMaster> brandMasters = brandMasterMapper.listSelective(map);
+        if (brandMasters.size()==0 || brandMasters.size()>1) {
+            throw  new  BussinessException("品牌名称不存在或者存在多个相同品牌名称");
+        }
+        map.clear();
+        map.put("objName",skuCoreSMMolde.getMinUint());
+        map.put("isvalid", InvUnitIsvalidEnum.有效.getState());
+        int count = invUnitMapper.findCount(map);
+        if(count<1){
+            throw  new  BussinessException("不存在最小单位");
+        }
+        Map<String, Object> productNamemap = new HashMap<>();
+        productNamemap.put("productName", skuCoreSMMolde.getProductName());
+        productNamemap.put("minUint", skuCoreSMMolde.getMinUint());
+        productNamemap.put("brandName", skuCoreSMMolde.getBrandName());
+        productNamemap.put("rule", skuCoreSMMolde.getRule());
+        productNamemap.put("size", skuCoreSMMolde.getSize());
+        int productCount = skuCoreMapper.findCount(productNamemap);
+        if(productCount>0){
+            throw  new  BussinessException("商品已存在");
+        }
+        SkuCore skuCore=new SkuCore();
+        skuCore.setCategoryNo(skuCoreSMMolde.getCategoryNo());
+        skuCore.setBrandId(brandMasters.get(0).getId());
+        skuCore.setBrandName(skuCoreSMMolde.getBrandName());
+        skuCore.setCategoryId(category.getId());
+        skuCore.setEan13Code(skuCoreSMMolde.getEan13Code());
+        skuCore.setMinUint(skuCoreSMMolde.getMinUint());
+        skuCore.setMnemonicCode(skuCoreSMMolde.getMnemonicCode());
+        skuCore.setProductName(skuCoreSMMolde.getProductName());
+        skuCore.setRule(skuCoreSMMolde.getRule());
+        skuCore.setSize(skuCoreSMMolde.getSize());
+        // 获取商品编码
+        Long increase = redisServiceFacade.increase(new RedisDistributedCounterObject(Constant.REDIS_KEY_PRODUCT_NO + skuCore.getCategoryNo()), 1);
+        String  increment =increase.toString();
+        String str="";
+        for(int j=0;j<5-increment.length();j++){
+            str+="0";
+        }
+        str+=increment;
+        skuCore.setProductNo(skuCore.getCategoryNo()+str);
+        skuCore.setChannel(SkuCoreChannelEnum.手动新增.getState());
+        skuCore.setCreateTime(new Date());
+        skuCoreMapper.insertSelective(skuCore);
+        skuCoreSMMolde.setProductNo(skuCore.getCategoryNo()+str);
+        return skuCoreSMMolde;
     }
 }

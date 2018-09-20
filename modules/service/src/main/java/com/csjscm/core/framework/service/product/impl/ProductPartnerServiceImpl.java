@@ -446,6 +446,7 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
         Map<String, Object> parrnerMap = new HashMap<>();
         if(StringUtils.isNotBlank(skuPartnerModel.getSupplyPdNo())){
             parrnerMap.put("supplyPdNo",skuPartnerModel.getSupplyPdNo());
+            parrnerMap.put("supplyNo",skuPartnerModel.getSupplyNo());
             int count1 = skuPartnerMapper.findCount(parrnerMap);
             if(count1>0){
                 throw  new  BussinessException("供应商商品编码已存在");
@@ -534,5 +535,47 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
     @Override
     public SkuPartnerDetailsModel getSkuPartnerModel(Map<String, Object> map) {
         return skuPartnerMapper.getSkuPartnerModel(map);
+    }
+
+    @Override
+    public SkuPartner saveSCMSkuPartner(SkuPartnerSCMMolde skuPartnerSCMMolde) {
+        SkuPartner skuPartner=new SkuPartner();
+        Map<String, Object> map = new HashMap<>();
+        map.put("productNo",skuPartnerSCMMolde.getProductNo());
+        SkuCore skuCore = skuCoreMapper.findSelective(map);
+        if(skuCore==null){
+            throw  new  BussinessException("商品编码有误");
+        }
+        if(StringUtils.isNotBlank(skuPartnerSCMMolde.getSupplyPdNo())){
+            map.clear();
+            map.put("supplyPdNo",skuPartnerSCMMolde.getSupplyPdNo());
+            map.put("supplyNo",skuPartnerSCMMolde.getSupplyNo());
+            int count = skuPartnerMapper.findCount(map);
+            if(count>0){
+                throw  new  BussinessException("供应商商品编码已存在");
+            }
+            skuPartner.setSupplyPdNo(skuPartnerSCMMolde.getSupplyPdNo());
+        }
+        map.clear();
+        map.put("productNo",skuPartnerSCMMolde.getProductNo());
+        map.put("supplyNo",skuPartnerSCMMolde.getSupplyNo());
+        int count = skuPartnerMapper.findCount(map);
+        if(count>0){
+            throw  new  BussinessException("商品编码与该供应商已有绑定关系");
+        }
+        String uuid = UUID.randomUUID().toString().replace("-", "");
+        skuPartner.setUuid(uuid);
+        skuPartner.setProductNo(skuPartnerSCMMolde.getProductNo());
+        skuPartner.setCreateTime(new Date());
+        skuPartner.setRefrencePrice(skuPartnerSCMMolde.getRefrencePrice());
+        skuPartner.setRecentEnquiry(skuPartnerSCMMolde.getRecentEnquiry());
+        skuPartner.setBrandId(skuCore.getBrandId().toString());
+        skuPartner.setBrandName(skuCore.getBrandName());
+        skuPartner.setSupplyNo(skuPartnerSCMMolde.getSupplyNo());
+        skuPartner.setSupplyPdName(skuCore.getProductName());
+        skuPartner.setSupplyPdRule(skuCore.getRule());
+        skuPartner.setSupplyPdSize(skuCore.getSize());
+        skuPartnerMapper.insertSelective(skuPartner);
+        return skuPartner;
     }
 }
