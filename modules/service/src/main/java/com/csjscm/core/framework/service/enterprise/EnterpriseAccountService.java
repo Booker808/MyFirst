@@ -1,7 +1,6 @@
 package com.csjscm.core.framework.service.enterprise;
 
 import com.csjscm.core.framework.model.EnterpriseAccount;
-import com.sun.corba.se.spi.presentation.rmi.IDLNameTranslator;
 
 import java.util.List;
 import java.util.Map;
