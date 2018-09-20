@@ -17,6 +17,7 @@
         <module>modules/demo</module>
         <module>modules/dao</module>
         <module>root</module>
+        <module>modules/elasticsearch</module>
     </modules>
 
     <properties>
@@ -59,6 +60,11 @@
             <dependency>
                 <groupId>com.csjscm.core.framework</groupId>
                 <artifactId>product-center</artifactId>
+                <version>${core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.csjscm.core.framework</groupId>
+                <artifactId>elasticsearch</artifactId>
                 <version>${core.version}</version>
             </dependency>
 
