@@ -245,6 +245,11 @@ public class EnterpriseInfoServiceImpl implements EnterpriseInfoService {
             return "更新失败";
     }
 
+    @Override
+    public List<EnterpriseInfo> listSelective(Map<String, Object> map) {
+        return enterpriseInfoMapper.listSelective(map);
+    }
+
     /**
      * 校验供应商必填项是否为空
      *

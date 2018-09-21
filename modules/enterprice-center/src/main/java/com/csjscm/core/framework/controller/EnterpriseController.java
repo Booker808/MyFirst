@@ -1,21 +1,22 @@
 package com.csjscm.core.framework.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.csjscm.core.framework.common.enums.DeleteStateEnum;
+import com.csjscm.core.framework.common.enums.TradeTypeEnum;
 import com.csjscm.core.framework.example.EnterpriseInfoExample;
+import com.csjscm.core.framework.model.EnterpriseContact;
 import com.csjscm.core.framework.model.EnterpriseInfo;
 import com.csjscm.core.framework.service.enterprise.EnterpriseInfoService;
 import com.csjscm.core.framework.service.enterprise.dto.EnterpriseInfoDto;
 import com.csjscm.sweet.framework.core.mvc.APIResponse;
 import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -81,5 +82,15 @@ public class EnterpriseController {
         }
         QueryResult<EnterpriseInfoDto> result=enterpriseInfoService.queryEnterpriseInfo(page,rpp,enterpriseInfoExample);
         return APIResponse.success(result);
+    }
+    @ApiOperation("根据类型查询企业")
+    @RequestMapping(value = "list",method = RequestMethod.GET)
+    public APIResponse querylist(@ApiParam(name="entType",value="企业类型 1供应商 2采购商",required=true) Integer entType){
+        String entTypeIn="("+ TradeTypeEnum.供应商采购商.getState()+","+entType+")";
+        Map<String,Object> map=new HashMap<>();
+        map.put("entTypeIn",entTypeIn);
+        map.put("isdelete", DeleteStateEnum.未删除.getState());
+        List<EnterpriseInfo> enterpriseInfos = enterpriseInfoService.listSelective(map);
+        return APIResponse.success(enterpriseInfos);
     }
 }

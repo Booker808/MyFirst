@@ -9,6 +9,7 @@ import io.swagger.models.auth.In;
 import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
 
 import java.util.List;
+import java.util.Map;
 
 public interface EnterpriseInfoService {
     String createEnterpriseNo();
@@ -38,4 +39,6 @@ public interface EnterpriseInfoService {
     QueryResult<EnterpriseInfoDto> queryEnterpriseInfo(int page, int rpp, EnterpriseInfoExample enterpriseInfoExample);
 
     String updateEnterpriseInfo(EnterpriseInfo enterpriseInfo);
+
+    List<EnterpriseInfo> listSelective(Map<String,Object> map);
 }
