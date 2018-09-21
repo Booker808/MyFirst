@@ -578,4 +578,9 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
         skuPartnerMapper.insertSelective(skuPartner);
         return skuPartner;
     }
+
+    @Override
+    public List<SkuPartner> listSelectiveSCM(Map<String, Object> map) {
+        return skuPartnerMapper.listSelectiveSCM(map);
+    }
 }

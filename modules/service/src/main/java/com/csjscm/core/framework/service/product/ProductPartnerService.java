@@ -53,4 +53,6 @@ public interface ProductPartnerService {
      * @return
      */
     SkuPartner saveSCMSkuPartner(SkuPartnerSCMMolde skuPartnerSCMMolde);
+
+    List<SkuPartner> listSelectiveSCM(Map<String,Object> map);
 }

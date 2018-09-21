@@ -74,6 +74,9 @@
       <if test="productName != null and productName != '' ">
         and product_name = #{productName,jdbcType=VARCHAR}
       </if>
+      <if test="productNameLike != null and productNameLike != '' ">
+        and product_name like concat('%',#{productNameLike,jdbcType=VARCHAR},'%')
+      </if>
       <if test="productPrice != null and productPrice != '' ">
         and product_price = #{productPrice,jdbcType=DECIMAL}
       </if>

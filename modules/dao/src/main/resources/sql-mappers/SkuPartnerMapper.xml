@@ -561,6 +561,9 @@
       <if test="productNo != null and productNo != '' ">
         and product_no = #{productNo,jdbcType=VARCHAR}
       </if>
+      <if test="entName != null and entName != '' ">
+        and ent_name = #{entName,jdbcType=VARCHAR}
+      </if>
       <if test="supplyNo != null and supplyNo != '' ">
         and supply_no = #{supplyNo,jdbcType=VARCHAR}
       </if>
@@ -697,5 +700,11 @@
     select *
     from sku_partner_uom where
     partner_uuid=#{uuid}
+  </select>
+
+  <select id="listSelectiveSCM" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+    SELECT  a.*   FROM sku_partner a
+    LEFT JOIN enterprise_info b on a.supply_no=b.ent_number
+    <include refid="searchBy"/>
   </select>
 </mapper>

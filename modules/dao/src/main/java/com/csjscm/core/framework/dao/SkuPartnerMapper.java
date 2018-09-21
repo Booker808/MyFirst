@@ -44,4 +44,6 @@ public interface SkuPartnerMapper {
      * 获取详情
      */
     SkuPartnerDetailsModel getSkuPartnerModel(Map<String,Object> map);
+
+    List<SkuPartner> listSelectiveSCM(Map<String,Object> map);
 }

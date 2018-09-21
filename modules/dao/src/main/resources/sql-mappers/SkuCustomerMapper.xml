@@ -477,6 +477,9 @@
       <if test="productNo != null and productNo != '' ">
         and product_no = #{productNo,jdbcType=VARCHAR}
       </if>
+      <if test="entName != null and entName != '' ">
+        and ent_name = #{entName,jdbcType=VARCHAR}
+      </if>
       <if test="customerNo != null and customerNo != '' ">
         and customer_no = #{customerNo,jdbcType=VARCHAR}
       </if>
@@ -586,6 +589,11 @@
     select
     <include refid="Base_Column_List" />
     from sku_customer
+    <include refid="searchBy"/>
+  </select>
+  <select id="listSelectiveSCM" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+    SELECT a.* FROM sku_customer a
+    LEFT JOIN enterprise_info b on a.customer_no=b.ent_number
     <include refid="searchBy"/>
   </select>
   <select id="findCount" resultType="java.lang.Integer" parameterType="java.util.HashMap">

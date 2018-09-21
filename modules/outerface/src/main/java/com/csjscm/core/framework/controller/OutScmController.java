@@ -112,13 +112,14 @@ public class OutScmController {
      * @return
      */
     @RequestMapping(value = "searchSkuPartner",method = RequestMethod.POST)
-    public APIResponse searchSkuPartner(String productName,String brandName,String rule,String size,String supplyNo){
+    public APIResponse searchSkuPartner(String productName,String brandName,String rule,String size,String supplyNo,String entName){
         Map<String,Object> map=new HashMap<>();
         map.put("supplyPdName",productName);
         map.put("brandName",brandName);
         map.put("supplyPdRule",rule);
         map.put("supplyPdSize",size);
         map.put("supplyNo",supplyNo);
+        map.put("entName",entName);
         boolean flag=false;
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             if(entry.getValue()!=null && StringUtils.isNotBlank(entry.getValue().toString())){
@@ -129,7 +130,7 @@ public class OutScmController {
         if(!flag){
             return  APIResponse.fail("必须要有一个搜索条件");
         }
-        List<SkuPartner> skuPartners = productPartnerService.listSelective(map);
+        List<SkuPartner> skuPartners = productPartnerService.listSelectiveSCM(map);
         return APIResponse.success(skuPartners);
     }
 
@@ -142,12 +143,13 @@ public class OutScmController {
      * @return
      */
     @RequestMapping(value = "searchSkuCustomer",method = RequestMethod.POST)
-    public APIResponse searchSkuCustomer(String productName,String rule,String size,String customerNo){
+    public APIResponse searchSkuCustomer(String productName,String rule,String size,String customerNo,String entName){
         Map<String,Object> map=new HashMap<>();
         map.put("customerPdName",productName);
         map.put("customerPdRule",rule);
         map.put("customerPdSize",size);
         map.put("customerNo",customerNo);
+        map.put("entName",entName);
         boolean flag=false;
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             if(entry.getValue()!=null && StringUtils.isNotBlank(entry.getValue().toString())){
@@ -158,7 +160,7 @@ public class OutScmController {
         if(!flag){
             return  APIResponse.fail("必须要有一个搜索条件");
         }
-        List<SkuCustomer> skuCustomers = productCustomerService.listSelective(map);
+        List<SkuCustomer> skuCustomers = productCustomerService.listSelectiveSCM(map);
         return APIResponse.success(skuCustomers);
     }
 

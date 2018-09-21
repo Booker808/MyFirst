@@ -31,4 +31,6 @@ public interface ProductCustomerService {
     List<SkuCustomer> listSelective(Map<String,Object> map);
 
     SkuCustomer saveSCMSkuCustomer(SkuCustomerSCMMolde skuCustomerSCMMolde);
+
+    List<SkuCustomer> listSelectiveSCM(Map<String,Object> map);
 }

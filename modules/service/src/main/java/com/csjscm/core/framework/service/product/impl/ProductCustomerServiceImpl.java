@@ -275,4 +275,9 @@ public class ProductCustomerServiceImpl implements ProductCustomerService {
          skuCustomerMapper.insertSelective(skuCustomer);
         return skuCustomer;
     }
+
+    @Override
+    public List<SkuCustomer> listSelectiveSCM(Map<String, Object> map) {
+        return skuCustomerMapper.listSelectiveSCM(map);
+    }
 }

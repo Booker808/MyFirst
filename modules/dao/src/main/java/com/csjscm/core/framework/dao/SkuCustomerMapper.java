@@ -40,4 +40,7 @@ public interface SkuCustomerMapper {
      */
     int findCount(Map<String,Object> map);
 
+    List<SkuCustomer> listSelectiveSCM(Map<String,Object> map);
+
+
 }
