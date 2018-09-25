@@ -518,7 +518,7 @@ public class SkuCoreServiceImpl implements SkuCoreService {
         }
         str+=increment;
         skuCore.setProductNo(skuCore.getCategoryNo()+str);
-        skuCore.setChannel(SkuCoreChannelEnum.手动新增.getState());
+        skuCore.setChannel(SkuCoreChannelEnum.来自scm.getState());
         skuCore.setCreateTime(new Date());
         skuCoreMapper.insertSelective(skuCore);
         skuCoreSMMolde.setProductNo(skuCore.getCategoryNo()+str);
