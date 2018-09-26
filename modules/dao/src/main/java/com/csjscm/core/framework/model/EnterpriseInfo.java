@@ -46,4 +46,7 @@ public class EnterpriseInfo {
 
     @ApiModelProperty(hidden = true)
     private Integer isdelete;
+
+
+    private  Integer  channel;
 }

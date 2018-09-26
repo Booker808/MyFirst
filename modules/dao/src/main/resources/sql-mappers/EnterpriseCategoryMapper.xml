@@ -12,10 +12,16 @@
     <result column="edit_time" property="editTime" jdbcType="TIMESTAMP" />
     <result column="edit_user" property="editUser" jdbcType="VARCHAR" />
     <result column="isdelete" property="isdelete" jdbcType="INTEGER" />
+    <result column="brand_name" property="brandName" jdbcType="VARCHAR" />
+    <result column="brand_level" property="brandLevel" jdbcType="INTEGER" />
+    <result column="output" property="output" jdbcType="VARCHAR" />
+    <result column="sales" property="sales" jdbcType="VARCHAR" />
+    <result column="main_products" property="mainProducts" jdbcType="VARCHAR" />
+    <result column="product_remark" property="productRemark" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, ent_number, supply_state, supply_business, supply_start_time, supply_end_time, 
-    create_time, edit_time, edit_user, isdelete
+    id,ent_number,supply_state,supply_business,supply_start_time,supply_end_time,create_time,edit_time,edit_user,isdelete,brand_name,brand_level,output,sales,main_products,product_remark,description
   </sql>
   <!-- 基本的sql查询条件公共引用 -->
   <sql id="searchBy">
@@ -47,8 +53,29 @@
       <if test="editUser != null and editUser != '' ">
         and edit_user = #{editUser,jdbcType=VARCHAR}
       </if>
-      <if test="isdelete != null">
+      <if test="isdelete != null and isdelete != '' ">
         and isdelete = #{isdelete,jdbcType=INTEGER}
+      </if>
+      <if test="brandName != null and brandName != '' ">
+        and brand_name = #{brandName,jdbcType=VARCHAR}
+      </if>
+      <if test="brandLevel != null and brandLevel != '' ">
+        and brand_level = #{brandLevel,jdbcType=INTEGER}
+      </if>
+      <if test="output != null and output != '' ">
+        and output = #{output,jdbcType=VARCHAR}
+      </if>
+      <if test="sales != null and sales != '' ">
+        and sales = #{sales,jdbcType=VARCHAR}
+      </if>
+      <if test="mainProducts != null and mainProducts != '' ">
+        and main_products = #{mainProducts,jdbcType=VARCHAR}
+      </if>
+      <if test="productRemark != null and productRemark != '' ">
+        and product_remark = #{productRemark,jdbcType=VARCHAR}
+      </if>
+      <if test="description != null and description != '' ">
+        and description = #{description,jdbcType=VARCHAR}
       </if>
     </trim>
   </sql>
@@ -62,128 +89,191 @@
     delete from enterprise_category
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.csjscm.core.framework.model.EnterpriseCategory" >
-    insert into enterprise_category (id, ent_number, supply_state, 
-      supply_business, supply_start_time, supply_end_time, 
-      create_time, edit_time, edit_user, 
-      isdelete)
-    values (#{id,jdbcType=INTEGER}, #{entNumber,jdbcType=VARCHAR}, #{supplyState,jdbcType=INTEGER}, 
-      #{supplyBusiness,jdbcType=INTEGER}, #{supplyStartTime,jdbcType=TIMESTAMP}, #{supplyEndTime,jdbcType=TIMESTAMP}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{editTime,jdbcType=TIMESTAMP}, #{editUser,jdbcType=VARCHAR}, 
-      #{isdelete,jdbcType=INTEGER})
-  </insert>
-  <insert id="insertSelective" parameterType="com.csjscm.core.framework.model.EnterpriseCategory" >
+  <insert id="insert" parameterType="com.csjscm.core.framework.model.EnterpriseCategory">
+        insert into enterprise_category(ent_number,supply_state,supply_business,supply_start_time,supply_end_time,create_time,edit_time,edit_user,isdelete,brand_name,brand_level,output,sales,main_products,product_remark,description)values(#{entNumber,jdbcType=VARCHAR},#{supplyState,jdbcType=INTEGER},#{supplyBusiness,jdbcType=INTEGER},#{supplyStartTime,jdbcType=TIMESTAMP},#{supplyEndTime,jdbcType=TIMESTAMP},#{createTime,jdbcType=TIMESTAMP},#{editTime,jdbcType=TIMESTAMP},#{editUser,jdbcType=VARCHAR},#{isdelete,jdbcType=INTEGER},#{brandName,jdbcType=VARCHAR},#{brandLevel,jdbcType=INTEGER},#{output,jdbcType=VARCHAR},#{sales,jdbcType=VARCHAR},#{mainProducts,jdbcType=VARCHAR},#{productRemark,jdbcType=VARCHAR},#{description,jdbcType=VARCHAR})
+    </insert>
+  <insert id="insertSelective" parameterType="com.csjscm.core.framework.model.EnterpriseCategory">
     insert into enterprise_category
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null ">
         id,
       </if>
-      <if test="entNumber != null" >
+      <if test="entNumber != null ">
         ent_number,
       </if>
-      <if test="supplyState != null" >
+      <if test="supplyState != null ">
         supply_state,
       </if>
-      <if test="supplyBusiness != null" >
+      <if test="supplyBusiness != null ">
         supply_business,
       </if>
-      <if test="supplyStartTime != null" >
+      <if test="supplyStartTime != null ">
         supply_start_time,
       </if>
-      <if test="supplyEndTime != null" >
+      <if test="supplyEndTime != null ">
         supply_end_time,
       </if>
-      <if test="createTime != null" >
+      <if test="createTime != null ">
         create_time,
       </if>
-      <if test="editTime != null" >
+      <if test="editTime != null ">
         edit_time,
       </if>
-      <if test="editUser != null" >
+      <if test="editUser != null ">
         edit_user,
       </if>
-      <if test="isdelete != null" >
+      <if test="isdelete != null ">
         isdelete,
       </if>
+      <if test="brandName != null ">
+        brand_name,
+      </if>
+      <if test="brandLevel != null ">
+        brand_level,
+      </if>
+      <if test="output != null ">
+        output,
+      </if>
+      <if test="sales != null ">
+        sales,
+      </if>
+      <if test="mainProducts != null ">
+        main_products,
+      </if>
+      <if test="productRemark != null ">
+        product_remark,
+      </if>
+      <if test="description != null ">
+        description,
+      </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null ">
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="entNumber != null" >
+      <if test="entNumber != null ">
         #{entNumber,jdbcType=VARCHAR},
       </if>
-      <if test="supplyState != null" >
+      <if test="supplyState != null ">
         #{supplyState,jdbcType=INTEGER},
       </if>
-      <if test="supplyBusiness != null" >
+      <if test="supplyBusiness != null ">
         #{supplyBusiness,jdbcType=INTEGER},
       </if>
-      <if test="supplyStartTime != null" >
+      <if test="supplyStartTime != null ">
         #{supplyStartTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="supplyEndTime != null" >
+      <if test="supplyEndTime != null ">
         #{supplyEndTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="createTime != null" >
+      <if test="createTime != null ">
         #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="editTime != null" >
+      <if test="editTime != null ">
         #{editTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="editUser != null" >
+      <if test="editUser != null ">
         #{editUser,jdbcType=VARCHAR},
       </if>
-      <if test="isdelete != null" >
+      <if test="isdelete != null ">
         #{isdelete,jdbcType=INTEGER},
+      </if>
+      <if test="brandName != null ">
+        #{brandName,jdbcType=VARCHAR},
+      </if>
+      <if test="brandLevel != null ">
+        #{brandLevel,jdbcType=INTEGER},
+      </if>
+      <if test="output != null ">
+        #{output,jdbcType=VARCHAR},
+      </if>
+      <if test="sales != null ">
+        #{sales,jdbcType=VARCHAR},
+      </if>
+      <if test="mainProducts != null ">
+        #{mainProducts,jdbcType=VARCHAR},
+      </if>
+      <if test="productRemark != null ">
+        #{productRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null ">
+        #{description,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.csjscm.core.framework.model.EnterpriseCategory" >
     update enterprise_category
-    <set >
-      <if test="entNumber != null" >
+    <set>
+      <if test="entNumber != null and entNumber != '' ">
         ent_number = #{entNumber,jdbcType=VARCHAR},
       </if>
-      <if test="supplyState != null" >
+      <if test="supplyState != null and supplyState != '' ">
         supply_state = #{supplyState,jdbcType=INTEGER},
       </if>
-      <if test="supplyBusiness != null" >
+      <if test="supplyBusiness != null and supplyBusiness != '' ">
         supply_business = #{supplyBusiness,jdbcType=INTEGER},
       </if>
-      <if test="supplyStartTime != null" >
+      <if test="supplyStartTime != null">
         supply_start_time = #{supplyStartTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="supplyEndTime != null" >
+      <if test="supplyEndTime != null">
         supply_end_time = #{supplyEndTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="createTime != null" >
+      <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="editTime != null" >
+      <if test="editTime != null">
         edit_time = #{editTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="editUser != null" >
+      <if test="editUser != null and editUser != '' ">
         edit_user = #{editUser,jdbcType=VARCHAR},
       </if>
-      <if test="isdelete != null" >
+      <if test="isdelete != null and isdelete != '' ">
         isdelete = #{isdelete,jdbcType=INTEGER},
       </if>
+      <if test="brandName != null and brandName != '' ">
+        brand_name = #{brandName,jdbcType=VARCHAR},
+      </if>
+      <if test="brandLevel != null and brandLevel != '' ">
+        brand_level = #{brandLevel,jdbcType=INTEGER},
+      </if>
+      <if test="output != null and output != '' ">
+        output = #{output,jdbcType=VARCHAR},
+      </if>
+      <if test="sales != null and sales != '' ">
+        sales = #{sales,jdbcType=VARCHAR},
+      </if>
+      <if test="mainProducts != null and mainProducts != '' ">
+        main_products = #{mainProducts,jdbcType=VARCHAR},
+      </if>
+      <if test="productRemark != null and productRemark != '' ">
+        product_remark = #{productRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null and description != '' ">
+        description = #{description,jdbcType=VARCHAR}
+      </if>
     </set>
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id ,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.csjscm.core.framework.model.EnterpriseCategory" >
-    update enterprise_category
-    set ent_number = #{entNumber,jdbcType=VARCHAR},
-      supply_state = #{supplyState,jdbcType=INTEGER},
-      supply_business = #{supplyBusiness,jdbcType=INTEGER},
-      supply_start_time = #{supplyStartTime,jdbcType=TIMESTAMP},
-      supply_end_time = #{supplyEndTime,jdbcType=TIMESTAMP},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      edit_time = #{editTime,jdbcType=TIMESTAMP},
-      edit_user = #{editUser,jdbcType=VARCHAR},
-      isdelete = #{isdelete,jdbcType=INTEGER}
-    where id = #{id,jdbcType=INTEGER}
+       update enterprise_category set
+            ent_number = #{entNumber,jdbcType=VARCHAR},
+            supply_state = #{supplyState,jdbcType=INTEGER},
+            supply_business = #{supplyBusiness,jdbcType=INTEGER},
+            supply_start_time = #{supplyStartTime,jdbcType=TIMESTAMP},
+            supply_end_time = #{supplyEndTime,jdbcType=TIMESTAMP},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            edit_time = #{editTime,jdbcType=TIMESTAMP},
+            edit_user = #{editUser,jdbcType=VARCHAR},
+            isdelete = #{isdelete,jdbcType=INTEGER},
+            brand_name = #{brandName,jdbcType=VARCHAR},
+            brand_level = #{brandLevel,jdbcType=INTEGER},
+            output = #{output,jdbcType=VARCHAR},
+            sales = #{sales,jdbcType=VARCHAR},
+            main_products = #{mainProducts,jdbcType=VARCHAR},
+            product_remark = #{productRemark,jdbcType=VARCHAR},
+            description = #{description,jdbcType=VARCHAR}
+        where id = #{id ,jdbcType=INTEGER}
   </update>
   <select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
     select
