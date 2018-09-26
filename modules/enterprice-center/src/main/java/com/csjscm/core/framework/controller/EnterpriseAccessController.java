@@ -28,14 +28,50 @@ public class EnterpriseAccessController {
     @ApiModelProperty("新增基本信息并准入")
     @RequestMapping(value = "enterpriseInfoAccess",method = RequestMethod.POST)
     public APIResponse<String> insertEnterpriseInfoAccess(@RequestBody EnterpriseInfoAccessDto enterpriseInfoAccessDto){
-        enterpriseInfoAccessDto.setCheckState("3");
-        enterpriseInfoAccessDto.setIsvalid(0);
+        if(enterpriseInfoAccessDto.getEnterpriseCategory()==null){
+            return APIResponse.fail("其他信息不能为空");
+        }
+        if(enterpriseInfoAccessDto.getEnterpriseProtocol()==null){
+            return APIResponse.fail("框架协议信息不能为空");
+        }
+        enterpriseInfoAccessDto.getEnterpriseInfo().setIsvalid(0);
         String result=enterpriseInfoService.insertEnterpriseInfo(enterpriseInfoAccessDto);
         if(StringUtils.isNotEmpty(result)){
             return APIResponse.fail(result);
         }
+        enterpriseInfoAccessDto.getEnterpriseCategory().setEntNumber(enterpriseInfoAccessDto.getEnterpriseInfo().getEntNumber());
+        enterpriseInfoAccessDto.getEnterpriseProtocol().setEntNumber(enterpriseInfoAccessDto.getEnterpriseInfo().getEntNumber());
         enterpriseCategoryService.save(enterpriseInfoAccessDto.getEnterpriseCategory());
         enterpriseProtocolService.save(enterpriseInfoAccessDto.getEnterpriseProtocol());
         return APIResponse.success("新建成功");
+    }
+
+    @ApiModelProperty("修改审核信息（采购商变更供应商）")
+    @RequestMapping(value = "enterpriseInfoAccess",method = RequestMethod.PUT)
+    public APIResponse<String> updateEnterpriseInfoAccess(@RequestBody EnterpriseInfoAccessDto enterpriseInfoAccessDto){
+
+        if(enterpriseInfoAccessDto.getEnterpriseCategory()==null){
+            return APIResponse.fail("其他信息不能为空");
+        }
+        if(enterpriseInfoAccessDto.getEnterpriseProtocol()==null){
+            return APIResponse.fail("框架协议信息不能为空");
+        }
+        enterpriseInfoAccessDto.getEnterpriseInfo().setIsvalid(0);
+        String result=enterpriseInfoService.updateEnterpriseDetail(enterpriseInfoAccessDto);
+        if(StringUtils.isNotEmpty(result)){
+            return APIResponse.fail(result);
+        }
+
+        if(enterpriseInfoAccessDto.getEnterpriseCategory().getId()==null){
+            enterpriseCategoryService.save(enterpriseInfoAccessDto.getEnterpriseCategory());
+        }else{
+            enterpriseCategoryService.update(enterpriseInfoAccessDto.getEnterpriseCategory());
+        }
+        if(enterpriseInfoAccessDto.getEnterpriseProtocol().getId()==null){
+            enterpriseProtocolService.save(enterpriseInfoAccessDto.getEnterpriseProtocol());
+        }else{
+            enterpriseProtocolService.update(enterpriseInfoAccessDto.getEnterpriseProtocol());
+        }
+        return APIResponse.success("修改成功");
     }
 }

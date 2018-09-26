@@ -13,4 +13,6 @@ import com.csjscm.core.framework.model.EnterpriseProtocol;
 
 public interface EnterpriseProtocolService {
     int save(EnterpriseProtocol enterpriseProtocol);
+
+    int update(EnterpriseProtocol enterpriseProtocol);
 }

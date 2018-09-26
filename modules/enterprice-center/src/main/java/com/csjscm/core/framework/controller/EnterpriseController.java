@@ -36,8 +36,8 @@ public class EnterpriseController {
     @ApiOperation("新建企业信息")
     @RequestMapping(value = "/enterpriseInfo",method = RequestMethod.POST)
     public APIResponse<String> saveEnterpriseInfo(@RequestBody EnterpriseInfoDto enterpriseInfoDto){
-        enterpriseInfoDto.setCheckState("1");
-        enterpriseInfoDto.setIsvalid(0);
+        enterpriseInfoDto.getEnterpriseInfo().setCheckState("1");
+        enterpriseInfoDto.getEnterpriseInfo().setIsvalid(0);
         String result=enterpriseInfoService.insertEnterpriseInfo(enterpriseInfoDto);
         if(StringUtils.isEmpty(result)){
             return APIResponse.success("新建成功");

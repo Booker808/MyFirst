@@ -22,6 +22,8 @@ import java.util.Date;
     */
     private Integer id;
 
+    private String entNumber;
+
     /**
     * 合同类型 1框架协议 2其他/无
     */
@@ -227,4 +229,11 @@ import java.util.Date;
         this.editTime = editTime;
     }
 
+    public String getEntNumber() {
+        return entNumber;
+    }
+
+    public void setEntNumber(String entNumber) {
+        this.entNumber = entNumber;
+    }
 }

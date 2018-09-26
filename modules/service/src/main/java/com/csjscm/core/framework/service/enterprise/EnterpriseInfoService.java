@@ -3,6 +3,7 @@ package com.csjscm.core.framework.service.enterprise;
 import com.csjscm.core.framework.model.EnterpriseInfo;
 import com.csjscm.core.framework.example.EnterpriseInfoExample;
 import com.csjscm.core.framework.model.EnterpriseInfo;
+import com.csjscm.core.framework.service.enterprise.dto.EnterpriseInfoAccessDto;
 import com.csjscm.core.framework.service.enterprise.dto.EnterpriseInfoDto;
 import com.csjscm.core.framework.vo.EnterpriseInfoSPModel;
 import io.swagger.models.auth.In;
@@ -39,6 +40,8 @@ public interface EnterpriseInfoService {
     QueryResult<EnterpriseInfoDto> queryEnterpriseInfo(int page, int rpp, EnterpriseInfoExample enterpriseInfoExample);
 
     String updateEnterpriseInfo(EnterpriseInfo enterpriseInfo);
+
+    String updateEnterpriseDetail(EnterpriseInfoAccessDto enterpriseInfoAccessDto);
 
     List<EnterpriseInfo> listSelective(Map<String,Object> map);
 }

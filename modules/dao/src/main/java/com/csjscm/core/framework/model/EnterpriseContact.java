@@ -1,5 +1,6 @@
 package com.csjscm.core.framework.model;
 
+import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.NotNull;
@@ -28,12 +29,16 @@ public class EnterpriseContact {
 
     private String identityImg1;
 
+    @ApiModelProperty(hidden = true)
     private Date createTime;
 
+    @ApiModelProperty(hidden = true)
     private Date editTime;
 
+    @ApiModelProperty(hidden = true)
     private String editUser;
 
+    @ApiModelProperty(hidden = true)
     private Integer isdelete;
 
     public Integer getId() {

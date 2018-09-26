@@ -31,4 +31,9 @@ public class EnterpriseProtocolServiceImpl implements EnterpriseProtocolService 
     public int save(EnterpriseProtocol enterpriseProtocol) {
         return enterpriseProtocolMapper.insertSelective(enterpriseProtocol);
     }
+
+    @Override
+    public int update(EnterpriseProtocol enterpriseProtocol) {
+        return enterpriseProtocolMapper.updateSelective(enterpriseProtocol);
+    }
 }

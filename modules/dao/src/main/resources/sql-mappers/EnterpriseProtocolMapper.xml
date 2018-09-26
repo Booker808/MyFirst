@@ -5,6 +5,7 @@
     <!--返回Map-->        
     <resultMap id="BaseResultMap" type="com.csjscm.core.framework.model.EnterpriseProtocol">
         <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="ent_number" property="entNumber" jdbcType="VARCHAR"/>
         <result column="type" property="type" jdbcType="INTEGER" />
         <result column="number" property="number" jdbcType="VARCHAR" />
         <result column="main_contract" property="mainContract" jdbcType="VARCHAR" />
@@ -17,7 +18,7 @@
     
     <!--基本的sql查询字段 公共引用...-->
     <sql id="Base_Column_List">
-        id,type,number,main_contract,start_time,end_time,attachment_url,create_time,edit_time 
+        id,ent_number,type,number,main_contract,start_time,end_time,attachment_url,create_time,edit_time
     </sql>
     
     <!-- 基本的sql查询条件公共引用 -->
@@ -25,6 +26,9 @@
         <trim prefix="where" prefixOverrides="and|or">
             <if test=" id != null and id != '' ">
                 id  = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="entNumber != null and entNumber != '' ">
+                and ent_number = #{entNumber,jdbcType=VARCHAR}
             </if>
             <if test="type != null and type != '' ">
                 and type = #{type,jdbcType=INTEGER}
@@ -58,7 +62,7 @@
     </delete>
     
     <insert id="insert" parameterType="com.csjscm.core.framework.model.EnterpriseProtocol">
-        insert into enterprise_protocol(type,number,main_contract,start_time,end_time,attachment_url,create_time,edit_time)values(#{type,jdbcType=INTEGER},#{number,jdbcType=VARCHAR},#{mainContract,jdbcType=VARCHAR},#{startTime,jdbcType=TIMESTAMP},#{endTime,jdbcType=TIMESTAMP},#{attachmentUrl,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},#{editTime,jdbcType=TIMESTAMP})
+        insert into enterprise_protocol(ent_number,type,number,main_contract,start_time,end_time,attachment_url,create_time,edit_time)values(#{entNumber,jdbcType=VARCHAR},#{type,jdbcType=INTEGER},#{number,jdbcType=VARCHAR},#{mainContract,jdbcType=VARCHAR},#{startTime,jdbcType=TIMESTAMP},#{endTime,jdbcType=TIMESTAMP},#{attachmentUrl,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},#{editTime,jdbcType=TIMESTAMP})
     </insert>
 
     <insert id="insertSelective" parameterType="com.csjscm.core.framework.model.EnterpriseProtocol">
@@ -66,6 +70,9 @@
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null ">
                 id,
+            </if>
+            <if test="entNumber != null ">
+                ent_number,
             </if>
             <if test="type != null ">
                 type,
@@ -96,6 +103,9 @@
                      <if test="id != null ">
                         #{id,jdbcType=INTEGER},
                      </if>
+                    <if test="entNumber != null ">
+                        #{entNumber,jdbcType=VARCHAR},
+                    </if>
                      <if test="type != null ">
                         #{type,jdbcType=INTEGER},
                      </if>
@@ -123,7 +133,8 @@
         </trim>
     </insert>
     <update id="update" parameterType="com.csjscm.core.framework.model.EnterpriseProtocol">
-        update enterprise_protocol set 
+        update enterprise_protocol set
+            ent_number = #{entNumber,jdbcType=VARCHAR},
             type = #{type,jdbcType=INTEGER},
             number = #{number,jdbcType=VARCHAR},
             main_contract = #{mainContract,jdbcType=VARCHAR},
@@ -139,8 +150,11 @@
     <update id="updateSelective"  parameterType="com.csjscm.core.framework.model.EnterpriseProtocol">
         update enterprise_protocol
           <set>
-            <if test="type != null and type != '' ">        
-                type = #{type,jdbcType=INTEGER},                
+            <if test="entNumber != null and entNumber != '' ">
+                ent_number = #{entNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null and type != '' ">
+                type = #{type,jdbcType=INTEGER},
             </if>
             <if test="number != null and number != '' ">        
                 number = #{number,jdbcType=VARCHAR},                

@@ -1,5 +1,7 @@
 package com.csjscm.core.framework.model;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.Date;
 
 public class EnterpriseAttachment {
@@ -15,12 +17,16 @@ public class EnterpriseAttachment {
 
     private String attachmentUrl;
 
+    @ApiModelProperty(hidden = true)
     private Date createTime;
 
+    @ApiModelProperty(hidden = true)
     private Date editTime;
 
+    @ApiModelProperty(hidden = true)
     private String editUser;
 
+    @ApiModelProperty(hidden = true)
     private Integer isdelete;
 
     public Integer getId() {

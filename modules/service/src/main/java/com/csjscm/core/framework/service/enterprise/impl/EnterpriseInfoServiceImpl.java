@@ -17,6 +17,7 @@ import com.csjscm.core.framework.model.EnterpriseAttachment;
 import com.csjscm.core.framework.model.EnterpriseContact;
 import com.csjscm.core.framework.model.EnterpriseInfo;
 import com.csjscm.core.framework.service.enterprise.EnterpriseInfoService;
+import com.csjscm.core.framework.service.enterprise.dto.EnterpriseInfoAccessDto;
 import com.csjscm.core.framework.service.enterprise.dto.EnterpriseInfoDto;
 import com.csjscm.core.framework.vo.EnterpriseInfoSPModel;
 import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
@@ -72,15 +73,15 @@ public class EnterpriseInfoServiceImpl implements EnterpriseInfoService {
     @Transactional
     public String insertEnterpriseInfo(EnterpriseInfoDto enterpriseInfoDto) {
         String result;
-        switch (enterpriseInfoDto.getEntType()){
+        switch (enterpriseInfoDto.getEnterpriseInfo().getEntType()){
             //采购商
             case 2:
+                //供应商&采购商
+            case 3:
                 result=checkCustomerEmpty(enterpriseInfoDto);
                 break;
             //供应商
             case 1:
-            //供应商&采购商
-            case 3:
                 result=checkSupplyEmpty(enterpriseInfoDto);
                 break;
             default:
@@ -89,35 +90,31 @@ public class EnterpriseInfoServiceImpl implements EnterpriseInfoService {
         if(StringUtils.isNotEmpty(result)){
             return result;
         }
-        if(StringUtils.isNotEmpty(getEpNoByEpName(enterpriseInfoDto.getEntName()))){
+        if(StringUtils.isNotEmpty(getEpNoByEpName(enterpriseInfoDto.getEnterpriseInfo().getEntName()))){
             return "该企业已存在";
         }
 
-        EnterpriseInfo enterpriseInfo=new EnterpriseInfo();
-        BeanutilsCopy.copyProperties(enterpriseInfoDto,enterpriseInfo);
+        EnterpriseInfo enterpriseInfo=enterpriseInfoDto.getEnterpriseInfo();
+//        BeanutilsCopy.copyProperties(enterpriseInfoDto,enterpriseInfo);
 
-        EnterpriseContact legalPerson=new EnterpriseContact(),contactPerson=new EnterpriseContact();
-        legalPerson.setEntNumber(enterpriseInfoDto.getEntNumber());
+        EnterpriseContact legalPerson=enterpriseInfoDto.getLegalPerson(),
+                contactPerson=enterpriseInfoDto.getEnterpriseContact();
+        legalPerson.setEntNumber(enterpriseInfoDto.getEnterpriseInfo().getEntNumber());
         legalPerson.setContactType(1);
-        legalPerson.setName(enterpriseInfoDto.getLegalPerson());
 
-        contactPerson.setEntNumber(enterpriseInfoDto.getEntNumber());
+        contactPerson.setEntNumber(enterpriseInfoDto.getEnterpriseInfo().getEntNumber());
         contactPerson.setContactType(2);
-        contactPerson.setName(enterpriseInfoDto.getContactName());
-        contactPerson.setPhone(enterpriseInfoDto.getContactPhone());
-        contactPerson.setEmail(enterpriseInfoDto.getContactEmail());
 
-        EnterpriseAttachment attachment=new EnterpriseAttachment();
-        attachment.setEntNumber(enterpriseInfoDto.getEntNumber());
-        attachment.setAttachmentName("营业执照");
+        EnterpriseAttachment attachment=enterpriseInfoDto.getEnterpriseAttachment();
+        attachment.setEntNumber(enterpriseInfoDto.getEnterpriseInfo().getEntNumber());
+        if(StringUtils.isEmpty(attachment.getAttachmentName())){
+            attachment.setAttachmentName("营业执照");
+        }
         attachment.setAttachmentType(1);
-        attachment.setAttachmentUrl(enterpriseInfoDto.getBusinessImg());
 
-        EnterpriseAccount account=new EnterpriseAccount();
-        account.setEntNumber(enterpriseInfoDto.getEntNumber());
+        EnterpriseAccount account=enterpriseInfoDto.getEnterpriseAccount();
+        account.setEntNumber(enterpriseInfoDto.getEnterpriseInfo().getEntNumber());
         account.setAccountType(1);
-        account.setBankNo(enterpriseInfoDto.getBankNo());
-        account.setBankName(enterpriseInfoDto.getBankName());
 
         int count=enterpriseInfoMapper.insertSelective(enterpriseInfo);
         if(count<=0)
@@ -165,7 +162,7 @@ public class EnterpriseInfoServiceImpl implements EnterpriseInfoService {
         List<EnterpriseAccount> accountList;
         for(EnterpriseInfo info:pageInfo.getList()){
             EnterpriseInfoDto enterpriseInfoDto=new EnterpriseInfoDto();
-            BeanutilsCopy.copyProperties(info,enterpriseInfoDto);
+            enterpriseInfoDto.setEnterpriseInfo(info);
 
             contactList=enterpriseContactMapper.selectByEpNumber(info.getEntNumber());
             attachmentList=enterpriseAttachmentMapper.selectByEpNumber(info.getEntNumber());
@@ -173,20 +170,18 @@ public class EnterpriseInfoServiceImpl implements EnterpriseInfoService {
 
             if(!contactList.isEmpty()){
                 for(EnterpriseContact contact:contactList){
-                    if(contact.getContactType().equals(1)&&StringUtils.isEmpty(enterpriseInfoDto.getLegalPerson())){
-                        enterpriseInfoDto.setLegalPerson(contact.getName());
+                    if(contact.getContactType().equals(1)&&enterpriseInfoDto.getLegalPerson()==null){
+                        enterpriseInfoDto.setLegalPerson(contact);
                     }
-                    if(contact.getContactType().equals(2)&&StringUtils.isEmpty(enterpriseInfoDto.getContactName())){
-                        enterpriseInfoDto.setContactName(contact.getName());
-                        enterpriseInfoDto.setContactPhone(contact.getPhone());
-                        enterpriseInfoDto.setContactEmail(contact.getEmail());
+                    if(contact.getContactType().equals(2)&&enterpriseInfoDto.getEnterpriseContact()==null){
+                        enterpriseInfoDto.setEnterpriseContact(contact);
                     }
                 }
             }
             if(!attachmentList.isEmpty()){
                 for(EnterpriseAttachment attachment:attachmentList){
                     if(attachment.getAttachmentType().equals(1)){
-                        enterpriseInfoDto.setBusinessImg(attachment.getAttachmentUrl());
+                        enterpriseInfoDto.setEnterpriseAttachment(attachment);
                         break;
                     }
                 }
@@ -194,8 +189,7 @@ public class EnterpriseInfoServiceImpl implements EnterpriseInfoService {
             if(!accountList.isEmpty()){
                 for(EnterpriseAccount account:accountList){
                     if(account.getAccountType().equals(1)){
-                        enterpriseInfoDto.setBankName(account.getBankName());
-                        enterpriseInfoDto.setBankNo(account.getBankNo());
+                        enterpriseInfoDto.setEnterpriseAccount(account);
                         break;
                     }
                 }
@@ -220,6 +214,47 @@ public class EnterpriseInfoServiceImpl implements EnterpriseInfoService {
     }
 
     @Override
+    public String updateEnterpriseDetail(EnterpriseInfoAccessDto enterpriseInfoAccessDto){
+        String result=checkSupplyEmpty(enterpriseInfoAccessDto);
+        if(StringUtils.isNotEmpty(result)){
+            return result;
+        }
+        enterpriseInfoMapper.updateByPrimaryKeySelective(enterpriseInfoAccessDto.getEnterpriseInfo());
+        if(enterpriseInfoAccessDto.getLegalPerson().getId()==null){
+            enterpriseInfoAccessDto.getLegalPerson().setEntNumber(enterpriseInfoAccessDto.getEnterpriseInfo().getEntNumber());
+            enterpriseInfoAccessDto.getLegalPerson().setContactType(1);
+            enterpriseContactMapper.insert(enterpriseInfoAccessDto.getLegalPerson());
+        }else{
+            enterpriseContactMapper.updateByPrimaryKeySelective(enterpriseInfoAccessDto.getLegalPerson());
+        }
+
+        if(enterpriseInfoAccessDto.getEnterpriseContact().getId()==null){
+            enterpriseInfoAccessDto.getEnterpriseContact().setEntNumber(enterpriseInfoAccessDto.getEnterpriseInfo().getEntNumber());
+            enterpriseInfoAccessDto.getEnterpriseContact().setContactType(2);
+            enterpriseContactMapper.insert(enterpriseInfoAccessDto.getEnterpriseContact());
+        }else{
+            enterpriseContactMapper.updateByPrimaryKeySelective(enterpriseInfoAccessDto.getEnterpriseContact());
+        }
+
+        if(enterpriseInfoAccessDto.getEnterpriseAccount().getId()==null){
+            enterpriseInfoAccessDto.getEnterpriseAccount().setEntNumber(enterpriseInfoAccessDto.getEnterpriseInfo().getEntNumber());
+            enterpriseInfoAccessDto.getEnterpriseAccount().setAccountType(1);
+            enterpriseAccountMapper.insertSelective(enterpriseInfoAccessDto.getEnterpriseAccount());
+        }else{
+            enterpriseAccountMapper.updateByPrimaryKeySelective(enterpriseInfoAccessDto.getEnterpriseAccount());
+        }
+
+        if(enterpriseInfoAccessDto.getEnterpriseAttachment().getId()==null){
+            enterpriseInfoAccessDto.getEnterpriseAttachment().setEntNumber(enterpriseInfoAccessDto.getEnterpriseInfo().getEntNumber());
+            enterpriseInfoAccessDto.getEnterpriseAttachment().setAttachmentType(1);
+            enterpriseAttachmentMapper.insertSelective(enterpriseInfoAccessDto.getEnterpriseAttachment());
+        }else{
+            enterpriseAttachmentMapper.updateByPrimaryKeySelective(enterpriseInfoAccessDto.getEnterpriseAttachment());
+        }
+        return "变更成功";
+    }
+
+    @Override
     public List<EnterpriseInfo> listSelective(Map<String, Object> map) {
         return enterpriseInfoMapper.listSelective(map);
     }
@@ -231,26 +266,28 @@ public class EnterpriseInfoServiceImpl implements EnterpriseInfoService {
      * @return
      */
     private String checkSupplyEmpty(EnterpriseInfoDto enterpriseInfoDto){
-        String result=checkCustomerEmpty(enterpriseInfoDto);
-        if(StringUtils.isNotEmpty(result)){
-            return result;
+        if(enterpriseInfoDto.getEnterpriseInfo()==null||StringUtils.isEmpty(enterpriseInfoDto.getEnterpriseInfo().getEntNumber())){
+            return "企业编码不能为空";
         }
-        if(StringUtils.isEmpty(enterpriseInfoDto.getLegalPerson())){
-            return "法人不能为空";
+        if(StringUtils.isEmpty(enterpriseInfoDto.getEnterpriseInfo().getEntName())){
+            return "企业名称不能为空";
         }
-        if(StringUtils.isEmpty(enterpriseInfoDto.getBusinessImg())){
-            return "营业执照不能为空";
-        }
-
-        if(StringUtils.isEmpty(enterpriseInfoDto.getTaxpayerId())){
-            return "纳税人识别号不能为空";
-        }
-        if(StringUtils.isEmpty(enterpriseInfoDto.getBankName())){
-            return "基本开户银行不能为空";
-        }
-        if(StringUtils.isEmpty(enterpriseInfoDto.getBankNo())){
-            return "基本开户账号不能为空";
-        }
+//        if(enterpriseInfoDto.getLegalPerson()==null||StringUtils.isEmpty(enterpriseInfoDto.getLegalPerson().getName())){
+//            return "法人不能为空";
+//        }
+//        if(enterpriseInfoDto.getEnterpriseAttachment()==null||StringUtils.isEmpty(enterpriseInfoDto.getEnterpriseAttachment().getAttachmentUrl())){
+//            return "营业执照不能为空";
+//        }
+//
+//        if(StringUtils.isEmpty(enterpriseInfoDto.getEnterpriseInfo().getTaxpayerId())){
+//            return "纳税人识别号不能为空";
+//        }
+//        if(enterpriseInfoDto.getEnterpriseAccount()==null||StringUtils.isEmpty(enterpriseInfoDto.getEnterpriseAccount().getBankName())){
+//            return "基本开户银行不能为空";
+//        }
+//        if(StringUtils.isEmpty(enterpriseInfoDto.getEnterpriseAccount().getBankNo())){
+//            return "基本开户账号不能为空";
+//        }
         return "";
     }
 
@@ -261,19 +298,19 @@ public class EnterpriseInfoServiceImpl implements EnterpriseInfoService {
      * @return
      */
     private String checkCustomerEmpty(EnterpriseInfoDto enterpriseInfoDto){
-        if(StringUtils.isEmpty(enterpriseInfoDto.getEntNumber())){
+        if(enterpriseInfoDto.getEnterpriseInfo()==null||StringUtils.isEmpty(enterpriseInfoDto.getEnterpriseInfo().getEntNumber())){
+            return "企业编码不能为空";
+        }
+        if(StringUtils.isEmpty(enterpriseInfoDto.getEnterpriseInfo().getEntName())){
             return "企业名称不能为空";
         }
-        if(StringUtils.isEmpty(enterpriseInfoDto.getEntName())){
-            return "企业名称不能为空";
-        }
-        if(StringUtils.isEmpty(enterpriseInfoDto.getContactName())){
+        if(enterpriseInfoDto.getEnterpriseContact()==null||StringUtils.isEmpty(enterpriseInfoDto.getEnterpriseContact().getName())){
             return "联系人不能为空";
         }
-        if(StringUtils.isEmpty(enterpriseInfoDto.getContactPhone())){
+        if(StringUtils.isEmpty(enterpriseInfoDto.getEnterpriseContact().getPhone())){
             return "联系人电话不能为空";
         }
-        if(StringUtils.isEmpty(enterpriseInfoDto.getRegisterAddress())){
+        if(StringUtils.isEmpty(enterpriseInfoDto.getEnterpriseInfo().getRegisterAddress())){
             return "注册地址不能为空";
         }
         return "";
