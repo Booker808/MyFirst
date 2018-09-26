@@ -28,14 +28,12 @@ public class EnterpriseAccessController {
     @ApiModelProperty("新增基本信息并准入")
     @RequestMapping(value = "enterpriseInfoAccess",method = RequestMethod.POST)
     public APIResponse<String> insertEnterpriseInfoAccess(@RequestBody EnterpriseInfoAccessDto enterpriseInfoAccessDto){
-        if(enterpriseInfoAccessDto.getEnterpriseCategory()==null){
-            return APIResponse.fail("其他信息不能为空");
-        }
-        if(enterpriseInfoAccessDto.getEnterpriseProtocol()==null){
-            return APIResponse.fail("框架协议信息不能为空");
+        String result=checkAccessEmpty(enterpriseInfoAccessDto);
+        if(StringUtils.isNotEmpty(result)){
+            return APIResponse.fail(result);
         }
         enterpriseInfoAccessDto.getEnterpriseInfo().setIsvalid(0);
-        String result=enterpriseInfoService.insertEnterpriseInfo(enterpriseInfoAccessDto);
+        result=enterpriseInfoService.insertEnterpriseInfo(enterpriseInfoAccessDto);
         if(StringUtils.isNotEmpty(result)){
             return APIResponse.fail(result);
         }
@@ -50,14 +48,12 @@ public class EnterpriseAccessController {
     @RequestMapping(value = "enterpriseInfoAccess",method = RequestMethod.PUT)
     public APIResponse<String> updateEnterpriseInfoAccess(@RequestBody EnterpriseInfoAccessDto enterpriseInfoAccessDto){
 
-        if(enterpriseInfoAccessDto.getEnterpriseCategory()==null){
-            return APIResponse.fail("其他信息不能为空");
-        }
-        if(enterpriseInfoAccessDto.getEnterpriseProtocol()==null){
-            return APIResponse.fail("框架协议信息不能为空");
+        String result=checkAccessEmpty(enterpriseInfoAccessDto);
+        if(StringUtils.isNotEmpty(result)){
+            return APIResponse.fail(result);
         }
         enterpriseInfoAccessDto.getEnterpriseInfo().setIsvalid(0);
-        String result=enterpriseInfoService.updateEnterpriseDetail(enterpriseInfoAccessDto);
+        result=enterpriseInfoService.updateEnterpriseDetail(enterpriseInfoAccessDto);
         if(StringUtils.isNotEmpty(result)){
             return APIResponse.fail(result);
         }
@@ -73,5 +69,55 @@ public class EnterpriseAccessController {
             enterpriseProtocolService.update(enterpriseInfoAccessDto.getEnterpriseProtocol());
         }
         return APIResponse.success("修改成功");
+    }
+
+    private String checkAccessEmpty(EnterpriseInfoAccessDto enterpriseInfoAccessDto){
+
+        if(enterpriseInfoAccessDto.getEnterpriseInfo()==null||StringUtils.isEmpty(enterpriseInfoAccessDto.getEnterpriseInfo().getEntNumber())){
+            return "企业编码不能为空";
+        }
+        if(StringUtils.isEmpty(enterpriseInfoAccessDto.getEnterpriseInfo().getEntName())){
+            return "企业名称不能为空";
+        }
+        if(enterpriseInfoAccessDto.getLegalPerson()==null||StringUtils.isEmpty(enterpriseInfoAccessDto.getLegalPerson().getName())){
+            return "法人不能为空";
+        }
+        if(enterpriseInfoAccessDto.getEnterpriseContact()==null||StringUtils.isEmpty(enterpriseInfoAccessDto.getEnterpriseContact().getName())){
+            return "联系人不能为空";
+        }
+        if(StringUtils.isEmpty(enterpriseInfoAccessDto.getEnterpriseContact().getPhone())){
+            return "联系人电话不能为空";
+        }
+        if(StringUtils.isEmpty(enterpriseInfoAccessDto.getEnterpriseInfo().getRegisterAddress())){
+            return "注册地址不能为空";
+        }
+        if(enterpriseInfoAccessDto.getEnterpriseAttachment()==null||StringUtils.isEmpty(enterpriseInfoAccessDto.getEnterpriseAttachment().getAttachmentUrl())){
+            return "营业执照不能为空";
+        }
+
+        if(StringUtils.isEmpty(enterpriseInfoAccessDto.getEnterpriseInfo().getTaxpayerId())){
+            return "纳税人识别号不能为空";
+        }
+        if(enterpriseInfoAccessDto.getEnterpriseAccount()==null||StringUtils.isEmpty(enterpriseInfoAccessDto.getEnterpriseAccount().getBankName())){
+            return "基本开户银行不能为空";
+        }
+        if(StringUtils.isEmpty(enterpriseInfoAccessDto.getEnterpriseAccount().getBankNo())){
+            return "基本开户账号不能为空";
+        }
+
+
+        if(enterpriseInfoAccessDto.getEnterpriseCategory()==null
+                ||StringUtils.isEmpty(enterpriseInfoAccessDto.getEnterpriseCategory().getBrandName())
+                ||enterpriseInfoAccessDto.getEnterpriseCategory().getBrandLevel()==null
+                ||StringUtils.isEmpty(enterpriseInfoAccessDto.getEnterpriseCategory().getMainProducts())
+                ||enterpriseInfoAccessDto.getEnterpriseCategory().getSupplyState()==null
+                ||enterpriseInfoAccessDto.getEnterpriseCategory().getSupplyStartTime()==null
+                ||enterpriseInfoAccessDto.getEnterpriseCategory().getSupplyEndTime()==null){
+            return "其他信息不能为空";
+        }
+        if(enterpriseInfoAccessDto.getEnterpriseProtocol()==null){
+            return "框架协议信息不能为空";
+        }
+        return "";
     }
 }

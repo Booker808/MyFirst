@@ -99,43 +99,54 @@ public class EnterpriseInfoServiceImpl implements EnterpriseInfoService {
 
         EnterpriseContact legalPerson=enterpriseInfoDto.getLegalPerson(),
                 contactPerson=enterpriseInfoDto.getEnterpriseContact();
-        legalPerson.setEntNumber(enterpriseInfoDto.getEnterpriseInfo().getEntNumber());
-        legalPerson.setContactType(1);
+        if(legalPerson!=null){
+            legalPerson.setEntNumber(enterpriseInfoDto.getEnterpriseInfo().getEntNumber());
+            legalPerson.setContactType(1);
+        }
 
-        contactPerson.setEntNumber(enterpriseInfoDto.getEnterpriseInfo().getEntNumber());
-        contactPerson.setContactType(2);
+        if(contactPerson!=null){
+            contactPerson.setEntNumber(enterpriseInfoDto.getEnterpriseInfo().getEntNumber());
+            contactPerson.setContactType(2);
+        }
 
         EnterpriseAttachment attachment=enterpriseInfoDto.getEnterpriseAttachment();
-        attachment.setEntNumber(enterpriseInfoDto.getEnterpriseInfo().getEntNumber());
-        if(StringUtils.isEmpty(attachment.getAttachmentName())){
-            attachment.setAttachmentName("营业执照");
+        if(attachment!=null){
+            attachment.setEntNumber(enterpriseInfoDto.getEnterpriseInfo().getEntNumber());
+            if(StringUtils.isEmpty(attachment.getAttachmentName())){
+                attachment.setAttachmentName("营业执照");
+            }
+            attachment.setAttachmentType(1);
         }
-        attachment.setAttachmentType(1);
 
         EnterpriseAccount account=enterpriseInfoDto.getEnterpriseAccount();
-        account.setEntNumber(enterpriseInfoDto.getEnterpriseInfo().getEntNumber());
-        account.setAccountType(1);
+        if(account!=null){
+            account.setEntNumber(enterpriseInfoDto.getEnterpriseInfo().getEntNumber());
+            account.setAccountType(1);
+        }
 
         int count=enterpriseInfoMapper.insertSelective(enterpriseInfo);
         if(count<=0)
             return "Info表插入失败";
         List<String> resultList= Lists.newLinkedList();
-        if(StringUtils.isNotEmpty(legalPerson.getName())){
+        if(legalPerson!=null && StringUtils.isNotEmpty(legalPerson.getName())){
             count=enterpriseContactMapper.insertSelective(legalPerson);
             if(count<=0)
                 resultList.add("法人");
         }
-        count=enterpriseContactMapper.insertSelective(contactPerson);
-        if(count<=0)
-            resultList.add("联系人");
+        if(contactPerson!=null){
+            count=enterpriseContactMapper.insertSelective(contactPerson);
+            if(count<=0)
+                resultList.add("联系人");
+        }
 
-        if(StringUtils.isNotEmpty(attachment.getAttachmentUrl())){
+        if(attachment!=null && StringUtils.isNotEmpty(attachment.getAttachmentUrl())){
             count=enterpriseAttachmentMapper.insertSelective(attachment);
             if(count<=0)
                 resultList.add("附件");
         }
 
-        if(StringUtils.isNotEmpty(account.getBankName())||StringUtils.isNotEmpty(account.getBankNo())){
+        if(account!=null &&
+                (StringUtils.isNotEmpty(account.getBankName())||StringUtils.isNotEmpty(account.getBankNo()))){
             count=enterpriseAccountMapper.insertSelective(account);
             if(count<=0)
                 resultList.add("企业账户");
