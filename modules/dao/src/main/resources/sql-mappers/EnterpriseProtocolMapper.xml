@@ -207,5 +207,9 @@
         from enterprise_protocol
         <include refid="searchBy"/>
     </select>
+    <select id="findMaxProtocolNumber" resultType="java.lang.String">
+        SELECT max(number)
+        from enterprise_protocol
+    </select>
 
 </mapper>

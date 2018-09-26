@@ -32,6 +32,7 @@ public class EnterpriseAccessController {
         if(StringUtils.isNotEmpty(result)){
             return APIResponse.fail(result);
         }
+        enterpriseInfoAccessDto.getEnterpriseProtocol().setNumber(enterpriseProtocolService.createProtocolNo());
         enterpriseInfoAccessDto.getEnterpriseInfo().setIsvalid(0);
         result=enterpriseInfoService.insertEnterpriseInfo(enterpriseInfoAccessDto);
         if(StringUtils.isNotEmpty(result)){
@@ -52,6 +53,7 @@ public class EnterpriseAccessController {
         if(StringUtils.isNotEmpty(result)){
             return APIResponse.fail(result);
         }
+        enterpriseInfoAccessDto.getEnterpriseProtocol().setNumber(enterpriseProtocolService.createProtocolNo());
         enterpriseInfoAccessDto.getEnterpriseInfo().setIsvalid(0);
         result=enterpriseInfoService.updateEnterpriseDetail(enterpriseInfoAccessDto);
         if(StringUtils.isNotEmpty(result)){

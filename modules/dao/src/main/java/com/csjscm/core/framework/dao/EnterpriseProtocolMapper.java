@@ -44,4 +44,5 @@ public interface EnterpriseProtocolMapper{
      int findCount(Map<String, Object> map);
 
 
+    String findMaxProtocolNumber();
 }
