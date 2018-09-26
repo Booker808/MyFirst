@@ -73,9 +73,14 @@ public class EnterpriseCategoryController {
         }
         return APIResponse.success();
     }
-
-
-
+    @ApiOperation("根据企业编码获取供应商分类信息")
+    @RequestMapping(value = "getEnterpriseCategory",method = RequestMethod.GET)
+    public APIResponse getEnterpriseCategory(@ApiParam(name="entNumber",value="企业编码",required=true) String entNumber){
+        Map<String,Object> map=new HashMap<>();
+        map.put("entNumber",entNumber);
+        EnterpriseCategory selective = enterpriseCategoryService.findSelective(map);
+        return APIResponse.success(selective);
+    }
     @ExceptionHandler({BussinessException.class})
     public APIResponse exceptionHandler(Exception e, HttpServletResponse response) {
           return APIResponse.fail(e.getMessage());

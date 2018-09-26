@@ -1,12 +1,15 @@
 package com.csjscm.core.framework.service.enterprise.impl;
 
 import com.csjscm.core.framework.dao.EnterpriseCategoryMapper;
+import com.csjscm.core.framework.dao.EnterpriseInfoMapper;
 import com.csjscm.core.framework.model.EnterpriseCategory;
+import com.csjscm.core.framework.model.EnterpriseInfo;
 import com.csjscm.core.framework.service.enterprise.EnterpriseCategoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -27,6 +30,8 @@ public class EnterpriseCategoryServiceImpl implements EnterpriseCategoryService 
    
     @Autowired
     private EnterpriseCategoryMapper enterpriseCategoryMapper;
+    @Autowired
+    private EnterpriseInfoMapper enterpriseInfoMapper;
 
 
     @Override
@@ -50,7 +55,14 @@ public class EnterpriseCategoryServiceImpl implements EnterpriseCategoryService 
     }
 
     @Override
+    @Transactional
     public int update(EnterpriseCategory enterpriseCategory) {
+        EnterpriseCategory enterpriseCategory1 = enterpriseCategoryMapper.selectByPrimaryKey(enterpriseCategory.getId());
+        if(enterpriseCategory1.getSupplyState().intValue()!=enterpriseCategory.getSupplyState().intValue()){
+            EnterpriseInfo enterpriseInfo = enterpriseInfoMapper.selectByPrimaryKey(enterpriseCategory.getEntNumber());
+            enterpriseInfo.setCheckState("1");
+            enterpriseInfoMapper.updateByPrimaryKeySelective(enterpriseInfo);
+        }
         return enterpriseCategoryMapper.updateByPrimaryKeySelective(enterpriseCategory);
     }
 }
