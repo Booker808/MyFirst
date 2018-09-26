@@ -2,9 +2,11 @@ package com.csjscm.core.framework.example;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class EnterpriseInfoExample {
     private String entNumber;
     private String entName;
-    private Integer entType;
+    private List<Integer> entType;
 }

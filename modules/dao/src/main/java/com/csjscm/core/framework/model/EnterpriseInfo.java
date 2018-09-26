@@ -31,7 +31,7 @@ public class EnterpriseInfo {
 
     private Integer bid;
 
-    private Integer checkState;
+    private String checkState;
 
     private Integer isvalid;
 

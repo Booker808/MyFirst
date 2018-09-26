@@ -94,20 +94,7 @@ public class EnterpriseInfoServiceImpl implements EnterpriseInfoService {
         }
 
         EnterpriseInfo enterpriseInfo=new EnterpriseInfo();
-        enterpriseInfo.setBid(enterpriseInfoDto.getBid());
-        enterpriseInfo.setBussinessAddress(enterpriseInfoDto.getBussinessAddress());
-        enterpriseInfo.setCheckState(enterpriseInfoDto.getCheckState());
-        enterpriseInfo.setEntName(enterpriseInfoDto.getEntName());
-        enterpriseInfo.setEntNumber(enterpriseInfoDto.getEntNumber());
-        enterpriseInfo.setEntType(enterpriseInfoDto.getEntType());
-        enterpriseInfo.setIsvalid(enterpriseInfoDto.getIsvalid());
-        enterpriseInfo.setPurchase(enterpriseInfoDto.getPurchase());
-        enterpriseInfo.setRegisterAddress(enterpriseInfoDto.getRegisterAddress());
-        enterpriseInfo.setRegisterMoney(enterpriseInfoDto.getRegisterMoney());
-        enterpriseInfo.setSell(enterpriseInfoDto.getSell());
-        enterpriseInfo.setTaxpayerId(enterpriseInfoDto.getTaxpayerId());
-        enterpriseInfo.setTender(enterpriseInfoDto.getTender());
-        enterpriseInfo.setWebAddress(enterpriseInfoDto.getWebAddress());
+        BeanutilsCopy.copyProperties(enterpriseInfoDto,enterpriseInfo);
 
         EnterpriseContact legalPerson=new EnterpriseContact(),contactPerson=new EnterpriseContact();
         legalPerson.setEntNumber(enterpriseInfoDto.getEntNumber());
@@ -178,20 +165,7 @@ public class EnterpriseInfoServiceImpl implements EnterpriseInfoService {
         List<EnterpriseAccount> accountList;
         for(EnterpriseInfo info:pageInfo.getList()){
             EnterpriseInfoDto enterpriseInfoDto=new EnterpriseInfoDto();
-            enterpriseInfoDto.setEntNumber(info.getEntNumber());
-            enterpriseInfoDto.setEntType(info.getEntType());
-            enterpriseInfoDto.setEntName(info.getEntName());
-            enterpriseInfoDto.setRegisterAddress(info.getRegisterAddress());
-            enterpriseInfoDto.setBussinessAddress(info.getBussinessAddress());
-            enterpriseInfoDto.setWebAddress(info.getWebAddress());
-            enterpriseInfoDto.setRegisterMoney(info.getRegisterMoney());
-            enterpriseInfoDto.setTaxpayerId(info.getTaxpayerId());
-            enterpriseInfoDto.setPurchase(info.getPurchase());
-            enterpriseInfoDto.setSell(info.getSell());
-            enterpriseInfoDto.setTender(info.getTender());
-            enterpriseInfoDto.setBid(info.getBid());
-            enterpriseInfoDto.setCheckState(info.getCheckState());
-            enterpriseInfoDto.setIsvalid(info.getIsvalid());
+            BeanutilsCopy.copyProperties(info,enterpriseInfoDto);
 
             contactList=enterpriseContactMapper.selectByEpNumber(info.getEntNumber());
             attachmentList=enterpriseAttachmentMapper.selectByEpNumber(info.getEntNumber());

@@ -14,7 +14,7 @@
     <result column="sell" property="sell" jdbcType="INTEGER" />
     <result column="tender" property="tender" jdbcType="INTEGER" />
     <result column="bid" property="bid" jdbcType="INTEGER" />
-    <result column="check_state" property="checkState" jdbcType="INTEGER" />
+    <result column="check_state" property="checkState" jdbcType="VARCHAR" />
     <result column="isvalid" property="isvalid" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="edit_time" property="editTime" jdbcType="TIMESTAMP" />
@@ -70,7 +70,7 @@
         and bid = #{bid,jdbcType=INTEGER}
       </if>
       <if test="checkState != null and checkState != '' ">
-        and check_state = #{checkState,jdbcType=INTEGER}
+        and check_state = #{checkState,jdbcType=VARCHAR}
       </if>
       <if test="isvalid != null ">
         and isvalid = #{isvalid,jdbcType=INTEGER}
@@ -118,7 +118,10 @@
       and ent_name like concat('%',#{entName},'%')
     </if>
     <if test="entType!=null">
-      and ent_type=#{entType}
+      and ent_type in
+      <foreach item="item" index="index" open="(" separator="," close=")" collection="entType">
+        #{item}
+      </foreach>
     </if>
     order by ent_number desc
   </select>
@@ -146,7 +149,7 @@
       #{registerAddress,jdbcType=VARCHAR}, #{bussinessAddress,jdbcType=VARCHAR}, #{webAddress,jdbcType=VARCHAR}, 
       #{registerMoney,jdbcType=VARCHAR}, #{taxpayerId,jdbcType=VARCHAR}, #{purchase,jdbcType=INTEGER}, 
       #{sell,jdbcType=INTEGER}, #{tender,jdbcType=INTEGER}, #{bid,jdbcType=INTEGER}, 
-      #{checkState,jdbcType=INTEGER}, #{isvalid,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{checkState,jdbcType=VARCHAR}, #{isvalid,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP},
       #{editTime,jdbcType=TIMESTAMP}, #{editUser,jdbcType=VARCHAR}, #{isdelete,jdbcType=INTEGER}, #{channel,jdbcType=INTEGER}
       )
   </insert>
@@ -249,7 +252,7 @@
         #{bid,jdbcType=INTEGER},
       </if>
       <if test="checkState != null" >
-        #{checkState,jdbcType=INTEGER},
+        #{checkState,jdbcType=VARCHAR},
       </if>
       <if test="isvalid != null" >
         #{isvalid,jdbcType=INTEGER},
@@ -308,7 +311,7 @@
         bid = #{bid,jdbcType=INTEGER},
       </if>
       <if test="checkState != null" >
-        check_state = #{checkState,jdbcType=INTEGER},
+        check_state = #{checkState,jdbcType=VARCHAR},
       </if>
       <if test="isvalid != null" >
         isvalid = #{isvalid,jdbcType=INTEGER},
@@ -344,7 +347,7 @@
       sell = #{sell,jdbcType=INTEGER},
       tender = #{tender,jdbcType=INTEGER},
       bid = #{bid,jdbcType=INTEGER},
-      check_state = #{checkState,jdbcType=INTEGER},
+      check_state = #{checkState,jdbcType=VARCHAR},
       isvalid = #{isvalid,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       edit_time = #{editTime,jdbcType=TIMESTAMP},

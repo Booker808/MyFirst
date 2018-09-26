@@ -64,8 +64,8 @@ public class EnterpriseInfoDto {
     @ApiModelProperty("竞标0未勾选1已勾选")
     private Integer bid;
 
-    @ApiModelProperty("核准状态1已核准2待核准3不准交易4作废")
-    private Integer checkState;
+    @ApiModelProperty("核准状态")
+    private String checkState;
 
     @ApiModelProperty("是否启用0未启用1已启用")
     private Integer isvalid;

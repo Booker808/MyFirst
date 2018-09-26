@@ -1,6 +1,8 @@
 package com.csjscm.core.framework.service.enterprise;
 
 
+import com.csjscm.core.framework.model.EnterpriseProtocol;
+
 /**
  * 框架协议信息Service
  * 
@@ -10,5 +12,5 @@ package com.csjscm.core.framework.service.enterprise;
  */
 
 public interface EnterpriseProtocolService {
-
+    int save(EnterpriseProtocol enterpriseProtocol);
 }

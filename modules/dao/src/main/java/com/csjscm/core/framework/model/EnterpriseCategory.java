@@ -1,5 +1,7 @@
 package com.csjscm.core.framework.model;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -48,21 +50,25 @@ public class EnterpriseCategory implements Serializable {
     /**
      * 创建时间
      */
+    @ApiModelProperty(hidden = true)
     private Date createTime;
 
     /**
      * 修改时间
      */
+    @ApiModelProperty(hidden = true)
     private Date editTime;
 
     /**
      * 修改人
      */
+    @ApiModelProperty(hidden = true)
     private String editUser;
 
     /**
      * 删除状态（0：未删除，1：已删除）
      */
+    @ApiModelProperty(hidden = true)
     private Integer isdelete;
 
     /**

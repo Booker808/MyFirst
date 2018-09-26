@@ -1,5 +1,7 @@
 package com.csjscm.core.framework.model;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -53,11 +55,13 @@ import java.util.Date;
     /**
     * 
     */
+    @ApiModelProperty(hidden = true)
     private Date createTime;
 
     /**
     * 
     */
+    @ApiModelProperty(hidden = true)
     private Date editTime;
 
 

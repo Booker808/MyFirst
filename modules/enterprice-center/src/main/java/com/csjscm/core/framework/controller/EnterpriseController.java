@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.csjscm.core.framework.common.enums.DeleteStateEnum;
 import com.csjscm.core.framework.common.enums.TradeTypeEnum;
 import com.csjscm.core.framework.example.EnterpriseInfoExample;
-import com.csjscm.core.framework.model.EnterpriseContact;
 import com.csjscm.core.framework.model.EnterpriseInfo;
 import com.csjscm.core.framework.service.enterprise.EnterpriseInfoService;
 import com.csjscm.core.framework.service.enterprise.dto.EnterpriseInfoDto;
@@ -37,6 +36,8 @@ public class EnterpriseController {
     @ApiOperation("新建企业信息")
     @RequestMapping(value = "/enterpriseInfo",method = RequestMethod.POST)
     public APIResponse<String> saveEnterpriseInfo(@RequestBody EnterpriseInfoDto enterpriseInfoDto){
+        enterpriseInfoDto.setCheckState("1");
+        enterpriseInfoDto.setIsvalid(0);
         String result=enterpriseInfoService.insertEnterpriseInfo(enterpriseInfoDto);
         if(StringUtils.isEmpty(result)){
             return APIResponse.success("新建成功");
@@ -69,14 +70,15 @@ public class EnterpriseController {
             @ApiImplicitParam(name="rpp",value = "每页数量",dataType = "Integer",defaultValue = "10",paramType = "query"),
             @ApiImplicitParam(name="entNumber",value="企业编码",dataType = "String",paramType = "query"),
             @ApiImplicitParam(name="entName",value="企业名称",dataType = "String",paramType = "query"),
-            @ApiImplicitParam(name="entType",value="企业类型",dataType = "Integer",paramType = "query"),
     })
     @RequestMapping(value = "/enterpriseInfo",method = RequestMethod.GET)
     public APIResponse<QueryResult<EnterpriseInfoDto>> queryEnterpriseInfo(
             @RequestParam(required = false,defaultValue = "1")int page,
             @RequestParam(required = false,defaultValue = "10")int rpp,
-            @ApiIgnore @RequestParam Map<String,String> condition){
+            @ApiIgnore @RequestParam Map<String,Object> condition,
+            @ApiParam(name = "企业类型") @RequestParam(required = false) List<Integer> entType){
         EnterpriseInfoExample enterpriseInfoExample=new EnterpriseInfoExample();
+        condition.put("entType",entType);
         if(condition!=null){
             enterpriseInfoExample= JSON.parseObject(JSON.toJSONString(condition),EnterpriseInfoExample.class);
         }
