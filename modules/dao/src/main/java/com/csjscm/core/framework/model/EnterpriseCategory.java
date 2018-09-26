@@ -99,6 +99,10 @@ public class EnterpriseCategory implements Serializable {
      * 供应商简介
      */
     private String description;
+    /**
+     * 供应商状态变更描述
+     */
+    private String remark;
 
 
     /**
@@ -406,4 +410,11 @@ public class EnterpriseCategory implements Serializable {
         this.description = description;
     }
 
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
 }

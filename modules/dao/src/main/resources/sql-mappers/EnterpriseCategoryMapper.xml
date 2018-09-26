@@ -19,9 +19,10 @@
     <result column="main_products" property="mainProducts" jdbcType="VARCHAR" />
     <result column="product_remark" property="productRemark" jdbcType="VARCHAR" />
     <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id,ent_number,supply_state,supply_business,supply_start_time,supply_end_time,create_time,edit_time,edit_user,isdelete,brand_name,brand_level,output,sales,main_products,product_remark,description
+    id,ent_number,supply_state,supply_business,supply_start_time,supply_end_time,create_time,edit_time,edit_user,isdelete,brand_name,brand_level,output,sales,main_products,product_remark,description,remark
   </sql>
   <!-- 基本的sql查询条件公共引用 -->
   <sql id="searchBy">
@@ -77,6 +78,9 @@
       <if test="description != null and description != '' ">
         and description = #{description,jdbcType=VARCHAR}
       </if>
+      <if test="remark != null and remark != '' ">
+        and remark = #{remark,jdbcType=VARCHAR}
+      </if>
     </trim>
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -90,7 +94,7 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.csjscm.core.framework.model.EnterpriseCategory">
-        insert into enterprise_category(ent_number,supply_state,supply_business,supply_start_time,supply_end_time,create_time,edit_time,edit_user,isdelete,brand_name,brand_level,output,sales,main_products,product_remark,description)values(#{entNumber,jdbcType=VARCHAR},#{supplyState,jdbcType=INTEGER},#{supplyBusiness,jdbcType=INTEGER},#{supplyStartTime,jdbcType=TIMESTAMP},#{supplyEndTime,jdbcType=TIMESTAMP},#{createTime,jdbcType=TIMESTAMP},#{editTime,jdbcType=TIMESTAMP},#{editUser,jdbcType=VARCHAR},#{isdelete,jdbcType=INTEGER},#{brandName,jdbcType=VARCHAR},#{brandLevel,jdbcType=INTEGER},#{output,jdbcType=VARCHAR},#{sales,jdbcType=VARCHAR},#{mainProducts,jdbcType=VARCHAR},#{productRemark,jdbcType=VARCHAR},#{description,jdbcType=VARCHAR})
+        insert into enterprise_category(ent_number,supply_state,supply_business,supply_start_time,supply_end_time,create_time,edit_time,edit_user,isdelete,brand_name,brand_level,output,sales,main_products,product_remark,description,remark)values(#{entNumber,jdbcType=VARCHAR},#{supplyState,jdbcType=INTEGER},#{supplyBusiness,jdbcType=INTEGER},#{supplyStartTime,jdbcType=TIMESTAMP},#{supplyEndTime,jdbcType=TIMESTAMP},#{createTime,jdbcType=TIMESTAMP},#{editTime,jdbcType=TIMESTAMP},#{editUser,jdbcType=VARCHAR},#{isdelete,jdbcType=INTEGER},#{brandName,jdbcType=VARCHAR},#{brandLevel,jdbcType=INTEGER},#{output,jdbcType=VARCHAR},#{sales,jdbcType=VARCHAR},#{mainProducts,jdbcType=VARCHAR},#{productRemark,jdbcType=VARCHAR},#{description,jdbcType=VARCHAR},#{remark,jdbcType=VARCHAR})
     </insert>
   <insert id="insertSelective" parameterType="com.csjscm.core.framework.model.EnterpriseCategory">
     insert into enterprise_category
@@ -146,6 +150,9 @@
       <if test="description != null ">
         description,
       </if>
+      <if test="remark != null ">
+        remark,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null ">
@@ -199,6 +206,9 @@
       <if test="description != null ">
         #{description,jdbcType=VARCHAR},
       </if>
+      <if test="remark != null ">
+        #{remark,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.csjscm.core.framework.model.EnterpriseCategory" >
@@ -250,7 +260,10 @@
         product_remark = #{productRemark,jdbcType=VARCHAR},
       </if>
       <if test="description != null and description != '' ">
-        description = #{description,jdbcType=VARCHAR}
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null and remark != '' ">
+        remark = #{remark,jdbcType=VARCHAR}
       </if>
     </set>
     where id = #{id ,jdbcType=INTEGER}
@@ -272,7 +285,8 @@
             sales = #{sales,jdbcType=VARCHAR},
             main_products = #{mainProducts,jdbcType=VARCHAR},
             product_remark = #{productRemark,jdbcType=VARCHAR},
-            description = #{description,jdbcType=VARCHAR}
+            description = #{description,jdbcType=VARCHAR},
+            remark = #{remark,jdbcType=VARCHAR}
         where id = #{id ,jdbcType=INTEGER}
   </update>
   <select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
