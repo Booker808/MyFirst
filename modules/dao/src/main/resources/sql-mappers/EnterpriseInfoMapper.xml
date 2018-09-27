@@ -117,7 +117,7 @@
     <if test="entName!=null and entName != ''">
       and ent_name like concat('%',#{entName},'%')
     </if>
-    <if test="entType!=null">
+    <if test="entType!=null and entType.size()>0">
       and ent_type in
       <foreach item="item" index="index" open="(" separator="," close=")" collection="entType">
         #{item}
