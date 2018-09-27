@@ -9,4 +9,5 @@ public class EnterpriseInfoExample {
     private String entNumber;
     private String entName;
     private List<Integer> entType;
+    private Integer channel;
 }

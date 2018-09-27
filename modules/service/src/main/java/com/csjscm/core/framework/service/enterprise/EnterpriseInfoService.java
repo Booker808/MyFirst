@@ -44,4 +44,6 @@ public interface EnterpriseInfoService {
     String updateEnterpriseDetail(EnterpriseInfoAccessDto enterpriseInfoAccessDto);
 
     List<EnterpriseInfo> listSelective(Map<String,Object> map);
+
+    EnterpriseInfoAccessDto queryEnterpriseInfoAccess(String entNumber);
 }

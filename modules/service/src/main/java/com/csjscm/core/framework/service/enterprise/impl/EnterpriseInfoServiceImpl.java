@@ -7,23 +7,20 @@ import com.csjscm.core.framework.common.enums.ContactTypeEnum;
 import com.csjscm.core.framework.common.enums.TradeTypeEnum;
 import com.csjscm.core.framework.common.util.BeanutilsCopy;
 import com.csjscm.core.framework.common.util.BussinessException;
-import com.csjscm.core.framework.dao.EnterpriseAccountMapper;
-import com.csjscm.core.framework.dao.EnterpriseAttachmentMapper;
-import com.csjscm.core.framework.dao.EnterpriseContactMapper;
-import com.csjscm.core.framework.dao.EnterpriseInfoMapper;
+import com.csjscm.core.framework.dao.*;
 import com.csjscm.core.framework.example.EnterpriseInfoExample;
-import com.csjscm.core.framework.model.EnterpriseAccount;
-import com.csjscm.core.framework.model.EnterpriseAttachment;
-import com.csjscm.core.framework.model.EnterpriseContact;
-import com.csjscm.core.framework.model.EnterpriseInfo;
+import com.csjscm.core.framework.model.*;
 import com.csjscm.core.framework.service.enterprise.EnterpriseInfoService;
+import com.csjscm.core.framework.service.enterprise.EnterpriseProtocolService;
 import com.csjscm.core.framework.service.enterprise.dto.EnterpriseInfoAccessDto;
 import com.csjscm.core.framework.service.enterprise.dto.EnterpriseInfoDto;
 import com.csjscm.core.framework.vo.EnterpriseInfoSPModel;
+import com.csjscm.sweet.framework.core.mvc.BusinessException;
 import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +44,10 @@ public class EnterpriseInfoServiceImpl implements EnterpriseInfoService {
     private EnterpriseAttachmentMapper enterpriseAttachmentMapper;
     @Autowired
     private EnterpriseAccountMapper enterpriseAccountMapper;
+    @Autowired
+    private EnterpriseCategoryMapper enterpriseCategoryMapper;
+    @Autowired
+    private EnterpriseProtocolMapper enterpriseProtocolMapper;
 
     @Override
     public String createEnterpriseNo() {
@@ -268,6 +269,58 @@ public class EnterpriseInfoServiceImpl implements EnterpriseInfoService {
     @Override
     public List<EnterpriseInfo> listSelective(Map<String, Object> map) {
         return enterpriseInfoMapper.listSelective(map);
+    }
+
+    @Override
+    public EnterpriseInfoAccessDto queryEnterpriseInfoAccess(String entNumber) {
+        EnterpriseInfo enterpriseInfo=enterpriseInfoMapper.selectByPrimaryKey(entNumber);
+        if(enterpriseInfo==null)
+            throw new BusinessException("找不到企业");
+        EnterpriseInfoAccessDto result=new EnterpriseInfoAccessDto();
+        result.setEnterpriseInfo(enterpriseInfo);
+
+        List<EnterpriseContact> contactList=enterpriseContactMapper.selectByEpNumber(entNumber);
+        List<EnterpriseAttachment> attachmentList=enterpriseAttachmentMapper.selectByEpNumber(entNumber);
+        List<EnterpriseAccount> accountList=enterpriseAccountMapper.selectByEpNumber(entNumber);
+
+        if(!contactList.isEmpty()){
+            for(EnterpriseContact contact:contactList){
+                if(contact.getContactType().equals(1)&&result.getLegalPerson()==null){
+                    result.setLegalPerson(contact);
+                }
+                if(contact.getContactType().equals(2)&&result.getEnterpriseContact()==null){
+                    result.setEnterpriseContact(contact);
+                }
+            }
+        }
+        if(!attachmentList.isEmpty()){
+            for(EnterpriseAttachment attachment:attachmentList){
+                if(attachment.getAttachmentType().equals(1)){
+                    result.setEnterpriseAttachment(attachment);
+                    break;
+                }
+            }
+        }
+        if(!accountList.isEmpty()){
+            for(EnterpriseAccount account:accountList){
+                if(account.getAccountType().equals(1)){
+                    result.setEnterpriseAccount(account);
+                    break;
+                }
+            }
+        }
+        Map<String,Object> params= Maps.newHashMap();
+        params.put("entNumber",entNumber);
+        List<EnterpriseProtocol> protocolList=enterpriseProtocolMapper.listSelective(params);
+        params.put("isdelete",0);
+        List<EnterpriseCategory> categoryList=enterpriseCategoryMapper.listSelective(params);
+        if(categoryList!=null&&!categoryList.isEmpty()){
+            result.setEnterpriseCategory(categoryList.get(0));
+        }
+        if(protocolList!=null&&!protocolList.isEmpty()){
+            result.setEnterpriseProtocol(protocolList.get(0));
+        }
+        return result;
     }
 
     /**

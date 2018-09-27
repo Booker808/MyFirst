@@ -25,6 +25,13 @@ public class EnterpriseAccessController {
     @Autowired
     private EnterpriseProtocolService enterpriseProtocolService;
 
+    @ApiModelProperty("获取企业准入详情信息")
+    @RequestMapping(value = "enterpriseInfoAccess/{entNumber}",method = RequestMethod.GET)
+    public APIResponse<EnterpriseInfoAccessDto> queryEnterpriseInfoAccess(@PathVariable String entNumber){
+        return APIResponse.success(enterpriseInfoService.queryEnterpriseInfoAccess(entNumber));
+    }
+
+
     @ApiModelProperty("新增基本信息并准入")
     @RequestMapping(value = "enterpriseInfoAccess",method = RequestMethod.POST)
     public APIResponse<String> insertEnterpriseInfoAccess(@RequestBody EnterpriseInfoAccessDto enterpriseInfoAccessDto){
