@@ -48,6 +48,8 @@ public class EnterpriseInfoServiceImpl implements EnterpriseInfoService {
     private EnterpriseCategoryMapper enterpriseCategoryMapper;
     @Autowired
     private EnterpriseProtocolMapper enterpriseProtocolMapper;
+    @Autowired
+    private EnterpriseReceiveMapper enterpriseReceiveMapper;
 
     @Override
     public String createEnterpriseNo() {
@@ -151,6 +153,16 @@ public class EnterpriseInfoServiceImpl implements EnterpriseInfoService {
             count=enterpriseAccountMapper.insertSelective(account);
             if(count<=0)
                 resultList.add("企业账户");
+        }
+        EnterpriseReceive receive=enterpriseInfoDto.getEnterpriseReceive();
+        if(receive!=null &&
+                (StringUtils.isNotEmpty(receive.getReceiverAddr())
+                        ||StringUtils.isNotEmpty(receive.getReceiverName())
+                        ||StringUtils.isNotEmpty(receive.getReceiverPhone()))){
+            receive.setEntNumber(enterpriseInfoDto.getEnterpriseInfo().getEntNumber());
+            count=enterpriseReceiveMapper.insertSelective(receive);
+            if(count<=0)
+                resultList.add("收货人信息");
         }
         if(resultList.isEmpty())
             return "";

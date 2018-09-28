@@ -1,9 +1,6 @@
 package com.csjscm.core.framework.service.enterprise.dto;
 
-import com.csjscm.core.framework.model.EnterpriseAccount;
-import com.csjscm.core.framework.model.EnterpriseAttachment;
-import com.csjscm.core.framework.model.EnterpriseContact;
-import com.csjscm.core.framework.model.EnterpriseInfo;
+import com.csjscm.core.framework.model.*;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -25,6 +22,9 @@ public class EnterpriseInfoDto {
 
     @ApiModelProperty("银行账户")
     private EnterpriseAccount enterpriseAccount;
+
+    @ApiModelProperty("收货人信息")
+    private EnterpriseReceive enterpriseReceive;
 
 //    @ApiModelProperty("企业编码")
 //    private String entNumber;
