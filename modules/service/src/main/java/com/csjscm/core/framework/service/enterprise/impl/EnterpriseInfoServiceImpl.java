@@ -263,7 +263,7 @@ public class EnterpriseInfoServiceImpl implements EnterpriseInfoService {
         }else{
             enterpriseAttachmentMapper.updateByPrimaryKeySelective(enterpriseInfoAccessDto.getEnterpriseAttachment());
         }
-        return "变更成功";
+        return "";
     }
 
     @Override

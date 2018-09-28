@@ -68,11 +68,13 @@ public class EnterpriseAccessController {
         }
 
         if(enterpriseInfoAccessDto.getEnterpriseCategory().getId()==null){
+            enterpriseInfoAccessDto.getEnterpriseCategory().setEntNumber(enterpriseInfoAccessDto.getEnterpriseInfo().getEntNumber());
             enterpriseCategoryService.save(enterpriseInfoAccessDto.getEnterpriseCategory());
         }else{
             enterpriseCategoryService.update(enterpriseInfoAccessDto.getEnterpriseCategory());
         }
         if(enterpriseInfoAccessDto.getEnterpriseProtocol().getId()==null){
+            enterpriseInfoAccessDto.getEnterpriseProtocol().setEntNumber(enterpriseInfoAccessDto.getEnterpriseInfo().getEntNumber());
             enterpriseProtocolService.save(enterpriseInfoAccessDto.getEnterpriseProtocol());
         }else{
             enterpriseProtocolService.update(enterpriseInfoAccessDto.getEnterpriseProtocol());
