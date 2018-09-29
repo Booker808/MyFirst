@@ -109,12 +109,6 @@ public class EnterpriseAccessController {
         if(StringUtils.isEmpty(enterpriseInfoAccessDto.getEnterpriseInfo().getTaxpayerId())){
             return "纳税人识别号不能为空";
         }
-        if(enterpriseInfoAccessDto.getEnterpriseAccount()==null||StringUtils.isEmpty(enterpriseInfoAccessDto.getEnterpriseAccount().getBankName())){
-            return "基本开户银行不能为空";
-        }
-        if(StringUtils.isEmpty(enterpriseInfoAccessDto.getEnterpriseAccount().getBankNo())){
-            return "基本开户账号不能为空";
-        }
 
 
         if(enterpriseInfoAccessDto.getEnterpriseCategory()==null
@@ -122,11 +116,15 @@ public class EnterpriseAccessController {
                 ||enterpriseInfoAccessDto.getEnterpriseCategory().getBrandLevel()==null
                 ||StringUtils.isEmpty(enterpriseInfoAccessDto.getEnterpriseCategory().getMainProducts())
                 ||enterpriseInfoAccessDto.getEnterpriseCategory().getSupplyState()==null
-                ||enterpriseInfoAccessDto.getEnterpriseCategory().getSupplyStartTime()==null
-                ||enterpriseInfoAccessDto.getEnterpriseCategory().getSupplyEndTime()==null){
+                ||(enterpriseInfoAccessDto.getEnterpriseCategory().getSupplyBusiness().equals(4)
+                    &&(enterpriseInfoAccessDto.getEnterpriseCategory().getSupplyStartTime()==null
+                    ||enterpriseInfoAccessDto.getEnterpriseCategory().getSupplyEndTime()==null))){
             return "其他信息不能为空";
         }
-        if(enterpriseInfoAccessDto.getEnterpriseProtocol()==null){
+        if(enterpriseInfoAccessDto.getEnterpriseProtocol()==null
+                ||(enterpriseInfoAccessDto.getEnterpriseProtocol().getType().equals(1)&&
+                (enterpriseInfoAccessDto.getEnterpriseProtocol().getStartTime()==null
+                ||enterpriseInfoAccessDto.getEnterpriseProtocol().getEndTime()==null))){
             return "框架协议信息不能为空";
         }
         return "";

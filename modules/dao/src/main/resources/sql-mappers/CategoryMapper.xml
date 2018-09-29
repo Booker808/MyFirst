@@ -398,6 +398,7 @@
         <include refid="Base_Column_List" />
         from category
         <include refid="searchBy"/>
+        order by class_code
     </select>
     <select id="findCount" resultType="java.lang.Integer" parameterType="java.util.HashMap">
         select count(id)
