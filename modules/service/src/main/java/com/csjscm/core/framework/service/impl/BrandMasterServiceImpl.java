@@ -5,8 +5,10 @@ import com.alibaba.fastjson.JSONArray;
 import com.csjscm.core.framework.common.constant.Constant;
 import com.csjscm.core.framework.common.util.BussinessException;
 import com.csjscm.core.framework.dao.BrandMasterMapper;
+import com.csjscm.core.framework.dao.CategoryMapper;
 import com.csjscm.core.framework.dao.SkuCoreMapper;
 import com.csjscm.core.framework.model.BrandMaster;
+import com.csjscm.core.framework.model.Category;
 import com.csjscm.core.framework.service.BrandMasterService;
 import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
 import com.csjscm.sweet.framework.redis.RedisServiceFacade;
@@ -30,6 +32,8 @@ public class BrandMasterServiceImpl implements BrandMasterService {
     private SkuCoreMapper skuCoreMapper;
     @Autowired
     private RedisServiceFacade redisServiceFacade;
+    @Autowired
+    private CategoryMapper categoryMapper;
 
     @Override
     public QueryResult<BrandMaster> queryBrandMasterList(Map<String, Object> map, int current, int pageSize) {
@@ -85,6 +89,12 @@ public class BrandMasterServiceImpl implements BrandMasterService {
         if (null != list && !list.isEmpty()) {
             throw  new BussinessException("品牌已存在");
         }
+        if(record.getCategoryId()!=null){
+            Category category=categoryMapper.findByPrimary(record.getCategoryId());
+            if(category==null){
+                throw new BussinessException("品牌分类错误");
+            }
+        }
         int i = brandMasterMapper.insertSelective(record);
         reloadBrandList();
         return i;
@@ -102,6 +112,12 @@ public class BrandMasterServiceImpl implements BrandMasterService {
             BrandMaster brandMaster = brandMasterList.get(0);
             if(brandMaster.getId().intValue()!=record.getId().intValue()){
                 throw  new BussinessException("修改品牌已存在");
+            }
+        }
+        if(record.getCategoryId()!=null){
+            Category category=categoryMapper.findByPrimary(record.getCategoryId());
+            if(category==null){
+                throw new BussinessException("品牌分类错误");
             }
         }
         int i = brandMasterMapper.updateByPrimaryKeySelective(record);

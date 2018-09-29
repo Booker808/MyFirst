@@ -13,10 +13,12 @@
     <result column="edit_user_id" jdbcType="VARCHAR" property="editUserId" />
     <result column="edit_time" jdbcType="TIMESTAMP" property="editTime" />
     <result column="request_id" jdbcType="VARCHAR" property="requestId" />
+    <result column="category_id" jdbcType="INTEGER" property="categoryId"/>
+    <result column="is_authorize" jdbcType="INTEGER" property="isAuthorize"/>
   </resultMap>
   <sql id="Base_Column_List">
     id, brand_id, brand_name, brand_pic, brand_info, brand_ca, create_user_id, create_time, 
-    edit_user_id, edit_time, request_id
+    edit_user_id, edit_time, request_id,category_id,is_authorize
   </sql>
   <!-- 基本的sql查询条件公共引用 -->
   <sql id="searchBy">
@@ -57,6 +59,12 @@
       <if test="requestId != null and requestId != '' ">
         and request_id = #{requestId,jdbcType=VARCHAR}
       </if>
+      <if test="categoryId != null">
+        and category_id = #{categoryId,jdbcType=INTEGER}
+      </if>
+      <if test="isAuthorize != null">
+        and is_authorize = #{isAuthorize,jdbcType=INTEGER}
+      </if>
     </trim>
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -73,11 +81,11 @@
     insert into brand_master (id, brand_id, brand_name, 
       brand_pic, brand_info, brand_ca, 
       create_user_id, create_time, edit_user_id, 
-      edit_time, request_id)
+      edit_time, request_id,category_id,is_authorize)
     values (#{id,jdbcType=INTEGER}, #{brandId,jdbcType=VARCHAR}, #{brandName,jdbcType=VARCHAR}, 
       #{brandPic,jdbcType=VARCHAR}, #{brandInfo,jdbcType=VARCHAR}, #{brandCa,jdbcType=VARCHAR}, 
       #{createUserId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{editUserId,jdbcType=VARCHAR}, 
-      #{editTime,jdbcType=TIMESTAMP}, #{requestId,jdbcType=VARCHAR})
+      #{editTime,jdbcType=TIMESTAMP}, #{requestId,jdbcType=VARCHAR},#{categoryId,jdbcType=INTEGER},#{isAuthorize,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.csjscm.core.framework.model.BrandMaster">
     insert into brand_master
@@ -115,6 +123,12 @@
       <if test="requestId != null">
         request_id,
       </if>
+      <if test="categoryId != null">
+        category_id,
+      </if>
+      <if test="isAuthorize != null">
+        is_authorize,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -149,6 +163,12 @@
       </if>
       <if test="requestId != null">
         #{requestId,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryId != null">
+        #{categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="isAuthorize != null">
+        #{isAuthorize,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -185,6 +205,12 @@
       <if test="requestId != null">
         request_id = #{requestId,jdbcType=VARCHAR},
       </if>
+      <if test="categoryId != null">
+        category_id = #{categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="isAuthorize != null">
+        is_authorize= #{isAuthorize,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -199,7 +225,9 @@
       create_time = #{createTime,jdbcType=TIMESTAMP},
       edit_user_id = #{editUserId,jdbcType=VARCHAR},
       edit_time = #{editTime,jdbcType=TIMESTAMP},
-      request_id = #{requestId,jdbcType=VARCHAR}
+      request_id = #{requestId,jdbcType=VARCHAR},
+      category_id = #{categoryId,jdbcType=INTEGER},
+      is_authorize = #{isAuthorize,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectByBrand" parameterType="java.util.HashMap" resultMap="BaseResultMap">

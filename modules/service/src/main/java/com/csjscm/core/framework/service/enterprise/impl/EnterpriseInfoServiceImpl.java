@@ -247,7 +247,7 @@ public class EnterpriseInfoServiceImpl implements EnterpriseInfoService {
         if(enterpriseInfoAccessDto.getLegalPerson().getId()==null){
             enterpriseInfoAccessDto.getLegalPerson().setEntNumber(enterpriseInfoAccessDto.getEnterpriseInfo().getEntNumber());
             enterpriseInfoAccessDto.getLegalPerson().setContactType(1);
-            enterpriseContactMapper.insert(enterpriseInfoAccessDto.getLegalPerson());
+            enterpriseContactMapper.insertSelective(enterpriseInfoAccessDto.getLegalPerson());
         }else{
             enterpriseContactMapper.updateByPrimaryKeySelective(enterpriseInfoAccessDto.getLegalPerson());
         }
@@ -255,7 +255,7 @@ public class EnterpriseInfoServiceImpl implements EnterpriseInfoService {
         if(enterpriseInfoAccessDto.getEnterpriseContact().getId()==null){
             enterpriseInfoAccessDto.getEnterpriseContact().setEntNumber(enterpriseInfoAccessDto.getEnterpriseInfo().getEntNumber());
             enterpriseInfoAccessDto.getEnterpriseContact().setContactType(2);
-            enterpriseContactMapper.insert(enterpriseInfoAccessDto.getEnterpriseContact());
+            enterpriseContactMapper.insertSelective(enterpriseInfoAccessDto.getEnterpriseContact());
         }else{
             enterpriseContactMapper.updateByPrimaryKeySelective(enterpriseInfoAccessDto.getEnterpriseContact());
         }

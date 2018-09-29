@@ -76,10 +76,14 @@ public class BrandController {
     @ApiOperation("查询品牌接口")
     @RequestMapping(value = "/brandPage",method = RequestMethod.GET)
     public APIResponse <QueryResult<BrandMaster>> queryBrandList(@ApiParam(name="brandName",value="品牌名称")@RequestParam(required=false) String brandName,
+                                      @ApiParam(name = "categoryId",value = "分类ID")@RequestParam(required = false) Integer categoryId,
+                                      @ApiParam(name = "isAuthorize",value = "是否授权：0未授权1已授权")@RequestParam(required = false) Integer isAuthorize,
                                       @ApiParam(name="current",value="当前页",required=true) @RequestParam(value = "current") int current,
                                       @ApiParam(name="pageSize",value="页面大小",required=true) @RequestParam(value = "pageSize") int pageSize){
         Map<String, Object> map = new HashMap<>();
         map.put("brandNameLike",brandName);
+        map.put("categoryId",categoryId);
+        map.put("isAuthorize",isAuthorize);
         QueryResult<BrandMaster> page = brandMasterService.queryBrandMasterList(map, current, pageSize);
         return APIResponse.success(page);
     }
