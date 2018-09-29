@@ -32,11 +32,13 @@ import java.util.Date;
     /**
     * 分类类型，1-数量  2-重量  3-长度 4-体积
     */
+    @NotNull(message = "单位类型不能为空")
     private Integer objType;
 
     /**
     * 是否有效，1-有效，0-失效
     */
+    @NotNull(message = "是否有效不能为空")
     private Integer isvalid;
 
     /**

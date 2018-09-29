@@ -78,11 +78,19 @@ public class InvUnitController {
     @ApiOperation("单位查询分类接口")
     @RequestMapping(value = "InvUnitPage",method = RequestMethod.GET)
     public APIResponse<QueryResult<InvUnit>> queryCategoryList(@ApiParam(name="objName",value="单位名称",required=false) @RequestParam(value = "objName",required = false) String objName,
+                                                                @ApiParam(name = "objType",value = "单位类型",required = false) @RequestParam(value = "objType",required = false) Integer objType,
+                                                                @ApiParam(name = "isvalid",value = "是否有效",required = false) @RequestParam(value = "isvalid",required = false) Integer isvalid,
                                                                 @ApiParam(name="current",value="当前页",required=true) @RequestParam(value = "current") int current,
                                                                 @ApiParam(name="pageSize",value="页面大小",required=true) @RequestParam(value = "pageSize") int pageSize){
         Map<String,Object> map=new HashMap<>();
         if(StringUtils.isNotBlank(objName)){
             map.put("objName",objName);
+        }
+        if(objType!=null){
+            map.put("objType",objType);
+        }
+        if(isvalid!=null){
+            map.put("isvalid",isvalid);
         }
         QueryResult<InvUnit> page = invUnitService.findPage(map, current, pageSize);
         return APIResponse.success(page);
