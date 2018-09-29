@@ -4,6 +4,9 @@ package com.csjscm.core.framework.service.enterprise;
 import com.csjscm.core.framework.model.EnterpriseFlow;
 import com.csjscm.core.framework.vo.EnterpriseFlowModel;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * 供应商审批流程记录Service
  * 
@@ -24,5 +27,17 @@ public interface EnterpriseFlowService {
      * @param enterpriseFlowModel
      */
     void saveNormal(EnterpriseFlowModel enterpriseFlowModel);
+
+    EnterpriseFlow findByPrimary(Integer id);
+    /**
+     * 按条件查询单个
+     *
+     */
+    EnterpriseFlow findSelective(Map<String, Object> map);
+    /**
+     * 按条件查询list
+     *
+     */
+    List<EnterpriseFlow> listSelective(Map<String, Object> map);
 
 }

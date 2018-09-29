@@ -70,6 +70,17 @@ public class EnterpriseCategoryController {
             @RequestBody  @Valid   EnterpriseCategory enterpriseCategory){
         if(enterpriseCategory.getId()!=null){
             enterpriseCategoryService.update(enterpriseCategory);
+        }else {
+            return APIResponse.fail("id不能为空");
+        }
+        return APIResponse.success();
+    }
+    @ApiOperation("审核时更新供应商分类")
+    @RequestMapping(value = "updateState",method = RequestMethod.POST)
+    public APIResponse updateState(
+            @RequestBody  @Valid   EnterpriseCategory enterpriseCategory){
+        if(enterpriseCategory.getId()!=null){
+            enterpriseCategoryService.updateState(enterpriseCategory);
         }
         return APIResponse.success();
     }

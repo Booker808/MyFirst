@@ -65,4 +65,9 @@ public class EnterpriseCategoryServiceImpl implements EnterpriseCategoryService 
         }
         return enterpriseCategoryMapper.updateByPrimaryKeySelective(enterpriseCategory);
     }
+
+    @Override
+    public int updateState(EnterpriseCategory enterpriseCategory) {
+        return enterpriseCategoryMapper.updateByPrimaryKeySelective(enterpriseCategory);
+    }
 }

@@ -33,5 +33,6 @@ public interface EnterpriseCategoryService {
 
     int  save (EnterpriseCategory enterpriseCategory);
     int  update (EnterpriseCategory enterpriseCategory);
+    int  updateState(EnterpriseCategory enterpriseCategory);
 
 }

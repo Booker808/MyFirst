@@ -3,6 +3,7 @@ package com.csjscm.core.framework.controller;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.csjscm.core.framework.common.constant.Constant;
+import com.csjscm.core.framework.common.util.BeanValidator;
 import com.csjscm.core.framework.common.util.BussinessException;
 import com.csjscm.core.framework.common.util.HttpClientUtil;
 import com.csjscm.core.framework.model.EnterpriseFlow;
@@ -15,6 +16,7 @@ import com.csjscm.sweet.framework.auth.AuthUtils;
 import com.csjscm.sweet.framework.core.mvc.APIResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,6 +89,7 @@ public class EnterpriseCheckController {
     @ApiOperation("开始审批，提交审核")
     @RequestMapping(value = "startSupplierAdmittanceWorkFlow", method = RequestMethod.POST)
     public APIResponse startSupplierAdmittanceWorkFlow(@RequestBody EnterpriseFlow enterpriseFlow) {
+        BeanValidator.validate(enterpriseFlow);
         enterpriseFlowService.saveFirstCheck(enterpriseFlow);
         return APIResponse.success();
     }
@@ -94,8 +97,23 @@ public class EnterpriseCheckController {
     @ApiOperation("正常审批")
     @RequestMapping(value = "myTodoComplete", method = RequestMethod.POST)
     public APIResponse myTodoComplete(@RequestBody EnterpriseFlowModel enterpriseFlowModel) {
+        BeanValidator.validate(enterpriseFlowModel);
         enterpriseFlowService.saveNormal(enterpriseFlowModel);
         return APIResponse.success();
+    }
+    @ApiOperation("获取流程列表")
+    @RequestMapping(value = "checkFlowList", method = RequestMethod.GET)
+    public APIResponse checkFlowList(@ApiParam(name = "entNumber",value = "企业编码" ,required = true) String entNumber) {
+       Map<String,Object> map=new HashMap<>();
+       map.put("entNumber",entNumber);
+        List<EnterpriseFlow> enterpriseFlows = enterpriseFlowService.listSelective(map);
+        return APIResponse.success(enterpriseFlows);
+    }
+    @ApiOperation("获取流程节点详情")
+    @RequestMapping(value = "checkFlowInfo", method = RequestMethod.GET)
+    public APIResponse checkFlowInfo(@ApiParam(name = "id",value = "流程列表id" ,required = true) Integer id) {
+        EnterpriseFlow byPrimary = enterpriseFlowService.findByPrimary(id);
+        return APIResponse.success(byPrimary);
     }
 
     /**

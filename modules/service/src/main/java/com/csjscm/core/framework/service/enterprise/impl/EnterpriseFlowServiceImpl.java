@@ -27,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -63,7 +64,7 @@ public class EnterpriseFlowServiceImpl implements EnterpriseFlowService {
         }
         String url = System.getProperty(Constant.RNTERPRISE_CHECK_OA_DOMAIN) + Constant.ENTERPRISE_CHECK_OA_START_URL;
         Map<String, String> map = new HashMap<>();
-        map.put("userId", sessionUser.getString("id"));
+        map.put("userId", sessionUser.getString("name"));
         map.put("businessKey", enterpriseInfo.getEntNumber());
         String post = "";
         try {
@@ -168,6 +169,21 @@ public class EnterpriseFlowServiceImpl implements EnterpriseFlowService {
         enterpriseInfoMapper.updateByPrimaryKeySelective(enterpriseInfo);
     }
 
+    @Override
+    public EnterpriseFlow findByPrimary(Integer id) {
+        return enterpriseFlowMapper.findByPrimary(id);
+    }
+
+    @Override
+    public EnterpriseFlow findSelective(Map<String, Object> map) {
+        return enterpriseFlowMapper.findSelective(map);
+    }
+
+    @Override
+    public List<EnterpriseFlow> listSelective(Map<String, Object> map) {
+        return enterpriseFlowMapper.listSelective(map);
+    }
+
 
     public boolean checkFirstState(Integer state) {
         if (CheckStateEnum.保存.getState().intValue() == state.intValue() ||
@@ -180,7 +196,8 @@ public class EnterpriseFlowServiceImpl implements EnterpriseFlowService {
     public boolean checkNormalState(Integer state) {
         if (CheckStateEnum.待内部审核.getState().intValue() == state.intValue() || CheckStateEnum.待执行总经理审核.getState().intValue() == state.intValue() ||
                 CheckStateEnum.待准入确认.getState().intValue() == state.intValue() || CheckStateEnum.待打印盖章.getState().intValue() == state.intValue()
-                || CheckStateEnum.待合同预警.getState().intValue() == state.intValue() || CheckStateEnum.已驳回申请人.getState().intValue() == state.intValue()) {
+                || CheckStateEnum.待合同预警.getState().intValue() == state.intValue() || CheckStateEnum.已驳回申请人.getState().intValue() == state.intValue()
+        ||CheckStateEnum.待准入审核.getState().intValue() == state.intValue()) {
             return true;
         }
         return false;
@@ -222,6 +239,9 @@ public class EnterpriseFlowServiceImpl implements EnterpriseFlowService {
                 break;
             case "userTask4":
                 checkState = CheckStateEnum.待准入确认.getState();
+                break;
+            case "userTask5":
+                checkState = CheckStateEnum.已驳回申请人.getState();
                 break;
             case "userTask8":
                 checkState = CheckStateEnum.待打印盖章.getState();
