@@ -11,6 +11,7 @@ import com.csjscm.core.framework.dao.SpCategoryMapper;
 import com.csjscm.core.framework.model.SpCategory;
 import com.csjscm.core.framework.service.SpCategoryService;
 import com.csjscm.core.framework.vo.SpCategoryJsonModel;
+import com.csjscm.sweet.framework.core.mvc.BusinessException;
 import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
 import com.csjscm.sweet.framework.redis.RedisServiceFacade;
 import com.github.pagehelper.Page;
@@ -48,6 +49,9 @@ public class SpCategoryServiceImpl implements SpCategoryService {
 
     @Override
     public int save(SpCategory t) {
+        if(t.getClassCode().length()!= t.getLevelNum()){
+            throw new BusinessException("分类编码长度与级别不符");
+        }
         Map<String, Object> map = new HashMap<>();
         map.put("classCode", t.getClassCode());
         int count = spCategoryMapper.findCount(map);

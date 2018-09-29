@@ -10,8 +10,8 @@ import com.csjscm.core.framework.dao.SkuCoreMapper;
 import com.csjscm.core.framework.model.Category;
 import com.csjscm.core.framework.service.CategoryService;
 import com.csjscm.core.framework.vo.CategoryJsonModel;
+import com.csjscm.sweet.framework.core.mvc.BusinessException;
 import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
-import com.csjscm.sweet.framework.redis.RedisDistributedCounterObject;
 import com.csjscm.sweet.framework.redis.RedisServiceFacade;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -48,6 +48,10 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public int save(Category t) {
+        if(t.getClassCode().length()!= t.getLevelNum()){
+            throw new BusinessException("分类编码长度与级别不符");
+        }
+
         Map<String, Object> map = new HashMap<>();
         map.put("classCode", t.getClassCode());
         int count = categoryMapper.findCount(map);
