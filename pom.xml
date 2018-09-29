@@ -99,6 +99,11 @@
                 <artifactId>poi-ooxml</artifactId>
                 <version>3.12</version>
             </dependency>
+            <dependency>
+                <groupId>com.csjscm.sweet.framework</groupId>
+                <artifactId>sweet-framework-auth</artifactId>
+                <version>${sweet.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <build>

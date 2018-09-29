@@ -335,6 +335,11 @@ public class EnterpriseInfoServiceImpl implements EnterpriseInfoService {
         return result;
     }
 
+    @Override
+    public EnterpriseInfo selectByPrimaryKey(String entNumber) {
+        return enterpriseInfoMapper.selectByPrimaryKey(entNumber);
+    }
+
     /**
      * 校验供应商必填项是否为空
      *

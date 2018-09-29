@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- enterprise_flow表:供应商审批流程记录模块 -->
+<mapper namespace="com.csjscm.core.framework.dao.EnterpriseFlowMapper">
+    <!--返回Map-->        
+    <resultMap id="BaseResultMap" type="com.csjscm.core.framework.model.EnterpriseFlow">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="flow_type" property="flowType" jdbcType="INTEGER" />
+        <result column="flow_node" property="flowNode" jdbcType="INTEGER" />
+        <result column="opinion" property="opinion" jdbcType="VARCHAR" />
+        <result column="ent_number" property="entNumber" jdbcType="VARCHAR" />
+        <result column="attachment_url" property="attachmentUrl" jdbcType="VARCHAR" />
+        <result column="user_name" property="userName" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="edit_time" property="editTime" jdbcType="TIMESTAMP" />
+        <result column="custom" property="custom" jdbcType="INTEGER" />
+        <result column="instance_id" property="instanceId" jdbcType="VARCHAR" />
+    </resultMap>
+    
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="Base_Column_List">
+        id,flow_type,flow_node,opinion,ent_number,attachment_url,user_name,create_time,edit_time,custom,instance_id 
+    </sql>
+    
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="searchBy">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test=" id != null and id != '' ">
+                id  = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="flowType != null and flowType != '' ">
+                and flow_type = #{flowType,jdbcType=INTEGER}
+            </if>
+            <if test="flowNode != null and flowNode != '' ">
+                and flow_node = #{flowNode,jdbcType=INTEGER}
+            </if>
+            <if test="opinion != null and opinion != '' ">
+                and opinion = #{opinion,jdbcType=VARCHAR}
+            </if>
+            <if test="entNumber != null and entNumber != '' ">
+                and ent_number = #{entNumber,jdbcType=VARCHAR}
+            </if>
+            <if test="attachmentUrl != null and attachmentUrl != '' ">
+                and attachment_url = #{attachmentUrl,jdbcType=VARCHAR}
+            </if>
+            <if test="userName != null and userName != '' ">
+                and user_name = #{userName,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="editTime != null">
+                and edit_time = #{editTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="custom != null and custom != '' ">
+                and custom = #{custom,jdbcType=INTEGER}
+            </if>
+            <if test="instanceId != null and instanceId != '' ">
+                and instance_id = #{instanceId,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </sql>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from  enterprise_flow
+        where id =   #{id,jdbcType=INTEGER}
+    </delete>
+    
+    <insert id="insert" parameterType="com.csjscm.core.framework.model.EnterpriseFlow">
+        insert into enterprise_flow(flow_type,flow_node,opinion,ent_number,attachment_url,user_name,create_time,edit_time,custom,instance_id)values(#{flowType,jdbcType=INTEGER},#{flowNode,jdbcType=INTEGER},#{opinion,jdbcType=VARCHAR},#{entNumber,jdbcType=VARCHAR},#{attachmentUrl,jdbcType=VARCHAR},#{userName,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},#{editTime,jdbcType=TIMESTAMP},#{custom,jdbcType=INTEGER},#{instanceId,jdbcType=VARCHAR})
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.csjscm.core.framework.model.EnterpriseFlow">
+        insert into enterprise_flow
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null ">
+                id,
+            </if>
+            <if test="flowType != null ">
+                flow_type,
+            </if>
+            <if test="flowNode != null ">
+                flow_node,
+            </if>
+            <if test="opinion != null ">
+                opinion,
+            </if>
+            <if test="entNumber != null ">
+                ent_number,
+            </if>
+            <if test="attachmentUrl != null ">
+                attachment_url,
+            </if>
+            <if test="userName != null ">
+                user_name,
+            </if>
+            <if test="createTime != null ">
+                create_time,
+            </if>
+            <if test="editTime != null ">
+                edit_time,
+            </if>
+            <if test="custom != null ">
+                custom,
+            </if>
+            <if test="instanceId != null ">
+                instance_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                     <if test="id != null ">
+                        #{id,jdbcType=INTEGER},
+                     </if>
+                     <if test="flowType != null ">
+                        #{flowType,jdbcType=INTEGER},
+                     </if>
+                     <if test="flowNode != null ">
+                        #{flowNode,jdbcType=INTEGER},
+                     </if>
+                     <if test="opinion != null ">
+                        #{opinion,jdbcType=VARCHAR},
+                     </if>
+                     <if test="entNumber != null ">
+                        #{entNumber,jdbcType=VARCHAR},
+                     </if>
+                     <if test="attachmentUrl != null ">
+                        #{attachmentUrl,jdbcType=VARCHAR},
+                     </if>
+                     <if test="userName != null ">
+                        #{userName,jdbcType=VARCHAR},
+                     </if>
+                     <if test="createTime != null ">
+                        #{createTime,jdbcType=TIMESTAMP},
+                     </if>
+                     <if test="editTime != null ">
+                        #{editTime,jdbcType=TIMESTAMP},
+                     </if>
+                     <if test="custom != null ">
+                        #{custom,jdbcType=INTEGER},
+                     </if>
+                     <if test="instanceId != null ">
+                        #{instanceId,jdbcType=VARCHAR},
+                     </if>
+        </trim>
+    </insert>
+    <update id="update" parameterType="com.csjscm.core.framework.model.EnterpriseFlow">
+        update enterprise_flow set 
+            flow_type = #{flowType,jdbcType=INTEGER},
+            flow_node = #{flowNode,jdbcType=INTEGER},
+            opinion = #{opinion,jdbcType=VARCHAR},
+            ent_number = #{entNumber,jdbcType=VARCHAR},
+            attachment_url = #{attachmentUrl,jdbcType=VARCHAR},
+            user_name = #{userName,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            edit_time = #{editTime,jdbcType=TIMESTAMP},
+            custom = #{custom,jdbcType=INTEGER},
+            instance_id = #{instanceId,jdbcType=VARCHAR}
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <update id="updateSelective"  parameterType="com.csjscm.core.framework.model.EnterpriseFlow">
+        update enterprise_flow
+          <set>
+            <if test="flowType != null and flowType != '' ">        
+                flow_type = #{flowType,jdbcType=INTEGER},                
+            </if>
+            <if test="flowNode != null and flowNode != '' ">        
+                flow_node = #{flowNode,jdbcType=INTEGER},                
+            </if>
+            <if test="opinion != null and opinion != '' ">        
+                opinion = #{opinion,jdbcType=VARCHAR},                
+            </if>
+            <if test="entNumber != null and entNumber != '' ">        
+                ent_number = #{entNumber,jdbcType=VARCHAR},                
+            </if>
+            <if test="attachmentUrl != null and attachmentUrl != '' ">        
+                attachment_url = #{attachmentUrl,jdbcType=VARCHAR},                
+            </if>
+            <if test="userName != null and userName != '' ">        
+                user_name = #{userName,jdbcType=VARCHAR},                
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},                
+            </if>
+            <if test="editTime != null">
+                edit_time = #{editTime,jdbcType=TIMESTAMP},                
+            </if>
+            <if test="custom != null and custom != '' ">        
+                custom = #{custom,jdbcType=INTEGER},                
+            </if>
+            <if test="instanceId != null and instanceId != '' ">        
+                instance_id = #{instanceId,jdbcType=VARCHAR}                
+            </if>
+        </set>    
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <select id="findByPrimary" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List" />
+        from enterprise_flow
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+	<select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from enterprise_flow
+        <include refid="searchBy"/>
+    </select>
+               
+    <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from enterprise_flow
+        <include refid="searchBy"/>
+    </select>
+    <select id="findCount" resultType="java.lang.Integer" parameterType="java.util.HashMap">
+        select count(id)
+        from enterprise_flow
+        <include refid="searchBy"/>
+    </select>
+    <select id="findOne" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from enterprise_flow
+        <include refid="searchBy"/>
+        ORDER BY create_time DESC LIMIT 1
+    </select>
+</mapper>

@@ -38,4 +38,32 @@ public class Constant {
      * 品牌数据 redis 中的key
      */
     public static final String  REDIS_KEY_JSONSTR_BRAND = "brandMasterJsonStr";
+    /**
+     * 供应商审核接口 域名的配置文件名称
+     */
+    public static final String  RNTERPRISE_CHECK_OA_DOMAIN= "sweet.framework.enterprise.check.oa-domain";
+
+    /**
+     * 我的代办接口地址
+     */
+    public static final String  ENTERPRISE_CHECK_OA_MYTODODEALWITH_URL = "/api/SupplierAdmittance/myTodoDealWith";
+    /**
+     * 开始供应商准入流程API
+     */
+    public static final String  ENTERPRISE_CHECK_OA_START_URL = "/api/SupplierAdmittance/startSupplierAdmittanceWorkFlow";
+    /**
+     * 我的完成待办API
+     */
+    public static final String  ENTERPRISE_CHECK_OA_COMPLETE_URL = "/api/SupplierAdmittance/myTodoComplete";
+    /**
+     * 获取历史记录详情api
+     */
+    public static final String  ENTERPRISE_CHECK_OA_FLOW_INFO_URL = "/api/activiti/getMyWorkFlowInfoHisDetail";
+    /**
+     * 流程定义关键字
+     */
+    public static final String  ENTERPRISE_CHECK_OA_PROCESS = "SupplierAdmittanceProcess2.2";
+
+
+
 }

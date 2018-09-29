@@ -28,7 +28,6 @@
         <dependency>
             <groupId>com.csjscm.sweet.framework</groupId>
             <artifactId>sweet-framework-auth</artifactId>
-            <version>1.1.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

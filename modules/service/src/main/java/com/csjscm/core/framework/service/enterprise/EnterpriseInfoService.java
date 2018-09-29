@@ -46,4 +46,6 @@ public interface EnterpriseInfoService {
     List<EnterpriseInfo> listSelective(Map<String,Object> map);
 
     EnterpriseInfoAccessDto queryEnterpriseInfoAccess(String entNumber);
+
+    EnterpriseInfo selectByPrimaryKey (String entNumber);
 }
