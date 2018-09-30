@@ -7,6 +7,15 @@ public class MyTodoDealWithVo {
     private  String taskName;
     private  String applyer;
     private  String applyTime;
+    private  String checkState;
+
+    public String getCheckState() {
+        return checkState;
+    }
+
+    public void setCheckState(String checkState) {
+        this.checkState = checkState;
+    }
 
     public String getTaskId() {
         return taskId;

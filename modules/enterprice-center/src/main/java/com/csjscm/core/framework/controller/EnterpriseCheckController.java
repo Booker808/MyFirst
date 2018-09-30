@@ -79,6 +79,7 @@ public class EnterpriseCheckController {
                 vo.setEntNumber(bussinessKey.getEntNumber());
                 vo.setTaskId(jsonObject1.getString("taskId"));
                 vo.setTaskName(jsonObject1.getString("taskName"));
+                vo.setCheckState(bussinessKey.getCheckState());
                 list.add(vo);
             }
         }
