@@ -7,6 +7,7 @@ import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,6 +25,12 @@ public class ZPAuthExtensionService extends AbstractCasShiroAuthService implemen
     private String[] whiteListResource;
 
 
+    /**
+     * 配置扩展登录后访问白名单
+     **/
+    @Value("${login.WhiteList.resource:}")
+    private String[] loginWhiteListResource;
+
 
     @Override
     public void setEnvironment(Environment environment) {
@@ -34,18 +41,19 @@ public class ZPAuthExtensionService extends AbstractCasShiroAuthService implemen
         }
     }
 
+    @Override
+    public Set<String> getWhiteListResourcesOnLogin() {
+        if (loginWhiteListResource != null && loginWhiteListResource.length > 0) {
+            return new HashSet<>(Arrays.asList(loginWhiteListResource));
+        }
+        return new HashSet();
+    }
 
 
     @Override
     public String getSuccessUrl() {
-        return  "/#/dashboard";
+        return "/#/dashboard";
     }
-
-    @Override
-    public String getUnauthorizedUrl() {
-        return null;
-    }
-
 
 
     @Override
