@@ -20,6 +20,18 @@ public class SkuCore {
     @ApiModelProperty("商品价格")
     private BigDecimal productPrice;
 
+    @ApiModelProperty("一级分类ID")
+    private Integer lv1CategoryId;
+
+    @ApiModelProperty("一级分类编码")
+    private String lv1CategoryNo;
+
+    @ApiModelProperty("二级分类ID")
+    private Integer lv2CategoryId;
+
+    @ApiModelProperty("二级分类编码")
+    private String lv2CategoryNo;
+
     @ApiModelProperty("分类ID")
     private Integer categoryId;
 

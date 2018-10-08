@@ -309,6 +309,18 @@
       <if test="productPrice != null" >
         product_price,
       </if>
+      <if test="lv1CategoryId != null" >
+        lv1_category_id,
+      </if>
+      <if test="lv1CategoryNo != null" >
+        lv1_category_no,
+      </if>
+      <if test="lv2CategoryId != null" >
+        lv2_category_id,
+      </if>
+      <if test="lv2CategoryNo != null" >
+        lv2_category_no,
+      </if>
       <if test="categoryId != null" >
         category_id,
       </if>

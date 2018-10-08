@@ -13,11 +13,13 @@ import com.csjscm.core.framework.example.SkuPartnerExample;
 import com.csjscm.core.framework.model.*;
 import com.csjscm.core.framework.service.product.ProductPartnerService;
 import com.csjscm.core.framework.vo.*;
+import com.csjscm.sweet.framework.core.mvc.BusinessException;
 import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
 import com.csjscm.sweet.framework.redis.RedisDistributedCounterObject;
 import com.csjscm.sweet.framework.redis.RedisServiceFacade;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Maps;
 import org.apache.commons.lang.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.ss.usermodel.Row;
@@ -420,6 +422,24 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
             skuCore.setCategoryId(skuPartnerAddModel.getClassId());
             skuCore.setMinUint(skuPartnerAddModel.getMinUint());
             skuCore.setCategoryNo(skuPartnerAddModel.getClassCode());
+            try{
+                if(skuCore.getCategoryId()!=null){
+                    //获取三级分类
+                    Category category=categoryMapper.findByPrimary(skuCore.getCategoryId());
+                    skuCore.setLv2CategoryId(Integer.parseInt(category.getParentClass()));
+                    //获取二级分类
+                    category=categoryMapper.findByPrimary(skuCore.getLv2CategoryId());
+                    skuCore.setLv2CategoryNo(category.getClassCode());
+                    skuCore.setLv1CategoryId(Integer.parseInt(category.getParentClass()));
+                    //获取一级分类
+                    category=categoryMapper.findByPrimary(skuCore.getLv1CategoryId());
+                    skuCore.setLv1CategoryNo(category.getClassCode());
+                }
+            }catch (Exception e){
+                logger.error("新增供应商商品库时分类异常",e);
+                throw new BusinessException("分类异常");
+            }
+
             skuCoreMapper.insertSelective(skuCore);
             if(StringUtils.isNotBlank(skuPartnerAddModel.getUomStr())){
                 List<SkuUom> skuUoms = JSONArray.parseArray(skuPartnerAddModel.getUomStr(), SkuUom.class);

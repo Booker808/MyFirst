@@ -42,9 +42,13 @@
   <resultMap id="ExResultMap" type="com.csjscm.core.framework.model.SkuPartnerEx" extends="BaseResultMap">
     <result column="identifying_code" property="identifyingCode" jdbcType="VARCHAR" />
     <result column="min_uint" property="minUint" jdbcType="VARCHAR" />
-    <result column="class_name" property="className" jdbcType="VARCHAR" />
-    <result column="lv2_class_name" property="lv2ClassName" jdbcType="VARCHAR" />
-    <result column="lv1_class_name" property="lv1ClassName" jdbcType="VARCHAR" />
+    <result column="category_no" property="categoryNo" jdbcType="VARCHAR" />
+    <result column="lv2_category_no" property="lv2CategoryNo" jdbcType="VARCHAR" />
+    <result column="lv1_category_no" property="lv1CategoryNo" jdbcType="VARCHAR" />
+    <result column="category_sp_no" property="categorySpNo" jdbcType="VARCHAR" />
+    <result column="lv2_category_sp_no" property="lv2CategorySpNo" jdbcType="VARCHAR" />
+    <result column="lv1_category_sp_no" property="lv1CategorySpNo" jdbcType="VARCHAR" />
+    <result column="channel" property="channel" jdbcType="INTEGER" />
   </resultMap>
   <resultMap id="DetailMap" type="com.csjscm.core.framework.vo.SkuPartnerDetailsModel" extends="BaseResultMap">
     <result column="class_code" property="classCode" jdbcType="VARCHAR" />
@@ -147,12 +151,11 @@
   <select id="selectExByExample" parameterType="map" resultMap="ExResultMap">
     select
       <include refid="Partner_Column_List"/>,
-      sku.min_uint,upc.identifying_code,ca.class_name,ca2.class_name lv2_class_name,ca1.class_name lv1_class_name
+      sku.min_uint,upc.identifying_code,sku.category_no,sku.lv2_category_no,sku.lv1_category_no,
+      sku.category_sp_no,sku.lv2_category_sp_no,sku.lv1_category_sp_no,
+      sku.channel
     from sku_partner p left join sku_core sku on p.product_no=sku.product_no
     left join sku_upc upc on upc.product_no=p.product_no
-    left join category ca on sku.category_no=ca.class_code
-    left join category ca2 on sku.lv2_category_id=ca2.id
-    left join category ca1 on sku.lv1_category_id=ca1.id
     <include refid="Example_Where_Clause"/>
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
