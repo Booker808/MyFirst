@@ -15,4 +15,10 @@ public class SkuPartnerEx extends SkuPartner {
 
     @ApiModelProperty(value = "最小分类名称")
     private String className;
+
+    @ApiModelProperty(value = "二级分类名称")
+    private String lv2ClassName;
+
+    @ApiModelProperty(value = "一级分类名称")
+    private String lv1ClassName;
 }

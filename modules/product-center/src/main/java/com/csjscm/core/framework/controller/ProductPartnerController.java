@@ -60,7 +60,12 @@ public class ProductPartnerController {
             @ApiImplicitParam(name="productName",value="产品名",dataType = "String",paramType = "query"),
             @ApiImplicitParam(name="productNo",value="商品编码",dataType = "String",paramType = "query"),
             @ApiImplicitParam(name="brandId",value="品牌ID",dataType = "String",paramType = "query"),
-            @ApiImplicitParam(name="brandName",value="品牌名",dataType = "String",paramType = "query")
+            @ApiImplicitParam(name="brandName",value="品牌名",dataType = "String",paramType = "query"),
+            @ApiImplicitParam(name="supplyPdSize",value="供应商商品型号",dataType = "String",paramType = "query"),
+            @ApiImplicitParam(name="lv1CategoryId",value="一级分类ID",dataType = "Integer",paramType = "query"),
+            @ApiImplicitParam(name="lv2CategoryId",value="二级分类ID",dataType = "Integer",paramType = "query"),
+            @ApiImplicitParam(name="categoryId",value="三级分类ID",dataType = "Integer",paramType = "query"),
+
     })
     public APIResponse<QueryResult<SkuPartnerEx>> queryCoreProduct(
             @RequestParam(required = false,defaultValue = "1")int page,

@@ -59,6 +59,9 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
     @Override
     public QueryResult<SkuPartnerEx> queryPartnerProduct(int page, int rpp, SkuPartnerExample example) {
         PageHelper.startPage(page,rpp);
+        if(example.getSupplyPdSize()!=null){
+            example.setSupplyPdSize(example.getSupplyPdSize().trim());
+        }
         List<SkuPartnerEx> skuPartner=skuPartnerMapper.selectExByExample(example);
         PageInfo<SkuPartnerEx> pageInfo=new PageInfo<>(skuPartner);
         QueryResult<SkuPartnerEx> result=new QueryResult<>();

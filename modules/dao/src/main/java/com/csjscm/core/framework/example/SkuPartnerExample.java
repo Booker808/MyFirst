@@ -9,4 +9,8 @@ public class SkuPartnerExample {
     private String supplyPdName;
     private Integer brandId;
     private String brandName;
+    private String supplyPdSize;
+    private Integer lv1CategoryId;
+    private Integer lv2CategoryId;
+    private Integer categoryId;
 }
