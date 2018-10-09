@@ -461,6 +461,18 @@
       <if test="productPrice != null" >
         #{productPrice,jdbcType=DECIMAL},
       </if>
+      <if test="lv1CategoryId != null" >
+        #{lv1CategoryId,jdbcType=INTEGER},
+      </if>
+      <if test="lv1CategoryNo != null" >
+        #{lv1CategoryNo,jdbcType=VARCHAR},
+      </if>
+      <if test="lv2CategoryId != null" >
+        #{lv2CategoryId,jdbcType=INTEGER},
+      </if>
+      <if test="lv2CategoryNo != null" >
+        #{lv2CategoryNo,jdbcType=VARCHAR},
+      </if>
       <if test="categoryId != null" >
         #{categoryId,jdbcType=INTEGER},
       </if>
