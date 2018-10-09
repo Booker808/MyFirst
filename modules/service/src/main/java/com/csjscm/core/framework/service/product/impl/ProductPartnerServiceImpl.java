@@ -360,6 +360,7 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
              productNomap.put("brandName",skuPartnerAddModel.getBrandName());
              productNomap.put("supplyPdRule",skuPartnerAddModel.getSupplyPdRule());
              productNomap.put("supplyPdSize",skuPartnerAddModel.getSupplyPdSize());
+             productNomap.put("minUnit",skuPartnerAddModel.getMinUint());
              int count = skuPartnerMapper.findCount(productNomap);
              if(count>0){
                  throw  new  BussinessException("商品编码已绑定供应商商品");
@@ -374,6 +375,7 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
             productNomap.put("brandName",skuPartnerAddModel.getBrandName());
             productNomap.put("supplyPdRule",skuPartnerAddModel.getSupplyPdRule());
             productNomap.put("supplyPdSize",skuPartnerAddModel.getSupplyPdSize());
+            productNomap.put("minUnit",skuPartnerAddModel.getMinUint());
             int count = skuPartnerMapper.findCount(productNomap);
             if(count>0){
                 throw  new  BussinessException("该商品已存在");
@@ -392,14 +394,14 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
             }
         }
         String uuid = UUID.randomUUID().toString().replace("-", "");
-        if(StringUtils.isNotBlank(skuPartnerAddModel.getUomStr())){
-            List<SkuPartnerUom> skuPartnerUoms = JSONArray.parseArray(skuPartnerAddModel.getUomStr(), SkuPartnerUom.class);
-            for(SkuPartnerUom uom:skuPartnerUoms){
-                uom.setPartnerUuid(uuid);
-                uom.setCreateTime(new Date());
-                skuPartnerUomMapper.insertSelective(uom);
-            }
-        }
+//        if(StringUtils.isNotBlank(skuPartnerAddModel.getUomStr())){
+//            List<SkuPartnerUom> skuPartnerUoms = JSONArray.parseArray(skuPartnerAddModel.getUomStr(), SkuPartnerUom.class);
+//            for(SkuPartnerUom uom:skuPartnerUoms){
+//                uom.setPartnerUuid(uuid);
+//                uom.setCreateTime(new Date());
+//                skuPartnerUomMapper.insertSelective(uom);
+//            }
+//        }
         if(StringUtils.isBlank(productNo)){
             // 获取商品编码
             Long increase = redisServiceFacade.increase(new RedisDistributedCounterObject(Constant.REDIS_KEY_PRODUCT_NO +skuPartnerAddModel.getClassCode()), 1);
@@ -423,6 +425,7 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
             skuCore.setCategoryNo(skuPartnerAddModel.getClassCode());
             skuCore.setMnemonicCode(skuPartnerAddModel.getMnemonicCode());
             skuCore.setEan13Code(skuPartnerAddModel.getEan13Code());
+            skuCore.setMinUint(skuPartnerAddModel.getMinUint());
             try{
                 if(skuCore.getCategoryId()!=null){
                     //获取三级分类
@@ -442,14 +445,14 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
             }
 
             skuCoreMapper.insertSelective(skuCore);
-            if(StringUtils.isNotBlank(skuPartnerAddModel.getUomStr())){
-                List<SkuUom> skuUoms = JSONArray.parseArray(skuPartnerAddModel.getUomStr(), SkuUom.class);
-                for(SkuUom uom:skuUoms){
-                    uom.setProductNo(productNo);
-                    uom.setCreateTime(new Date());
-                    skuUomMapper.insertSelective(uom);
-                }
-            }
+//            if(StringUtils.isNotBlank(skuPartnerAddModel.getUomStr())){
+//                List<SkuUom> skuUoms = JSONArray.parseArray(skuPartnerAddModel.getUomStr(), SkuUom.class);
+//                for(SkuUom uom:skuUoms){
+//                    uom.setProductNo(productNo);
+//                    uom.setCreateTime(new Date());
+//                    skuUomMapper.insertSelective(uom);
+//                }
+//            }
         }
         SkuPartner skuPartner=new SkuPartner();
         BeanutilsCopy.copyProperties(skuPartnerAddModel,skuPartner);
