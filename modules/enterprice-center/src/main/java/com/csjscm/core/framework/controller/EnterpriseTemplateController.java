@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Api("采购模板")
-@RestController
+//@RestController
 @RequestMapping("/enterprise/template")
 @ResponseBody
 public class EnterpriseTemplateController {
