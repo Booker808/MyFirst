@@ -38,10 +38,11 @@
     <result column="udf18" jdbcType="VARCHAR" property="udf18" />
     <result column="udf19" jdbcType="VARCHAR" property="udf19" />
     <result column="udf20" jdbcType="VARCHAR" property="udf20" />
+    <result column="min_uint" property="minUint" jdbcType="VARCHAR" />
   </resultMap>
   <resultMap id="ExResultMap" type="com.csjscm.core.framework.model.SkuPartnerEx" extends="BaseResultMap">
-    <result column="identifying_code" property="identifyingCode" jdbcType="VARCHAR" />
-    <result column="min_uint" property="minUint" jdbcType="VARCHAR" />
+    <result column="ean13_code" property="ean13Code" jdbcType="VARCHAR" />
+    <result column="mnemonic_code" property="mnemonicCode" jdbcType="VARCHAR" />
     <result column="category_no" property="categoryNo" jdbcType="VARCHAR" />
     <result column="lv2_category_no" property="lv2CategoryNo" jdbcType="VARCHAR" />
     <result column="lv1_category_no" property="lv1CategoryNo" jdbcType="VARCHAR" />
@@ -49,6 +50,7 @@
     <result column="lv2_category_sp_no" property="lv2CategorySpNo" jdbcType="VARCHAR" />
     <result column="lv1_category_sp_no" property="lv1CategorySpNo" jdbcType="VARCHAR" />
     <result column="channel" property="channel" jdbcType="INTEGER" />
+    <result column="ent_name" property="entName" jdbcType="VARCHAR" />
   </resultMap>
   <resultMap id="DetailMap" type="com.csjscm.core.framework.vo.SkuPartnerDetailsModel" extends="BaseResultMap">
     <result column="class_code" property="classCode" jdbcType="VARCHAR" />
@@ -110,7 +112,8 @@
     p.id, p.product_no, p.supply_no, p.supply_pd_no, p.supply_pd_name, p.supply_pd_rule, p.supply_pd_size, p.brand_id, p.brand_name,
     p.refrence_price, p.recent_enquiry, p.create_user_id, p.create_time, p.edit_user_id, p.edit_time,
     p.udf1, p.udf2, p.udf3, p.udf4, p.udf5, p.udf6, p.udf7, p.udf8, p.udf9, p.udf10, p.udf11, p.udf12, p.udf13,
-    p.udf14, p.udf15, p.udf16, p.udf17, p.udf18, p.udf19, p.udf20
+    p.udf14, p.udf15, p.udf16, p.udf17, p.udf18, p.udf19, p.udf20,
+    p.min_uint
   </sql>
 
   <sql id="Example_Where_Clause">
@@ -142,21 +145,26 @@
     from sku_partner
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <select id="selectByExample" parameterType="map" resultMap="BaseResultMap">
-    select
-      <include refid="Partner_Column_List"/>
-    from sku_partner p
-    <include refid="Example_Where_Clause"/>
-  </select>
   <select id="selectExByExample" parameterType="map" resultMap="ExResultMap">
     select
       <include refid="Partner_Column_List"/>,
-      sku.min_uint,upc.identifying_code,sku.category_no,sku.lv2_category_no,sku.lv1_category_no,
+      sku.ean13_code,sku.mnemonic_code,sku.category_no,sku.lv2_category_no,sku.lv1_category_no,
       sku.category_sp_no,sku.lv2_category_sp_no,sku.lv1_category_sp_no,
-      sku.channel
+      sku.channel,ent.ent_name
     from sku_partner p left join sku_core sku on p.product_no=sku.product_no
-    left join sku_upc upc on upc.product_no=p.product_no
+    left join enterprise_info ent on ent.ent_number=p.supply_no
     <include refid="Example_Where_Clause"/>
+  </select>
+
+  <select id="selectExByPrimaryKey" parameterType="integer" resultMap="ExResultMap">
+    select
+      <include refid="Partner_Column_List"/>,
+      sku.ean13_code,sku.mnemonic_code,sku.category_no,sku.lv2_category_no,sku.lv1_category_no,
+      sku.category_sp_no,sku.lv2_category_sp_no,sku.lv1_category_sp_no,
+      sku.channel,ent.ent_name
+    from sku_partner p left join sku_core sku on p.product_no=sku.product_no
+    left join enterprise_info ent on ent.ent_number=p.supply_no
+    where p.id=#{id}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from sku_partner
@@ -300,6 +308,9 @@
       <if test="udf20 != null">
         udf20,
       </if>
+      <if test="minUint != null">
+        min_uint,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -410,6 +421,9 @@
       <if test="udf20 != null">
         #{udf20,jdbcType=VARCHAR},
       </if>
+      <if test="minUint != null">
+        #{minUint,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.csjscm.core.framework.model.SkuPartner">
@@ -519,6 +533,9 @@
       </if>
       <if test="udf20 != null">
         udf20 = #{udf20,jdbcType=VARCHAR},
+      </if>
+      <if test="minUint != null">
+        min_uint = #{minUint,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -678,6 +695,9 @@
       </if>
       <if test="requestId != null">
         and request_id = #{requestId,jdbcType=VARCHAR}
+      </if>
+      <if test="minUint != null and minUint != ''">
+        and min_uint = #{minUint,jdbcType=VARCHAR}
       </if>
     </trim>
   </sql>

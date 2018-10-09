@@ -8,7 +8,7 @@
         <result column="class_code" property="classCode" jdbcType="VARCHAR" />
         <result column="class_name" property="className" jdbcType="VARCHAR" />
         <result column="simple_name" property="simpleName" jdbcType="VARCHAR" />
-        <result column="parent_class" property="parentClass" jdbcType="VARCHAR" />
+        <result column="parent_class" property="parentClass" jdbcType="INTEGER" />
         <result column="level_num" property="levelNum" jdbcType="INTEGER" />
         <result column="memos" property="memos" jdbcType="VARCHAR" />
         <result column="create_user_id" property="createUserId" jdbcType="VARCHAR" />
@@ -53,7 +53,7 @@
                 and simple_name = #{simpleName,jdbcType=VARCHAR}
             </if>
             <if test="parentClass != null and parentClass != '' ">
-                and parent_class = #{parentClass,jdbcType=VARCHAR}
+                and parent_class = #{parentClass,jdbcType=INTEGER}
             </if>
             <if test="levelNum != null and levelNum != '' ">
                 and level_num = #{levelNum,jdbcType=INTEGER}
@@ -117,7 +117,7 @@
     
     
     <insert id="insert" parameterType="com.csjscm.core.framework.model.Category">
-        insert into category(class_code,class_name,simple_name,parent_class,level_num,memos,create_user_id,create_time,edit_user_id,edit_time,udf1,udf2,udf3,udf4,udf5,udf6,udf7,udf8,udf9,udf10,request_id,sort,state)values(#{classCode,jdbcType=VARCHAR},#{className,jdbcType=VARCHAR},#{simpleName,jdbcType=VARCHAR},#{parentClass,jdbcType=VARCHAR},#{levelNum,jdbcType=INTEGER},#{memos,jdbcType=VARCHAR},#{createUserId,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},#{editUserId,jdbcType=VARCHAR},#{editTime,jdbcType=TIMESTAMP},#{udf1,jdbcType=VARCHAR},#{udf2,jdbcType=VARCHAR},#{udf3,jdbcType=VARCHAR},#{udf4,jdbcType=VARCHAR},#{udf5,jdbcType=VARCHAR},#{udf6,jdbcType=VARCHAR},#{udf7,jdbcType=VARCHAR},#{udf8,jdbcType=VARCHAR},#{udf9,jdbcType=VARCHAR},#{udf10,jdbcType=VARCHAR},#{requestId,jdbcType=VARCHAR},#{sort,jdbcType=INTEGER},#{state,jdbcType=INTEGER})
+        insert into category(class_code,class_name,simple_name,parent_class,level_num,memos,create_user_id,create_time,edit_user_id,edit_time,udf1,udf2,udf3,udf4,udf5,udf6,udf7,udf8,udf9,udf10,request_id,sort,state)values(#{classCode,jdbcType=VARCHAR},#{className,jdbcType=VARCHAR},#{simpleName,jdbcType=VARCHAR},#{parentClass,jdbcType=INTEGER},#{levelNum,jdbcType=INTEGER},#{memos,jdbcType=VARCHAR},#{createUserId,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},#{editUserId,jdbcType=VARCHAR},#{editTime,jdbcType=TIMESTAMP},#{udf1,jdbcType=VARCHAR},#{udf2,jdbcType=VARCHAR},#{udf3,jdbcType=VARCHAR},#{udf4,jdbcType=VARCHAR},#{udf5,jdbcType=VARCHAR},#{udf6,jdbcType=VARCHAR},#{udf7,jdbcType=VARCHAR},#{udf8,jdbcType=VARCHAR},#{udf9,jdbcType=VARCHAR},#{udf10,jdbcType=VARCHAR},#{requestId,jdbcType=VARCHAR},#{sort,jdbcType=INTEGER},#{state,jdbcType=INTEGER})
     </insert>
     <insert id="insertSelective" parameterType="com.csjscm.core.framework.model.Category">
         insert into category
@@ -209,7 +209,7 @@
                 #{simpleName,jdbcType=VARCHAR},
             </if>
             <if test="parentClass != null">
-                #{parentClass,jdbcType=VARCHAR},
+                #{parentClass,jdbcType=INTEGER},
             </if>
             <if test="levelNum != null">
                 #{levelNum,jdbcType=INTEGER},
@@ -276,7 +276,7 @@
             class_code = #{classCode,jdbcType=VARCHAR},
             class_name = #{className,jdbcType=VARCHAR},
             simple_name = #{simpleName,jdbcType=VARCHAR},
-            parent_class = #{parentClass,jdbcType=VARCHAR},
+            parent_class = #{parentClass,jdbcType=INTEGER},
             level_num = #{levelNum,jdbcType=INTEGER},
             memos = #{memos,jdbcType=VARCHAR},
             create_user_id = #{createUserId,jdbcType=VARCHAR},
@@ -313,7 +313,7 @@
                 simple_name = #{simpleName,jdbcType=VARCHAR},                
             </if>
             <if test="parentClass != null and parentClass != '' ">        
-                parent_class = #{parentClass,jdbcType=VARCHAR},                
+                parent_class = #{parentClass,jdbcType=INTEGER},
             </if>
             <if test="levelNum != null and levelNum != '' ">        
                 level_num = #{levelNum,jdbcType=INTEGER},                

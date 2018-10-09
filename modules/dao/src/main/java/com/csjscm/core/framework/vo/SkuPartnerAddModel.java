@@ -1,6 +1,7 @@
 package com.csjscm.core.framework.vo;
 
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.NotNull;
@@ -9,6 +10,7 @@ import java.math.BigDecimal;
 /**
  * 保存供应商以及关联的数据model
  */
+@Data
 public class SkuPartnerAddModel {
 
     @ApiModelProperty("供应商编码")
@@ -50,118 +52,11 @@ public class SkuPartnerAddModel {
     @ApiModelProperty("最小单位")
     private String minUint;
 
+    @ApiModelProperty("助记码")
+    private String mnemonicCode;
+
+    @ApiModelProperty("商品条码")
+    private String ean13Code;
+
     private String uomStr;
-
-
-    public String getSupplyNo() {
-        return supplyNo;
-    }
-
-    public void setSupplyNo(String supplyNo) {
-        this.supplyNo = supplyNo;
-    }
-
-    public String getSupplyPdNo() {
-        return supplyPdNo;
-    }
-
-    public void setSupplyPdNo(String supplyPdNo) {
-        this.supplyPdNo = supplyPdNo;
-    }
-
-    public String getSupplyPdName() {
-        return supplyPdName;
-    }
-
-    public Integer getClassId() {
-        return classId;
-    }
-
-    public void setClassId(Integer classId) {
-        this.classId = classId;
-    }
-
-    public void setSupplyPdName(String supplyPdName) {
-        this.supplyPdName = supplyPdName;
-    }
-
-    public String getSupplyPdRule() {
-        return supplyPdRule;
-    }
-
-    public void setSupplyPdRule(String supplyPdRule) {
-        this.supplyPdRule = supplyPdRule;
-    }
-
-    public String getSupplyPdSize() {
-        return supplyPdSize;
-    }
-
-    public void setSupplyPdSize(String supplyPdSize) {
-        this.supplyPdSize = supplyPdSize;
-    }
-
-    public String getBrandName() {
-        return brandName;
-    }
-
-    public void setBrandName(String brandName) {
-        this.brandName = brandName;
-    }
-
-    public Integer getBrandId() {
-        return brandId;
-    }
-
-    public void setBrandId(Integer brandId) {
-        this.brandId = brandId;
-    }
-
-    public BigDecimal getRefrencePrice() {
-        return refrencePrice;
-    }
-
-    public void setRefrencePrice(BigDecimal refrencePrice) {
-        this.refrencePrice = refrencePrice;
-    }
-
-    public BigDecimal getRecentEnquiry() {
-        return recentEnquiry;
-    }
-
-    public void setRecentEnquiry(BigDecimal recentEnquiry) {
-        this.recentEnquiry = recentEnquiry;
-    }
-
-    public String getProductNo() {
-        return productNo;
-    }
-
-    public void setProductNo(String productNo) {
-        this.productNo = productNo;
-    }
-
-    public String getClassCode() {
-        return classCode;
-    }
-
-    public void setClassCode(String classCode) {
-        this.classCode = classCode;
-    }
-
-    public String getMinUint() {
-        return minUint;
-    }
-
-    public void setMinUint(String minUint) {
-        this.minUint = minUint;
-    }
-
-    public String getUomStr() {
-        return uomStr;
-    }
-
-    public void setUomStr(String uomStr) {
-        this.uomStr = uomStr;
-    }
 }

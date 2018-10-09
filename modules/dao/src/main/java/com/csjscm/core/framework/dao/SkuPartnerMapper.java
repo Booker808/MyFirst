@@ -21,8 +21,6 @@ public interface SkuPartnerMapper {
 
     int updateByPrimaryKey(SkuPartner record);
 
-    List<SkuPartner> selectByExample(SkuPartnerExample example);
-
     List<SkuPartnerEx> selectExByExample(SkuPartnerExample example);
     /**
      * 按条件查询单个
@@ -46,4 +44,6 @@ public interface SkuPartnerMapper {
     SkuPartnerDetailsModel getSkuPartnerModel(Map<String,Object> map);
 
     List<SkuPartner> listSelectiveSCM(Map<String,Object> map);
+
+    SkuPartnerEx selectExByPrimaryKey(Integer id);
 }

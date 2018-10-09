@@ -7,11 +7,12 @@ import lombok.Data;
 @Data
 @ApiModel(description = "供应商商品对象")
 public class SkuPartnerEx extends SkuPartner {
-    @ApiModelProperty("最小库存单位")
-    private String minUint;
 
-    @ApiModelProperty("识别码")
-    private String identifyingCode;
+    @ApiModelProperty("商品条码")
+    private String ean13Code;
+
+    @ApiModelProperty("助记码")
+    private String mnemonicCode;
 
     @ApiModelProperty(value = "最小分类编码")
     private String categoryNo;
@@ -33,4 +34,7 @@ public class SkuPartnerEx extends SkuPartner {
 
     @ApiModelProperty(value = "来源")
     private Integer channel;
+
+    @ApiModelProperty(value = "供应商名称")
+    private String entName;
 }

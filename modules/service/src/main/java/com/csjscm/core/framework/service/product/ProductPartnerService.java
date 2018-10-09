@@ -55,4 +55,8 @@ public interface ProductPartnerService {
     SkuPartner saveSCMSkuPartner(SkuPartnerSCMMolde skuPartnerSCMMolde);
 
     List<SkuPartner> listSelectiveSCM(Map<String,Object> map);
+
+    SkuPartnerEx queryPartnerProductDetail(Integer id);
+
+    void updateSkuPartner(SkuPartner skuPartner);
 }

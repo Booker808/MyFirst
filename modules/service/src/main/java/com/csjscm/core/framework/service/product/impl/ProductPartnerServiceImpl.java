@@ -19,7 +19,6 @@ import com.csjscm.sweet.framework.redis.RedisDistributedCounterObject;
 import com.csjscm.sweet.framework.redis.RedisServiceFacade;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.google.common.collect.Maps;
 import org.apache.commons.lang.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.ss.usermodel.Row;
@@ -383,9 +382,10 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
             productNomap.put("categoryNo",skuPartnerAddModel.getProductNo());
             productNomap.put("productName",skuPartnerAddModel.getSupplyNo());
             productNomap.put("brandName",skuPartnerAddModel.getBrandName());
-            productNomap.put("minUint",skuPartnerAddModel.getSupplyPdRule());
             productNomap.put("rule",skuPartnerAddModel.getSupplyPdRule());
             productNomap.put("size",skuPartnerAddModel.getSupplyPdSize());
+            productNomap.put("mnemonicCode",skuPartnerAddModel.getMnemonicCode());
+            productNomap.put("ean13Code",skuPartnerAddModel.getEan13Code());
             List<SkuCore> skuCores = skuCoreMapper.listSelective(productNomap);
             if(skuCores.size()>0){
                 productNo=skuCores.get(0).getProductNo();
@@ -420,17 +420,18 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
             skuCore.setBrandName(skuPartnerAddModel.getBrandName());
             skuCore.setBrandId(skuPartnerAddModel.getBrandId());
             skuCore.setCategoryId(skuPartnerAddModel.getClassId());
-            skuCore.setMinUint(skuPartnerAddModel.getMinUint());
             skuCore.setCategoryNo(skuPartnerAddModel.getClassCode());
+            skuCore.setMnemonicCode(skuPartnerAddModel.getMnemonicCode());
+            skuCore.setEan13Code(skuPartnerAddModel.getEan13Code());
             try{
                 if(skuCore.getCategoryId()!=null){
                     //获取三级分类
                     Category category=categoryMapper.findByPrimary(skuCore.getCategoryId());
-                    skuCore.setLv2CategoryId(Integer.parseInt(category.getParentClass()));
+                    skuCore.setLv2CategoryId(category.getParentClass());
                     //获取二级分类
                     category=categoryMapper.findByPrimary(skuCore.getLv2CategoryId());
                     skuCore.setLv2CategoryNo(category.getClassCode());
-                    skuCore.setLv1CategoryId(Integer.parseInt(category.getParentClass()));
+                    skuCore.setLv1CategoryId(category.getParentClass());
                     //获取一级分类
                     category=categoryMapper.findByPrimary(skuCore.getLv1CategoryId());
                     skuCore.setLv1CategoryNo(category.getClassCode());
@@ -605,5 +606,15 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
     @Override
     public List<SkuPartner> listSelectiveSCM(Map<String, Object> map) {
         return skuPartnerMapper.listSelectiveSCM(map);
+    }
+
+    @Override
+    public SkuPartnerEx queryPartnerProductDetail(Integer id) {
+        return skuPartnerMapper.selectExByPrimaryKey(id);
+    }
+
+    @Override
+    public void updateSkuPartner(SkuPartner skuPartner) {
+        skuPartnerMapper.updateByPrimaryKeySelective(skuPartner);
     }
 }

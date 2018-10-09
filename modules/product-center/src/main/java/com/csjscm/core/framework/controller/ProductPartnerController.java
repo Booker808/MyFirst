@@ -6,19 +6,14 @@ import com.alibaba.fastjson.JSONObject;
 import com.csjscm.core.framework.common.util.BussinessException;
 import com.csjscm.core.framework.common.util.ExportExcel;
 import com.csjscm.core.framework.example.SkuPartnerExample;
-import com.csjscm.core.framework.model.Category;
-import com.csjscm.core.framework.model.SkuCore;
-import com.csjscm.core.framework.model.SkuPartnerEx;
-import com.csjscm.core.framework.model.SpCategory;
+import com.csjscm.core.framework.model.*;
 import com.csjscm.core.framework.service.CategoryService;
 import com.csjscm.core.framework.service.SkuCoreService;
 import com.csjscm.core.framework.service.SpCategoryService;
-import com.csjscm.core.framework.service.product.ProductCoreService;
 import com.csjscm.core.framework.service.product.ProductPartnerService;
 import com.csjscm.core.framework.vo.SkuPartnerAddModel;
 import com.csjscm.core.framework.vo.SkuPartnerDetailsModel;
 import com.csjscm.core.framework.vo.SkuPartnerVo;
-import com.csjscm.sweet.framework.auth.AuthUtils;
 import com.csjscm.sweet.framework.core.mvc.APIResponse;
 import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
 import io.swagger.annotations.*;
@@ -79,6 +74,13 @@ public class ProductPartnerController {
         return APIResponse.success(result);
     }
 
+    @ApiOperation("获取供应商商品详情")
+    @RequestMapping(value = "/product/{id}",method = RequestMethod.GET)
+    public APIResponse<SkuPartnerEx> queryCoreProductDetail(@PathVariable Integer id){
+        SkuPartnerEx result=productPartnerService.queryPartnerProductDetail(id);
+        return APIResponse.success(result);
+    }
+
     @ApiOperation("导入供应商商品excel")
     @RequestMapping(value = "importSkuPartnerExcel",method = RequestMethod.POST)
     public APIResponse importExcel(@ApiParam(name = "file",value = "excel文件") @RequestParam(value="file") MultipartFile file, @ApiParam(name = "customerNo",value = "supplyNo") @RequestParam(value="supplyNo")String supplyNo){
@@ -94,7 +96,7 @@ public class ProductPartnerController {
             SkuPartnerVo skuPartnerVo = JSONObject.toJavaObject(jsonArray.getJSONObject(i), SkuPartnerVo.class);
             list.add(skuPartnerVo);
         }
-        ExportExcel<SkuPartnerVo> ex = new ExportExcel<SkuPartnerVo>();
+        ExportExcel<SkuPartnerVo> ex = new ExportExcel<>();
         String[] header =
                 { "失败原因","企业商品编码", "商品名称","品牌","规格", "型号","参数描述","川商品编码","川小类编码","最小库存单位"};
         String[] line =
@@ -116,9 +118,18 @@ public class ProductPartnerController {
      * @return
      */
     @ApiOperation("新增客户商品")
-    @RequestMapping(value = "/saveSkuPartner",method = RequestMethod.POST)
+    @RequestMapping(value = "/product",method = RequestMethod.POST)
     public APIResponse saveSkuPartner(@RequestBody @Valid SkuPartnerAddModel skuPartnerAddModel){
         productPartnerService.save(skuPartnerAddModel);
+        return APIResponse.success();
+    }
+
+    @ApiOperation("更新供应商商品")
+    @RequestMapping(value = "/product/{id}",method = RequestMethod.PUT)
+    public APIResponse updateSkuPartner(@RequestBody SkuPartner skuPartner,
+                                        @PathVariable Integer id){
+        skuPartner.setId(id);
+        productPartnerService.updateSkuPartner(skuPartner);
         return APIResponse.success();
     }
     @ApiOperation("获取供应商商品详情")
@@ -126,6 +137,7 @@ public class ProductPartnerController {
     public APIResponse skuPartnerDetails(@ApiParam(name = "id" ,value = "id") @RequestParam(value = "id") String id){
         Map<String, Object> map=new HashMap<>();
         map.put("id",id);
+
         SkuPartnerDetailsModel skuPartnerModel = productPartnerService.getSkuPartnerModel(map);
         if(skuPartnerModel!=null && StringUtils.isNotBlank(skuPartnerModel.getProductNo())){
             map.clear();

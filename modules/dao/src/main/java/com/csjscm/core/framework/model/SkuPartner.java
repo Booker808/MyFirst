@@ -98,4 +98,6 @@ public class SkuPartner {
     private String udf19;
 
     private String udf20;
+
+    private String minUint;
 }
