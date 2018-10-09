@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.csjscm.core.framework.dao.EnterprisePurchaseTemplateMapper" >
+  <resultMap id="BaseResultMap" type="com.csjscm.core.framework.model.EnterprisePurchaseTemplate" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="ent_number" property="entNumber" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="pay_type" property="payType" jdbcType="INTEGER" />
+    <result column="prepay_rate" property="prepayRate" jdbcType="DECIMAL" />
+    <result column="pick_rate" property="pickRate" jdbcType="DECIMAL" />
+    <result column="warranty_rate" property="warrantyRate" jdbcType="DECIMAL" />
+    <result column="pay_date" property="payDate" jdbcType="INTEGER" />
+    <result column="ticket_date" property="ticketDate" jdbcType="INTEGER" />
+    <result column="template_type" property="templateType" jdbcType="INTEGER" />
+    <result column="template_url" property="templateUrl" jdbcType="VARCHAR" />
+    <result column="warranty_date" property="warrantyDate" jdbcType="INTEGER" />
+    <result column="enable" property="enable" jdbcType="INTEGER" />
+    <result column="check_status" property="checkStatus" jdbcType="INTEGER" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="edit_user" property="editUser" jdbcType="VARCHAR" />
+    <result column="edit_time" property="editTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, ent_number, address, pay_type, prepay_rate, pick_rate, warranty_rate, pay_date, 
+    ticket_date, template_type, template_url, warranty_date, enable, check_status, create_user, 
+    create_time, edit_user, edit_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from enterprise_purchase_template
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from enterprise_purchase_template
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.csjscm.core.framework.model.EnterprisePurchaseTemplate" >
+    insert into enterprise_purchase_template (id, ent_number, address, 
+      pay_type, prepay_rate, pick_rate, 
+      warranty_rate, pay_date, ticket_date, 
+      template_type, template_url, warranty_date, 
+      enable, check_status, create_user, 
+      create_time, edit_user, edit_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{entNumber,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
+      #{payType,jdbcType=INTEGER}, #{prepayRate,jdbcType=DECIMAL}, #{pickRate,jdbcType=DECIMAL}, 
+      #{warrantyRate,jdbcType=DECIMAL}, #{payDate,jdbcType=INTEGER}, #{ticketDate,jdbcType=INTEGER}, 
+      #{templateType,jdbcType=INTEGER}, #{templateUrl,jdbcType=VARCHAR}, #{warrantyDate,jdbcType=INTEGER}, 
+      #{enable,jdbcType=INTEGER}, #{checkStatus,jdbcType=INTEGER}, #{createUser,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{editUser,jdbcType=VARCHAR}, #{editTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.csjscm.core.framework.model.EnterprisePurchaseTemplate" >
+    insert into enterprise_purchase_template
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="entNumber != null" >
+        ent_number,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="payType != null" >
+        pay_type,
+      </if>
+      <if test="prepayRate != null" >
+        prepay_rate,
+      </if>
+      <if test="pickRate != null" >
+        pick_rate,
+      </if>
+      <if test="warrantyRate != null" >
+        warranty_rate,
+      </if>
+      <if test="payDate != null" >
+        pay_date,
+      </if>
+      <if test="ticketDate != null" >
+        ticket_date,
+      </if>
+      <if test="templateType != null" >
+        template_type,
+      </if>
+      <if test="templateUrl != null" >
+        template_url,
+      </if>
+      <if test="warrantyDate != null" >
+        warranty_date,
+      </if>
+      <if test="enable != null" >
+        enable,
+      </if>
+      <if test="checkStatus != null" >
+        check_status,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="editUser != null" >
+        edit_user,
+      </if>
+      <if test="editTime != null" >
+        edit_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="entNumber != null" >
+        #{entNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="payType != null" >
+        #{payType,jdbcType=INTEGER},
+      </if>
+      <if test="prepayRate != null" >
+        #{prepayRate,jdbcType=DECIMAL},
+      </if>
+      <if test="pickRate != null" >
+        #{pickRate,jdbcType=DECIMAL},
+      </if>
+      <if test="warrantyRate != null" >
+        #{warrantyRate,jdbcType=DECIMAL},
+      </if>
+      <if test="payDate != null" >
+        #{payDate,jdbcType=INTEGER},
+      </if>
+      <if test="ticketDate != null" >
+        #{ticketDate,jdbcType=INTEGER},
+      </if>
+      <if test="templateType != null" >
+        #{templateType,jdbcType=INTEGER},
+      </if>
+      <if test="templateUrl != null" >
+        #{templateUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="warrantyDate != null" >
+        #{warrantyDate,jdbcType=INTEGER},
+      </if>
+      <if test="enable != null" >
+        #{enable,jdbcType=INTEGER},
+      </if>
+      <if test="checkStatus != null" >
+        #{checkStatus,jdbcType=INTEGER},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="editUser != null" >
+        #{editUser,jdbcType=VARCHAR},
+      </if>
+      <if test="editTime != null" >
+        #{editTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.csjscm.core.framework.model.EnterprisePurchaseTemplate" >
+    update enterprise_purchase_template
+    <set >
+      <if test="entNumber != null" >
+        ent_number = #{entNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="payType != null" >
+        pay_type = #{payType,jdbcType=INTEGER},
+      </if>
+      <if test="prepayRate != null" >
+        prepay_rate = #{prepayRate,jdbcType=DECIMAL},
+      </if>
+      <if test="pickRate != null" >
+        pick_rate = #{pickRate,jdbcType=DECIMAL},
+      </if>
+      <if test="warrantyRate != null" >
+        warranty_rate = #{warrantyRate,jdbcType=DECIMAL},
+      </if>
+      <if test="payDate != null" >
+        pay_date = #{payDate,jdbcType=INTEGER},
+      </if>
+      <if test="ticketDate != null" >
+        ticket_date = #{ticketDate,jdbcType=INTEGER},
+      </if>
+      <if test="templateType != null" >
+        template_type = #{templateType,jdbcType=INTEGER},
+      </if>
+      <if test="templateUrl != null" >
+        template_url = #{templateUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="warrantyDate != null" >
+        warranty_date = #{warrantyDate,jdbcType=INTEGER},
+      </if>
+      <if test="enable != null" >
+        enable = #{enable,jdbcType=INTEGER},
+      </if>
+      <if test="checkStatus != null" >
+        check_status = #{checkStatus,jdbcType=INTEGER},
+      </if>
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="editUser != null" >
+        edit_user = #{editUser,jdbcType=VARCHAR},
+      </if>
+      <if test="editTime != null" >
+        edit_time = #{editTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.csjscm.core.framework.model.EnterprisePurchaseTemplate" >
+    update enterprise_purchase_template
+    set ent_number = #{entNumber,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      pay_type = #{payType,jdbcType=INTEGER},
+      prepay_rate = #{prepayRate,jdbcType=DECIMAL},
+      pick_rate = #{pickRate,jdbcType=DECIMAL},
+      warranty_rate = #{warrantyRate,jdbcType=DECIMAL},
+      pay_date = #{payDate,jdbcType=INTEGER},
+      ticket_date = #{ticketDate,jdbcType=INTEGER},
+      template_type = #{templateType,jdbcType=INTEGER},
+      template_url = #{templateUrl,jdbcType=VARCHAR},
+      warranty_date = #{warrantyDate,jdbcType=INTEGER},
+      enable = #{enable,jdbcType=INTEGER},
+      check_status = #{checkStatus,jdbcType=INTEGER},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      edit_user = #{editUser,jdbcType=VARCHAR},
+      edit_time = #{editTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
