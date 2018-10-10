@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Api("采购模板")
-//@RestController
+@RestController
 @RequestMapping("/enterprise/template")
 @ResponseBody
 public class EnterpriseTemplateController {
@@ -26,7 +26,7 @@ public class EnterpriseTemplateController {
     }
 
     @ApiOperation("更新标准模板")
-    @RequestMapping(value = "/standardTemplate",method = RequestMethod.POST)
+    @RequestMapping(value = "/standardTemplate",method = RequestMethod.PUT)
     public APIResponse updateStandardTemplate(@RequestBody EnterpriseStandardTemplate template){
         if(template.getId()==null){
             return APIResponse.fail("更新模板ID不能为空");
