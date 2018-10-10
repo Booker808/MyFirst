@@ -1,6 +1,10 @@
 package com.csjscm.core.framework.service.template;
 
+import com.csjscm.core.framework.example.EnterprisePurchaseTemplateExample;
 import com.csjscm.core.framework.model.EnterpriseStandardTemplate;
+import com.csjscm.core.framework.vo.EnterprisePurchaseTemplateDetailVo;
+import com.csjscm.core.framework.vo.EnterprisePurchaseTemplateVo;
+import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
 
 import java.util.List;
 
@@ -33,4 +37,43 @@ public interface EnterpriseTemplateService {
      * @return
      */
     EnterpriseStandardTemplate queryStandardTemplateById(Integer id);
+
+    /**
+     * 添加采购合同模板
+     *
+     * @param templateDetailVo
+     */
+    void addPurchaseTemplate(EnterprisePurchaseTemplateDetailVo templateDetailVo);
+
+    /**
+     * 提交采购合同模板至流程
+     *
+     * @param templateDetailVo
+     */
+    void submitPurchaseTemplate(EnterprisePurchaseTemplateDetailVo templateDetailVo);
+
+    /**
+     * 更新采购合同模板
+     *
+     * @param templateDetailVo
+     */
+    void updatePurchaseTemplate(EnterprisePurchaseTemplateDetailVo templateDetailVo);
+
+    /**
+     * 分页查询采购模板
+     *
+     * @param page
+     * @param rpp
+     * @param templateExample
+     * @return
+     */
+    QueryResult<EnterprisePurchaseTemplateVo> queryPurchaseTemplate(int page, int rpp, EnterprisePurchaseTemplateExample templateExample);
+
+    /**
+     * 根据ID查询采购合同模板详情
+     *
+     * @param id
+     * @return
+     */
+    EnterprisePurchaseTemplateDetailVo queryPurchaseTemplateById(Integer id);
 }

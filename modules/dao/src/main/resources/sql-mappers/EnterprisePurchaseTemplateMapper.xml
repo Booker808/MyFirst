@@ -21,10 +21,47 @@
     <result column="edit_user" property="editUser" jdbcType="VARCHAR" />
     <result column="edit_time" property="editTime" jdbcType="TIMESTAMP" />
   </resultMap>
+  <resultMap id="ExResultMap" type="com.csjscm.core.framework.model.EnterprisePurchaseTemplateEx" extends="BaseResultMap">
+    <result column="ent_name" property="entName" jdbcType="VARCHAR"/>
+    <result column="account_name" property="accountName" jdbcType="VARCHAR"/>
+    <result column="bank_name" property="bankName" jdbcType="VARCHAR"/>
+    <result column="bank_no" property="bankNo" jdbcType="VARCHAR"/>
+  </resultMap>
   <sql id="Base_Column_List" >
-    id, ent_number, address, pay_type, prepay_rate, pick_rate, warranty_rate, pay_date, 
-    ticket_date, template_type, template_url, warranty_date, enable, check_status, create_user, 
+    id, ent_number, address, pay_type, prepay_rate, pick_rate, warranty_rate, pay_date,
+    ticket_date, template_type, template_url, warranty_date, enable, check_status, create_user,
     create_time, edit_user, edit_time
+  </sql>
+  <sql id="Template_Column_List" >
+    t.id, t.ent_number, t.address, t.pay_type, t.prepay_rate, t.pick_rate, t.warranty_rate, t.pay_date,
+    t.ticket_date, t.template_type, t.template_url, t.warranty_date, t.enable, t.check_status, t.create_user,
+    t.create_time, t.edit_user, t.edit_time
+  </sql>
+  <sql id="searchBy">
+    <trim prefix="where" prefixOverrides="and|or">
+      <if test="entNumber !=null and entNumber != '' ">
+        and ent_number = #{entNumber,jdbcType=VARCHAR}
+      </if>
+    </trim>
+  </sql>
+  <sql id="exSearchBy">
+    <trim prefix="where" prefixOverrides="and|or">
+      <if test="id !=null">
+        and t.id = #{id,jdbcType=INTEGER}
+      </if>
+      <if test="entNumber !=null and entNumber != '' ">
+        and t.ent_number = #{entNumber,jdbcType=VARCHAR}
+      </if>
+      <if test="payType !=null and entNumber != '' ">
+        and t.pay_type = #{payType,jdbcType=VARCHAR}
+      </if>
+      <if test="templateType !=null and entNumber != '' ">
+        and t.template_type = #{templateType,jdbcType=VARCHAR}
+      </if>
+      <if test="entName != null and entName != ''">
+        and info.ent_name like concat('%',#{entName,jdbcType=VARCHAR},'%')
+      </if>
+    </trim>
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -32,6 +69,26 @@
     from enterprise_purchase_template
     where id = #{id,jdbcType=INTEGER}
   </select>
+    <select id="findCount" resultType="java.lang.Integer" parameterType="java.util.HashMap">
+      select count(1)
+      from enterprise_purchase_template
+      <include refid="searchBy"/>
+    </select>
+
+  <select id="selectByExample" resultMap="ExResultMap" parameterType="map">
+    select
+      <include refid="Template_Column_List"/>
+    ,info.ent_name
+    ,account.account_name
+    ,account.bank_name
+    ,account.bank_no
+    from enterprise_purchase_template t
+    left join enterprise_info info on info.ent_number=t.ent_number
+    left join enterprise_account account on account.ent_number=t.ent_number and account.account_type=1 and account.isdelete=0
+    <include refid="exSearchBy"/>
+    order by ent_number desc
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from enterprise_purchase_template
     where id = #{id,jdbcType=INTEGER}

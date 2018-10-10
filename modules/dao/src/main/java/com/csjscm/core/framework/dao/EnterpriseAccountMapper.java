@@ -35,4 +35,6 @@ public interface EnterpriseAccountMapper {
      *
      */
     int findCount(Map<String,Object> map);
+
+    void updateBasicBankByEntNo(EnterpriseAccount account);
 }

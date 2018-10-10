@@ -205,7 +205,22 @@
       isdelete = #{isdelete,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+    <update id="updateBasicBankByEntNo">
+      update enterprise_account
+      <set>
+        <if test="bankName != null" >
+          bank_name = #{bankName,jdbcType=VARCHAR},
+        </if>
+        <if test="accountName != null" >
+          account_name = #{accountName,jdbcType=VARCHAR},
+        </if>
+        <if test="bankNo != null" >
+          bank_no = #{bankNo,jdbcType=VARCHAR},
+        </if>
+      </set>
+      where ent_number=#{entNumber,jdbcType=VARCHAR} and account_type=1 and isdelete=0
+    </update>
+    <select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
     select
     <include refid="Base_Column_List" />
     from enterprise_account
