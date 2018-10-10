@@ -105,7 +105,7 @@
     id, product_no, supply_no,supply_pd_no, supply_pd_name, supply_pd_rule, supply_pd_size, brand_id, brand_name,
     refrence_price, recent_enquiry, create_user_id, create_time, edit_user_id, edit_time, 
     udf1, udf2, udf3, udf4, udf5, udf6, udf7, udf8, udf9, udf10, udf11, udf12, udf13, 
-    udf14, udf15, udf16, udf17, udf18, udf19, udf20,uuid
+    udf14, udf15, udf16, udf17, udf18, udf19, udf20,uuid,min_uint
   </sql>
 
   <sql id="Partner_Column_List">
@@ -181,7 +181,7 @@
       udf10, udf11, udf12, 
       udf13, udf14, udf15, 
       udf16, udf17, udf18, 
-      udf19, udf20,uuid)
+      udf19, udf20,uuid,min_uint)
     values (#{id,jdbcType=INTEGER}, #{productNo,jdbcType=VARCHAR}, #{supplyNo,jdbcType=VARCHAR}, #{supplyPdNo,jdbcType=VARCHAR},
       #{supplyPdName,jdbcType=VARCHAR}, #{supplyPdRule,jdbcType=VARCHAR}, #{supplyPdSize,jdbcType=VARCHAR},
       #{brandId,jdbcType=VARCHAR}, #{brandName,jdbcType=VARCHAR}, #{refrencePrice,jdbcType=DECIMAL}, 
@@ -192,7 +192,7 @@
       #{udf10,jdbcType=VARCHAR}, #{udf11,jdbcType=VARCHAR}, #{udf12,jdbcType=VARCHAR}, 
       #{udf13,jdbcType=VARCHAR}, #{udf14,jdbcType=VARCHAR}, #{udf15,jdbcType=VARCHAR}, 
       #{udf16,jdbcType=VARCHAR}, #{udf17,jdbcType=VARCHAR}, #{udf18,jdbcType=VARCHAR}, 
-      #{udf19,jdbcType=VARCHAR}, #{udf20,jdbcType=VARCHAR}, #{uuid,jdbcType=VARCHAR})
+      #{udf19,jdbcType=VARCHAR}, #{udf20,jdbcType=VARCHAR}, #{uuid,jdbcType=VARCHAR}, #{minUint,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.csjscm.core.framework.model.SkuPartner">
     <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
@@ -576,6 +576,7 @@
       udf17 = #{udf17,jdbcType=VARCHAR},
       udf18 = #{udf18,jdbcType=VARCHAR},
       udf19 = #{udf19,jdbcType=VARCHAR},
+      min_uint = #{minUint,jdbcType=VARCHAR},
       udf20 = #{udf20,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>

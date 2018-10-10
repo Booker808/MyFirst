@@ -11,6 +11,7 @@ import com.csjscm.core.framework.model.SkuCustomer;
 import com.csjscm.core.framework.model.SkuCustomerEx;
 import com.csjscm.core.framework.service.product.ProductCustomerService;
 import com.csjscm.core.framework.vo.SkuCoreVo;
+import com.csjscm.core.framework.vo.SkuCustomerPageVo;
 import com.csjscm.core.framework.vo.SkuCustomerVo;
 import com.csjscm.sweet.framework.core.mvc.APIResponse;
 import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
@@ -59,6 +60,14 @@ public class ProductCustomerController {
         QueryResult<SkuCustomerEx> result=productCustomerService.queryCustomerProduct(page,rpp,skuCustomerExample);
         return APIResponse.success(result);
     }
+    @RequestMapping(value = "/productPage",method = RequestMethod.GET)
+    public APIResponse<QueryResult<SkuCustomerPageVo>> productPage(
+            @RequestParam(required = false,defaultValue = "1")int page,
+            @RequestParam(required = false,defaultValue = "10")int rpp,
+            @ApiIgnore @RequestParam Map<String,Object> condition){
+        QueryResult<SkuCustomerPageVo> result = productCustomerService.findPage(page, rpp, condition);
+        return APIResponse.success(result);
+    }
     @ApiOperation("导入客户物料excel")
     @RequestMapping(value = "importCustomerExcel",method = RequestMethod.POST)
     public APIResponse importExcel(@ApiParam(name = "file",value = "excel文件") @RequestParam(value="file") MultipartFile  file,@ApiParam(name = "customerNo",value = "customerNo") @RequestParam(value="customerNo")String customerNo){
@@ -76,9 +85,9 @@ public class ProductCustomerController {
         }
         ExportExcel<SkuCustomerVo> ex = new ExportExcel<SkuCustomerVo>();
         String[] header =
-                { "失败原因","商品编码", "客户物料编码","客户物料名称","客户物料规格", "客户物料型号"};
+                { "失败原因","三级分类编码","客户商品编码","商品名称", "品牌", "规格", "型号", "最小单位",  "条形码", "商品简码", "川商品编码"};
         String[] line =
-                {"failMessage", "productNo","customerPdNo", "customerPdName","customerPdRule","customerPdSize"};
+                {"failMessage", "categoryNo","supplyPdNo","productName","brandName","rule","size","minUint","ean13Code","mnemonicCode","productNo"};
         OutputStream out;
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/x-download");

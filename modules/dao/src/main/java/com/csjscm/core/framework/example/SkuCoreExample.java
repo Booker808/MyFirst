@@ -8,4 +8,5 @@ public class SkuCoreExample {
     private String productNo;
     private Integer brandId;
     private String brandName;
+    private String size;
 }

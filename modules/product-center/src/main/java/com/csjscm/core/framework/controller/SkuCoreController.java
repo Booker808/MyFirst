@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -52,10 +53,9 @@ public class SkuCoreController {
         }
         ExportExcel<SkuCoreVo> ex = new ExportExcel<SkuCoreVo>();
         String[] header =
-                { "失败原因","小类编码", "川商品编码","商品名称","品牌", "规格型号", "最小库存单位", "助记码", "EAN13码（69码）", "自定义属性1", "自定义属性2", "自定义属性3", "自定义属性4", "自定义属性5",
-                        "自定义属性6", "自定义属性7", "自定义属性8", "自定义属性9", "自定义属性10"};
+                { "失败原因","三级分类编码","商品名称", "品牌", "规格", "型号", "最小单位", "进价成本", "近期询价", "条形码", "商品简码", "商品文字描述"};
         String[] line =
-                {"failMessage", "categoryNo","productNo", "productName","brandName","rule","minUint","mnemonicCode","ean13Code","suf1","suf2","suf3","suf4","suf5","suf6","suf7","suf8","suf9","suf10"};
+                {"failMessage","categoryNo","productName","brandName","rule","rule","minUint","refrencePrice","recentEnquiry","ean13Code","mnemonicCode","description"};
         OutputStream out;
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/x-download");
@@ -85,14 +85,53 @@ public class SkuCoreController {
 
     /**
      * 创建商品
-     * @param map
+     * @param skuCore
      * @return
      */
+    @ApiOperation("创建商品对象")
+    @RequestMapping(value = "/saveProduct", method = RequestMethod.POST)
+    public APIResponse createProduct(@RequestBody SkuCore skuCore){
+        skuCoreService.insertSelective(skuCore);
+        return APIResponse.success();
+    }
+    /**
+     * 创建商品
+     * @param skuCore
+     * @return
+     */
+    @ApiOperation("更新商品对象")
+    @RequestMapping(value = "/updateProduct", method = RequestMethod.POST)
+    public APIResponse updateProduct(@RequestBody SkuCore skuCore){
+        skuCoreService.updateProduct(skuCore);
+        return APIResponse.success();
+    }
+    /**
+     * 获取平台商品
+     * @param productNo
+     * @return
+     */
+    @ApiOperation("获取平台商品")
+    @RequestMapping(value = "/getSkuCoreInfo", method = RequestMethod.GET)
+    public APIResponse getSkuCoreInfo(@ApiParam(name = "productNo" ,value = "商品编码",required=true) String productNo){
+        Map<String,Object> map=new HashMap<>();
+        map.put("productNo",productNo);
+        SkuCore selective = skuCoreService.findSelective(map);
+        return APIResponse.success(selective);
+    }
+/*
+    */
+/**
+     * 创建商品
+     * @param map
+     * @return
+     *//*
+
     @ApiOperation("创建商品对象")
     @RequestMapping(value = "/saveProduct", method = RequestMethod.POST)
     public APIResponse createProduct(@ApiParam(name="map",value="商品对象",required=true) @RequestBody Map<String, Object> map){
         skuCoreService.insertSelective(map);
         return APIResponse.success();
     }
+*/
 
 }

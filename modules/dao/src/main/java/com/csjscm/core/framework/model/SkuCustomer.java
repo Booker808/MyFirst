@@ -49,6 +49,15 @@ public class SkuCustomer {
 
     @ApiModelProperty("编辑时间戳")
     private Date editTime;
+    @ApiModelProperty("品牌ID")
+    @NotBlank(message = "品牌ID不能为空")
+    private String brandId;
+
+    @ApiModelProperty("品牌名")
+    @NotBlank(message = "品牌名不能为空")
+    private String brandName;
+
+    private String minUint;
 
     private String udf1;
 

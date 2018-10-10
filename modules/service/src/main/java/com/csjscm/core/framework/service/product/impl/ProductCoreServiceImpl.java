@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ProductCoreServiceImpl implements ProductCoreService {
@@ -24,6 +25,17 @@ public class ProductCoreServiceImpl implements ProductCoreService {
         List<SkuCoreEx> skuCoreList=skuCoreMapper.selectExByExample(example);
         PageInfo<SkuCoreEx> pageInfo=new PageInfo<>(skuCoreList);
         QueryResult<SkuCoreEx> result=new QueryResult<>();
+        result.setTotal(pageInfo.getTotal());
+        result.setItems(pageInfo.getList());
+        return result;
+    }
+
+    @Override
+    public QueryResult<SkuCore> productPage(int page, int rpp, Map<String, Object> map) {
+        PageHelper.startPage(page,rpp);
+        List<SkuCore> skuCores = skuCoreMapper.listSelective(map);
+        PageInfo<SkuCore> pageInfo=new PageInfo<>(skuCores);
+        QueryResult<SkuCore> result=new QueryResult<>();
         result.setTotal(pageInfo.getTotal());
         result.setItems(pageInfo.getList());
         return result;

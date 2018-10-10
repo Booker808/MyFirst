@@ -2,6 +2,8 @@ package com.csjscm.core.framework.vo;
 
 import io.swagger.annotations.ApiModelProperty;
 
+import java.math.BigDecimal;
+
 public class SkuPartnerVo {
     private  String failMessage;
     @ApiModelProperty("商品编码")
@@ -24,6 +26,72 @@ public class SkuPartnerVo {
     private String free;
     private String categoryNo;
     private String minUint;
+
+    @ApiModelProperty("参考售价")
+    private String refrencePrice;
+
+    @ApiModelProperty("最近询价")
+    private String recentEnquiry;
+
+    @ApiModelProperty("二级分类编码")
+    private String lv2CategoryNo;
+
+    @ApiModelProperty("一级分类编码")
+    private String lv1CategoryNo;
+
+    @ApiModelProperty("也称69码")
+    private String ean13Code;
+
+    @ApiModelProperty("助记码")
+    private String mnemonicCode;
+
+    public String getEan13Code() {
+        return ean13Code;
+    }
+
+    public void setEan13Code(String ean13Code) {
+        this.ean13Code = ean13Code;
+    }
+
+    public String getMnemonicCode() {
+        return mnemonicCode;
+    }
+
+    public void setMnemonicCode(String mnemonicCode) {
+        this.mnemonicCode = mnemonicCode;
+    }
+
+    public String getLv2CategoryNo() {
+        return lv2CategoryNo;
+    }
+
+    public void setLv2CategoryNo(String lv2CategoryNo) {
+        this.lv2CategoryNo = lv2CategoryNo;
+    }
+
+    public String getLv1CategoryNo() {
+        return lv1CategoryNo;
+    }
+
+    public void setLv1CategoryNo(String lv1CategoryNo) {
+        this.lv1CategoryNo = lv1CategoryNo;
+    }
+
+    public String getRefrencePrice() {
+        return refrencePrice;
+    }
+
+    public void setRefrencePrice(String refrencePrice) {
+        this.refrencePrice = refrencePrice;
+    }
+
+    public String getRecentEnquiry() {
+        return recentEnquiry;
+    }
+
+    public void setRecentEnquiry(String recentEnquiry) {
+        this.recentEnquiry = recentEnquiry;
+    }
 
     public String getCategoryNo() {
         return categoryNo;

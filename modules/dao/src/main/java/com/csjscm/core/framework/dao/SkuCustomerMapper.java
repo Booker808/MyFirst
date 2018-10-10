@@ -3,6 +3,7 @@ package com.csjscm.core.framework.dao;
 import com.csjscm.core.framework.example.SkuCustomerExample;
 import com.csjscm.core.framework.model.SkuCustomer;
 import com.csjscm.core.framework.model.SkuCustomerEx;
+import com.csjscm.core.framework.vo.SkuCustomerPageVo;
 
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,8 @@ public interface SkuCustomerMapper {
     List<SkuCustomer> selectByExample(SkuCustomerExample example);
 
     List<SkuCustomerEx> selectExByExample(SkuCustomerExample example);
+
+    List<SkuCustomerPageVo> selectPage(Map<String,Object> map);
 
     /**
      * 按条件查询单个

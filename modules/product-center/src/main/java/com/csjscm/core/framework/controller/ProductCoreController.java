@@ -36,7 +36,9 @@ public class ProductCoreController {
             @ApiImplicitParam(name="productName",value="产品名",dataType = "String",paramType = "query"),
             @ApiImplicitParam(name="productNo",value="商品编码",dataType = "String",paramType = "query"),
             @ApiImplicitParam(name="brandId",value="品牌ID",dataType = "String",paramType = "query"),
-            @ApiImplicitParam(name="brandName",value="品牌名",dataType = "String",paramType = "query")
+            @ApiImplicitParam(name="brandName",value="品牌名",dataType = "String",paramType = "query"),
+            @ApiImplicitParam(name="lv1CategoryNo",value="一级分类编码",dataType = "String",paramType = "query"),
+            @ApiImplicitParam(name="lv2CategoryNo",value="二级分类编码",dataType = "String",paramType = "query")
     })
     @RequestMapping(value = "/product",method = RequestMethod.GET)
     public APIResponse<QueryResult<SkuCoreEx>> queryCoreProduct(
@@ -48,6 +50,27 @@ public class ProductCoreController {
             skuCoreExample=JSON.parseObject(JSON.toJSONString(condition),SkuCoreExample.class);
         }
         QueryResult<SkuCoreEx> result=productCoreService.queryCoreProduct(page,rpp,skuCoreExample);
+        return APIResponse.success(result);
+    }
+
+    /**
+     *
+     * @param page
+     * @param rpp
+     * @param condition
+     * @return
+     */
+    @ApiOperation("获取核心商品列表（新）")
+    @RequestMapping(value = "/productPage",method = RequestMethod.GET)
+    public APIResponse<QueryResult<SkuCore>> productPage(
+            @RequestParam(required = false,defaultValue = "1")int page,
+            @RequestParam(required = false,defaultValue = "10")int rpp,
+            @ApiIgnore @RequestParam Map<String,Object> condition){
+        SkuCoreExample skuCoreExample=new SkuCoreExample();
+        if(condition!=null){
+            skuCoreExample=JSON.parseObject(JSON.toJSONString(condition),SkuCoreExample.class);
+        }
+        QueryResult<SkuCore> result = productCoreService.productPage(page, rpp, condition);
         return APIResponse.success(result);
     }
 }

@@ -39,9 +39,9 @@ public interface SkuCoreService {
 
     /**
      * 创建商品对象
-     * @param map
+     * @param skuCore
      */
-    void insertSelective(Map<String, Object> map);
+    void insertSelective(SkuCore skuCore);
     /**
      * 按条件查询单个
      *
@@ -54,5 +54,7 @@ public interface SkuCoreService {
     List<SkuCore> listSelective(Map<String,Object> map);
 
     SkuCoreSCMMolde saveSCMSkuCore(SkuCoreSCMMolde skuCoreSMMolde);
+
+    void updateProduct(SkuCore skuCore);
 
 }
