@@ -58,6 +58,12 @@ public class EnterprisePurchaseTemplateVo {
     @NotNull(message = "enable不能为空")
     private Integer enable;
 
-    @ApiModelProperty("审批状态(保存时此项为空) 取工作流接口返回值，1待申请人提交，2待采购部负责人审批，3待法务专员审批，4待执行总经理审批5归档6已驳回申请人已作废")
+    @ApiModelProperty("（暂废弃）审批状态(保存时此项为空) 取工作流接口返回值，1待申请人提交，2待采购部负责人审批，3待法务专员审批，4待执行总经理审批5归档6已驳回申请人7已作废")
     private Integer checkStatus;
+
+    @ApiModelProperty("实例ID，审核接口会用到")
+    private String instanceId;
+
+    @ApiModelProperty("审核描述")
+    private String checkDescription;
 }

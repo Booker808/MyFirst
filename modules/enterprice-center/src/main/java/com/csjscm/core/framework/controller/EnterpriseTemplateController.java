@@ -4,11 +4,15 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.csjscm.core.framework.example.EnterprisePurchaseTemplateExample;
 import com.csjscm.core.framework.model.EnterpriseStandardTemplate;
+import com.csjscm.core.framework.service.template.EnterpriseTemplateFlowService;
 import com.csjscm.core.framework.service.template.EnterpriseTemplateService;
+import com.csjscm.core.framework.service.template.model.CheckTaskVo;
+import com.csjscm.core.framework.service.template.model.HisWorkFlowInfo;
 import com.csjscm.core.framework.vo.EnterprisePurchaseTemplateDetailVo;
 import com.csjscm.core.framework.vo.EnterprisePurchaseTemplateVo;
 import com.csjscm.sweet.framework.auth.AuthUtils;
 import com.csjscm.sweet.framework.core.mvc.APIResponse;
+import com.csjscm.sweet.framework.core.mvc.BusinessException;
 import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -29,6 +33,8 @@ import java.util.Map;
 public class EnterpriseTemplateController {
     @Autowired
     private EnterpriseTemplateService enterpriseTemplateService;
+    @Autowired
+    private EnterpriseTemplateFlowService flowService;
 
     @ApiOperation("新增标准模板")
     @RequestMapping(value = "/standardTemplate",method = RequestMethod.POST)
@@ -78,7 +84,9 @@ public class EnterpriseTemplateController {
         }
         enterpriseTemplateService.addPurchaseTemplate(templateDetailVo);
         if(templateDetailVo.getIsSubmit()!=null && templateDetailVo.getIsSubmit() ==1){
-            enterpriseTemplateService.submitPurchaseTemplate(templateDetailVo);
+            String url=enterpriseTemplateService.getPurchaseTemplateUrl(templateDetailVo.getId());
+            templateDetailVo.setTemplateUrl(url);
+            flowService.submitPurchaseTemplate(templateDetailVo);
         }
         return APIResponse.success();
     }
@@ -95,7 +103,9 @@ public class EnterpriseTemplateController {
         }
         enterpriseTemplateService.updatePurchaseTemplate(templateDetailVo);
         if(templateDetailVo.getIsSubmit()!=null && templateDetailVo.getIsSubmit() ==1){
-            enterpriseTemplateService.submitPurchaseTemplate(templateDetailVo);
+            String url=enterpriseTemplateService.getPurchaseTemplateUrl(templateDetailVo.getId());
+            templateDetailVo.setTemplateUrl(url);
+            flowService.submitPurchaseTemplate(templateDetailVo);
         }
         return APIResponse.success();
     }
@@ -122,9 +132,41 @@ public class EnterpriseTemplateController {
         return APIResponse.success(result);
     }
 
-    @ApiOperation("获取指定ID的采购合同")
+    @ApiOperation("获取指定ID的采购合同模板")
     @RequestMapping(value = "/purchaseTemplate/{id}",method = RequestMethod.GET)
     public APIResponse<EnterprisePurchaseTemplateDetailVo> queryPurchaseTemplateById(@PathVariable Integer id){
         return APIResponse.success(enterpriseTemplateService.queryPurchaseTemplateById(id));
+    }
+
+    @ApiOperation("根据当前用户和当前模板ID获取taskId（有说明可以审核）")
+    @RequestMapping(value = "/todoTaskId/{templateId}",method = RequestMethod.GET)
+    public APIResponse<String> getToDoTaskId(@PathVariable Integer templateId){
+        JSONObject sessionUser = (JSONObject) AuthUtils.getSessionUser();
+        if(sessionUser==null)
+            throw new BusinessException("无法获取到当前用户");
+        String userName=sessionUser.getString("name");
+//        String userName="管理员";
+        String taskId=flowService.getToDoTaskId(templateId,userName);
+        return APIResponse.success(taskId);
+    }
+
+    @ApiOperation("根据TaskId和当前用户，进行审批")
+    @RequestMapping(value = "/_checkTask",method = RequestMethod.POST)
+    public APIResponse checkTask(
+            @RequestBody @Valid CheckTaskVo checkTask){
+        JSONObject sessionUser = (JSONObject) AuthUtils.getSessionUser();
+        if(sessionUser==null)
+            throw new BusinessException("无法获取到当前用户");
+        String userName=sessionUser.getString("name");
+//        String userName="管理员";
+        flowService.checkTask(userName,checkTask);
+        return APIResponse.success();
+    }
+
+    @ApiOperation("根据instanceId获取历史审批记录")
+    @RequestMapping(value = "/hisFlow",method = RequestMethod.GET)
+    public APIResponse<List<HisWorkFlowInfo>> queryHisFlow(@RequestParam String instanceId){
+        List<HisWorkFlowInfo> result=flowService.queryHisFlow(instanceId);
+        return APIResponse.success(result);
     }
 }

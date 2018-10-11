@@ -46,13 +46,6 @@ public interface EnterpriseTemplateService {
     void addPurchaseTemplate(EnterprisePurchaseTemplateDetailVo templateDetailVo);
 
     /**
-     * 提交采购合同模板至流程
-     *
-     * @param templateDetailVo
-     */
-    void submitPurchaseTemplate(EnterprisePurchaseTemplateDetailVo templateDetailVo);
-
-    /**
      * 更新采购合同模板
      *
      * @param templateDetailVo
@@ -76,4 +69,6 @@ public interface EnterpriseTemplateService {
      * @return
      */
     EnterprisePurchaseTemplateDetailVo queryPurchaseTemplateById(Integer id);
+
+    String getPurchaseTemplateUrl(Integer id);
 }

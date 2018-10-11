@@ -20,6 +20,8 @@
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="edit_user" property="editUser" jdbcType="VARCHAR" />
     <result column="edit_time" property="editTime" jdbcType="TIMESTAMP" />
+    <result column="instance_id" property="instanceId" jdbcType="INTEGER" />
+    <result column="check_description" property="checkDescription" jdbcType="VARCHAR" />
   </resultMap>
   <resultMap id="ExResultMap" type="com.csjscm.core.framework.model.EnterprisePurchaseTemplateEx" extends="BaseResultMap">
     <result column="ent_name" property="entName" jdbcType="VARCHAR"/>
@@ -30,12 +32,12 @@
   <sql id="Base_Column_List" >
     id, ent_number, address, pay_type, prepay_rate, pick_rate, warranty_rate, pay_date,
     ticket_date, template_type, template_url, warranty_date, enable, check_status, create_user,
-    create_time, edit_user, edit_time
+    create_time, edit_user, edit_time,instance_id,check_description
   </sql>
   <sql id="Template_Column_List" >
     t.id, t.ent_number, t.address, t.pay_type, t.prepay_rate, t.pick_rate, t.warranty_rate, t.pay_date,
     t.ticket_date, t.template_type, t.template_url, t.warranty_date, t.enable, t.check_status, t.create_user,
-    t.create_time, t.edit_user, t.edit_time
+    t.create_time, t.edit_user, t.edit_time,t.instance_id,t.check_description
   </sql>
   <sql id="searchBy">
     <trim prefix="where" prefixOverrides="and|or">
@@ -277,6 +279,12 @@
       </if>
       <if test="editTime != null" >
         edit_time = #{editTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="instanceId!=null">
+        instance_id=#{instanceId,jdbcType=INTEGER},
+      </if>
+      <if test="checkDescription!=null">
+        check_description=#{checkDescription,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}

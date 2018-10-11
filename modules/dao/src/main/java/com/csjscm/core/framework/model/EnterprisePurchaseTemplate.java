@@ -42,4 +42,8 @@ public class EnterprisePurchaseTemplate {
     private String editUser;
 
     private Date editTime;
+
+    private String instanceId;
+
+    private String checkDescription;
 }

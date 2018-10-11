@@ -65,5 +65,27 @@ public class Constant {
     public static final String  ENTERPRISE_CHECK_OA_PROCESS = "SupplierAdmittanceProcess2.2";
 
 
+    /**
+     * 采购模板开始审核接口api地址
+     */
+    public static final String ENTERPRISE_CHECK_PURCHASE_TEMPLATE_START_URL = "/api/templateApproval/startTemplateApprovalWorkFlow";
 
+    /**
+     * 采购模板我的完成待办API
+     */
+    public static final String  ENTERPRISE_CHECK_PURCHASE_TEMPLATE_COMPLETE_URL = "/api/templateApproval/getTATodoComplete";
+    /**
+     * 采购模板我的代办api
+     */
+    public static final String  ENTERPRISE_CHECK_PURCHASE_TEMPLATE_MYTODODEALWITH_URL = "/api/templateApproval/getTATodoDealWith";
+
+    /**
+     * 查询历史任务记录
+     */
+    public static final String ENTERPRISE_CHECK_OA_FLOW_TASK_INFO_URL="/api/activiti/getMyWorkFlowInfoHisTask";
+
+    /**
+     * 查询最後任务记录
+     */
+    public static final String ENTERPRISE_CHECK_OA_FLOW_LAST_INFO_URL="/api/activiti/getMyWorkFlowEndTask";
 }

@@ -22,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -57,6 +58,7 @@ public class EnterpriseTemplateServiceImpl implements EnterpriseTemplateService{
     }
 
     @Override
+    @Transactional
     public void addPurchaseTemplate(EnterprisePurchaseTemplateDetailVo templateDetailVo) {
         if(isPurchaseTemplateExists(templateDetailVo.getEntNumber())){
             throw new BusinessException("此供应商模版已存在");
@@ -67,6 +69,7 @@ public class EnterpriseTemplateServiceImpl implements EnterpriseTemplateService{
         checkPurchaseTemplateValid(purchaseTemplate);
         //插入采购合同模板
         purchaseTemplate.setId(null);
+//        purchaseTemplate.setCheckStatus(TemplateCheckStatusEnum.待申请人提交.getStatus());
         purchaseTemplateMapper.insertSelective(purchaseTemplate);
         EnterpriseAccount account=new EnterpriseAccount();
         BeanutilsCopy.copyProperties(templateDetailVo,account);
@@ -75,17 +78,20 @@ public class EnterpriseTemplateServiceImpl implements EnterpriseTemplateService{
     }
 
     @Override
-    public void submitPurchaseTemplate(EnterprisePurchaseTemplateDetailVo templateDetailVo) {
-        //todo:提交流程
-    }
-
-    @Override
+    @Transactional
     public void updatePurchaseTemplate(EnterprisePurchaseTemplateDetailVo templateDetailVo) {
-        EnterprisePurchaseTemplate purchaseTemplate = new EnterprisePurchaseTemplate();
+        EnterprisePurchaseTemplate purchaseTemplate = purchaseTemplateMapper.selectByPrimaryKey(templateDetailVo.getId());
+        if(purchaseTemplate==null){
+            throw new BusinessException("此ID不存在");
+        }
+//        if(!purchaseTemplate.getCheckStatus().equals(TemplateCheckStatusEnum.待申请人提交.getStatus())){
+//            throw new BusinessException("非待申请人提交状态下不可修改");
+//        }
         BeanutilsCopy.copyProperties(templateDetailVo,purchaseTemplate);
         //校验合同模板信息是否合法
         checkPurchaseTemplateValid(purchaseTemplate);
         //插入采购合同模板
+//        purchaseTemplate.setCheckStatus(TemplateCheckStatusEnum.待申请人提交.getStatus());
         purchaseTemplateMapper.updateByPrimaryKeySelective(purchaseTemplate);
         EnterpriseAccount account=new EnterpriseAccount();
         BeanutilsCopy.copyProperties(templateDetailVo,account);
@@ -120,7 +126,33 @@ public class EnterpriseTemplateServiceImpl implements EnterpriseTemplateService{
         }
         EnterprisePurchaseTemplateDetailVo detailVo=new EnterprisePurchaseTemplateDetailVo();
         BeanutilsCopy.copyProperties(list.get(0),detailVo);
+        detailVo.setTemplateUrl(getPurchaseTemplateUrl(id));
         return detailVo;
+    }
+
+    /**
+     * 根据采购模板ID获取模板URL
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public String getPurchaseTemplateUrl(Integer id) {
+        EnterprisePurchaseTemplate purchaseTemplate=purchaseTemplateMapper.selectByPrimaryKey(id);
+        switch(purchaseTemplate.getTemplateType()){
+            case 1:
+            case 2:
+                EnterpriseStandardTemplate standardTemplate=standardTemplateMapper.selectCurrentTemplate(purchaseTemplate.getTemplateType());
+                if(standardTemplate!=null){
+                    return standardTemplate.getTemplateUrl();
+                }else{
+                    return "";
+                }
+            case 3:
+                return purchaseTemplate.getTemplateUrl();
+            default:
+                return "";
+        }
     }
 
     private boolean isPurchaseTemplateExists(String entNumber){
@@ -193,4 +225,5 @@ public class EnterpriseTemplateServiceImpl implements EnterpriseTemplateService{
         map.put("isdelete",0);
         return accountMapper.findCount(map)>0;
     }
+
 }
