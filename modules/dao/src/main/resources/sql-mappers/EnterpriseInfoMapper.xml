@@ -19,13 +19,14 @@
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="edit_time" property="editTime" jdbcType="TIMESTAMP" />
     <result column="edit_user" property="editUser" jdbcType="VARCHAR" />
+    <result column="request_id" property="requestId" jdbcType="VARCHAR" />
     <result column="isdelete" property="isdelete" jdbcType="INTEGER" />
     <result column="channel" property="channel" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
     ent_number, ent_type, ent_name, register_address, bussiness_address, web_address,
     register_money, taxpayer_id, purchase, sell, tender, bid, check_state, isvalid, create_time,
-    edit_time, edit_user, isdelete,channel
+    edit_time, edit_user, isdelete,channel,request_id
   </sql>
   <!-- 基本的sql查询条件公共引用 -->
   <sql id="searchBy">
@@ -41,6 +42,9 @@
       </if>
       <if test="entName != null and entName != '' ">
         and ent_name = #{entName,jdbcType=VARCHAR}
+      </if>
+      <if test="entNameLike!=null and entNameLike !=''">
+        and ent_name like concat('%',#{entNameLike},'%')
       </if>
       <if test="registerAddress != null and registerAddress != '' ">
         and register_address = #{registerAddress,jdbcType=VARCHAR}
@@ -83,6 +87,9 @@
       </if>
       <if test="editUser != null and editUser != '' ">
         and edit_user = #{editUser,jdbcType=VARCHAR}
+      </if>
+      <if test="requestId != null and requestId != '' ">
+        and request_id = #{requestId,jdbcType=VARCHAR}
       </if>
       <if test="isdelete != null ">
         and isdelete = #{isdelete,jdbcType=INTEGER}
@@ -146,14 +153,14 @@
       register_money, taxpayer_id, purchase, 
       sell, tender, bid, 
       check_state, isvalid, create_time, 
-      edit_time, edit_user, isdelete,channel
+      edit_time, edit_user, isdelete,channel,request_id
       )
     values (#{entNumber,jdbcType=VARCHAR}, #{entType,jdbcType=INTEGER}, #{entName,jdbcType=VARCHAR}, 
       #{registerAddress,jdbcType=VARCHAR}, #{bussinessAddress,jdbcType=VARCHAR}, #{webAddress,jdbcType=VARCHAR}, 
       #{registerMoney,jdbcType=VARCHAR}, #{taxpayerId,jdbcType=VARCHAR}, #{purchase,jdbcType=INTEGER}, 
       #{sell,jdbcType=INTEGER}, #{tender,jdbcType=INTEGER}, #{bid,jdbcType=INTEGER}, 
       #{checkState,jdbcType=VARCHAR}, #{isvalid,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP},
-      #{editTime,jdbcType=TIMESTAMP}, #{editUser,jdbcType=VARCHAR}, #{isdelete,jdbcType=INTEGER}, #{channel,jdbcType=INTEGER}
+      #{editTime,jdbcType=TIMESTAMP}, #{editUser,jdbcType=VARCHAR}, #{isdelete,jdbcType=INTEGER}, #{channel,jdbcType=INTEGER},#{requestId,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.csjscm.core.framework.model.EnterpriseInfo" >
@@ -209,6 +216,9 @@
       </if>
       <if test="editUser != null" >
         edit_user,
+      </if>
+      <if test="requestId != null" >
+        request_id,
       </if>
       <if test="isdelete != null" >
         isdelete,
@@ -269,6 +279,9 @@
       <if test="editUser != null" >
         #{editUser,jdbcType=VARCHAR},
       </if>
+      <if test="requestId != null" >
+        #{requestId,jdbcType=VARCHAR},
+      </if>
       <if test="isdelete != null" >
         #{isdelete,jdbcType=INTEGER},
       </if>
@@ -327,6 +340,9 @@
       </if>
       <if test="editUser != null" >
         edit_user = #{editUser,jdbcType=VARCHAR},
+      </if>
+      <if test="requestId != null" >
+        request_id = #{requestId,jdbcType=VARCHAR},
       </if>
       <if test="isdelete != null" >
         isdelete = #{isdelete,jdbcType=INTEGER},

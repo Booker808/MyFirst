@@ -15,6 +15,7 @@ import com.csjscm.core.framework.service.enterprise.EnterpriseProtocolService;
 import com.csjscm.core.framework.service.enterprise.dto.EnterpriseInfoAccessDto;
 import com.csjscm.core.framework.service.enterprise.dto.EnterpriseInfoDto;
 import com.csjscm.core.framework.vo.EnterpriseInfoSPModel;
+import com.csjscm.core.framework.vo.SkuCustomerPageVo;
 import com.csjscm.sweet.framework.core.mvc.BusinessException;
 import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
 import com.github.pagehelper.PageHelper;
@@ -338,6 +339,17 @@ public class EnterpriseInfoServiceImpl implements EnterpriseInfoService {
     @Override
     public EnterpriseInfo selectByPrimaryKey(String entNumber) {
         return enterpriseInfoMapper.selectByPrimaryKey(entNumber);
+    }
+
+    @Override
+    public QueryResult<EnterpriseInfo> selectEnterpriseInfoPage(int page, int rpp, Map<String, Object> map) {
+        PageHelper.startPage(page,rpp);
+        List<EnterpriseInfo> skuCoreList=enterpriseInfoMapper.listSelective(map);
+        PageInfo<EnterpriseInfo> pageInfo=new PageInfo<>(skuCoreList);
+        QueryResult<EnterpriseInfo> result=new QueryResult<>();
+        result.setTotal(pageInfo.getTotal());
+        result.setItems(pageInfo.getList());
+        return result;
     }
 
     /**

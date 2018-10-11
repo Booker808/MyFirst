@@ -82,7 +82,7 @@ public class OutShoppingCenterController {
             APIResponse apiResponse=new APIResponse();
             apiResponse.setMessage("企业名称已存在");
             apiResponse.setCode("fail");
-            apiResponse.setData(enterpriseInfo.getEntNumber());
+            apiResponse.setData(enterpriseInfo);
             return apiResponse;
         }
         return APIResponse.success();

@@ -32,6 +32,7 @@ public class EnterpriseInfo {
     private Integer bid;
 
     private String checkState;
+    private String requestId;
 
     private Integer isvalid;
 

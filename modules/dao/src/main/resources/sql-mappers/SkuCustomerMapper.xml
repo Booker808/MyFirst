@@ -645,18 +645,24 @@
   </select>
 
   <select id="selectPage" resultType="com.csjscm.core.framework.vo.SkuCustomerPageVo" parameterType="java.util.HashMap">
-       select
-      c.id id,c.product_no productNo,c.customer_pd_name customerPdName, c.customer_pd_no customerPdNo,
-			c.brand_name brandName,c.customer_pd_rule customerPdRule,c.customer_pd_size customerPdSize,c.min_uint minUint,
-      sku.category_no categoryNo,sku.lv2_category_no lv2CategoryNo,sku.lv1_category_no lv1CategoryNo,
-      sku.category_sp_no categorySpNo,sku.lv2_category_sp_no lv2CategorySpNo,sku.lv1_category_sp_no lv1CategorySpNo,
-      sku.channel,ent.ent_name entName
+    select
+    c.id id,c.product_no productNo,c.customer_pd_name customerPdName, c.customer_pd_no customerPdNo,c.brand_id brandId,
+    c.brand_name brandName,c.customer_pd_rule customerPdRule,c.customer_pd_size customerPdSize,c.min_uint minUint,
+    sku.category_no categoryNo,sku.lv2_category_no lv2CategoryNo,sku.lv1_category_no lv1CategoryNo,
+    sku.category_id categoryId,sku.lv1_category_id lv1CategoryId,sku.lv2_category_id lv2CategoryId,
+    sku.category_sp_id categorySpId,sku.lv1_category_sp_id lv1CategorySpId,sku.lv2_category_sp_id lv2CategorySpId,
+    sku.category_sp_no categorySpNo,sku.lv2_category_sp_no lv2CategorySpNo,sku.lv1_category_sp_no lv1CategorySpNo,
+    sku.ean13_code ean13Code,sku.mnemonic_code mnemonicCode,
+    sku.channel,ent.ent_name entName,ent.ent_number customerNo
     from sku_customer c left join sku_core sku on c.product_no=sku.product_no
     left join enterprise_info ent on ent.ent_number=c.customer_no
     <where>
       1=1
       <if test="productNo!=null and productNo!=''">
         and c.product_no =#{productNo}
+      </if>
+      <if test="id!=null and id!=''">
+        and c.id =#{id}
       </if>
       <if test="channel!=null and channel!=''">
         and sku.channel =#{channel}

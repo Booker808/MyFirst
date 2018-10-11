@@ -48,4 +48,6 @@ public interface EnterpriseInfoService {
     EnterpriseInfoAccessDto queryEnterpriseInfoAccess(String entNumber);
 
     EnterpriseInfo selectByPrimaryKey (String entNumber);
+
+    QueryResult<EnterpriseInfo> selectEnterpriseInfoPage(int page, int rpp, Map<String,Object> map);
 }

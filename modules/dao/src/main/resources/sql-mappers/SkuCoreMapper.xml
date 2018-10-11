@@ -182,7 +182,7 @@
         and rule = #{rule,jdbcType=VARCHAR}
       </if>
       <if test="size != null and size != '' ">
-        and size = #{size,jdbcType=VARCHAR}
+        and `size` = #{size}
       </if>
       <if test="createUserId != null and createUserId != '' ">
         and create_user_id = #{createUserId,jdbcType=VARCHAR}
@@ -765,7 +765,7 @@ insert into sku_core(product_no,std_product_no,product_name,product_price,lv1_ca
       <if test="lv1CategorySpNo != null and lv1CategorySpNo != '' ">
         lv1_category_sp_no = #{lv1CategorySpNo,jdbcType=VARCHAR},
       </if>
-      <if test="lv2CategorySpId != null and lv2CategorySpId != ' ">
+      <if test="lv2CategorySpId != null ">
         lv2_category_sp_id = #{lv2CategorySpId,jdbcType=INTEGER},
       </if>
       <if test="lv2CategorySpNo != null and lv2CategorySpNo != '' ">

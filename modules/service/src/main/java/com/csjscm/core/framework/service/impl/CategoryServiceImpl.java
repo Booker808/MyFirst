@@ -69,6 +69,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public int update(Category t) {
+        if(t.getClassCode().length()!= t.getLevelNum()){
+            throw new BusinessException("分类编码长度与级别不符");
+        }
         Category old = categoryMapper.findByPrimary(t.getId());
         //校验编码是否重复
         Map<String, Object> map = new HashMap<>();

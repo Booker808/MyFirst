@@ -552,7 +552,7 @@ public class SkuCoreServiceImpl implements SkuCoreService {
         map.put("classCode", skuCoreSMMolde.getCategoryNo());
         Category category = categoryMapper.findSelective(map);
         if(category==null){
-            throw  new  BussinessException("分类编码有无，不存在该编码");
+            throw  new  BussinessException("分类编码有误，不存在该编码");
         }
         map.clear();
         map.put("brandName", skuCoreSMMolde.getBrandName());

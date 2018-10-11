@@ -4,6 +4,7 @@ import com.csjscm.core.framework.common.constant.Constant;
 import com.csjscm.core.framework.common.enums.CategoryLevelEnum;
 import com.csjscm.core.framework.common.enums.InvUnitIsvalidEnum;
 import com.csjscm.core.framework.common.enums.SkuCoreChannelEnum;
+import com.csjscm.core.framework.common.util.BeanutilsCopy;
 import com.csjscm.core.framework.common.util.BussinessException;
 import com.csjscm.core.framework.common.util.ExcelUtil;
 import com.csjscm.core.framework.dao.*;
@@ -27,6 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.lang.reflect.Field;
@@ -406,7 +408,10 @@ public class ProductCustomerServiceImpl implements ProductCustomerService {
     }
 
     @Override
-    public void save(SkuCustomer skuCustomer) {
+    @Transactional
+    public void save(SkuCustomerVo skuCustomerVo) {
+        SkuCustomer skuCustomer=new SkuCustomer();
+        BeanutilsCopy.copyProperties(skuCustomerVo,skuCustomer);
         skuCustomer.setCreateTime(new Date());
         Map<String, Object> customermap = new HashMap<>();
         customermap.put("customerNo",skuCustomer.getCustomerNo());
@@ -414,16 +419,43 @@ public class ProductCustomerServiceImpl implements ProductCustomerService {
         customermap.put("customerPdRule",skuCustomer.getCustomerPdRule());
         customermap.put("customerPdSize",skuCustomer.getCustomerPdSize());
         customermap.put("customerPdNo",skuCustomer.getCustomerPdNo());
+        customermap.put("brandName",skuCustomer.getBrandName());
+        customermap.put("minUint",skuCustomer.getMinUint());
         int count = skuCustomerMapper.findCount(customermap);
         if(count>0){
             throw  new  BussinessException("客户商品已存在");
         }
         Map<String, Object> productNomap = new HashMap<>();
-        productNomap.put("productNo", skuCustomer.getProductNo());
+        productNomap.put("brandName", skuCustomer.getBrandName());
+        productNomap.put("minUint", skuCustomer.getMinUint());
+        productNomap.put("sizes", skuCustomer.getCustomerPdSize());
+        productNomap.put("rule",skuCustomer.getCustomerPdRule());
+        productNomap.put("productName", skuCustomer.getCustomerPdName());
         SkuCore skuCore = skuCoreMapper.findSelective(productNomap);
+        String productNo="";
         if(skuCore==null){
-           throw  new BussinessException("商品编码不存在");
+             skuCore = new SkuCore();
+            BeanutilsCopy.copyProperties(skuCustomerVo,skuCore);
+            // 获取商品编码
+            Long increase = redisServiceFacade.increase(new RedisDistributedCounterObject(Constant.REDIS_KEY_PRODUCT_NO + skuCore.getCategoryNo()), 1);
+            String increment = increase.toString();
+            String str = "";
+            for (int j = 0; j < 5 - increment.length(); j++) {
+                str += "0";
+            }
+            str += increment;
+            productNo = skuCore.getCategoryNo() + str;
+            skuCore.setCreateTime(new Date());
+            skuCore.setChannel(SkuCoreChannelEnum.手动新增.getState());
+            skuCore.setProductNo(productNo);
+            skuCore.setRule(skuCustomer.getCustomerPdRule());
+            skuCore.setSize(skuCustomer.getCustomerPdSize());
+            skuCore.setProductName(skuCustomer.getCustomerPdName());
+            skuCoreMapper.insertSelective(skuCore);
+        }else {
+            productNo=skuCore.getProductNo();
         }
+        skuCustomer.setProductNo(productNo);
         skuCustomerMapper.insertSelective(skuCustomer);
     }
 
@@ -476,5 +508,22 @@ public class ProductCustomerServiceImpl implements ProductCustomerService {
     @Override
     public List<SkuCustomer> listSelectiveSCM(Map<String, Object> map) {
         return skuCustomerMapper.listSelectiveSCM(map);
+    }
+
+    @Override
+    public void update(SkuCustomer skuCustomer) {
+        Map<String, Object> customermap = new HashMap<>();
+        customermap.put("customerNo",skuCustomer.getCustomerNo());
+        customermap.put("customerPdName",skuCustomer.getCustomerPdName());
+        customermap.put("customerPdRule",skuCustomer.getCustomerPdRule());
+        customermap.put("customerPdSize",skuCustomer.getCustomerPdSize());
+        customermap.put("customerPdNo",skuCustomer.getCustomerPdNo());
+        customermap.put("brandName",skuCustomer.getBrandName());
+        customermap.put("minUint",skuCustomer.getMinUint());
+        SkuCustomer selective = skuCustomerMapper.findSelective(customermap);
+        if(selective!=null && selective.getId().intValue()!= skuCustomer.getId().intValue()){
+            throw  new BussinessException("已存在修改过后的商品");
+        }
+        skuCustomerMapper.updateByPrimaryKeySelective(skuCustomer);
     }
 }

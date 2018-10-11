@@ -652,6 +652,8 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
             skuCore.setCategorySpId(spCategories.get(0).getId());
             skuCore.setCategorySpNo(spCategories.get(0).getClassCode());
             skuCore.setMinUint(skuPartnerModel.getMinUint());
+            skuCore.setRefrencePrice(skuPartnerModel.getRefrencePrice());
+            skuCore.setRecentEnquiry(skuPartnerModel.getRecentEnquiry());
             skuCoreMapper.insertSelective(skuCore);
         } else {
             productNo = skuCores.get(0).getProductNo();
@@ -670,6 +672,7 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
         skuPartner.setBrandId(brandMasters.get(0).getId().toString());
         skuPartner.setRecentEnquiry(skuPartnerModel.getRecentEnquiry());
         skuPartner.setRefrencePrice(skuPartnerModel.getRefrencePrice());
+        skuPartner.setMinUint(skuPartnerModel.getMinUint());
         skuPartnerMapper.insertSelective(skuPartner);
         return skuPartner.getId();
     }

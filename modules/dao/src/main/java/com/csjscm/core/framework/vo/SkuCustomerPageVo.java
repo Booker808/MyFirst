@@ -36,6 +36,8 @@ public class SkuCustomerPageVo extends SkuCustomer {
     private Integer channel;
 
     private String entName;
+    private String mnemonicCode;
+    private String ean13Code;
 
 
 

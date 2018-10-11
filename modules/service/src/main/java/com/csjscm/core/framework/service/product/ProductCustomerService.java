@@ -6,6 +6,7 @@ import com.csjscm.core.framework.model.SkuCustomer;
 import com.csjscm.core.framework.model.SkuCustomerEx;
 import com.csjscm.core.framework.vo.SkuCustomerPageVo;
 import com.csjscm.core.framework.vo.SkuCustomerSCMMolde;
+import com.csjscm.core.framework.vo.SkuCustomerVo;
 import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,7 +27,7 @@ public interface ProductCustomerService {
      */
     Map<String,Object> importCustomerExcel(MultipartFile file,String customerNo)throws BussinessException;
 
-    void save(SkuCustomer skuCustomer);
+    void save(SkuCustomerVo skuCustomerVo);
     /**
      * 按条件查询list
      *
@@ -36,4 +37,6 @@ public interface ProductCustomerService {
     SkuCustomer saveSCMSkuCustomer(SkuCustomerSCMMolde skuCustomerSCMMolde);
 
     List<SkuCustomer> listSelectiveSCM(Map<String,Object> map);
+
+    void update(SkuCustomer skuCustomer);
 }

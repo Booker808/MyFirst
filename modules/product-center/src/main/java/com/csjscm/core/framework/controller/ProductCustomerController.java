@@ -6,11 +6,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.csjscm.core.framework.common.util.BussinessException;
 import com.csjscm.core.framework.common.util.ExportExcel;
 import com.csjscm.core.framework.example.SkuCustomerExample;
-import com.csjscm.core.framework.model.BrandMaster;
 import com.csjscm.core.framework.model.SkuCustomer;
 import com.csjscm.core.framework.model.SkuCustomerEx;
 import com.csjscm.core.framework.service.product.ProductCustomerService;
-import com.csjscm.core.framework.vo.SkuCoreVo;
 import com.csjscm.core.framework.vo.SkuCustomerPageVo;
 import com.csjscm.core.framework.vo.SkuCustomerVo;
 import com.csjscm.sweet.framework.core.mvc.APIResponse;
@@ -87,7 +85,7 @@ public class ProductCustomerController {
         String[] header =
                 { "失败原因","三级分类编码","客户商品编码","商品名称", "品牌", "规格", "型号", "最小单位",  "条形码", "商品简码", "川商品编码"};
         String[] line =
-                {"failMessage", "categoryNo","supplyPdNo","productName","brandName","rule","size","minUint","ean13Code","mnemonicCode","productNo"};
+                {"failMessage", "categoryNo","customerPdNo","customerPdName","brandName","customerPdRule","customerPdSize","minUint","ean13Code","mnemonicCode","productNo"};
         OutputStream out;
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/x-download");
@@ -101,13 +99,19 @@ public class ProductCustomerController {
 
     /**
      * 新增客户商品
-     * @param skuCustomer
+     * @param skuCustomerVo
      * @return
      */
     @ApiOperation("新增客户商品")
     @RequestMapping(value = "/saveCustomer",method = RequestMethod.POST)
-    public APIResponse createBrand(@RequestBody @Valid SkuCustomer skuCustomer){
-        productCustomerService.save(skuCustomer);
+    public APIResponse createBrand(@RequestBody @Valid SkuCustomerVo skuCustomerVo){
+        productCustomerService.save(skuCustomerVo);
+        return APIResponse.success();
+    }
+    @ApiOperation("更新客户商品")
+    @RequestMapping(value = "/updateCustomer",method = RequestMethod.POST)
+    public APIResponse updateCustomer(@RequestBody @Valid SkuCustomer skuCustomer){
+        productCustomerService.update(skuCustomer);
         return APIResponse.success();
     }
     @ExceptionHandler({BussinessException.class})

@@ -66,10 +66,6 @@ public class ProductCoreController {
             @RequestParam(required = false,defaultValue = "1")int page,
             @RequestParam(required = false,defaultValue = "10")int rpp,
             @ApiIgnore @RequestParam Map<String,Object> condition){
-        SkuCoreExample skuCoreExample=new SkuCoreExample();
-        if(condition!=null){
-            skuCoreExample=JSON.parseObject(JSON.toJSONString(condition),SkuCoreExample.class);
-        }
         QueryResult<SkuCore> result = productCoreService.productPage(page, rpp, condition);
         return APIResponse.success(result);
     }
