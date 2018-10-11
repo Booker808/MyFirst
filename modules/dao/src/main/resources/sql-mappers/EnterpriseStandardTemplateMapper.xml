@@ -26,7 +26,15 @@
       from enterprise_standard_template
       order by edit_time desc
     </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <select id="selectCurrentTemplate" resultMap="BaseResultMap" parameterType="integer">
+    select
+      <include refid="Base_Column_List"/>
+    from enterprise_standard_template
+    where template_type=#{templateType,jdbcType=INTEGER} and enable=1
+    order by edit_time desc
+    limit 0,1
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from enterprise_standard_template
     where id = #{id,jdbcType=INTEGER}
   </delete>

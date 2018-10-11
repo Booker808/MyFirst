@@ -18,4 +18,6 @@ public interface EnterpriseStandardTemplateMapper {
     int updateByPrimaryKey(EnterpriseStandardTemplate record);
 
     List<EnterpriseStandardTemplate> selectAllList();
+
+    EnterpriseStandardTemplate selectCurrentTemplate(Integer templateType);
 }
