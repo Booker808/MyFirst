@@ -90,20 +90,26 @@
     <include refid="exSearchBy"/>
     order by ent_number desc
   </select>
+  <select id="selectNewId" resultType="integer">
+    select max(id) from enterprise_purchase_template
+  </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from enterprise_purchase_template
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.csjscm.core.framework.model.EnterprisePurchaseTemplate" >
-    insert into enterprise_purchase_template (id, ent_number, address, 
+    <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+      SELECT LAST_INSERT_ID() AS id
+    </selectKey>
+    insert into enterprise_purchase_template (id, ent_number, address,
       pay_type, prepay_rate, pick_rate, 
       warranty_rate, pay_date, ticket_date, 
       template_type, template_url, warranty_date, 
       enable, check_status, create_user, 
       create_time, edit_user, edit_time
       )
-    values (#{id,jdbcType=INTEGER}, #{entNumber,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=INTEGER}, #{entNumber,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR},
       #{payType,jdbcType=INTEGER}, #{prepayRate,jdbcType=DECIMAL}, #{pickRate,jdbcType=DECIMAL}, 
       #{warrantyRate,jdbcType=DECIMAL}, #{payDate,jdbcType=INTEGER}, #{ticketDate,jdbcType=INTEGER}, 
       #{templateType,jdbcType=INTEGER}, #{templateUrl,jdbcType=VARCHAR}, #{warrantyDate,jdbcType=INTEGER}, 
@@ -112,6 +118,9 @@
       )
   </insert>
   <insert id="insertSelective" parameterType="com.csjscm.core.framework.model.EnterprisePurchaseTemplate" >
+    <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+      SELECT LAST_INSERT_ID() AS id
+    </selectKey>
     insert into enterprise_purchase_template
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -310,4 +319,5 @@
       edit_time = #{editTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
 </mapper>

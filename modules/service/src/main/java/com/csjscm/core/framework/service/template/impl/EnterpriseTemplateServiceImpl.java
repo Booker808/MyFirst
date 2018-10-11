@@ -70,6 +70,14 @@ public class EnterpriseTemplateServiceImpl implements EnterpriseTemplateService{
         //插入采购合同模板
         purchaseTemplate.setId(null);
 //        purchaseTemplate.setCheckStatus(TemplateCheckStatusEnum.待申请人提交.getStatus());
+        Integer templateId=purchaseTemplateMapper.selectNewId();
+        if(templateId==null){
+            templateId=1;
+        }else{
+            templateId++;
+        }
+        purchaseTemplate.setId(templateId);
+        templateDetailVo.setId(templateId);
         purchaseTemplateMapper.insertSelective(purchaseTemplate);
         EnterpriseAccount account=new EnterpriseAccount();
         BeanutilsCopy.copyProperties(templateDetailVo,account);

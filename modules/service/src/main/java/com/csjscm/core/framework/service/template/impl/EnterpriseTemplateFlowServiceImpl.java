@@ -164,8 +164,8 @@ public class EnterpriseTemplateFlowServiceImpl implements EnterpriseTemplateFlow
         String url = System.getProperty(Constant.RNTERPRISE_CHECK_OA_DOMAIN) +
                 Constant.ENTERPRISE_CHECK_OA_FLOW_LAST_INFO_URL;
         Map<String, String> map = new HashMap<>();
-        map.put("businessKey", BUSINESS_KEY_PREFIX + templateId);
-        map.put("instanceId",instanceId);
+        map.put("bussinessKey", BUSINESS_KEY_PREFIX + templateId);
+        map.put("processInstanceId",instanceId);
 //        map.put("processDefinitionKey",PROCESS_DEFINITION_KEY);
         String post = "";
         try{
@@ -179,7 +179,9 @@ public class EnterpriseTemplateFlowServiceImpl implements EnterpriseTemplateFlow
         if (!jsonObject.getString("code").equals("200")) {
             throw new BussinessException("提交请求oa接口返回失败：" + jsonObject.getString("message"));
         }
-        HisWorkFlowInfo workFlowInfo=JSONObject.parseObject(jsonObject.getString("data"),HisWorkFlowInfo.class);
-        return workFlowInfo.getTaskName();
+        List<HisWorkFlowInfo> workFlowInfos=JSONObject.parseArray(jsonObject.getString("data"),HisWorkFlowInfo.class);
+        if(workFlowInfos==null||workFlowInfos.isEmpty())
+            return "";
+        return workFlowInfos.get(0).getTaskName();
     }
 }

@@ -23,4 +23,6 @@ public interface EnterprisePurchaseTemplateMapper {
     int findCount(Map<String, Object> map);
 
     List<EnterprisePurchaseTemplateEx> selectByExample(EnterprisePurchaseTemplateExample templateExample);
+
+    Integer selectNewId();
 }
