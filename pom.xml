@@ -81,6 +81,11 @@
             </dependency>
             <dependency>
                 <groupId>com.csjscm.sweet.framework</groupId>
+                <artifactId>sweet-framework-session</artifactId>
+                <version>${sweet.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.csjscm.sweet.framework</groupId>
                 <artifactId>sweet-framework-redis-autoconfiguration</artifactId>
                 <version>${sweet.version}</version>
             </dependency>
