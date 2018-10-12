@@ -118,6 +118,20 @@ public class EnterpriseTemplateController {
         return APIResponse.success();
     }
 
+    @ApiOperation("归档采购模板调整")
+    @RequestMapping(value = "/archiveTemplate",method = RequestMethod.PUT)
+    public APIResponse updateArchiveTemplate(@RequestBody EnterprisePurchaseTemplateDetailVo templateDetailVo){
+        JSONObject sessionUser = (JSONObject) AuthUtils.getSessionUser();
+        if(sessionUser!=null){
+            templateDetailVo.setEditUser(sessionUser.getString("name"));
+        }
+        if(templateDetailVo.getId()==null){
+            return APIResponse.fail("更新模板ID不能为空");
+        }
+        enterpriseTemplateService.updateArchiveTemplate(templateDetailVo);
+        return APIResponse.success();
+    }
+
     @ApiOperation("获取采购合同列表")
     @RequestMapping(value = "/purchaseTemplate",method = RequestMethod.GET)
     @ApiImplicitParams({

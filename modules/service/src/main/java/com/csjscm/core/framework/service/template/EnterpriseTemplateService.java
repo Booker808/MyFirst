@@ -71,4 +71,6 @@ public interface EnterpriseTemplateService {
     EnterprisePurchaseTemplateDetailVo queryPurchaseTemplateById(Integer id);
 
     String getPurchaseTemplateUrl(Integer id);
+
+    void updateArchiveTemplate(EnterprisePurchaseTemplateDetailVo templateDetailVo);
 }

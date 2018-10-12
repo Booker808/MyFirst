@@ -163,6 +163,15 @@ public class EnterpriseTemplateServiceImpl implements EnterpriseTemplateService{
         }
     }
 
+    @Override
+    public void updateArchiveTemplate(EnterprisePurchaseTemplateDetailVo templateDetailVo) {
+        EnterprisePurchaseTemplate purchaseTemplate=new EnterprisePurchaseTemplate();
+        purchaseTemplate.setId(templateDetailVo.getId());
+        purchaseTemplate.setEnable(templateDetailVo.getEnable());
+        purchaseTemplate.setEditUser(templateDetailVo.getEditUser());
+        purchaseTemplateMapper.updateByPrimaryKeySelective(purchaseTemplate);
+    }
+
     private boolean isPurchaseTemplateExists(String entNumber){
         Map<String,Object> map= Maps.newHashMap();
         map.put("entNumber",entNumber);
