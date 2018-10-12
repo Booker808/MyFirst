@@ -1,5 +1,6 @@
 package com.csjscm.core.framework.service.template.impl;
 
+import com.csjscm.core.framework.common.enums.TemplateCheckStatusEnum;
 import com.csjscm.core.framework.common.util.BeanutilsCopy;
 import com.csjscm.core.framework.dao.EnterpriseAccountMapper;
 import com.csjscm.core.framework.dao.EnterprisePurchaseTemplateMapper;
@@ -75,7 +76,7 @@ public class EnterpriseTemplateServiceImpl implements EnterpriseTemplateService{
         checkPurchaseTemplateValid(purchaseTemplate);
         //插入采购合同模板
         purchaseTemplate.setId(null);
-//        purchaseTemplate.setCheckStatus(TemplateCheckStatusEnum.待申请人提交.getStatus());
+        purchaseTemplate.setCheckStatus(TemplateCheckStatusEnum.待提交申请.getStatus());
         Integer templateId=purchaseTemplateMapper.selectNewId();
         if(templateId==null){
             templateId=1;
@@ -192,6 +193,7 @@ public class EnterpriseTemplateServiceImpl implements EnterpriseTemplateService{
     public EnterprisePurchaseTemplateDetailVo queryPurchaseTemplateByEntNumber(String entNumber) {
         EnterprisePurchaseTemplateExample example=new EnterprisePurchaseTemplateExample();
         example.setEntNumber(entNumber);
+        example.setCheckStatus(2);
         List<EnterprisePurchaseTemplateEx> list=purchaseTemplateMapper.selectByExample(example);
         if(list==null || list.isEmpty()){
             return null;

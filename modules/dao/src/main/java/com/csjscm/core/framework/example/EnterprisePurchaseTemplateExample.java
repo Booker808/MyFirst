@@ -9,4 +9,5 @@ public class EnterprisePurchaseTemplateExample {
     private String entNumber;
     private Integer payType;
     private Integer templateType;
+    private Integer checkStatus;
 }

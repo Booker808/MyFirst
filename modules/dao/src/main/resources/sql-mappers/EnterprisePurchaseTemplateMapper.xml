@@ -66,6 +66,9 @@
       <if test="templateType !=null and entNumber != '' ">
         and t.template_type = #{templateType,jdbcType=VARCHAR}
       </if>
+      <if test="checkStatus !=null">
+        and t.check_status=#{checkStatus,jdbcType=INTEGER}
+      </if>
       <if test="entName != null and entName != ''">
         and info.ent_name like concat('%',#{entName,jdbcType=VARCHAR},'%')
       </if>

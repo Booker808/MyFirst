@@ -2,6 +2,7 @@ package com.csjscm.core.framework.service.template.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.csjscm.core.framework.common.constant.Constant;
+import com.csjscm.core.framework.common.enums.TemplateCheckStatusEnum;
 import com.csjscm.core.framework.common.util.BussinessException;
 import com.csjscm.core.framework.common.util.HttpClientUtil;
 import com.csjscm.core.framework.dao.EnterprisePurchaseTemplateMapper;
@@ -65,7 +66,12 @@ public class EnterpriseTemplateFlowServiceImpl implements EnterpriseTemplateFlow
         purchaseTemplate.setId(templateId);
         purchaseTemplate.setTemplateUrl(templateDetailVo.getTemplateUrl());
         purchaseTemplate.setInstanceId(instanceId);
-        purchaseTemplate.setCheckDescription(getCurrentCheckStatus(templateId,instanceId));
+        purchaseTemplate.setCheckStatus(TemplateCheckStatusEnum.审核过程中.getStatus());
+        HisWorkFlowInfo workFlowInfo=getCurrentCheckStatus(templateId,instanceId);
+        if(workFlowInfo!=null){
+            purchaseTemplate.setCheckDescription(workFlowInfo.getTaskName());
+            purchaseTemplate.setCheckStatus(workFlowInfo.getEndFlag());
+        }
 
         purchaseTemplateMapper.updateByPrimaryKeySelective(purchaseTemplate);
     }
@@ -159,7 +165,11 @@ public class EnterpriseTemplateFlowServiceImpl implements EnterpriseTemplateFlow
             throw new BussinessException("提交请求oa接口返回失败：" + jsonObject.getString("message"));
         }
         purchaseTemplate.setId(checkTask.getTemplateId());
-        purchaseTemplate.setCheckDescription(getCurrentCheckStatus(checkTask.getTemplateId(),purchaseTemplate.getInstanceId()));
+        HisWorkFlowInfo workFlowInfo=getCurrentCheckStatus(checkTask.getTemplateId(),purchaseTemplate.getInstanceId());
+        if(workFlowInfo!=null){
+            purchaseTemplate.setCheckDescription(workFlowInfo.getTaskName());
+            purchaseTemplate.setCheckStatus(workFlowInfo.getEndFlag());
+        }
         purchaseTemplateMapper.updateByPrimaryKeySelective(purchaseTemplate);
     }
 
@@ -192,7 +202,7 @@ public class EnterpriseTemplateFlowServiceImpl implements EnterpriseTemplateFlow
      * @param instanceId
      * @return
      */
-    private String getCurrentCheckStatus(Integer templateId,String instanceId){
+    private HisWorkFlowInfo getCurrentCheckStatus(Integer templateId,String instanceId){
         String url = System.getProperty(Constant.RNTERPRISE_CHECK_OA_DOMAIN) +
                 Constant.ENTERPRISE_CHECK_OA_FLOW_LAST_INFO_URL;
         Map<String, String> map = new HashMap<>();
@@ -213,7 +223,7 @@ public class EnterpriseTemplateFlowServiceImpl implements EnterpriseTemplateFlow
         }
         List<HisWorkFlowInfo> workFlowInfos=JSONObject.parseArray(jsonObject.getString("data"),HisWorkFlowInfo.class);
         if(workFlowInfos==null||workFlowInfos.isEmpty())
-            return "";
-        return workFlowInfos.get(0).getTaskName();
+            return null;
+        return workFlowInfos.get(0);
     }
 }

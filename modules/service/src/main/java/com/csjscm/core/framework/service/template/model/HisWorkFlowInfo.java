@@ -36,4 +36,7 @@ public class HisWorkFlowInfo {
 
     private String startUserId;
 
+    @ApiModelProperty("流程状态（0：未开始，1：过程中，2：已结束）")
+    private Integer endFlag;
+
 }
