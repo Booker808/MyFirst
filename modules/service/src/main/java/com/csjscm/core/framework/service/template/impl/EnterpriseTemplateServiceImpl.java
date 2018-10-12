@@ -179,7 +179,7 @@ public class EnterpriseTemplateServiceImpl implements EnterpriseTemplateService{
         if(purchaseTemplate==null){
             throw new BusinessException("此ID不存在");
         }
-        if(isPurchaseTemplateExists(templateDetailVo.getEntNumber(),templateDetailVo.getId())){
+        if(isPurchaseTemplateExists(purchaseTemplate.getEntNumber(),templateDetailVo.getId())){
             throw new BusinessException("此供应商已有其他启用的模板");
         }
         purchaseTemplate=new EnterprisePurchaseTemplate();
