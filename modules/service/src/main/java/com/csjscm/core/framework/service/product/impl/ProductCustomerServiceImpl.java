@@ -145,7 +145,6 @@ public class ProductCustomerServiceImpl implements ProductCustomerService {
                 //校验customerPdNo
                 Map<String, Object> customermap = new HashMap<>();
                 if(StringUtils.isNotBlank(customerPdNo)){
-                    customermap.put("customerPdNo",customerPdNo);
                     row.getCell(1).setCellType(HSSFCell.CELL_TYPE_STRING);
                     customerPdNo = ExcelUtil.getCellValue(row.getCell(1));
                     if(customerPdNo.length()>20){
@@ -360,10 +359,14 @@ public class ProductCustomerServiceImpl implements ProductCustomerService {
                             productNo = selective.getProductNo();
                         }
                     }
+                    if(StringUtils.isBlank(customerPdNo)){
+                        skuCustomer.setCustomerPdNo(productNo);
+                    }else {
+                        skuCustomer.setCustomerPdNo(customerPdNo);
+                    }
                     skuCustomer.setCreateTime(new Date());
                     skuCustomer.setCustomerNo(customerNo);
                     skuCustomer.setCustomerPdName(customerPdName);
-                    skuCustomer.setCustomerPdNo(customerPdNo);
                     skuCustomer.setCustomerPdRule(customerPdRule);
                     skuCustomer.setCustomerPdSize(customerPdSize);
                     skuCustomer.setProductNo(productNo);
@@ -454,6 +457,9 @@ public class ProductCustomerServiceImpl implements ProductCustomerService {
             skuCoreMapper.insertSelective(skuCore);
         }else {
             productNo=skuCore.getProductNo();
+        }
+        if(StringUtils.isBlank(skuCustomer.getCustomerPdNo())){
+            skuCustomer.setCustomerPdNo(productNo);
         }
         skuCustomer.setProductNo(productNo);
         skuCustomerMapper.insertSelective(skuCustomer);

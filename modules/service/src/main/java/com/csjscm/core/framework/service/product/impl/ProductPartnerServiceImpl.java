@@ -410,7 +410,11 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
                     skuPartner.setProductNo(productNo);
                     skuPartner.setSupplyNo(supplyNo);
                     skuPartner.setSupplyPdName(supplyPdName);
-                    skuPartner.setSupplyPdNo(supplyPdNo);
+                    if(StringUtils.isBlank(supplyPdNo)){
+                        skuPartner.setSupplyPdNo(productNo);
+                    }else {
+                        skuPartner.setSupplyPdNo(supplyPdNo);
+                    }
                     skuPartner.setSupplyPdRule(supplyPdRule);
                     skuPartner.setSupplyPdSize(supplyPdSize);
                     skuPartner.setUuid(uuid);
@@ -496,7 +500,6 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
                 throw new BussinessException("该商品已存在");
             }
             productNomap.clear();
-            productNomap.put("categoryNo", skuPartnerAddModel.getProductNo());
             productNomap.put("productName", skuPartnerAddModel.getSupplyNo());
             productNomap.put("brandName", skuPartnerAddModel.getBrandName());
             productNomap.put("rule", skuPartnerAddModel.getSupplyPdRule());
@@ -574,6 +577,9 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
         skuPartner.setUuid(uuid);
         skuPartner.setCreateTime(new Date());
         skuPartner.setProductNo(productNo);
+        if(StringUtils.isBlank(skuPartner.getSupplyPdNo())){
+            skuPartner.setSupplyPdNo(productNo);
+        }
         skuPartnerMapper.insertSelective(skuPartner);
     }
 

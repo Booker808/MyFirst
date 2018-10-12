@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import springfox.documentation.annotations.ApiIgnore;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Controller
@@ -26,6 +27,10 @@ public class OutAuthController {
             @RequestParam(required = false,defaultValue = "10")int rpp,
             @ApiIgnore @RequestParam Map<String,Object> condition
          ){
+        if(condition==null){
+            condition=new HashMap<>();
+        }
+        condition.put("isvalid",1);
         QueryResult<EnterpriseInfo> result=enterpriseInfoService.selectEnterpriseInfoPage(page,rpp,condition);
         return APIResponse.success(result);
     }

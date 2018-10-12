@@ -661,7 +661,7 @@
       <if test="productNo!=null and productNo!=''">
         and c.product_no =#{productNo}
       </if>
-      <if test="id!=null and id!=''">
+      <if test="id!=null">
         and c.id =#{id}
       </if>
       <if test="channel!=null and channel!=''">
