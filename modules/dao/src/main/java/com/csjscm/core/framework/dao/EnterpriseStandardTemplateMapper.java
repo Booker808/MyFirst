@@ -3,6 +3,7 @@ package com.csjscm.core.framework.dao;
 import com.csjscm.core.framework.model.EnterpriseStandardTemplate;
 
 import java.util.List;
+import java.util.Map;
 
 public interface EnterpriseStandardTemplateMapper {
     int deleteByPrimaryKey(Integer id);
@@ -20,4 +21,6 @@ public interface EnterpriseStandardTemplateMapper {
     List<EnterpriseStandardTemplate> selectAllList();
 
     EnterpriseStandardTemplate selectCurrentTemplate(Integer templateType);
+
+    int findCount(Map<String, Object> map);
 }

@@ -39,11 +39,17 @@ public class EnterpriseTemplateServiceImpl implements EnterpriseTemplateService{
 
     @Override
     public void addStandardTemplate(EnterpriseStandardTemplate template) {
+        if(template.getEnable()==1 && isStandardTemplateExists(template)){
+            throw new BusinessException("已存在同类型且开启的模板");
+        }
         standardTemplateMapper.insertSelective(template);
     }
 
     @Override
     public void updateStandardTemplate(EnterpriseStandardTemplate template) {
+        if(template.getEnable()==1 && isStandardTemplateExists(template)){
+            throw new BusinessException("已存在同类型且开启的模板");
+        }
         standardTemplateMapper.updateByPrimaryKeySelective(template);
     }
 
@@ -188,6 +194,20 @@ public class EnterpriseTemplateServiceImpl implements EnterpriseTemplateService{
         map.put("entNumber",entNumber);
         map.put("enable",1);
         return purchaseTemplateMapper.findCount(map)>0;
+    }
+
+    /**
+     * 检验是否存在同类型的已启用的标准模板
+     *
+     * @param template
+     * @return
+     */
+    private boolean isStandardTemplateExists(EnterpriseStandardTemplate template) {
+        Map<String,Object> map=Maps.newHashMap();
+        map.put("notId",template.getId());
+        map.put("templateType",template.getTemplateType());
+        map.put("enable",1);
+        return standardTemplateMapper.findCount(map)>0;
     }
 
     /**

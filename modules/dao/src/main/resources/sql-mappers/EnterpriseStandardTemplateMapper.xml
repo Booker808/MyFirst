@@ -14,6 +14,19 @@
   <sql id="Base_Column_List" >
     id, template_type, template_url, enable, create_user, create_time, edit_user, edit_time
   </sql>
+  <sql id="searchBy">
+    <trim prefix="where" prefixOverrides="and|or">
+      <if test="notId != null">
+        and id != #{notId,jdbcType=VARCHAR}
+      </if>
+      <if test="templateType !=null">
+        and template_type = #{templateType,jdbcType=INTEGER}
+      </if>
+      <if test="enable != null">
+        and enable = #{enable,jdbcType=INTEGER}
+      </if>
+    </trim>
+  </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
@@ -34,7 +47,12 @@
     order by edit_time desc
     limit 0,1
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    <select id="findCount" resultType="integer" parameterType="map">
+      select count(1)
+      from enterprise_standard_template
+      <include refid="searchBy"/>
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from enterprise_standard_template
     where id = #{id,jdbcType=INTEGER}
   </delete>
