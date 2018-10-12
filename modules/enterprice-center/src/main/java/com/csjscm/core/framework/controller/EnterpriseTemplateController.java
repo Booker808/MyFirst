@@ -19,6 +19,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
@@ -86,6 +87,9 @@ public class EnterpriseTemplateController {
         enterpriseTemplateService.addPurchaseTemplate(templateDetailVo);
         if(templateDetailVo.getIsSubmit()!=null && templateDetailVo.getIsSubmit() ==1){
             String url=enterpriseTemplateService.getPurchaseTemplateUrl(templateDetailVo.getId());
+            if(StringUtils.isBlank(url)){
+                throw new BusinessException("数据已更新，但因获取不到标准模板而无法进行审批");
+            }
             templateDetailVo.setTemplateUrl(url);
             flowService.submitPurchaseTemplate(templateDetailVo);
         }
@@ -105,6 +109,9 @@ public class EnterpriseTemplateController {
         enterpriseTemplateService.updatePurchaseTemplate(templateDetailVo);
         if(templateDetailVo.getIsSubmit()!=null && templateDetailVo.getIsSubmit() ==1){
             String url=enterpriseTemplateService.getPurchaseTemplateUrl(templateDetailVo.getId());
+            if(StringUtils.isBlank(url)){
+                throw new BusinessException("数据已更新，但因获取不到标准模板而无法进行审批");
+            }
             templateDetailVo.setTemplateUrl(url);
             flowService.submitPurchaseTemplate(templateDetailVo);
         }
