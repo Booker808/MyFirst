@@ -73,4 +73,12 @@ public interface EnterpriseTemplateService {
     String getPurchaseTemplateUrl(Integer id);
 
     void updateArchiveTemplate(EnterprisePurchaseTemplateDetailVo templateDetailVo);
+
+    /**
+     * 根据供应商编码获取采购模板详情
+     *
+     * @param entNumber
+     * @return
+     */
+    EnterprisePurchaseTemplateDetailVo queryPurchaseTemplateByEntNumber(String entNumber);
 }

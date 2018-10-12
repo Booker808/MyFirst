@@ -188,6 +188,19 @@ public class EnterpriseTemplateServiceImpl implements EnterpriseTemplateService{
         purchaseTemplateMapper.updateByPrimaryKeySelective(purchaseTemplate);
     }
 
+    @Override
+    public EnterprisePurchaseTemplateDetailVo queryPurchaseTemplateByEntNumber(String entNumber) {
+        EnterprisePurchaseTemplateExample example=new EnterprisePurchaseTemplateExample();
+        example.setEntNumber(entNumber);
+        List<EnterprisePurchaseTemplateEx> list=purchaseTemplateMapper.selectByExample(example);
+        if(list==null || list.isEmpty()){
+            return null;
+        }
+        EnterprisePurchaseTemplateDetailVo detailVo=new EnterprisePurchaseTemplateDetailVo();
+        BeanutilsCopy.copyProperties(list.get(0),detailVo);
+        return detailVo;
+    }
+
     private boolean isPurchaseTemplateExists(String entNumber,Integer templateId){
         Map<String,Object> map= Maps.newHashMap();
         map.put("notId",templateId);
