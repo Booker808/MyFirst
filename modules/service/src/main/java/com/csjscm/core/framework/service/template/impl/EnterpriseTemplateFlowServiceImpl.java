@@ -11,6 +11,7 @@ import com.csjscm.core.framework.service.template.model.CheckTaskVo;
 import com.csjscm.core.framework.service.template.model.HisWorkFlowInfo;
 import com.csjscm.core.framework.service.template.model.TodoWorkFlowInfo;
 import com.csjscm.core.framework.vo.EnterprisePurchaseTemplateDetailVo;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,6 +98,37 @@ public class EnterpriseTemplateFlowServiceImpl implements EnterpriseTemplateFlow
             }
         }
         return "";
+    }
+
+    @Override
+    public List<TodoWorkFlowInfo> getToDoTaskIds(String userName) {
+        String url = System.getProperty(Constant.RNTERPRISE_CHECK_OA_DOMAIN) +
+                Constant.ENTERPRISE_CHECK_PURCHASE_TEMPLATE_MYTODODEALWITH_URL;
+        Map<String, String> map = new HashMap<>();
+        map.put("userId", userName);
+
+        String post = "";
+        try{
+            post= HttpClientUtil.post(url,map);
+            log.info(post);
+        }catch(IOException e){
+            throw new BussinessException("提交请求oa接口地址异常,地址：" + url);
+        }
+
+        JSONObject jsonObject = JSONObject.parseObject(post);
+        if (!jsonObject.getString("code").equals("200")) {
+            throw new BussinessException("提交请求oa接口返回失败：" + jsonObject.getString("message"));
+        }
+        List<TodoWorkFlowInfo> todoWorkFlowInfoList= JSONObject.parseArray(
+                jsonObject.getJSONObject("data").getString("TodoWorkFlowInfoList"),TodoWorkFlowInfo.class);
+
+        List<TodoWorkFlowInfo> result= Lists.newLinkedList();
+        for (TodoWorkFlowInfo info:todoWorkFlowInfoList){
+            if(info.getBussinessKey().startsWith(BUSINESS_KEY_PREFIX)){
+                result.add(info);
+            }
+        }
+        return result;
     }
 
     @Override

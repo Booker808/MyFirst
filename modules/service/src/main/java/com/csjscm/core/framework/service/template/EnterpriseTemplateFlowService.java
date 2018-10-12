@@ -2,6 +2,7 @@ package com.csjscm.core.framework.service.template;
 
 import com.csjscm.core.framework.service.template.model.CheckTaskVo;
 import com.csjscm.core.framework.service.template.model.HisWorkFlowInfo;
+import com.csjscm.core.framework.service.template.model.TodoWorkFlowInfo;
 import com.csjscm.core.framework.vo.EnterprisePurchaseTemplateDetailVo;
 
 import java.util.List;
@@ -22,6 +23,8 @@ public interface EnterpriseTemplateFlowService {
      * @return
      */
     String getToDoTaskId(Integer templateId, String userName);
+
+    List<TodoWorkFlowInfo> getToDoTaskIds(String userName);
 
     void checkTask(String userName, CheckTaskVo checkTask);
 

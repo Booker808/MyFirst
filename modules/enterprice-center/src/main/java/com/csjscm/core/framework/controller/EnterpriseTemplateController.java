@@ -8,6 +8,7 @@ import com.csjscm.core.framework.service.template.EnterpriseTemplateFlowService;
 import com.csjscm.core.framework.service.template.EnterpriseTemplateService;
 import com.csjscm.core.framework.service.template.model.CheckTaskVo;
 import com.csjscm.core.framework.service.template.model.HisWorkFlowInfo;
+import com.csjscm.core.framework.service.template.model.TodoWorkFlowInfo;
 import com.csjscm.core.framework.vo.EnterprisePurchaseTemplateDetailVo;
 import com.csjscm.core.framework.vo.EnterprisePurchaseTemplateVo;
 import com.csjscm.sweet.framework.auth.AuthUtils;
@@ -148,6 +149,18 @@ public class EnterpriseTemplateController {
 //        String userName="管理员";
         String taskId=flowService.getToDoTaskId(templateId,userName);
         return APIResponse.success(taskId);
+    }
+
+    @ApiOperation("根据当前用户获取代办")
+    @RequestMapping(value = "/todoTaskId",method = RequestMethod.GET)
+    public APIResponse<List<TodoWorkFlowInfo>> getToDoTaskIdList(){
+        JSONObject sessionUser = (JSONObject) AuthUtils.getSessionUser();
+        if(sessionUser==null)
+            throw new BusinessException("无法获取到当前用户");
+        String userName=sessionUser.getString("name");
+        List<TodoWorkFlowInfo> taskIds=flowService.getToDoTaskIds(userName);
+        return APIResponse.success(taskIds);
+
     }
 
     @ApiOperation("根据TaskId和当前用户，进行审批")
