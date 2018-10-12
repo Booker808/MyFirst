@@ -60,7 +60,7 @@ public class EnterpriseTemplateServiceImpl implements EnterpriseTemplateService{
     @Override
     @Transactional
     public void addPurchaseTemplate(EnterprisePurchaseTemplateDetailVo templateDetailVo) {
-        if(isPurchaseTemplateExists(templateDetailVo.getEntNumber())){
+        if(isPurchaseTemplateExists(templateDetailVo.getEntNumber(),null)){
             throw new BusinessException("此供应商模版已存在");
         }
         EnterprisePurchaseTemplate purchaseTemplate = new EnterprisePurchaseTemplate();
@@ -91,6 +91,9 @@ public class EnterpriseTemplateServiceImpl implements EnterpriseTemplateService{
         EnterprisePurchaseTemplate purchaseTemplate = purchaseTemplateMapper.selectByPrimaryKey(templateDetailVo.getId());
         if(purchaseTemplate==null){
             throw new BusinessException("此ID不存在");
+        }
+        if(isPurchaseTemplateExists(templateDetailVo.getEntNumber(),templateDetailVo.getId())){
+            throw new BusinessException("此供应商已有其他启用的模板");
         }
 //        if(!purchaseTemplate.getCheckStatus().equals(TemplateCheckStatusEnum.待申请人提交.getStatus())){
 //            throw new BusinessException("非待申请人提交状态下不可修改");
@@ -165,16 +168,25 @@ public class EnterpriseTemplateServiceImpl implements EnterpriseTemplateService{
 
     @Override
     public void updateArchiveTemplate(EnterprisePurchaseTemplateDetailVo templateDetailVo) {
-        EnterprisePurchaseTemplate purchaseTemplate=new EnterprisePurchaseTemplate();
+        EnterprisePurchaseTemplate purchaseTemplate = purchaseTemplateMapper.selectByPrimaryKey(templateDetailVo.getId());
+        if(purchaseTemplate==null){
+            throw new BusinessException("此ID不存在");
+        }
+        if(isPurchaseTemplateExists(templateDetailVo.getEntNumber(),templateDetailVo.getId())){
+            throw new BusinessException("此供应商已有其他启用的模板");
+        }
+        purchaseTemplate=new EnterprisePurchaseTemplate();
         purchaseTemplate.setId(templateDetailVo.getId());
         purchaseTemplate.setEnable(templateDetailVo.getEnable());
         purchaseTemplate.setEditUser(templateDetailVo.getEditUser());
         purchaseTemplateMapper.updateByPrimaryKeySelective(purchaseTemplate);
     }
 
-    private boolean isPurchaseTemplateExists(String entNumber){
+    private boolean isPurchaseTemplateExists(String entNumber,Integer templateId){
         Map<String,Object> map= Maps.newHashMap();
+        map.put("notId",templateId);
         map.put("entNumber",entNumber);
+        map.put("enable",1);
         return purchaseTemplateMapper.findCount(map)>0;
     }
 

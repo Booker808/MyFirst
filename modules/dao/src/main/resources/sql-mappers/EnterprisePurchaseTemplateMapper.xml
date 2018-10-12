@@ -41,8 +41,14 @@
   </sql>
   <sql id="searchBy">
     <trim prefix="where" prefixOverrides="and|or">
+      <if test="notId != null">
+        and id != #{notId,jdbcType=VARCHAR}
+      </if>
       <if test="entNumber !=null and entNumber != '' ">
         and ent_number = #{entNumber,jdbcType=VARCHAR}
+      </if>
+      <if test="enable != null">
+        and enable = #{enable,jdbcType=INTEGER}
       </if>
     </trim>
   </sql>
