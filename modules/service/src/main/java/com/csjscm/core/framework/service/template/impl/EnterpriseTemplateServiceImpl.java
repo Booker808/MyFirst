@@ -200,6 +200,9 @@ public class EnterpriseTemplateServiceImpl implements EnterpriseTemplateService{
         }
         EnterprisePurchaseTemplateDetailVo detailVo=new EnterprisePurchaseTemplateDetailVo();
         BeanutilsCopy.copyProperties(list.get(0),detailVo);
+        if("调整审批".equals(detailVo.getCheckDescription())){
+            return null;
+        }
         return detailVo;
     }
 
