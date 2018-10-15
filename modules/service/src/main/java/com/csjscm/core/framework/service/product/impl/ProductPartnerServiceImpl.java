@@ -1,10 +1,12 @@
 package com.csjscm.core.framework.service.product.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.csjscm.core.framework.common.constant.Constant;
 import com.csjscm.core.framework.common.enums.CategoryLevelEnum;
 import com.csjscm.core.framework.common.enums.InvUnitIsvalidEnum;
 import com.csjscm.core.framework.common.enums.SkuCoreChannelEnum;
+import com.csjscm.core.framework.common.util.BeanValidator;
 import com.csjscm.core.framework.common.util.BeanutilsCopy;
 import com.csjscm.core.framework.common.util.BussinessException;
 import com.csjscm.core.framework.common.util.ExcelUtil;
@@ -128,8 +130,8 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
                     Map<String, Object> categoryNomap = new HashMap<>();
                     categoryNomap.put("levelNum", CategoryLevelEnum.三级.getState());
                     categoryNomap.put("classCode", categoryNo);
+                    category = categoryMapper.findSelective(categoryNomap);
                     if (category == null) {
-                        category = categoryMapper.findSelective(categoryNomap);
                         failCell = 1;
                         failMsg = ExcelUtil.getFailMsg(failRow, failCell, "分类编码不存在");
                         failList.add(failMsg);
@@ -295,13 +297,7 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
                 }
 
                 //校验productNo
-                if(StringUtils.isBlank(productNo) ||productNo.length()>20){
-                    failCell = 12;
-                    failMsg = ExcelUtil.getFailMsg(failRow, failCell, "川商品编码为空或者长度大于20");
-                    failList.add(failMsg);
-                    failMsgStr += failMsg;
-                    issuccess = false;
-                }else {
+                if(StringUtils.isNotBlank(productNo)){
                     row.getCell(11).setCellType(HSSFCell.CELL_TYPE_STRING);
                     productNo = ExcelUtil.getCellValue(row.getCell(11));
                     SkuCore skuCore = skuCoreMapper.selectByPrimaryKey(productNo);
@@ -359,7 +355,7 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
                         productNamemap.put("minUint", invUnit);
                         productNamemap.put("brandName", brandName);
                         productNamemap.put("rule", supplyPdRule);
-                        productNamemap.put("size", supplyPdSize);
+                        productNamemap.put("sizes", supplyPdSize);
                         SkuCore selective = skuCoreMapper.findSelective(productNamemap);
                         if (selective == null) {
                             // 获取商品编码
@@ -374,15 +370,14 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
                             productNo = categoryNo + str;
                             SkuCore skuCore = new SkuCore();
 
-                            //获取三级分类
-                            skuCore.setLv2CategoryId(category.getParentClass());
-                            //获取二级分类
-                            category = categoryMapper.findByPrimary(skuCore.getLv2CategoryId());
+                            category = categoryMapper.findByPrimary(category.getParentClass());
+                            //获取2级分类
                             skuCore.setLv2CategoryNo(category.getClassCode());
-                            skuCore.setLv1CategoryId(category.getParentClass());
+                            skuCore.setLv2CategoryId(category.getId());
                             //获取一级分类
-                            category = categoryMapper.findByPrimary(skuCore.getLv1CategoryId());
+                            category = categoryMapper.findByPrimary(category.getParentClass());
                             skuCore.setLv1CategoryNo(category.getClassCode());
+                            skuCore.setLv1CategoryId(category.getId());
 
                             skuCore.setCreateTime(new Date());
                             skuCore.setChannel(SkuCoreChannelEnum.手动新增.getState());
@@ -395,7 +390,8 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
                             skuCore.setCategoryId(categoryId);
                             skuCore.setMinUint(invUnit);
                             skuCore.setCategoryNo(categoryNo);
-
+                            skuCore.setMnemonicCode(mnemonicCode);
+                            skuCore.setEan13Code(ean13Code);
                             skuCore.setRecentEnquiry(recentEnquiry1);
                             skuCore.setRefrencePrice(refrencePrice1);
                             skuCoreMapper.insertSelective(skuCore);
@@ -503,7 +499,7 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
             productNomap.put("productName", skuPartnerAddModel.getSupplyNo());
             productNomap.put("brandName", skuPartnerAddModel.getBrandName());
             productNomap.put("rule", skuPartnerAddModel.getSupplyPdRule());
-            productNomap.put("size", skuPartnerAddModel.getSupplyPdSize());
+            productNomap.put("sizes", skuPartnerAddModel.getSupplyPdSize());
             productNomap.put("mnemonicCode", skuPartnerAddModel.getMnemonicCode());
             productNomap.put("ean13Code", skuPartnerAddModel.getEan13Code());
             List<SkuCore> skuCores = skuCoreMapper.listSelective(productNomap);
@@ -624,6 +620,7 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
         parrnerMap.put("brandName", skuPartnerModel.getBrandName());
         parrnerMap.put("supplyPdRule", skuPartnerModel.getSupplyPdRule());
         parrnerMap.put("supplyPdSize", skuPartnerModel.getSupplyPdSize());
+        parrnerMap.put("minUint", skuPartnerModel.getMinUint());
         int count2 = skuPartnerMapper.findCount(parrnerMap);
         if (count2 > 0) {
             throw new BussinessException("该商品已存在");
@@ -632,7 +629,7 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
         productNamemap.put("productName", skuPartnerModel.getSupplyPdName());
         productNamemap.put("brandName", skuPartnerModel.getBrandName());
         productNamemap.put("rule", skuPartnerModel.getSupplyPdRule());
-        productNamemap.put("size", skuPartnerModel.getSupplyPdSize());
+        productNamemap.put("sizes", skuPartnerModel.getSupplyPdSize());
         productNamemap.put("minUint", skuPartnerModel.getMinUint());
         List<SkuCore> skuCores = skuCoreMapper.listSelective(productNamemap);
         String productNo = "";
@@ -689,46 +686,83 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
     }
 
     @Override
-    public SkuPartner saveSCMSkuPartner(SkuPartnerSCMMolde skuPartnerSCMMolde) {
-        SkuPartner skuPartner = new SkuPartner();
-        Map<String, Object> map = new HashMap<>();
-        map.put("productNo", skuPartnerSCMMolde.getProductNo());
-        SkuCore skuCore = skuCoreMapper.findSelective(map);
-        if (skuCore == null) {
-            throw new BussinessException("商品编码有误");
+    public ScmPartnerVo saveSCMSkuPartner(String json) {
+        ScmPartnerVo vo=new ScmPartnerVo();
+        List<SkuPartnerSCMMolde> skuPartnerSCMMoldes=null;
+        try {
+            skuPartnerSCMMoldes= JSON.parseArray(json,SkuPartnerSCMMolde.class);
+        } catch (Exception e) {
+            throw  new  BussinessException("json解析异常，请检查数据格式");
         }
-        if (StringUtils.isNotBlank(skuPartnerSCMMolde.getSupplyPdNo())) {
-            map.clear();
-            map.put("supplyPdNo", skuPartnerSCMMolde.getSupplyPdNo());
-            map.put("supplyNo", skuPartnerSCMMolde.getSupplyNo());
-            int count = skuPartnerMapper.findCount(map);
-            if (count > 0) {
-                throw new BussinessException("供应商商品编码已存在");
+        int total=skuPartnerSCMMoldes.size();
+        int fail=0;
+        List<ScmPartnerFailVo> scmPartnerFailVos=new ArrayList<>();
+        for(SkuPartnerSCMMolde ps:skuPartnerSCMMoldes){
+            ScmPartnerFailVo failVo=new ScmPartnerFailVo();
+            try {
+                BeanValidator.validate(ps);
+            } catch (Exception e) {
+                fail++;
+                failVo.setFailData(ps);
+                failVo.setMessage(e.getMessage());
+                scmPartnerFailVos.add(failVo);
+                continue;
             }
-            skuPartner.setSupplyPdNo(skuPartnerSCMMolde.getSupplyPdNo());
+
+            Map<String, Object> brandNamemap = new HashMap<>();
+            brandNamemap.put("brandName", ps.getBrandName());
+            List<BrandMaster> brandMasters = brandMasterMapper.listSelective(brandNamemap);
+            if (brandMasters.size() != 1) {
+                fail++;
+                failVo.setFailData(ps);
+                failVo.setMessage("品牌名称不存在或者品牌不唯一");
+                scmPartnerFailVos.add(failVo);
+                continue;
+            }
+            Map<String, Object> minUintMap = new HashMap<>();
+            minUintMap.put("objName", ps.getMinUint());
+            minUintMap.put("isvalid", InvUnitIsvalidEnum.有效.getState());
+            int count = invUnitMapper.findCount(minUintMap);
+            if (count < 1) {
+                fail++;
+                failVo.setFailData(ps);
+                failVo.setMessage("最小单位有误");
+                scmPartnerFailVos.add(failVo);
+                continue;
+            }
+            SkuCore skuCore = skuCoreMapper.selectByPrimaryKey(ps.getProductNo());
+            if(skuCore==null){
+                fail++;
+                failVo.setFailData(ps);
+                failVo.setMessage("平台商品编码有误");
+                scmPartnerFailVos.add(failVo);
+                continue;
+            }
+            Map<String, Object> parrnerMap = new HashMap<>();
+            parrnerMap.put("supplyNo", ps.getSupplyNo());
+            parrnerMap.put("supplyPdName", ps.getSupplyPdName());
+            parrnerMap.put("brandName", ps.getBrandName());
+            parrnerMap.put("supplyPdRule", ps.getSupplyPdRule());
+            parrnerMap.put("supplyPdSize", ps.getSupplyPdSize());
+            parrnerMap.put("minUint", ps.getMinUint());
+            parrnerMap.put("productNo", ps.getProductNo());
+            int count1 = skuPartnerMapper.findCount(parrnerMap);
+            if(count1>0){
+                fail++;
+                failVo.setFailData(ps);
+                failVo.setMessage("已存在该供应商商品");
+                scmPartnerFailVos.add(failVo);
+                continue;
+            }
+            SkuPartner skuPartner = new SkuPartner();
+            BeanutilsCopy.copyProperties(ps,skuPartner);
+            skuPartnerMapper.insertSelective(skuPartner);
         }
-        map.clear();
-        map.put("productNo", skuPartnerSCMMolde.getProductNo());
-        map.put("supplyNo", skuPartnerSCMMolde.getSupplyNo());
-        int count = skuPartnerMapper.findCount(map);
-        if (count > 0) {
-            throw new BussinessException("商品编码与该供应商已有绑定关系");
-        }
-        String uuid = UUID.randomUUID().toString().replace("-", "");
-        skuPartner.setUuid(uuid);
-        skuPartner.setProductNo(skuPartnerSCMMolde.getProductNo());
-        skuPartner.setCreateTime(new Date());
-        skuPartner.setRefrencePrice(skuPartnerSCMMolde.getRefrencePrice());
-        skuPartner.setRecentEnquiry(skuPartnerSCMMolde.getRecentEnquiry());
-        skuPartner.setBrandId(skuCore.getBrandId().toString());
-        skuPartner.setBrandName(skuCore.getBrandName());
-        skuPartner.setSupplyNo(skuPartnerSCMMolde.getSupplyNo());
-        skuPartner.setSupplyPdName(skuCore.getProductName());
-        skuPartner.setSupplyPdRule(skuCore.getRule());
-        skuPartner.setSupplyPdSize(skuCore.getSize());
-        skuPartner.setMinUint(skuCore.getMinUint());
-        skuPartnerMapper.insertSelective(skuPartner);
-        return skuPartner;
+        vo.setFailCount(fail);
+        vo.setScmPartnerFailVos(scmPartnerFailVos);
+        vo.setTotal(total);
+        vo.setSuccessCount(total-fail);
+        return vo;
     }
 
     @Override

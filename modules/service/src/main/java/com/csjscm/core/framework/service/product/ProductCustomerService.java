@@ -4,6 +4,7 @@ import com.csjscm.core.framework.common.util.BussinessException;
 import com.csjscm.core.framework.example.SkuCustomerExample;
 import com.csjscm.core.framework.model.SkuCustomer;
 import com.csjscm.core.framework.model.SkuCustomerEx;
+import com.csjscm.core.framework.vo.ScmCustomerVo;
 import com.csjscm.core.framework.vo.SkuCustomerPageVo;
 import com.csjscm.core.framework.vo.SkuCustomerSCMMolde;
 import com.csjscm.core.framework.vo.SkuCustomerVo;
@@ -34,7 +35,7 @@ public interface ProductCustomerService {
      */
     List<SkuCustomer> listSelective(Map<String,Object> map);
 
-    SkuCustomer saveSCMSkuCustomer(SkuCustomerSCMMolde skuCustomerSCMMolde);
+    ScmCustomerVo saveSCMSkuCustomer(String json);
 
     List<SkuCustomer> listSelectiveSCM(Map<String,Object> map);
 

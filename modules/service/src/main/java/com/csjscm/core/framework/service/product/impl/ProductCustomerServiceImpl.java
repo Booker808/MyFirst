@@ -1,9 +1,12 @@
 package com.csjscm.core.framework.service.product.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.csjscm.core.framework.common.constant.Constant;
 import com.csjscm.core.framework.common.enums.CategoryLevelEnum;
 import com.csjscm.core.framework.common.enums.InvUnitIsvalidEnum;
 import com.csjscm.core.framework.common.enums.SkuCoreChannelEnum;
+import com.csjscm.core.framework.common.util.BeanValidator;
 import com.csjscm.core.framework.common.util.BeanutilsCopy;
 import com.csjscm.core.framework.common.util.BussinessException;
 import com.csjscm.core.framework.common.util.ExcelUtil;
@@ -12,10 +15,7 @@ import com.csjscm.core.framework.example.SkuCustomerExample;
 import com.csjscm.core.framework.model.*;
 import com.csjscm.core.framework.service.impl.SkuCoreServiceImpl;
 import com.csjscm.core.framework.service.product.ProductCustomerService;
-import com.csjscm.core.framework.vo.SkuCoreVo;
-import com.csjscm.core.framework.vo.SkuCustomerPageVo;
-import com.csjscm.core.framework.vo.SkuCustomerSCMMolde;
-import com.csjscm.core.framework.vo.SkuCustomerVo;
+import com.csjscm.core.framework.vo.*;
 import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
 import com.csjscm.sweet.framework.redis.RedisDistributedCounterObject;
 import com.csjscm.sweet.framework.redis.RedisServiceFacade;
@@ -259,13 +259,7 @@ public class ProductCustomerServiceImpl implements ProductCustomerService {
                     }
                 }
                 //校验productNo
-                if(StringUtils.isBlank(productNo) ||productNo.length()>20){
-                    failCell = 10;
-                    failMsg = ExcelUtil.getFailMsg(failRow, failCell, "川商品编码为空或者长度大于20");
-                    failList.add(failMsg);
-                    failMsgStr += failMsg;
-                    issuccess = false;
-                }else {
+                if(StringUtils.isNotBlank(productNo)){
                     row.getCell(9).setCellType(HSSFCell.CELL_TYPE_STRING);
                     productNo = ExcelUtil.getCellValue(row.getCell(9));
                     SkuCore skuCore = skuCoreMapper.selectByPrimaryKey(productNo);
@@ -321,7 +315,7 @@ public class ProductCustomerServiceImpl implements ProductCustomerService {
                         productNamemap.put("minUint", invUnit);
                         productNamemap.put("brandName", brandName);
                         productNamemap.put("rule",customerPdRule);
-                        productNamemap.put("size", customerPdSize);
+                        productNamemap.put("sizes", customerPdSize);
                         SkuCore selective = skuCoreMapper.findSelective(productNamemap);
                         if (selective == null) {
                             // 获取商品编码
@@ -334,15 +328,16 @@ public class ProductCustomerServiceImpl implements ProductCustomerService {
                             str += increment;
                             productNo = categoryNo + str;
                             SkuCore skuCore = new SkuCore();
-                            //获取三级分类
-                            skuCore.setLv2CategoryId(category.getParentClass());
-                            //获取二级分类
-                            category = categoryMapper.findByPrimary(skuCore.getLv2CategoryId());
+
+                            category = categoryMapper.findByPrimary(category.getParentClass());
+                            //获取2级分类
                             skuCore.setLv2CategoryNo(category.getClassCode());
-                            skuCore.setLv1CategoryId(category.getParentClass());
+                            skuCore.setLv2CategoryId(category.getId());
                             //获取一级分类
-                            category = categoryMapper.findByPrimary(skuCore.getLv1CategoryId());
+                            category = categoryMapper.findByPrimary(category.getParentClass());
                             skuCore.setLv1CategoryNo(category.getClassCode());
+                            skuCore.setLv1CategoryId(category.getId());
+
                             skuCore.setCreateTime(new Date());
                             skuCore.setChannel(SkuCoreChannelEnum.手动新增.getState());
                             skuCore.setProductNo(productNo);
@@ -354,6 +349,8 @@ public class ProductCustomerServiceImpl implements ProductCustomerService {
                             skuCore.setCategoryId(categoryId);
                             skuCore.setMinUint(invUnit);
                             skuCore.setCategoryNo(categoryNo);
+                            skuCore.setEan13Code(ean13Code);
+                            skuCore.setMnemonicCode(mnemonicCode);
                             skuCoreMapper.insertSelective(skuCore);
                         } else {
                             productNo = selective.getProductNo();
@@ -471,44 +468,153 @@ public class ProductCustomerServiceImpl implements ProductCustomerService {
     }
 
     @Override
-    public SkuCustomer saveSCMSkuCustomer(SkuCustomerSCMMolde skuCustomerSCMMolde){
-        SkuCustomer skuCustomer=new SkuCustomer();
-        Map<String, Object> map = new HashMap<>();
-        map.put("productNo",skuCustomerSCMMolde.getProductNo());
-        SkuCore skuCore = skuCoreMapper.findSelective(map);
-        if(skuCore==null){
-            throw  new  BussinessException("商品编码有误");
+    public ScmCustomerVo saveSCMSkuCustomer(String json){
+        ScmCustomerVo vo=new ScmCustomerVo();
+        List<SkuCustomerSCMMolde> skuCustomerSCMMoldes = null;
+        try {
+            skuCustomerSCMMoldes = JSON.parseArray(json, SkuCustomerSCMMolde.class);
+        } catch (Exception e) {
+            throw  new  BussinessException("json转换异常,请检查数据格式");
         }
-        if(StringUtils.isNotBlank(skuCustomerSCMMolde.getCustomerPdNo())){
-            map.clear();
-            map.put("customerNo", skuCustomerSCMMolde.getCustomerNo());
-            map.put("customerPdNo", skuCustomerSCMMolde.getCustomerPdNo());
-            int count = skuCustomerMapper.findCount(map);
-            if(count>0){
-                throw  new BussinessException("客户商品编码已存在");
+        int total=skuCustomerSCMMoldes.size();
+        int fail=0;
+        List<ScmFailMsgVo>  failList=new ArrayList<>();
+        List<ScmSuccessMsgVo>  successList=new ArrayList<>();
+
+        for(SkuCustomerSCMMolde sc:skuCustomerSCMMoldes){
+            ScmSuccessMsgVo successVo=new ScmSuccessMsgVo();
+            ScmFailMsgVo failMsgVo=new ScmFailMsgVo();
+            try {
+                BeanValidator.validate(sc);
+            } catch (Exception e) {
+                fail++;
+                failMsgVo.setOutId(sc.getOutId());
+                failMsgVo.setFailMsg(e.getMessage());
+                failList.add(failMsgVo);
+                continue;
             }
-            skuCustomer.setCustomerPdNo(skuCustomerSCMMolde.getCustomerPdNo());
+            Map<String, Object> brandNamemap = new HashMap<>();
+            brandNamemap.put("brandName", sc.getBrandName());
+            List<BrandMaster> brandMasters = brandMasterMapper.listSelective(brandNamemap);
+            if (brandMasters.size() != 1) {
+                fail++;
+                failMsgVo.setOutId(sc.getOutId());
+                failMsgVo.setFailMsg("品牌名称不存在或者品牌不唯一");
+                failList.add(failMsgVo);
+                continue;
+            }
+
+            Map<String, Object> minUintMap = new HashMap<>();
+            minUintMap.put("objName", sc.getMinUint());
+            minUintMap.put("isvalid", InvUnitIsvalidEnum.有效.getState());
+            int count = invUnitMapper.findCount(minUintMap);
+            if (count < 1) {
+                fail++;
+                failMsgVo.setOutId(sc.getOutId());
+                failMsgVo.setFailMsg("最小单位有误");
+                failList.add(failMsgVo);
+                continue;
+            }
+
+            Map<String, Object> categoryNomap = new HashMap<>();
+            categoryNomap.put("levelNum", CategoryLevelEnum.三级.getState());
+            categoryNomap.put("classCode", sc.getCategoryNo());
+            Category category = categoryMapper.findSelective(categoryNomap);
+            if (category == null) {
+                fail++;
+                failMsgVo.setOutId(sc.getOutId());
+                failMsgVo.setFailMsg("细分类编码有误");
+                failList.add(failMsgVo);
+                continue;
+            }
+
+            Map<String, Object> customermap = new HashMap<>();
+            customermap.put("customerNo",sc.getCustomerNo());
+            customermap.put("customerPdName",sc.getCustomerPdName());
+            customermap.put("customerPdRule",sc.getCustomerPdRule());
+            customermap.put("customerPdSize",sc.getCustomerPdSize());
+            customermap.put("brandName",sc.getBrandName());
+            customermap.put("minUint",sc.getMinUint());
+            SkuCustomer selective = skuCustomerMapper.findSelective(customermap);
+            if(selective!=null){
+                fail++;
+                failMsgVo.setOutId(sc.getOutId());
+                failMsgVo.setFailMsg("根据判重规则，该商品已存在");
+                failList.add(failMsgVo);
+                continue;
+            }
+            SkuCustomer skuCustomer=new SkuCustomer();
+            BeanutilsCopy.copyProperties(sc,skuCustomer);
+            String productNo="";
+            try {
+                productNo = insertSkuCoreAndCustomer(sc, skuCustomer, category, brandMasters.get(0).getId());
+            } catch (Exception e) {
+                e.printStackTrace();
+                fail++;
+                failMsgVo.setOutId(sc.getOutId());
+                failMsgVo.setFailMsg("新增时异常，内部错误");
+                failList.add(failMsgVo);
+                continue;
+            }
+            successVo.setCustomerNo(sc.getCustomerNo());
+            successVo.setOutId(sc.getOutId());
+            successVo.setProductNo(productNo);
+            successList.add(successVo);
         }
-        map.clear();
-        map.put("productNo",skuCustomerSCMMolde.getProductNo());
-        map.put("customerNo",skuCustomerSCMMolde.getCustomerNo());
-        int count = skuCustomerMapper.findCount(map);
-        if(count>0){
-            throw  new  BussinessException("商品编码与该客户编码已有绑定关系");
+        vo.setFailCount(fail);
+        vo.setSuccessCount(total-fail);
+        vo.setScmFailMsgVoList(failList);
+        vo.setScmSuccessMsgVoList(successList);
+        return vo;
+    }
+    @Transactional
+    public String insertSkuCoreAndCustomer(SkuCustomerSCMMolde skuCustomerSCMMolde,SkuCustomer skuCustomer,Category category,Integer brandId){
+        String productNo="";
+        Map<String, Object> productNamemap = new HashMap<>();
+        productNamemap.put("productName", skuCustomerSCMMolde.getCustomerPdName());
+        productNamemap.put("minUint", skuCustomerSCMMolde.getMinUint());
+        productNamemap.put("brandName", skuCustomerSCMMolde.getBrandName());
+        productNamemap.put("rule", skuCustomerSCMMolde.getCustomerPdRule());
+        productNamemap.put("sizes", skuCustomerSCMMolde.getCustomerPdSize());
+        SkuCore selective = skuCoreMapper.findSelective(productNamemap);
+        if(selective==null){
+            SkuCore skuCore=new SkuCore();
+            skuCore.setCategoryNo(category.getClassCode());
+            skuCore.setCategoryId(category.getId());
+            //获取三级分类
+            skuCore.setLv2CategoryId(category.getParentClass());
+            //获取二级分类
+            category=categoryMapper.findByPrimary(skuCore.getLv2CategoryId());
+            skuCore.setLv2CategoryNo(category.getClassCode());
+            skuCore.setLv1CategoryId(category.getParentClass());
+            //获取一级分类
+            category=categoryMapper.findByPrimary(skuCore.getLv1CategoryId());
+            skuCore.setLv1CategoryNo(category.getClassCode());
+            skuCore.setBrandId(brandId);
+            skuCore.setBrandName(skuCustomerSCMMolde.getBrandName());
+            skuCore.setMinUint(skuCustomerSCMMolde.getMinUint());
+            skuCore.setProductName(skuCustomerSCMMolde.getCustomerPdName());
+            skuCore.setRule(skuCustomerSCMMolde.getCustomerPdRule());
+            skuCore.setSize(skuCustomerSCMMolde.getCustomerPdSize());
+            // 获取商品编码
+            Long increase = redisServiceFacade.increase(new RedisDistributedCounterObject(Constant.REDIS_KEY_PRODUCT_NO + skuCore.getCategoryNo()), 1);
+            String  increment =increase.toString();
+            String str="";
+            for(int j=0;j<5-increment.length();j++){
+                str+="0";
+            }
+            str+=increment;
+            skuCore.setProductNo(skuCore.getCategoryNo()+str);
+            skuCore.setChannel(SkuCoreChannelEnum.来自scm.getState());
+            skuCore.setCreateTime(new Date());
+            skuCoreMapper.insertSelective(skuCore);
+        }else {
+            productNo=selective.getProductNo();
         }
-        skuCustomer.setCreateTime(new Date());
-        skuCustomer.setProductNo(skuCustomerSCMMolde.getProductNo());
-        skuCustomer.setCustomerNo(skuCustomerSCMMolde.getCustomerNo());
-        skuCustomer.setRecentQuotation(skuCustomerSCMMolde.getRecentQuotation());
-        skuCustomer.setReferencePrice(skuCustomerSCMMolde.getReferencePrice());
-        skuCustomer.setCustomerPdSize(skuCore.getSize());
-        skuCustomer.setCustomerPdRule(skuCore.getRule());
-        skuCustomer.setCustomerPdName(skuCore.getProductName());
-        skuCustomer.setMinUint(skuCore.getMinUint());
-        skuCustomer.setBrandName(skuCore.getBrandName());
-        skuCustomer.setBrandId(skuCore.getBrandId().toString());
+        skuCustomer.setProductNo(productNo);
+        skuCustomer.setCustomerPdNo(productNo);
         skuCustomerMapper.insertSelective(skuCustomer);
-        return skuCustomer;
+        return productNo;
     }
 
     @Override

@@ -4,10 +4,7 @@ import com.csjscm.core.framework.common.util.BussinessException;
 import com.csjscm.core.framework.example.SkuPartnerExample;
 import com.csjscm.core.framework.model.SkuPartner;
 import com.csjscm.core.framework.model.SkuPartnerEx;
-import com.csjscm.core.framework.vo.SkuPartnerAddModel;
-import com.csjscm.core.framework.vo.SkuPartnerDetailsModel;
-import com.csjscm.core.framework.vo.SkuPartnerModel;
-import com.csjscm.core.framework.vo.SkuPartnerSCMMolde;
+import com.csjscm.core.framework.vo.*;
 import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -49,10 +46,10 @@ public interface ProductPartnerService {
 
     /**
      * 新增 来自 scm 的供应商商品
-     * @param skuPartnerSCMMolde
+     * @param json
      * @return
      */
-    SkuPartner saveSCMSkuPartner(SkuPartnerSCMMolde skuPartnerSCMMolde);
+    ScmPartnerVo saveSCMSkuPartner(String json);
 
     List<SkuPartner> listSelectiveSCM(Map<String,Object> map);
 

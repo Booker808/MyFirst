@@ -1,9 +1,6 @@
 package com.csjscm.core.framework.vo;
 
-import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.NotBlank;
-
-import java.math.BigDecimal;
 
 /**
  * 来源scm 新增客户  model
@@ -11,13 +8,28 @@ import java.math.BigDecimal;
 public class SkuCustomerSCMMolde {
     @NotBlank(message = "客户编码不能为空")
     private String customerNo;
-    @NotBlank(message = "平台商品编码不能为空")
-    private String productNo;
-    private String customerPdNo;
-    @ApiModelProperty("参考售价")
-    private BigDecimal referencePrice;
-    @ApiModelProperty("近期报价")
-    private BigDecimal recentQuotation;
+    @NotBlank(message = "品牌名称不能为空")
+    private String brandName;
+    @NotBlank(message = "最小单位不能为空")
+    private String minUint;
+    @NotBlank(message = "规格不能为空")
+    private String customerPdRule;
+    @NotBlank(message = "型号不能为空")
+    private String customerPdSize;
+    @NotBlank(message = "客户商品名不能为空")
+    private String customerPdName;
+    @NotBlank(message = "细分类编码不能为空")
+    private String categoryNo;
+    @NotBlank(message = "outId不能为空")
+    private  String outId;
+
+    public String getOutId() {
+        return outId;
+    }
+
+    public void setOutId(String outId) {
+        this.outId = outId;
+    }
 
     public String getCustomerNo() {
         return customerNo;
@@ -27,35 +39,51 @@ public class SkuCustomerSCMMolde {
         this.customerNo = customerNo;
     }
 
-    public String getProductNo() {
-        return productNo;
+    public String getBrandName() {
+        return brandName;
     }
 
-    public void setProductNo(String productNo) {
-        this.productNo = productNo;
+    public void setBrandName(String brandName) {
+        this.brandName = brandName;
     }
 
-    public String getCustomerPdNo() {
-        return customerPdNo;
+    public String getMinUint() {
+        return minUint;
     }
 
-    public void setCustomerPdNo(String customerPdNo) {
-        this.customerPdNo = customerPdNo;
+    public void setMinUint(String minUint) {
+        this.minUint = minUint;
     }
 
-    public BigDecimal getReferencePrice() {
-        return referencePrice;
+    public String getCustomerPdRule() {
+        return customerPdRule;
     }
 
-    public void setReferencePrice(BigDecimal referencePrice) {
-        this.referencePrice = referencePrice;
+    public void setCustomerPdRule(String customerPdRule) {
+        this.customerPdRule = customerPdRule;
     }
 
-    public BigDecimal getRecentQuotation() {
-        return recentQuotation;
+    public String getCustomerPdSize() {
+        return customerPdSize;
     }
 
-    public void setRecentQuotation(BigDecimal recentQuotation) {
-        this.recentQuotation = recentQuotation;
+    public void setCustomerPdSize(String customerPdSize) {
+        this.customerPdSize = customerPdSize;
+    }
+
+    public String getCustomerPdName() {
+        return customerPdName;
+    }
+
+    public void setCustomerPdName(String customerPdName) {
+        this.customerPdName = customerPdName;
+    }
+
+    public String getCategoryNo() {
+        return categoryNo;
+    }
+
+    public void setCategoryNo(String categoryNo) {
+        this.categoryNo = categoryNo;
     }
 }

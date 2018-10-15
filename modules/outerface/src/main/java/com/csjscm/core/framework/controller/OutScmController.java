@@ -8,9 +8,7 @@ import com.csjscm.core.framework.model.SkuPartner;
 import com.csjscm.core.framework.service.SkuCoreService;
 import com.csjscm.core.framework.service.product.ProductCustomerService;
 import com.csjscm.core.framework.service.product.ProductPartnerService;
-import com.csjscm.core.framework.vo.SkuCoreSCMMolde;
-import com.csjscm.core.framework.vo.SkuCustomerSCMMolde;
-import com.csjscm.core.framework.vo.SkuPartnerSCMMolde;
+import com.csjscm.core.framework.vo.*;
 import com.csjscm.sweet.framework.core.mvc.APIResponse;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,33 +39,31 @@ public class OutScmController {
      * @param skuCoreSMMolde
      * @return
      */
-    @RequestMapping(value = "createSkuCore",method = RequestMethod.POST)
+/*    @RequestMapping(value = "createSkuCore",method = RequestMethod.POST)
     public APIResponse createSkuCore(SkuCoreSCMMolde skuCoreSMMolde){
         BeanValidator.validate(skuCoreSMMolde);
         SkuCoreSCMMolde skuCoreSMMolde1 = skuCoreService.saveSCMSkuCore(skuCoreSMMolde);
         return APIResponse.success(skuCoreSMMolde1);
-    }
+    }*/
     /**
      * 新增来自scm的 供应商商品数据
-     * @param skuPartnerSCMMolde
+     * @param json
      * @return
      */
     @RequestMapping(value = "createSkuPartner",method = RequestMethod.POST)
-    public APIResponse createSkuPartner(SkuPartnerSCMMolde skuPartnerSCMMolde){
-        BeanValidator.validate(skuPartnerSCMMolde);
-        SkuPartner skuPartner = productPartnerService.saveSCMSkuPartner(skuPartnerSCMMolde);
-        return APIResponse.success();
+    public APIResponse createSkuPartner(String json){
+        ScmPartnerVo scmPartnerVo = productPartnerService.saveSCMSkuPartner(json);
+        return APIResponse.success(scmPartnerVo);
     }
     /**
      * 新增来自scm的 客户数据
-     * @param skuCustomerSCMMolde
+     * @param json
      * @return
      */
     @RequestMapping(value = "createSkuCustomer",method = RequestMethod.POST)
-    public APIResponse createSkuCustomer(SkuCustomerSCMMolde skuCustomerSCMMolde){
-        BeanValidator.validate(skuCustomerSCMMolde);
-        SkuCustomer skuCustomer = productCustomerService.saveSCMSkuCustomer(skuCustomerSCMMolde);
-        return APIResponse.success();
+    public APIResponse createSkuCustomer(@RequestParam(name = "json") String json){
+        ScmCustomerVo scmCustomerVo = productCustomerService.saveSCMSkuCustomer(json);
+        return APIResponse.success(scmCustomerVo);
     }
 
     /**

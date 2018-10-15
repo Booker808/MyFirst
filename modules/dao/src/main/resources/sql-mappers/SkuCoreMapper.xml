@@ -94,6 +94,9 @@
       <if test="sizes != null and sizes != '' ">
         and `size` = #{sizes}
       </if>
+      <if test="sizeLike != null and sizeLike != '' ">
+        and `size` like concat('%',#{sizeLike,jdbcType=VARCHAR},'%')
+      </if>
       <if test="productPrice != null  ">
         and product_price = #{productPrice,jdbcType=DECIMAL}
       </if>
@@ -182,7 +185,7 @@
         and rule = #{rule,jdbcType=VARCHAR}
       </if>
       <if test="size != null and size != '' ">
-        and `size` = #{size}
+        and `size` = #{size,jdbcType=VARCHAR}
       </if>
       <if test="createUserId != null and createUserId != '' ">
         and create_user_id = #{createUserId,jdbcType=VARCHAR}
