@@ -122,6 +122,9 @@
       <if test="productNo != null and productNo != ''">
         and p.product_no = #{productNo,jdbcType=VARCHAR}
       </if>
+      <if test="productNoLike != null and productNoLike != ''">
+        and p.product_no LIKE CONCAT('%',#{productNoLike,jdbcType=VARCHAR},'%')
+      </if>
       <if test="supplyNo != null and supplyNo != ''">
         and p.supply_no=#{supplyNo,jdbcType=VARCHAR}
       </if>
@@ -137,6 +140,13 @@
       <if test="supplyPdSize != null and supplyPdSize != ''">
         and p.supply_pd_size = #{supplyPdSize,jdbcType=VARCHAR}
       </if>
+      <if test="supplyPdSizeLike != null and supplyPdSizeLike != ''">
+        and p.supply_pd_size  LIKE CONCAT('%',#{supplyPdSizeLike,jdbcType=VARCHAR},'%')
+      </if>
+      <if test="entName != null and entName != ''">
+        and ent.ent_name  LIKE CONCAT('%',#{entName,jdbcType=VARCHAR},'%')
+      </if>
+
     </where>
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -154,6 +164,7 @@
     from sku_partner p left join sku_core sku on p.product_no=sku.product_no
     left join enterprise_info ent on ent.ent_number=p.supply_no
     <include refid="Example_Where_Clause"/>
+    order  by  p.create_time  desc
   </select>
 
   <select id="selectExByPrimaryKey" parameterType="integer" resultMap="ExResultMap">

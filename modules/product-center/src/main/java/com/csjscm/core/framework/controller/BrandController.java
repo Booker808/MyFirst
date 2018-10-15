@@ -96,7 +96,7 @@ public class BrandController {
      */
     @ApiOperation("查询目标为ID的品牌")
     @RequestMapping(value = "/brandID",method = RequestMethod.GET)
-    public APIResponse queryBrand(@ApiParam(name="id",value="主键id",required=true) @PathVariable Integer id){
+    public APIResponse queryBrand(@ApiParam(name="id",value="主键id",required=true)  Integer id){
         BrandMaster brandMaster = brandMasterService.selectByPrimaryKey(id);
         return APIResponse.success(brandMaster);
     }

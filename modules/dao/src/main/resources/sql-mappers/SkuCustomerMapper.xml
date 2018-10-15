@@ -661,6 +661,9 @@
       <if test="productNo!=null and productNo!=''">
         and c.product_no =#{productNo}
       </if>
+      <if test="productNoLike!=null and productNoLike!=''">
+        and c.product_no LIKE CONCAT('%',#{productNoLike,jdbcType=VARCHAR},'%')
+      </if>
       <if test="id!=null">
         and c.id =#{id}
       </if>
@@ -676,7 +679,13 @@
       <if test="size!=null and size!=''">
         and c.customer_pd_size =#{size}
       </if>
+      <if test="sizeLike!=null and sizeLike!=''">
+        and c.customer_pd_size  LIKE CONCAT('%',#{sizeLike,jdbcType=VARCHAR},'%')
+      </if>
       <if test="entName!=null and entName!=''">
+        and ent.ent_name LIKE CONCAT('%',#{entName,jdbcType=VARCHAR},'%')
+      </if>
+      <if test="entNameLike!=null and entNameLike!=''">
         and ent.ent_name LIKE CONCAT('%',#{entName,jdbcType=VARCHAR},'%')
       </if>
       <if test="lv1CategoryNo != null and lv1CategoryNo != '' ">
@@ -698,5 +707,6 @@
         and sku.category_sp_no = #{categorySpNo,jdbcType=VARCHAR}
       </if>
     </where>
+    order  by  c.create_time desc
   </select>
 </mapper>

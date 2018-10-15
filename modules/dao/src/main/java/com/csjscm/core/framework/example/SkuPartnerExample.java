@@ -6,7 +6,10 @@ import lombok.Data;
 public class SkuPartnerExample {
     private String productNo;
     private String supplyNo;
+    private String productNoLike;
     private String supplyPdName;
+    private String supplyPdSizeLike;
+    private String entName;
     private Integer brandId;
     private String brandName;
     private String supplyPdSize;

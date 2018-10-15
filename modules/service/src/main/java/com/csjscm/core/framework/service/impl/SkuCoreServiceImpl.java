@@ -335,7 +335,7 @@ public class SkuCoreServiceImpl implements SkuCoreService {
                 productNamemap.put("minUint", minUint);
                 productNamemap.put("brandName", brandName);
                 productNamemap.put("rule", rule);
-                productNamemap.put("size", size);
+                productNamemap.put("sizes", size);
                 int productCount = skuCoreMapper.findCount(productNamemap);
                 if(productCount>0 ){
                     failMsg = "商品已存在";
@@ -346,20 +346,20 @@ public class SkuCoreServiceImpl implements SkuCoreService {
                 }
                 //组装成功数据
                 if(issuccess){
-                    //获取三级分类
-                    skuCore.setLv2CategoryId(category.getParentClass());
-                    //获取二级分类
-                    category=categoryMapper.findByPrimary(skuCore.getLv2CategoryId());
-                    skuCore.setLv2CategoryNo(category.getClassCode());
-                    skuCore.setLv1CategoryId(category.getParentClass());
-                    //获取一级分类
-                    category=categoryMapper.findByPrimary(skuCore.getLv1CategoryId());
+                    skuCore.setCategoryId(category.getId());
 
+                    category = categoryMapper.findByPrimary(category.getParentClass());
+                    //获取2级分类
+                    skuCore.setLv2CategoryNo(category.getClassCode());
+                    skuCore.setLv2CategoryId(category.getId());
+                    //获取一级分类
+                    category = categoryMapper.findByPrimary(category.getParentClass());
                     skuCore.setLv1CategoryNo(category.getClassCode());
+                    skuCore.setLv1CategoryId(category.getId());
+
                     skuCore.setCategoryNo(categoryNo);
                     skuCore.setBrandId(brandMasters.get(0).getId());
                     skuCore.setBrandName(brandName);
-                    skuCore.setCategoryId(category.getId());
                     skuCore.setEan13Code(ean13Code);
                     skuCore.setMinUint(minUint);
                     skuCore.setMnemonicCode(mnemonicCode);
@@ -380,6 +380,7 @@ public class SkuCoreServiceImpl implements SkuCoreService {
                     skuCore.setDescription(description);
                     skuCore.setRecentEnquiry(recentEnquiry1);
                     skuCore.setRefrencePrice(refrencePrice1);
+                    skuCore.setProductPrice(recentEnquiry1);
                     skuCoreMapper.insertSelective(skuCore);
                     successCount++;
                 }else {
