@@ -36,8 +36,8 @@ public class CategoryJsonModel  implements Comparable<CategoryJsonModel>{
     /**
      * 上层分类ID
      */
-    @NotBlank(message = "上层分类ID不能为空")
-    private String parentClass;
+    @NotNull(message = "上层分类ID不能为空")
+    private Integer parentClass;
 
     /**
      * 分类层级
@@ -167,11 +167,12 @@ public class CategoryJsonModel  implements Comparable<CategoryJsonModel>{
         this.simpleName = simpleName;
     }
 
-    public String getParentClass() {
+    @NotNull
+    public Integer getParentClass() {
         return parentClass;
     }
 
-    public void setParentClass(String parentClass) {
+    public void setParentClass(@NotNull Integer parentClass) {
         this.parentClass = parentClass;
     }
 

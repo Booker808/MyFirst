@@ -1,15 +1,20 @@
 package com.csjscm.core.framework.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.csjscm.core.framework.common.constant.Constant;
 import com.csjscm.core.framework.common.util.BeanValidator;
 import com.csjscm.core.framework.common.util.BussinessException;
-import com.csjscm.core.framework.model.SkuCore;
-import com.csjscm.core.framework.model.SkuCustomer;
-import com.csjscm.core.framework.model.SkuPartner;
+import com.csjscm.core.framework.model.*;
+import com.csjscm.core.framework.service.BrandMasterService;
+import com.csjscm.core.framework.service.CategoryService;
 import com.csjscm.core.framework.service.SkuCoreService;
 import com.csjscm.core.framework.service.product.ProductCustomerService;
 import com.csjscm.core.framework.service.product.ProductPartnerService;
 import com.csjscm.core.framework.vo.*;
 import com.csjscm.sweet.framework.core.mvc.APIResponse;
+import com.csjscm.sweet.framework.redis.RedisServiceFacade;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,6 +38,55 @@ public class OutScmController {
     private ProductPartnerService productPartnerService;
     @Autowired
     private ProductCustomerService productCustomerService;
+    @Autowired
+    private CategoryService categoryService;
+    @Autowired
+    private RedisServiceFacade redisServiceFacade;
+
+    @Autowired
+    private BrandMasterService brandMasterService;
+    /**
+     * 查询品牌名称列表
+     * @return
+     */
+    @ApiOperation("查询品牌名称列表")
+    @RequestMapping(value = "/brandNameList",method = RequestMethod.GET)
+    public APIResponse queryBrandNameListSky(){
+        if(!redisServiceFacade.exists(Constant.REDIS_KEY_JSONSTR_BRAND)){
+            List<BrandMaster> brandList = brandMasterService.selectByBrandNameSky();
+            redisServiceFacade.set(Constant.REDIS_KEY_JSONSTR_BRAND,  JSONArray.parseArray(JSON.toJSONString(brandList)));
+        }
+        return APIResponse.success(redisServiceFacade.get(Constant.REDIS_KEY_JSONSTR_BRAND,JSONArray.class));
+    }
+    /**
+     * 获取分类json
+     *
+     * @return
+     */
+    @RequestMapping(value = "/getJsonCategory",method = RequestMethod.GET)
+    public APIResponse getJsonSpCategory(){
+        if(!redisServiceFacade.exists(Constant.REDIS_KEY_JSON_CATEGORY)){
+            categoryService.getJsonCategory();
+        }
+        return APIResponse.success(redisServiceFacade.get(Constant.REDIS_KEY_JSON_CATEGORY, JSONArray.class));
+    }
+
+    /**
+     * 根据parentClass查询分类
+     * @param parentClass
+     * @return
+     */
+    @RequestMapping(value = "/getCategory",method = RequestMethod.GET)
+    public APIResponse queryCategoryList(String parentClass,String levelNum,String classCode,String className,String id){
+        Map<String,Object> map=new HashMap<>();
+        map.put("parentClass",parentClass);
+        map.put("levelNum",levelNum);
+        map.put("classCode",classCode);
+        map.put("className",className);
+        map.put("id",id);
+        List<Category> spCategories = categoryService.listSelective(map);
+        return APIResponse.success(spCategories);
+    }
 
     /**
      * 新增来自scm的平台商品
@@ -83,7 +137,7 @@ public class OutScmController {
         map.put("rule",rule);
         map.put("minUint",minUint);
         map.put("productNo",productNo);
-        map.put("size",size);
+        map.put("sizes",size);
         boolean flag=false;
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             if(entry.getValue()!=null && StringUtils.isNotBlank(entry.getValue().toString())){

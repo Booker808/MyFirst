@@ -4,6 +4,15 @@ public class ScmSuccessMsgVo {
     private  String outId;
     private  String productNo;
     private  String customerNo;
+    private  String customerPdNo;
+
+    public String getCustomerPdNo() {
+        return customerPdNo;
+    }
+
+    public void setCustomerPdNo(String customerPdNo) {
+        this.customerPdNo = customerPdNo;
+    }
 
     public String getOutId() {
         return outId;

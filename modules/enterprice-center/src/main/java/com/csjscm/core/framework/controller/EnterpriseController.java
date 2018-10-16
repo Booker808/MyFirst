@@ -1,8 +1,11 @@
 package com.csjscm.core.framework.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.csjscm.core.framework.common.constant.Constant;
 import com.csjscm.core.framework.common.enums.DeleteStateEnum;
 import com.csjscm.core.framework.common.enums.TradeTypeEnum;
+import com.csjscm.core.framework.common.util.HttpClientUtil;
 import com.csjscm.core.framework.example.EnterpriseInfoExample;
 import com.csjscm.core.framework.model.EnterpriseInfo;
 import com.csjscm.core.framework.service.enterprise.EnterpriseInfoService;
@@ -15,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -95,5 +99,16 @@ public class EnterpriseController {
         map.put("isdelete", DeleteStateEnum.未删除.getState());
         List<EnterpriseInfo> enterpriseInfos = enterpriseInfoService.listSelective(map);
         return APIResponse.success(enterpriseInfos);
+    }
+    @ApiOperation("获取我方合同主体")
+    @RequestMapping(value = "getOrgByTcode",method = RequestMethod.GET)
+    public APIResponse getOrgByTcode() throws IOException {
+        String url = System.getProperty(Constant.SHIRO_DOMAIN) + Constant.ENTERPRISE_SHIRO_GETORG;
+        String property = System.getProperty("spring.application.name");
+        Map<String,String> map=new HashMap<>();
+        map.put("code",property);
+        String s = HttpClientUtil.get(url, map);
+        JSONObject jsonObject = JSONObject.parseObject(s);
+        return APIResponse.success(jsonObject.get("data"));
     }
 }

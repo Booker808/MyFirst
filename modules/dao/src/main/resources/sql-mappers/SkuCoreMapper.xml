@@ -1006,6 +1006,7 @@ insert into sku_core(product_no,std_product_no,product_name,product_price,lv1_ca
     <include refid="Base_Column_List" />
     from sku_core
     <include refid="searchBy"/>
+     order by  create_time desc
   </select>
   <select id="findCount" resultType="java.lang.Integer" parameterType="java.util.HashMap">
     select count(product_no)

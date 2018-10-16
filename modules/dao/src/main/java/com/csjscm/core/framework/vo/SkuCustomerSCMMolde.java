@@ -8,6 +8,7 @@ import org.hibernate.validator.constraints.NotBlank;
 public class SkuCustomerSCMMolde {
     @NotBlank(message = "客户编码不能为空")
     private String customerNo;
+    private String customerPdNo;
     @NotBlank(message = "品牌名称不能为空")
     private String brandName;
     @NotBlank(message = "最小单位不能为空")
@@ -25,6 +26,14 @@ public class SkuCustomerSCMMolde {
 
     public String getOutId() {
         return outId;
+    }
+
+    public String getCustomerPdNo() {
+        return customerPdNo;
+    }
+
+    public void setCustomerPdNo(String customerPdNo) {
+        this.customerPdNo = customerPdNo;
     }
 
     public void setOutId(String outId) {

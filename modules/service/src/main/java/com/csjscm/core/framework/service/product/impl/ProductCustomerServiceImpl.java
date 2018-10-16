@@ -537,17 +537,17 @@ public class ProductCustomerServiceImpl implements ProductCustomerService {
             customermap.put("minUint",sc.getMinUint());
             SkuCustomer selective = skuCustomerMapper.findSelective(customermap);
             if(selective!=null){
-                fail++;
-                failMsgVo.setOutId(sc.getOutId());
-                failMsgVo.setFailMsg("根据判重规则，该商品已存在");
-                failList.add(failMsgVo);
+                successVo.setCustomerNo(sc.getCustomerNo());
+                successVo.setOutId(sc.getOutId());
+                successVo.setProductNo(selective.getProductNo());
+                successVo.setCustomerPdNo(selective.getCustomerPdNo());
+                successList.add(successVo);
                 continue;
             }
             SkuCustomer skuCustomer=new SkuCustomer();
             BeanutilsCopy.copyProperties(sc,skuCustomer);
-            String productNo="";
             try {
-                productNo = insertSkuCoreAndCustomer(sc, skuCustomer, category, brandMasters.get(0).getId());
+                skuCustomer = insertSkuCoreAndCustomer(sc, skuCustomer, category, brandMasters.get(0).getId());
             } catch (Exception e) {
                 e.printStackTrace();
                 fail++;
@@ -558,17 +558,19 @@ public class ProductCustomerServiceImpl implements ProductCustomerService {
             }
             successVo.setCustomerNo(sc.getCustomerNo());
             successVo.setOutId(sc.getOutId());
-            successVo.setProductNo(productNo);
+            successVo.setProductNo(skuCustomer.getProductNo());
+            successVo.setCustomerPdNo(skuCustomer.getCustomerPdNo());
             successList.add(successVo);
         }
         vo.setFailCount(fail);
         vo.setSuccessCount(total-fail);
+        vo.setTotal(total);
         vo.setScmFailMsgVoList(failList);
         vo.setScmSuccessMsgVoList(successList);
         return vo;
     }
     @Transactional
-    public String insertSkuCoreAndCustomer(SkuCustomerSCMMolde skuCustomerSCMMolde,SkuCustomer skuCustomer,Category category,Integer brandId){
+    public SkuCustomer insertSkuCoreAndCustomer(SkuCustomerSCMMolde skuCustomerSCMMolde,SkuCustomer skuCustomer,Category category,Integer brandId){
         String productNo="";
         Map<String, Object> productNamemap = new HashMap<>();
         productNamemap.put("productName", skuCustomerSCMMolde.getCustomerPdName());
@@ -607,14 +609,19 @@ public class ProductCustomerServiceImpl implements ProductCustomerService {
             skuCore.setProductNo(skuCore.getCategoryNo()+str);
             skuCore.setChannel(SkuCoreChannelEnum.来自scm.getState());
             skuCore.setCreateTime(new Date());
+            productNo=skuCore.getCategoryNo()+str;
             skuCoreMapper.insertSelective(skuCore);
         }else {
             productNo=selective.getProductNo();
         }
         skuCustomer.setProductNo(productNo);
-        skuCustomer.setCustomerPdNo(productNo);
+        if(StringUtils.isNotBlank(skuCustomerSCMMolde.getCustomerPdNo())){
+            skuCustomer.setCustomerPdNo(skuCustomerSCMMolde.getCustomerPdNo());
+        }else {
+            skuCustomer.setCustomerPdNo(productNo);
+        }
         skuCustomerMapper.insertSelective(skuCustomer);
-        return productNo;
+        return skuCustomer;
     }
 
     @Override

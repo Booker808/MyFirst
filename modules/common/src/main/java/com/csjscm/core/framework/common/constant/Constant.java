@@ -42,6 +42,10 @@ public class Constant {
      * 供应商审核接口 域名的配置文件名称
      */
     public static final String  RNTERPRISE_CHECK_OA_DOMAIN= "sweet.framework.enterprise.check.oa-domain";
+    /**
+     * 权限域名的配置文件名称
+     */
+    public static final String  SHIRO_DOMAIN= "sweet.framework.shiro-domain";
 
     /**
      * 我的代办接口地址
@@ -88,4 +92,8 @@ public class Constant {
      * 查询最後任务记录
      */
     public static final String ENTERPRISE_CHECK_OA_FLOW_LAST_INFO_URL="/api/activiti/getMyWorkFlowEndTask";
+    /**
+     * 根据当前租户code获取组织第一级 api
+     */
+    public static final String  ENTERPRISE_SHIRO_GETORG="/api/shiro/getOrgByTcode";
 }

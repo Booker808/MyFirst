@@ -46,7 +46,7 @@ import java.util.Date;
     /**
     * 上层分类ID
     */
-    @NotBlank(message = "上层分类ID不能为空")
+    @NotNull(message = "上层分类ID不能为空")
     private Integer parentClass;
 
     /**
