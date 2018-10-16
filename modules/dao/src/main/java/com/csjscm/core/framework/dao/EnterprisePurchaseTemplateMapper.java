@@ -25,4 +25,6 @@ public interface EnterprisePurchaseTemplateMapper {
     List<EnterprisePurchaseTemplateEx> selectByExample(EnterprisePurchaseTemplateExample templateExample);
 
     Integer selectNewId();
+
+    String selectEntNameByTemplateId(Integer id);
 }

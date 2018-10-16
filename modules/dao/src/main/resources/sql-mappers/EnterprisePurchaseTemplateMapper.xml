@@ -102,8 +102,16 @@
   <select id="selectNewId" resultType="integer">
     select max(id) from enterprise_purchase_template
   </select>
+    <select id="selectEntNameByTemplateId" parameterType="integer" resultType="string">
+      select ent_name
+      from enterprise_info
+      where ent_number=(
+        select ent_number
+        from enterprise_purchase_template
+        where id =#{id,jdbcType=INTEGER})
+    </select>
 
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from enterprise_purchase_template
     where id = #{id,jdbcType=INTEGER}
   </delete>

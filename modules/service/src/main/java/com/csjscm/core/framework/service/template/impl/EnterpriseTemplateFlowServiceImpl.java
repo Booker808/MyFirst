@@ -131,6 +131,14 @@ public class EnterpriseTemplateFlowServiceImpl implements EnterpriseTemplateFlow
         List<TodoWorkFlowInfo> result= Lists.newLinkedList();
         for (TodoWorkFlowInfo info:todoWorkFlowInfoList){
             if(info.getBussinessKey().startsWith(BUSINESS_KEY_PREFIX)){
+                try {
+                    Integer templateId = Integer.valueOf(info.getBussinessKey().substring(BUSINESS_KEY_PREFIX.length()));
+                    Map<String,Object> variables=Maps.newHashMap();
+                    variables.put("entName",purchaseTemplateMapper.selectEntNameByTemplateId(templateId));
+                    info.setVariables(variables);
+                }catch (Exception e){
+                    log.error("模板ID查询企业名失败，原businessKey为："+info.getBussinessKey(),e.getMessage());
+                }
                 result.add(info);
             }
         }
