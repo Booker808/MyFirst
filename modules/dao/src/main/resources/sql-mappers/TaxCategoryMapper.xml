@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.csjscm.core.framework.dao.TaxCategoryMapper" >
+  <resultMap id="BaseResultMap" type="com.csjscm.core.framework.model.TaxCategory" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="tax_code" property="taxCode" jdbcType="VARCHAR" />
+    <result column="tax_category_name" property="taxCategoryName" jdbcType="VARCHAR" />
+    <result column="level" property="level" jdbcType="INTEGER" />
+    <result column="parent_code" property="parentCode" jdbcType="VARCHAR" />
+    <result column="tax_rate" property="taxRate" jdbcType="DECIMAL" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="version_id" property="versionId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, tax_code, tax_category_name, level, parent_code, tax_rate, description, version_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tax_category
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tax_category
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.csjscm.core.framework.model.TaxCategory" >
+    insert into tax_category (id, tax_code, tax_category_name, 
+      level, parent_code, tax_rate, 
+      description, version_id)
+    values (#{id,jdbcType=INTEGER}, #{taxCode,jdbcType=VARCHAR}, #{taxCategoryName,jdbcType=VARCHAR}, 
+      #{level,jdbcType=INTEGER}, #{parentCode,jdbcType=VARCHAR}, #{taxRate,jdbcType=DECIMAL}, 
+      #{description,jdbcType=VARCHAR}, #{versionId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.csjscm.core.framework.model.TaxCategory" >
+    insert into tax_category
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="taxCode != null" >
+        tax_code,
+      </if>
+      <if test="taxCategoryName != null" >
+        tax_category_name,
+      </if>
+      <if test="level != null" >
+        level,
+      </if>
+      <if test="parentCode != null" >
+        parent_code,
+      </if>
+      <if test="taxRate != null" >
+        tax_rate,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="versionId != null" >
+        version_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="taxCode != null" >
+        #{taxCode,jdbcType=VARCHAR},
+      </if>
+      <if test="taxCategoryName != null" >
+        #{taxCategoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null" >
+        #{level,jdbcType=INTEGER},
+      </if>
+      <if test="parentCode != null" >
+        #{parentCode,jdbcType=VARCHAR},
+      </if>
+      <if test="taxRate != null" >
+        #{taxRate,jdbcType=DECIMAL},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="versionId != null" >
+        #{versionId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.csjscm.core.framework.model.TaxCategory" >
+    update tax_category
+    <set >
+      <if test="taxCode != null" >
+        tax_code = #{taxCode,jdbcType=VARCHAR},
+      </if>
+      <if test="taxCategoryName != null" >
+        tax_category_name = #{taxCategoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null" >
+        level = #{level,jdbcType=INTEGER},
+      </if>
+      <if test="parentCode != null" >
+        parent_code = #{parentCode,jdbcType=VARCHAR},
+      </if>
+      <if test="taxRate != null" >
+        tax_rate = #{taxRate,jdbcType=DECIMAL},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="versionId != null" >
+        version_id = #{versionId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.csjscm.core.framework.model.TaxCategory" >
+    update tax_category
+    set tax_code = #{taxCode,jdbcType=VARCHAR},
+      tax_category_name = #{taxCategoryName,jdbcType=VARCHAR},
+      level = #{level,jdbcType=INTEGER},
+      parent_code = #{parentCode,jdbcType=VARCHAR},
+      tax_rate = #{taxRate,jdbcType=DECIMAL},
+      description = #{description,jdbcType=VARCHAR},
+      version_id = #{versionId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
