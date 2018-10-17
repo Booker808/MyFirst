@@ -97,7 +97,7 @@
     left join enterprise_info info on info.ent_number=t.ent_number
     left join enterprise_account account on account.ent_number=t.ent_number and account.account_type=1 and account.isdelete=0
     <include refid="exSearchBy"/>
-    order by ent_number desc
+    order by t.create_time desc
   </select>
   <select id="selectNewId" resultType="integer">
     select max(id) from enterprise_purchase_template
