@@ -29,10 +29,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -97,8 +94,9 @@ public class EnterpriseInfoServiceImpl implements EnterpriseInfoService {
         if(StringUtils.isNotEmpty(getEpNoByEpName(enterpriseInfoDto.getEnterpriseInfo().getEntName()))){
             return "该企业已存在";
         }
-
+        String uuid = UUID.randomUUID().toString().replace("-", "");
         EnterpriseInfo enterpriseInfo=enterpriseInfoDto.getEnterpriseInfo();
+        enterpriseInfo.setRequestId(uuid);
 //        BeanutilsCopy.copyProperties(enterpriseInfoDto,enterpriseInfo);
 
         EnterpriseContact legalPerson=enterpriseInfoDto.getLegalPerson(),
@@ -339,6 +337,11 @@ public class EnterpriseInfoServiceImpl implements EnterpriseInfoService {
     @Override
     public EnterpriseInfo selectByPrimaryKey(String entNumber) {
         return enterpriseInfoMapper.selectByPrimaryKey(entNumber);
+    }
+
+    @Override
+    public EnterpriseInfo findSelective(Map<String, Object> map) {
+        return enterpriseInfoMapper.findSelective(map);
     }
 
     @Override

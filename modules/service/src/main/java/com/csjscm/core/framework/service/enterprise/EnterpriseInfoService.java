@@ -49,5 +49,9 @@ public interface EnterpriseInfoService {
 
     EnterpriseInfo selectByPrimaryKey (String entNumber);
 
+    EnterpriseInfo findSelective(Map<String,Object> map);
+
     QueryResult<EnterpriseInfo> selectEnterpriseInfoPage(int page, int rpp, Map<String,Object> map);
+
+
 }
