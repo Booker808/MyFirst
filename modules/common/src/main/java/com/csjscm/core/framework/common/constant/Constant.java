@@ -45,7 +45,7 @@ public class Constant {
     /**
      * 权限域名的配置文件名称
      */
-    public static final String  SHIRO_DOMAIN= "sweet.framework.shiro-domain";
+    public static final String  SHIRO_DOMAIN= "sweet.oauth.server.address";
 
     /**
      * 我的代办接口地址
