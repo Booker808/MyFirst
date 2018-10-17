@@ -14,13 +14,28 @@
   <sql id="Base_Column_List" >
     id, tax_code, tax_category_name, level, parent_code, tax_rate, description, version_id
   </sql>
+  <sql id="searchBy">
+    <where>
+      <if test="versionId != null">
+        version_id=#{versionId,jdbcType=INTEGER}
+      </if>
+      <if test="taxCode !=null and taxCode !=''">
+        and tax_code=#{taxCode,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from tax_category
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    <select id="findCount" parameterType="map" resultType="int">
+      select count(1)
+      from tax_category
+      <include refid="searchBy"/>
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from tax_category
     where id = #{id,jdbcType=INTEGER}
   </delete>

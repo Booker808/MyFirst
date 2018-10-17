@@ -32,7 +32,7 @@ public class EnterpriseTemplateFlowServiceImpl implements EnterpriseTemplateFlow
 
     private static final String BUSINESS_KEY_PREFIX ="purchaseTemplate:";
 
-    private static final String PROCESS_DEFINITION_KEY = "templateApproval1.0";
+    private static final String PROCESS_DEFINITION_KEY = "templateApproval1.1";
 
     /**
      * 提交审批申请

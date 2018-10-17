@@ -2,6 +2,8 @@ package com.csjscm.core.framework.dao;
 
 import com.csjscm.core.framework.model.TaxCategory;
 
+import java.util.Map;
+
 public interface TaxCategoryMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -14,4 +16,6 @@ public interface TaxCategoryMapper {
     int updateByPrimaryKeySelective(TaxCategory record);
 
     int updateByPrimaryKey(TaxCategory record);
+
+    int findCount(Map<String, Object> map);
 }

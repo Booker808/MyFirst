@@ -6,6 +6,7 @@ import com.csjscm.core.framework.dao.TaxVersionMapper;
 import com.csjscm.core.framework.model.TaxCategory;
 import com.csjscm.core.framework.model.TaxVersion;
 import com.csjscm.core.framework.service.tax.TaxService;
+import com.csjscm.sweet.framework.core.mvc.BusinessException;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +14,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.poi.ss.usermodel.Row;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
@@ -30,6 +32,7 @@ public class TaxServiceImpl implements TaxService {
 
     private static final int READ_START_POS=1;
     @Override
+    @Transactional
     public Map<String, Object> importtaxCategoryExcel(String userName,Integer versionId, MultipartFile file) {
         //成功条数
         int successCount = 0;
@@ -49,7 +52,7 @@ public class TaxServiceImpl implements TaxService {
         for(int i=READ_START_POS;i<rows.size();i++){
             String failMsg;
             failRow = i + 1;
-            try{
+//            try{
                 TaxCategory taxCategory=new TaxCategory();
                 Row row=rows.get(i);
                 String levelChar=ExcelUtil.getCellValue(row.getCell(0)).trim();
@@ -72,6 +75,10 @@ public class TaxServiceImpl implements TaxService {
                     taxCategory.setTaxRate(BigDecimal.valueOf(Double.parseDouble(taxRate)));
                 }
                 taxCategory.setLevel(levelChar.charAt(0)-'A'+1);
+
+                if(isExists(taxCategory)){
+                    throw new BusinessException("导入失败，该版本已存在相应的税务code");
+                }
                 while(!stack.isEmpty()){
                     lastTaxCategory=stack.peek();
                     if(lastTaxCategory.getLevel()<taxCategory.getLevel()){
@@ -87,11 +94,11 @@ public class TaxServiceImpl implements TaxService {
                     stack.push(taxCategory);
                 }
                 successCount++;
-            }catch (Exception e){
-                log.error(e.getMessage());
-                failMsg = ExcelUtil.getFailMsg(failRow, failCell, "未知异常");
-                failList.add(failMsg);
-            }
+//            }catch (Exception e){
+//                log.error(e.getMessage());
+//                failMsg = ExcelUtil.getFailMsg(failRow, failCell, "未知异常");
+//                failList.add(failMsg);
+//            }
         }
         TaxVersion taxVersion=new TaxVersion();
         taxVersion.setId(versionId);
@@ -105,5 +112,12 @@ public class TaxServiceImpl implements TaxService {
         resultMap.put("failList",failList);
         resultMap.put("total",total);
         return resultMap;
+    }
+
+    private boolean isExists(TaxCategory taxCategory) {
+        Map<String,Object> map=Maps.newHashMap();
+        map.put("versionId",taxCategory.getVersionId());
+        map.put("taxCode",taxCategory.getTaxCode());
+        return taxCategoryMapper.findCount(map)>0;
     }
 }
