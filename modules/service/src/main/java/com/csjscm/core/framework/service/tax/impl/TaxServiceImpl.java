@@ -33,85 +33,58 @@ public class TaxServiceImpl implements TaxService {
     private static final int READ_START_POS=1;
     @Override
     @Transactional
-    public Map<String, Object> importtaxCategoryExcel(String userName,Integer versionId, MultipartFile file) {
-        //成功条数
-        int successCount = 0;
-        //失败条数
-        int failCount;
-        //总条数
-        int total;
-        //失败信息
-        List<String> failList = Lists.newArrayList();
+    public void importTaxCategoryExcel(String userName, Integer versionId, MultipartFile file) {
         ExcelUtil excelUtil=new ExcelUtil();
         List<Row> rows=excelUtil.readExcel(file);
-        total= rows.size()-READ_START_POS;
-        int failRow;
-        int failCell=0;
         Stack<TaxCategory> stack=new Stack<>();
         TaxCategory lastTaxCategory;
         for(int i=READ_START_POS;i<rows.size();i++){
-            String failMsg;
-            failRow = i + 1;
-//            try{
-                TaxCategory taxCategory=new TaxCategory();
-                Row row=rows.get(i);
-                String levelChar=ExcelUtil.getCellValue(row.getCell(0)).trim();
-                String taxCode=ExcelUtil.getCellValue(row.getCell(1)).trim();
-                String taxCategoryName=ExcelUtil.getCellValue(row.getCell(2)).trim();
-                String description=ExcelUtil.getCellValue(row.getCell(3)).trim();
-                String taxRate=ExcelUtil.getCellValue(row.getCell(4)).trim();
-                if(StringUtils.isNotEmpty(description)&&description.startsWith("<![CDATA[")){
-                    description=description.substring(9,description.length()-3);
-                }
-                if(StringUtils.isNotEmpty(taxRate)&&taxRate.startsWith("<![CDATA[")){
-                    taxRate=taxRate.substring(9,taxRate.length()-4);
-                }
+            TaxCategory taxCategory=new TaxCategory();
+            Row row=rows.get(i);
+            String taxCode=ExcelUtil.getCellValue(row.getCell(0)).trim();
+            String taxCategoryName=ExcelUtil.getCellValue(row.getCell(1)).trim();
+            String description=ExcelUtil.getCellValue(row.getCell(2)).trim();
+            String taxRate=ExcelUtil.getCellValue(row.getCell(3)).trim();
+            if(StringUtils.isNotEmpty(description)&&description.startsWith("<![CDATA[")){
+                description=description.substring(9,description.length()-3);
+            }
+            if(StringUtils.isNotEmpty(taxRate)&&taxRate.startsWith("<![CDATA[")){
+                taxRate=taxRate.substring(9,taxRate.length()-4);
+            }
 
-                taxCategory.setVersionId(versionId);
-                taxCategory.setTaxCode(taxCode);
-                taxCategory.setDescription(description);
-                taxCategory.setTaxCategoryName(taxCategoryName);
-                if(StringUtils.isNotEmpty(taxRate)){
-                    taxCategory.setTaxRate(BigDecimal.valueOf(Double.parseDouble(taxRate)));
-                }
-                taxCategory.setLevel(levelChar.charAt(0)-'A'+1);
+            taxCategory.setVersionId(versionId);
+            taxCategory.setTaxCode(taxCode);
+            taxCategory.setDescription(description);
+            taxCategory.setTaxCategoryName(taxCategoryName);
+            if(StringUtils.isNotEmpty(taxRate)){
+                taxCategory.setTaxRate(BigDecimal.valueOf(Double.parseDouble(taxRate)));
+            }
 
-                if(isExists(taxCategory)){
-                    throw new BusinessException("导入失败，该版本已存在相应的税务code");
-                }
-                while(!stack.isEmpty()){
-                    lastTaxCategory=stack.peek();
-                    if(lastTaxCategory.getLevel()<taxCategory.getLevel()){
-                        taxCategory.setParentCode(lastTaxCategory.getTaxCode());
-                        taxCategoryMapper.insertSelective(taxCategory);
-                        stack.push(taxCategory);
-                        break;
-                    }
-                    stack.pop();
-                }
-                if(stack.isEmpty()){
+            if(isExists(taxCategory)){
+                throw new BusinessException("导入失败，该版本已存在相应的税务code");
+            }
+            while(!stack.isEmpty()){
+                lastTaxCategory=stack.peek();
+                if(taxCategory.getTaxCode().startsWith(
+                        lastTaxCategory.getTaxCode().substring(0,lastTaxCategory.getLevel()*2))){
+                    taxCategory.setParentCode(lastTaxCategory.getTaxCode());
+                    taxCategory.setLevel(stack.size()+1);
                     taxCategoryMapper.insertSelective(taxCategory);
                     stack.push(taxCategory);
+                    break;
                 }
-                successCount++;
-//            }catch (Exception e){
-//                log.error(e.getMessage());
-//                failMsg = ExcelUtil.getFailMsg(failRow, failCell, "未知异常");
-//                failList.add(failMsg);
-//            }
+                stack.pop();
+            }
+            if(stack.isEmpty()){
+                taxCategory.setLevel(1);
+                taxCategoryMapper.insertSelective(taxCategory);
+                stack.push(taxCategory);
+            }
         }
-        TaxVersion taxVersion=new TaxVersion();
-        taxVersion.setId(versionId);
+        TaxVersion taxVersion=taxVersionMapper.selectByPrimaryKey(versionId);
         taxVersion.setEditUser(userName);
+        taxVersion.setEditTime(null);
         taxVersionMapper.updateByPrimaryKeySelective(taxVersion);
-        failCount=total-successCount;
-
-        Map<String,Object> resultMap= Maps.newHashMap();
-        resultMap.put("failCount",failCount);
-        resultMap.put("successCount",successCount);
-        resultMap.put("failList",failList);
-        resultMap.put("total",total);
-        return resultMap;
     }
 
     private boolean isExists(TaxCategory taxCategory) {

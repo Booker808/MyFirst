@@ -5,5 +5,5 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.Map;
 
 public interface TaxService {
-    Map<String,Object> importtaxCategoryExcel(String userName,Integer versionId, MultipartFile file);
+    void importTaxCategoryExcel(String userName, Integer versionId, MultipartFile file);
 }

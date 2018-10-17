@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.csjscm.core.framework.service.tax.TaxService;
 import com.csjscm.sweet.framework.auth.AuthUtils;
 import com.csjscm.sweet.framework.core.mvc.APIResponse;
-import com.csjscm.sweet.framework.core.mvc.BusinessException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -24,7 +23,7 @@ public class TaxController {
 
     @ApiOperation("导入税务分类Excel")
     @RequestMapping(value = "/taxCategory/{versionId}/_import",method = RequestMethod.POST)
-    public APIResponse importtaxCategoryExcel(
+    public APIResponse importTaxCategoryExcel(
             @PathVariable Integer versionId,
             @ApiParam(name = "file",value = "excel文件")@RequestParam MultipartFile file){
         JSONObject sessionUser = (JSONObject) AuthUtils.getSessionUser();
@@ -32,8 +31,8 @@ public class TaxController {
         if(sessionUser!=null){
             userName=sessionUser.getString("name");
         }
-        Map<String,Object> map=taxService.importtaxCategoryExcel(userName,versionId,file);
-        return APIResponse.success(map);
+        taxService.importTaxCategoryExcel(userName,versionId,file);
+        return APIResponse.success("导入成功");
     }
 
 }
