@@ -35,6 +35,13 @@
       from tax_category
       <include refid="searchBy"/>
     </select>
+    <insert id="copy" parameterType="map">
+        insert into tax_category
+        (tax_code, tax_category_name, level, parent_code, tax_rate, description, version_id)
+        SELECT tax_code,tax_category_name,level,parent_code,tax_rate,description,#{newId,jdbcType=INTEGER}
+        from tax_category where version_id=#{oldId,jdbcType=INTEGER}
+    </insert>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from tax_category
     where id = #{id,jdbcType=INTEGER}

@@ -1,5 +1,6 @@
 package com.csjscm.core.framework.model;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.Date;
@@ -10,6 +11,7 @@ public class TaxVersion {
 
     private String version;
 
+    @ApiModelProperty("是否启用0未启用1已启用")
     private Integer enable;
 
     private String createUser;

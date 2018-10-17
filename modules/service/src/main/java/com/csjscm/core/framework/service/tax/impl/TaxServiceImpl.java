@@ -3,11 +3,14 @@ package com.csjscm.core.framework.service.tax.impl;
 import com.csjscm.core.framework.common.util.ExcelUtil;
 import com.csjscm.core.framework.dao.TaxCategoryMapper;
 import com.csjscm.core.framework.dao.TaxVersionMapper;
+import com.csjscm.core.framework.example.TaxVersionExample;
 import com.csjscm.core.framework.model.TaxCategory;
 import com.csjscm.core.framework.model.TaxVersion;
 import com.csjscm.core.framework.service.tax.TaxService;
 import com.csjscm.sweet.framework.core.mvc.BusinessException;
-import com.google.common.collect.Lists;
+import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -85,6 +88,63 @@ public class TaxServiceImpl implements TaxService {
         taxVersion.setEditUser(userName);
         taxVersion.setEditTime(null);
         taxVersionMapper.updateByPrimaryKeySelective(taxVersion);
+    }
+
+    @Override
+    public QueryResult<TaxVersion> queryTaxVersion(int page, int rpp, TaxVersionExample example) {
+        PageHelper.startPage(page,rpp);
+        List<TaxVersion> taxVersionList=taxVersionMapper.selectByExample(example);
+        PageInfo<TaxVersion> pageInfo=new PageInfo<>(taxVersionList);
+        QueryResult<TaxVersion> result=new QueryResult<>();
+        result.setTotal(pageInfo.getTotal());
+        result.setItems(pageInfo.getList());
+        return result;
+    }
+
+    @Override
+    public TaxVersion queryTaxVersionById(Integer id) {
+        return taxVersionMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public Integer addTaxVersion(TaxVersion taxVersion) {
+        if(taxVersion.getEnable()==1 && isExistsEnableVersion(taxVersion)){
+            throw new BusinessException("已存在启用分类");
+        }
+        return taxVersionMapper.insertSelective(taxVersion);
+    }
+
+    @Override
+    public Integer updateTaxVersion(TaxVersion taxVersion) {
+        if(taxVersion.getEnable()==1 && isExistsEnableVersion(taxVersion)){
+            throw new BusinessException("已存在启用分类");
+        }
+        return taxVersionMapper.updateByPrimaryKeySelective(taxVersion);
+    }
+
+    @Override
+    @Transactional
+    public void copyTaxVersion(Integer id, String userName) {
+        TaxVersion oldTaxVersion=taxVersionMapper.selectByPrimaryKey(id);
+        TaxVersion newTaxVersion=new TaxVersion();
+        newTaxVersion.setEditUser(userName);
+        newTaxVersion.setCreateUser(userName);
+        newTaxVersion.setEnable(0);
+        newTaxVersion.setVersion(oldTaxVersion.getVersion()+"复制");
+        taxVersionMapper.insertSelective(newTaxVersion);
+
+        Integer newId=newTaxVersion.getId();
+        Map<String,Object> map=Maps.newHashMap();
+        map.put("newId",newTaxVersion.getId());
+        map.put("oldId",oldTaxVersion.getId());
+        taxCategoryMapper.copy(map);
+    }
+
+    private boolean isExistsEnableVersion(TaxVersion taxVersion) {
+        Map<String,Object> map=Maps.newHashMap();
+        map.put("enable",1);
+        map.put("notId",taxVersion.getId());
+        return taxVersionMapper.findCount(map)>0;
     }
 
     private boolean isExists(TaxCategory taxCategory) {

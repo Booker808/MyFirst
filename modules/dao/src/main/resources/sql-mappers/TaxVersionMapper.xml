@@ -13,11 +13,40 @@
   <sql id="Base_Column_List" >
     id, version, enable, create_user, create_time, edit_user, edit_time
   </sql>
+  <sql id="searchByExample">
+    <where>
+      <if test="version !=null and version != ''">
+        version like concat('%',#{version,jdbcType=VARCHAR},'%')
+      </if>
+    </where>
+  </sql>
+  <sql id="searchBy">
+    <where>
+      <if test="enable != null">
+        and enable = #{enable,jdbcType=INTEGER}
+      </if>
+      <if test="notId != null">
+        and id != #{notId,jdbcType=INTEGER}
+      </if>
+    </where>
+  </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from tax_version
     where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByExample" parameterType="map" resultMap="BaseResultMap">
+    select
+      <include refid="Base_Column_List"/>
+    from tax_version
+    <include refid="searchByExample"/>
+    order by create_time desc
+  </select>
+  <select id="findCount" parameterType="map" resultType="int">
+    select count(1)
+    from tax_version
+    <include refid="searchBy"/>
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from tax_version
@@ -31,7 +60,10 @@
       #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{editUser,jdbcType=VARCHAR}, 
       #{editTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.csjscm.core.framework.model.TaxVersion" >
+  <insert id="insertSelective" parameterType="com.csjscm.core.framework.model.TaxVersion">
+    <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+      SELECT LAST_INSERT_ID() AS id
+    </selectKey>
     insert into tax_version
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >

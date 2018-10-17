@@ -18,4 +18,6 @@ public interface TaxCategoryMapper {
     int updateByPrimaryKey(TaxCategory record);
 
     int findCount(Map<String, Object> map);
+
+    void copy(Map<String,Object> map);
 }
