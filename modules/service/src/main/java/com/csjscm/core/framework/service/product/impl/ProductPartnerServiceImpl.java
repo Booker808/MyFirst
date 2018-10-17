@@ -748,10 +748,10 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
             parrnerMap.put("productNo", ps.getProductNo());
             int count1 = skuPartnerMapper.findCount(parrnerMap);
             if(count1>0){
-                fail++;
+             /*   fail++;
                 failVo.setFailData(ps);
                 failVo.setMessage("已存在该供应商商品");
-                scmPartnerFailVos.add(failVo);
+                scmPartnerFailVos.add(failVo);*/
                 continue;
             }
             SkuPartner skuPartner = new SkuPartner();

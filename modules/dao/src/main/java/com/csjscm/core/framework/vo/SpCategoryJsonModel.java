@@ -37,8 +37,8 @@ public class SpCategoryJsonModel implements Comparable<SpCategoryJsonModel>, Ser
     /**
      * 上层分类ID
      */
-    @NotBlank(message = "上层分类ID不能为空")
-    private String parentClass;
+    @NotNull(message = "上层分类ID不能为空")
+    private Integer parentClass;
 
     /**
      * 分类层级
@@ -190,11 +190,12 @@ public class SpCategoryJsonModel implements Comparable<SpCategoryJsonModel>, Ser
         this.simpleName = simpleName;
     }
 
-    public String getParentClass() {
+    @NotNull
+    public Integer getParentClass() {
         return parentClass;
     }
 
-    public void setParentClass(String parentClass) {
+    public void setParentClass(@NotNull Integer parentClass) {
         this.parentClass = parentClass;
     }
 

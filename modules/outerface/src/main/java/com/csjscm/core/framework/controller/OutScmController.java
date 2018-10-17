@@ -67,6 +67,18 @@ public class OutScmController {
         }
         return APIResponse.success(redisServiceFacade.get(Constant.REDIS_KEY_JSONSTR_BRAND, JSONArray.class));
     }
+    /**
+     * 查询品牌
+     *
+     * @return
+     */
+    @ApiOperation("查询品牌")
+    @RequestMapping(value = "/getBrand", method = RequestMethod.GET)
+    public APIResponse getBrand(@RequestParam(name = "brandName") String brandName) {
+        Map<String,Object> map=new HashMap<>();
+        map.put("brandName",brandName);
+        return APIResponse.success(brandMasterService.findSelective(map));
+    }
 
     @ApiOperation("查询企业基本信息")
     @RequestMapping(value = "/enterpriseBaseInfo", method = RequestMethod.GET)

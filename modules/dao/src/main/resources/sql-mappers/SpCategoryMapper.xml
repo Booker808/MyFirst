@@ -8,7 +8,7 @@
         <result column="class_code" property="classCode" jdbcType="VARCHAR" />
         <result column="class_name" property="className" jdbcType="VARCHAR" />
         <result column="simple_name" property="simpleName" jdbcType="VARCHAR" />
-        <result column="parent_class" property="parentClass" jdbcType="VARCHAR" />
+        <result column="parent_class" property="parentClass" jdbcType="INTEGER" />
         <result column="level_num" property="levelNum" jdbcType="INTEGER" />
         <result column="memos" property="memos" jdbcType="VARCHAR" />
         <result column="create_user_id" property="createUserId" jdbcType="VARCHAR" />
@@ -54,8 +54,8 @@
             <if test="simpleName != null and simpleName != '' ">
                 and simple_name = #{simpleName,jdbcType=VARCHAR}
             </if>
-            <if test="parentClass != null and parentClass != '' ">
-                and parent_class = #{parentClass,jdbcType=VARCHAR}
+            <if test="parentClass != null  ">
+                and parent_class = #{parentClass,jdbcType=INTEGER}
             </if>
             <if test="levelNum != null and levelNum != '' ">
                 and level_num = #{levelNum,jdbcType=INTEGER}
@@ -124,162 +124,162 @@
     <insert id="insertSelective" parameterType="com.csjscm.core.framework.model.SpCategory">
         insert into sp_category
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="id != null">
+            <if test="id != null ">
                 id,
             </if>
-            <if test="classCode != null">
+            <if test="classCode != null ">
                 class_code,
             </if>
-            <if test="className != null">
+            <if test="className != null ">
                 class_name,
             </if>
-            <if test="simpleName != null">
+            <if test="simpleName != null ">
                 simple_name,
             </if>
-            <if test="parentClass != null">
+            <if test="parentClass != null ">
                 parent_class,
             </if>
-            <if test="levelNum != null">
+            <if test="levelNum != null ">
                 level_num,
             </if>
-            <if test="memos != null">
+            <if test="memos != null ">
                 memos,
             </if>
-            <if test="createUserId != null">
+            <if test="createUserId != null ">
                 create_user_id,
             </if>
-            <if test="createTime != null">
+            <if test="createTime != null ">
                 create_time,
             </if>
-            <if test="editUserId != null">
+            <if test="editUserId != null ">
                 edit_user_id,
             </if>
-            <if test="editTime != null">
+            <if test="editTime != null ">
                 edit_time,
             </if>
-            <if test="udf1 != null">
+            <if test="udf1 != null ">
                 udf1,
             </if>
-            <if test="udf2 != null">
+            <if test="udf2 != null ">
                 udf2,
             </if>
-            <if test="udf3 != null">
+            <if test="udf3 != null ">
                 udf3,
             </if>
-            <if test="udf4 != null">
+            <if test="udf4 != null ">
                 udf4,
             </if>
-            <if test="udf5 != null">
+            <if test="udf5 != null ">
                 udf5,
             </if>
-            <if test="udf6 != null">
+            <if test="udf6 != null ">
                 udf6,
             </if>
-            <if test="udf7 != null">
+            <if test="udf7 != null ">
                 udf7,
             </if>
-            <if test="udf8 != null">
+            <if test="udf8 != null ">
                 udf8,
             </if>
-            <if test="udf9 != null">
+            <if test="udf9 != null ">
                 udf9,
             </if>
-            <if test="udf10 != null">
+            <if test="udf10 != null ">
                 udf10,
             </if>
-            <if test="requestId != null">
+            <if test="requestId != null ">
                 request_id,
             </if>
-            <if test="sort != null">
+            <if test="sort != null ">
                 sort,
             </if>
-            <if test="state != null">
+            <if test="state != null ">
                 state,
             </if>
-            <if test="state != null">
+            <if test="bigImg != null ">
                 big_img,
             </if>
-            <if test="state != null">
+            <if test="midImg != null ">
                 mid_img,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="id != null">
+            <if test="id != null ">
                 #{id,jdbcType=INTEGER},
             </if>
-            <if test="classCode != null">
+            <if test="classCode != null ">
                 #{classCode,jdbcType=VARCHAR},
             </if>
-            <if test="className != null">
+            <if test="className != null ">
                 #{className,jdbcType=VARCHAR},
             </if>
-            <if test="simpleName != null">
+            <if test="simpleName != null ">
                 #{simpleName,jdbcType=VARCHAR},
             </if>
-            <if test="parentClass != null">
-                #{parentClass,jdbcType=VARCHAR},
+            <if test="parentClass != null ">
+                #{parentClass,jdbcType=INTEGER},
             </if>
-            <if test="levelNum != null">
+            <if test="levelNum != null ">
                 #{levelNum,jdbcType=INTEGER},
             </if>
-            <if test="memos != null">
+            <if test="memos != null ">
                 #{memos,jdbcType=VARCHAR},
             </if>
-            <if test="createUserId != null">
+            <if test="createUserId != null ">
                 #{createUserId,jdbcType=VARCHAR},
             </if>
-            <if test="createTime != null">
+            <if test="createTime != null ">
                 #{createTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="editUserId != null">
+            <if test="editUserId != null ">
                 #{editUserId,jdbcType=VARCHAR},
             </if>
-            <if test="editTime != null">
+            <if test="editTime != null ">
                 #{editTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="udf1 != null">
+            <if test="udf1 != null ">
                 #{udf1,jdbcType=VARCHAR},
             </if>
-            <if test="udf2 != null">
+            <if test="udf2 != null ">
                 #{udf2,jdbcType=VARCHAR},
             </if>
-            <if test="udf3 != null">
+            <if test="udf3 != null ">
                 #{udf3,jdbcType=VARCHAR},
             </if>
-            <if test="udf4 != null">
+            <if test="udf4 != null ">
                 #{udf4,jdbcType=VARCHAR},
             </if>
-            <if test="udf5 != null">
+            <if test="udf5 != null ">
                 #{udf5,jdbcType=VARCHAR},
             </if>
-            <if test="udf6 != null">
+            <if test="udf6 != null ">
                 #{udf6,jdbcType=VARCHAR},
             </if>
-            <if test="udf7 != null">
+            <if test="udf7 != null ">
                 #{udf7,jdbcType=VARCHAR},
             </if>
-            <if test="udf8 != null">
+            <if test="udf8 != null ">
                 #{udf8,jdbcType=VARCHAR},
             </if>
-            <if test="udf9 != null">
+            <if test="udf9 != null ">
                 #{udf9,jdbcType=VARCHAR},
             </if>
-            <if test="udf10 != null">
+            <if test="udf10 != null ">
                 #{udf10,jdbcType=VARCHAR},
             </if>
-            <if test="requestId != null">
+            <if test="requestId != null ">
                 #{requestId,jdbcType=VARCHAR},
             </if>
-            <if test="sort != null">
+            <if test="sort != null ">
                 #{sort,jdbcType=INTEGER},
             </if>
-            <if test="state != null">
+            <if test="state != null ">
                 #{state,jdbcType=INTEGER},
             </if>
-            <if test="bigImg != null">
+            <if test="bigImg != null ">
                 #{bigImg,jdbcType=VARCHAR},
             </if>
-            <if test="midImg != null">
+            <if test="midImg != null ">
                 #{midImg,jdbcType=VARCHAR},
             </if>
         </trim>
@@ -290,7 +290,7 @@
             class_code = #{classCode,jdbcType=VARCHAR},
             class_name = #{className,jdbcType=VARCHAR},
             simple_name = #{simpleName,jdbcType=VARCHAR},
-            parent_class = #{parentClass,jdbcType=VARCHAR},
+            parent_class = #{parentClass,jdbcType=INTEGER},
             level_num = #{levelNum,jdbcType=INTEGER},
             memos = #{memos,jdbcType=VARCHAR},
             create_user_id = #{createUserId,jdbcType=VARCHAR},
@@ -329,7 +329,7 @@
                 simple_name = #{simpleName,jdbcType=VARCHAR},                
             </if>
             <if test="parentClass != null and parentClass != '' ">        
-                parent_class = #{parentClass,jdbcType=VARCHAR},                
+                parent_class = #{parentClass,jdbcType=INTEGER},
             </if>
             <if test="levelNum != null and levelNum != '' ">        
                 level_num = #{levelNum,jdbcType=INTEGER},                

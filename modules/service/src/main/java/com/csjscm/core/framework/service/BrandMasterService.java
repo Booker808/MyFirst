@@ -70,4 +70,6 @@ public interface BrandMasterService {
      * 刷新 品牌 redis
      */
     void reloadBrandList();
+
+    BrandMaster findSelective(Map<String,Object> map);
 }

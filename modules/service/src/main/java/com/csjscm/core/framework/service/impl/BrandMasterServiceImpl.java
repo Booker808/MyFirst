@@ -153,4 +153,9 @@ public class BrandMasterServiceImpl implements BrandMasterService {
         redisServiceFacade.set(Constant.REDIS_KEY_JSONSTR_BRAND,  JSONArray.parseArray(JSON.toJSONString(brandList)));
     }
 
+    @Override
+    public BrandMaster findSelective(Map<String, Object> map) {
+        return brandMasterMapper.findSelective(map);
+    }
+
 }

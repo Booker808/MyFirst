@@ -4,6 +4,7 @@ package com.csjscm.core.framework.model;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -44,8 +45,8 @@ import java.util.Date;
     /**
     * 上层分类ID
     */
-    @NotBlank(message = "上层分类ID不能为空")
-    private String parentClass;
+    @NotNull(message = "上层分类ID不能为空")
+    private Integer parentClass;
 
     /**
     * 分类层级
@@ -238,16 +239,12 @@ import java.util.Date;
     *
     * @return 上层分类ID
     */
-    public String getParentClass(){
+    @NotNull
+    public Integer getParentClass() {
         return parentClass;
     }
 
-    /**
-    * 设置上层分类ID
-    * 
-    * @param parentClass 要设置的上层分类ID
-    */
-    public void setParentClass(String parentClass){
+    public void setParentClass(@NotNull Integer parentClass) {
         this.parentClass = parentClass;
     }
 
