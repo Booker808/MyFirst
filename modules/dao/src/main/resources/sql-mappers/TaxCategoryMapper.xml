@@ -181,4 +181,9 @@
       version_id = #{versionId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="findOne" parameterType="java.util.HashMap"  resultMap="BaseResultMap">
+    select    <include refid="Base_Column_List" />
+    from tax_category
+    <include refid="searchBy"/>
+  </select>
 </mapper>

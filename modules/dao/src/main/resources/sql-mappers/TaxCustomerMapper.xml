@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- tax_customer表:客户商品与税收关联记录参考表模块 -->
+<mapper namespace="com.csjscm.core.framework.dao.TaxCustomerMapper">
+    <!--返回Map-->        
+    <resultMap id="BaseResultMap" type="com.csjscm.core.framework.model.TaxCustomer">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="customer_pd_name" property="customerPdName" jdbcType="VARCHAR" />
+        <result column="tax_code" property="taxCode" jdbcType="VARCHAR" />
+        <result column="tax_category_name" property="taxCategoryName" jdbcType="VARCHAR" />
+    </resultMap>
+    
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="Base_Column_List">
+        id,customer_pd_name,tax_code,tax_category_name 
+    </sql>
+    
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="searchBy">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test=" id != null and id != '' ">
+                id  = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="customerPdName != null and customerPdName != '' ">
+                and customer_pd_name = #{customerPdName,jdbcType=VARCHAR}
+            </if>
+            <if test="customerPdNameLike != null and customerPdNameLike != '' ">
+                and customer_pd_name like  concat('%',#{customerPdNameLike,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="taxCode != null and taxCode != '' ">
+                and tax_code = #{taxCode,jdbcType=VARCHAR}
+            </if>
+            <if test="taxCodeLike != null and taxCodeLike != '' ">
+                and tax_code like  concat('%',#{taxCodeLike,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="taxCategoryName != null and taxCategoryName != '' ">
+                and tax_category_name = #{taxCategoryName,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </sql>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from  tax_customer
+        where id =   #{id,jdbcType=INTEGER}
+    </delete>
+    
+    <insert id="insert" parameterType="com.csjscm.core.framework.model.TaxCustomer">
+        insert into tax_customer(customer_pd_name,tax_code,tax_category_name)values(#{customerPdName,jdbcType=VARCHAR},#{taxCode,jdbcType=VARCHAR},#{taxCategoryName,jdbcType=VARCHAR})
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.csjscm.core.framework.model.TaxCustomer">
+        insert into tax_customer
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null ">
+                id,
+            </if>
+            <if test="customerPdName != null ">
+                customer_pd_name,
+            </if>
+            <if test="taxCode != null ">
+                tax_code,
+            </if>
+            <if test="taxCategoryName != null ">
+                tax_category_name,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                     <if test="id != null ">
+                        #{id,jdbcType=INTEGER},
+                     </if>
+                     <if test="customerPdName != null ">
+                        #{customerPdName,jdbcType=VARCHAR},
+                     </if>
+                     <if test="taxCode != null ">
+                        #{taxCode,jdbcType=VARCHAR},
+                     </if>
+                     <if test="taxCategoryName != null ">
+                        #{taxCategoryName,jdbcType=VARCHAR},
+                     </if>
+        </trim>
+    </insert>
+    <update id="update" parameterType="com.csjscm.core.framework.model.TaxCustomer">
+        update tax_customer set 
+            customer_pd_name = #{customerPdName,jdbcType=VARCHAR},
+            tax_code = #{taxCode,jdbcType=VARCHAR},
+            tax_category_name = #{taxCategoryName,jdbcType=VARCHAR}
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <update id="updateSelective"  parameterType="com.csjscm.core.framework.model.TaxCustomer">
+        update tax_customer
+          <set>
+            <if test="customerPdName != null and customerPdName != '' ">        
+                customer_pd_name = #{customerPdName,jdbcType=VARCHAR},                
+            </if>
+            <if test="taxCode != null and taxCode != '' ">        
+                tax_code = #{taxCode,jdbcType=VARCHAR},                
+            </if>
+            <if test="taxCategoryName != null and taxCategoryName != '' ">        
+                tax_category_name = #{taxCategoryName,jdbcType=VARCHAR}                
+            </if>
+        </set>    
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <select id="findByPrimary" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List" />
+        from tax_customer
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+	<select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from tax_customer
+        <include refid="searchBy"/>
+    </select>
+               
+    <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from tax_customer
+        <include refid="searchBy"/>
+    </select>
+    <select id="findCount" resultType="java.lang.Integer" parameterType="java.util.HashMap">
+        select count(id)
+        from tax_customer
+        <include refid="searchBy"/>
+    </select>
+
+</mapper>

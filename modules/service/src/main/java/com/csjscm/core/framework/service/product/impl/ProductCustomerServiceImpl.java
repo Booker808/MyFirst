@@ -468,6 +468,7 @@ public class ProductCustomerServiceImpl implements ProductCustomerService {
     }
 
     @Override
+    @Transactional
     public ScmCustomerVo saveSCMSkuCustomer(String json){
         ScmCustomerVo vo=new ScmCustomerVo();
         List<SkuCustomerSCMMolde> skuCustomerSCMMoldes = null;

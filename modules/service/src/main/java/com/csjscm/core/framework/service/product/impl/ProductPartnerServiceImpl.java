@@ -686,6 +686,7 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
     }
 
     @Override
+    @Transactional
     public ScmPartnerVo saveSCMSkuPartner(String json) {
         ScmPartnerVo vo=new ScmPartnerVo();
         List<SkuPartnerSCMMolde> skuPartnerSCMMoldes=null;

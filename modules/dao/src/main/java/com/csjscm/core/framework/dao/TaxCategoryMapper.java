@@ -21,6 +21,8 @@ public interface TaxCategoryMapper {
 
     int findCount(Map<String, Object> map);
 
+    TaxCategory findOne(Map<String, Object> map);
+
     void copy(Map<String,Object> map);
 
     List<TaxCategory> selectByCondition(Map<String, Object> map);
