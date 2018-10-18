@@ -2,6 +2,7 @@ package com.csjscm.core.framework.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.csjscm.core.framework.example.TaxVersionExample;
+import com.csjscm.core.framework.model.TaxCategory;
 import com.csjscm.core.framework.model.TaxVersion;
 import com.csjscm.core.framework.service.tax.TaxService;
 import com.csjscm.sweet.framework.auth.AuthUtils;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.annotations.ApiIgnore;
 
+import java.util.List;
 import java.util.Map;
 
 @Api("税务API")
@@ -22,20 +24,6 @@ import java.util.Map;
 public class TaxController {
     @Autowired
     private TaxService taxService;
-
-    @ApiOperation("导入税务分类Excel")
-    @RequestMapping(value = "/taxCategory/{versionId}/_import",method = RequestMethod.POST)
-    public APIResponse importTaxCategoryExcel(
-            @PathVariable Integer versionId,
-            @ApiParam(name = "file",value = "excel文件")@RequestParam MultipartFile file){
-        JSONObject sessionUser = (JSONObject) AuthUtils.getSessionUser();
-        String userName=null;
-        if(sessionUser!=null){
-            userName=sessionUser.getString("name");
-        }
-        taxService.importTaxCategoryExcel(userName,versionId,file);
-        return APIResponse.success("导入成功");
-    }
 
     @ApiOperation("税务版本号列表查询")
     @ApiImplicitParams({
@@ -101,6 +89,27 @@ public class TaxController {
             userName=sessionUser.getString("name");
         }
         taxService.copyTaxVersion(id,userName);
-        return APIResponse.success();
+        return APIResponse.success("复制成功");
+    }
+
+    @ApiOperation("导入税务分类Excel")
+    @RequestMapping(value = "/taxVersion/{versionId}/taxCategory/_import",method = RequestMethod.POST)
+    public APIResponse importTaxCategoryExcel(
+            @PathVariable Integer versionId,
+            @ApiParam(name = "file",value = "excel文件")@RequestParam MultipartFile file){
+        JSONObject sessionUser = (JSONObject) AuthUtils.getSessionUser();
+        String userName=null;
+        if(sessionUser!=null){
+            userName=sessionUser.getString("name");
+        }
+        taxService.importTaxCategoryExcel(userName,versionId,file);
+        return APIResponse.success("导入成功");
+    }
+
+    @ApiOperation("根据税务版本ID获取税收编码树(全部编码)")
+    @RequestMapping(value = "/taxVersion/{versionId}/taxCategory/_all",method = RequestMethod.GET)
+    public APIResponse<List<TaxCategory>> queryTaxCategoryAll(@PathVariable Integer versionId){
+        List<TaxCategory> result=taxService.queryTaxCategoryAll(versionId);
+        return APIResponse.success(result);
     }
 }

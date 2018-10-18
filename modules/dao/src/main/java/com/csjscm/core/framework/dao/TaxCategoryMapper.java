@@ -2,6 +2,7 @@ package com.csjscm.core.framework.dao;
 
 import com.csjscm.core.framework.model.TaxCategory;
 
+import java.util.List;
 import java.util.Map;
 
 public interface TaxCategoryMapper {
@@ -20,4 +21,6 @@ public interface TaxCategoryMapper {
     int findCount(Map<String, Object> map);
 
     void copy(Map<String,Object> map);
+
+    List<TaxCategory> selectByCondition(Map<String, Object> map);
 }

@@ -9,6 +9,7 @@ import com.csjscm.core.framework.model.TaxVersion;
 import com.csjscm.core.framework.service.tax.TaxService;
 import com.csjscm.sweet.framework.core.mvc.BusinessException;
 import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
+import com.csjscm.sweet.framework.redis.RedisServiceFacade;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Maps;
@@ -32,6 +33,8 @@ public class TaxServiceImpl implements TaxService {
     private TaxCategoryMapper taxCategoryMapper;
     @Autowired
     private TaxVersionMapper taxVersionMapper;
+    @Autowired
+    private RedisServiceFacade redisServiceFacade;
 
     private static final int READ_START_POS=1;
     @Override
@@ -138,6 +141,15 @@ public class TaxServiceImpl implements TaxService {
         map.put("newId",newTaxVersion.getId());
         map.put("oldId",oldTaxVersion.getId());
         taxCategoryMapper.copy(map);
+    }
+
+    @Override
+    public List<TaxCategory> queryTaxCategoryAll(Integer versionId) {
+        Map<String,Object> map=Maps.newHashMap();
+        map.put("versionId",versionId);
+        List<TaxCategory> list=taxCategoryMapper.selectByCondition(map);
+
+        return list;
     }
 
     private boolean isExistsEnableVersion(TaxVersion taxVersion) {

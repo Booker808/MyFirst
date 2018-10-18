@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.csjscm.core.framework.dao.TaxCategoryMapper" >
+  <cache eviction="FIFO" flushInterval="600000" size="512" readOnly="true"/>
   <resultMap id="BaseResultMap" type="com.csjscm.core.framework.model.TaxCategory" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="tax_code" property="taxCode" jdbcType="VARCHAR" />
@@ -35,7 +36,13 @@
       from tax_category
       <include refid="searchBy"/>
     </select>
-    <insert id="copy" parameterType="map">
+  <select id="selectByCondition" parameterType="map" resultMap="BaseResultMap">
+    select
+      <include refid="Base_Column_List"/>
+    from tax_category
+    <include refid="searchBy"/>
+  </select>
+  <insert id="copy" parameterType="map">
         insert into tax_category
         (tax_code, tax_category_name, level, parent_code, tax_rate, description, version_id)
         SELECT tax_code,tax_category_name,level,parent_code,tax_rate,description,#{newId,jdbcType=INTEGER}
