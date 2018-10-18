@@ -1,28 +1,17 @@
 package com.csjscm.core.framework.configuation;
 
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.csjscm.core.framework.common.constant.Constant;
-import com.csjscm.core.framework.common.enums.InvUnitIsvalidEnum;
-import com.csjscm.core.framework.model.InvUnit;
 import com.csjscm.core.framework.model.SkuCore;
-import com.csjscm.core.framework.service.CategoryService;
-import com.csjscm.core.framework.service.InvUnitService;
 import com.csjscm.core.framework.service.SkuCoreService;
-import com.csjscm.core.framework.service.SpCategoryService;
 import com.csjscm.sweet.framework.redis.RedisServiceFacade;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.core.RedisTemplate;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static com.csjscm.core.framework.common.constant.Constant.REDIS_KEY_PRODUCT_NO;
 
