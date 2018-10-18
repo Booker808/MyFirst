@@ -3,6 +3,7 @@ package com.csjscm.core.framework.service.tax.impl;
 import com.csjscm.core.framework.common.util.ExcelUtil;
 import com.csjscm.core.framework.dao.TaxCategoryMapper;
 import com.csjscm.core.framework.dao.TaxVersionMapper;
+import com.csjscm.core.framework.example.TaxCategoryExample;
 import com.csjscm.core.framework.example.TaxVersionExample;
 import com.csjscm.core.framework.model.TaxCategory;
 import com.csjscm.core.framework.model.TaxVersion;
@@ -147,9 +148,18 @@ public class TaxServiceImpl implements TaxService {
     public List<TaxCategory> queryTaxCategoryAll(Integer versionId) {
         Map<String,Object> map=Maps.newHashMap();
         map.put("versionId",versionId);
-        List<TaxCategory> list=taxCategoryMapper.selectByCondition(map);
+        return taxCategoryMapper.selectByCondition(map);
+    }
 
-        return list;
+    @Override
+    public QueryResult<TaxCategory> queryTaxCategoryList(int page, int rpp, TaxCategoryExample example) {
+        PageHelper.startPage(page,rpp);
+        List<TaxCategory> taxCategoryList=taxCategoryMapper.selectByExample(example);
+        PageInfo<TaxCategory> pageInfo=new PageInfo<>(taxCategoryList);
+        QueryResult<TaxCategory> result=new QueryResult<>();
+        result.setItems(pageInfo.getList());
+        result.setTotal(pageInfo.getTotal());
+        return result;
     }
 
     private boolean isExistsEnableVersion(TaxVersion taxVersion) {

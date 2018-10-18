@@ -1,5 +1,6 @@
 package com.csjscm.core.framework.service.tax;
 
+import com.csjscm.core.framework.example.TaxCategoryExample;
 import com.csjscm.core.framework.example.TaxVersionExample;
 import com.csjscm.core.framework.model.TaxCategory;
 import com.csjscm.core.framework.model.TaxVersion;
@@ -23,4 +24,6 @@ public interface TaxService {
     void copyTaxVersion(Integer id, String userName);
 
     List<TaxCategory> queryTaxCategoryAll(Integer versionId);
+
+    QueryResult<TaxCategory> queryTaxCategoryList(int page, int rpp, TaxCategoryExample example);
 }

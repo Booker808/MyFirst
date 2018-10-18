@@ -1,6 +1,8 @@
 package com.csjscm.core.framework.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.csjscm.core.framework.example.TaxCategoryExample;
 import com.csjscm.core.framework.example.TaxVersionExample;
 import com.csjscm.core.framework.model.TaxCategory;
 import com.csjscm.core.framework.model.TaxVersion;
@@ -110,6 +112,29 @@ public class TaxController {
     @RequestMapping(value = "/taxVersion/{versionId}/taxCategory/_all",method = RequestMethod.GET)
     public APIResponse<List<TaxCategory>> queryTaxCategoryAll(@PathVariable Integer versionId){
         List<TaxCategory> result=taxService.queryTaxCategoryAll(versionId);
+        return APIResponse.success(result);
+    }
+
+    @ApiOperation("根据条件查询税务编码")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "versionId",value = "税务版本Id",dataType = "Integer",paramType = "path"),
+            @ApiImplicitParam(name="page",value = "当前页码（起始为1）",dataType = "Integer",defaultValue = "1",paramType = "query"),
+            @ApiImplicitParam(name="rpp",value = "每页数量",dataType = "Integer",defaultValue = "10",paramType = "query"),
+            @ApiImplicitParam(name="taxCategoryName",value="分类名称",dataType = "String",paramType = "query"),
+            @ApiImplicitParam(name = "taxCode",value = "税务编码",dataType = "String",paramType = "query"),
+            @ApiImplicitParam(name = "parentCode",value = "父类编码",dataType="String",paramType = "query")
+    })
+    @RequestMapping(value = "/taxVersion/{versionId}/taxCategory",method = RequestMethod.GET)
+    public APIResponse<QueryResult<TaxCategory>> queryTaxCategoryList(@PathVariable Integer versionId,
+                                                                      @RequestParam(required = false,defaultValue = "1")int page,
+                                                                      @RequestParam(required = false,defaultValue = "10")int rpp,
+                                                                      @ApiIgnore @RequestParam Map<String,String> condition){
+        TaxCategoryExample example=new TaxCategoryExample();
+        if(condition!=null){
+            example= JSON.parseObject(JSON.toJSONString(condition),TaxCategoryExample.class);
+        }
+        example.setVersionId(versionId);
+        QueryResult<TaxCategory> result=taxService.queryTaxCategoryList(page,rpp,example);
         return APIResponse.success(result);
     }
 }

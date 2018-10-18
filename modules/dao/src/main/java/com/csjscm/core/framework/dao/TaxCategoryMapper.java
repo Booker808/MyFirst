@@ -1,5 +1,6 @@
 package com.csjscm.core.framework.dao;
 
+import com.csjscm.core.framework.example.TaxCategoryExample;
 import com.csjscm.core.framework.model.TaxCategory;
 
 import java.util.List;
@@ -23,4 +24,6 @@ public interface TaxCategoryMapper {
     void copy(Map<String,Object> map);
 
     List<TaxCategory> selectByCondition(Map<String, Object> map);
+
+    List<TaxCategory> selectByExample(TaxCategoryExample example);
 }
