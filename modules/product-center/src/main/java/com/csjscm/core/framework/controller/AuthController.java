@@ -25,6 +25,10 @@ public class AuthController {
     @ApiOperation("获取用户信息")
     @RequestMapping(value = "/getUserInfo", method = RequestMethod.GET)
     public APIResponse getUserInfo() {
-        return APIResponse.success(AuthUtils.getSessionUser());
+        APIResponse apiResponse=new  APIResponse();
+        apiResponse.setData(AuthUtils.getSessionUser());
+        apiResponse.setMessage(System.getProperty("sweet.framework.scm.domain"));
+        apiResponse.setCode("success");
+        return apiResponse;
     }
 }

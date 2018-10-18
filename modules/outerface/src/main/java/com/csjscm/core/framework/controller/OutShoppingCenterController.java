@@ -5,11 +5,11 @@ import com.csjscm.core.framework.common.constant.Constant;
 import com.csjscm.core.framework.common.util.BeanValidator;
 import com.csjscm.core.framework.common.util.BeanutilsCopy;
 import com.csjscm.core.framework.common.util.BussinessException;
-import com.csjscm.core.framework.model.EnterpriseInfo;
-import com.csjscm.core.framework.model.SkuPartner;
-import com.csjscm.core.framework.model.SpCategory;
+import com.csjscm.core.framework.model.*;
+import com.csjscm.core.framework.service.SkuCoreService;
 import com.csjscm.core.framework.service.SpCategoryService;
 import com.csjscm.core.framework.service.enterprise.EnterpriseInfoService;
+import com.csjscm.core.framework.service.product.ProductCustomerService;
 import com.csjscm.core.framework.service.product.ProductPartnerService;
 import com.csjscm.core.framework.vo.EnterpriseInfoSPModel;
 import com.csjscm.core.framework.vo.SkuPartnerModel;
@@ -39,6 +39,10 @@ public class OutShoppingCenterController {
     private ProductPartnerService productPartnerService;
     @Autowired
     private EnterpriseInfoService enterpriseInfoService;
+    @Autowired
+    private SkuCoreService skuCoreService;
+    @Autowired
+    private ProductCustomerService productCustomerService;
 
     /**
      * 获取商城分类json
@@ -118,6 +122,107 @@ public class OutShoppingCenterController {
         return APIResponse.success(skuPartners);
     }
 
+
+    /**
+     * 搜索平台商品
+     *
+     * @param productName
+     * @param brandName
+     * @param rule
+     * @param minUint
+     * @param size
+     * @return
+     */
+    @RequestMapping(value = "searchSkuCore", method = RequestMethod.POST)
+    public APIResponse searchSkuCore(String productName, String brandName, String rule, String minUint, String size, String productNo,Integer channel) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("productName", productName);
+        map.put("brandName", brandName);
+        map.put("rule", rule);
+        map.put("minUint", minUint);
+        map.put("productNo", productNo);
+        map.put("sizes", size);
+        map.put("channel", channel);
+        boolean flag = false;
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            if (entry.getValue() != null && StringUtils.isNotBlank(entry.getValue().toString())) {
+                flag = true;
+                break;
+            }
+        }
+        if (!flag) {
+            return APIResponse.fail("必须要有一个搜索条件");
+        }
+        List<SkuCore> skuCores = skuCoreService.listSelective(map);
+        return APIResponse.success(skuCores);
+    }
+
+    /**
+     * 搜索供应商商品
+     *
+     * @param productName
+     * @param brandName
+     * @param rule
+     * @param size
+     * @param supplyNo
+     * @return
+     */
+    @RequestMapping(value = "searchSkuPartner", method = RequestMethod.POST)
+    public APIResponse searchSkuPartner(String productName, String brandName, String rule, String size, String supplyNo, String entName, String minUint) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("supplyPdName", productName);
+        map.put("brandName", brandName);
+        map.put("minUint", minUint);
+        map.put("supplyPdRule", rule);
+        map.put("supplyPdSize", size);
+        map.put("supplyNo", supplyNo);
+        map.put("entName", entName);
+        boolean flag = false;
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            if (entry.getValue() != null && StringUtils.isNotBlank(entry.getValue().toString())) {
+                flag = true;
+                break;
+            }
+        }
+        if (!flag) {
+            return APIResponse.fail("必须要有一个搜索条件");
+        }
+        List<SkuPartner> skuPartners = productPartnerService.listSelectiveSCM(map);
+        return APIResponse.success(skuPartners);
+    }
+
+    /**
+     * 搜索客户商品
+     *
+     * @param productName
+     * @param rule
+     * @param size
+     * @param customerNo
+     * @return
+     */
+    @RequestMapping(value = "searchSkuCustomer", method = RequestMethod.POST)
+    public APIResponse searchSkuCustomer(String productName, String rule, String size, String customerNo, String entName,String brandName, String minUint) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("customerPdName", productName);
+        map.put("customerPdRule", rule);
+        map.put("brandName", brandName);
+        map.put("minUint", minUint);
+        map.put("customerPdSize", size);
+        map.put("customerNo", customerNo);
+        map.put("entName", entName);
+        boolean flag = false;
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            if (entry.getValue() != null && StringUtils.isNotBlank(entry.getValue().toString())) {
+                flag = true;
+                break;
+            }
+        }
+        if (!flag) {
+            return APIResponse.fail("必须要有一个搜索条件");
+        }
+        List<SkuCustomer> skuCustomers = productCustomerService.listSelectiveSCM(map);
+        return APIResponse.success(skuCustomers);
+    }
     /**
      * 自定义异常捕获
      * @param e

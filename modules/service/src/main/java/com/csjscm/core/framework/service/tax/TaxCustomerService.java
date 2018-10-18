@@ -18,4 +18,8 @@ public interface TaxCustomerService {
     QueryResult<TaxCustomer> findPage(int page, int rpp, Map<String,Object>map);
 
     Map<String,Object> importExcel(MultipartFile file);
+
+    void save (TaxCustomer taxCustomer);
+
+    void update (TaxCustomer taxCustomer);
 }

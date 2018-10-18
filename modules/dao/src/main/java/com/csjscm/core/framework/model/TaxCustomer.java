@@ -1,5 +1,7 @@
 package com.csjscm.core.framework.model;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -23,16 +25,19 @@ import java.util.Date;
     /**
     * 客户商品名称
     */
+    @NotBlank(message = "customerPdName不能为空")
     private String customerPdName;
 
     /**
     * 税务编码
     */
+    @NotBlank(message = "taxCode不能为空")
     private String taxCode;
 
     /**
     * 税务分类名
     */
+    @NotBlank(message = "taxCategoryName不能为空")
     private String taxCategoryName;
 
 

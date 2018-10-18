@@ -1,5 +1,6 @@
 package com.csjscm.core.framework.service.tax.impl;
 
+import com.csjscm.core.framework.common.util.BussinessException;
 import com.csjscm.core.framework.common.util.ExcelUtil;
 import com.csjscm.core.framework.dao.SkuCustomerMapper;
 import com.csjscm.core.framework.dao.TaxCategoryMapper;
@@ -129,9 +130,17 @@ public class TaxCustomerServiceImpl implements TaxCustomerService {
                     failMsgStr += failMsg;
                     issuccess = false;
                 }
-
-
-
+                  Map<String,Object> map=new HashMap<>();
+                  map.put("taxCode",taxCode);
+                  map.put("customerPdName",customerPdName);
+                  int count = taxCustomerMapper.findCount(map);
+                  if(count>0){
+                      failCell = 2;
+                      failMsg = ExcelUtil.getFailMsg(failRow, failCell, "已有关联关系");
+                      failList.add(failMsg);
+                      failMsgStr += failMsg;
+                      issuccess = false;
+                  }
                 if(issuccess){
                     TaxCustomer taxCustomer=new TaxCustomer();
                     taxCustomer.setCustomerPdName(customerPdName);
@@ -162,5 +171,31 @@ public class TaxCustomerServiceImpl implements TaxCustomerService {
         resultMap.put("failList",failList);
         resultMap.put("total",total);
         return resultMap;
+    }
+
+    @Override
+    public void save(TaxCustomer taxCustomer) {
+        Map<String,Object> map=new HashMap<>();
+        map.put("customerPdName",taxCustomer.getCustomerPdName());
+        map.put("taxCode",taxCustomer.getTaxCode());
+        map.put("taxCategoryName",taxCustomer.getTaxCategoryName());
+        int count = taxCustomerMapper.findCount(map);
+        if(count>0){
+          throw  new BussinessException("已存在该条数据");
+        }
+        taxCustomerMapper.insertSelective(taxCustomer);
+    }
+
+    @Override
+    public void update(TaxCustomer taxCustomer) {
+        Map<String,Object> map=new HashMap<>();
+        map.put("customerPdName",taxCustomer.getCustomerPdName());
+        map.put("taxCode",taxCustomer.getTaxCode());
+        map.put("taxCategoryName",taxCustomer.getTaxCategoryName());
+        TaxCustomer selective = taxCustomerMapper.findSelective(map);
+        if(selective!=null && selective.getId().intValue()!= taxCustomer.getId().intValue()){
+            throw  new BussinessException("已存在该条数据");
+        }
+        taxCustomerMapper.updateSelective(taxCustomer);
     }
 }
