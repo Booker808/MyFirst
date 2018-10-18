@@ -2,11 +2,13 @@ package com.csjscm.core.framework.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.csjscm.core.framework.common.util.BussinessException;
 import com.csjscm.core.framework.common.util.ExportExcel;
 import com.csjscm.core.framework.model.TaxCustomer;
 import com.csjscm.core.framework.service.tax.TaxCustomerService;
 import com.csjscm.core.framework.service.tax.TaxService;
+import com.csjscm.core.framework.vo.TaxCustomerImportFailVo;
 import com.csjscm.sweet.framework.core.mvc.APIResponse;
 import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
 import io.swagger.annotations.Api;
@@ -23,7 +25,6 @@ import javax.validation.Valid;
 import javax.validation.ValidationException;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -56,20 +57,17 @@ public class TaxCustomerController {
     @ApiOperation("下载供应商商品失败数据模板")
     @RequestMapping(value = "download")
     public void download(@ApiParam(name = "jsonData",value = "失败的数据") @RequestParam(value="jsonData") String  jsonData, HttpServletRequest request, HttpServletResponse response)throws Exception{
-        List<Map<String,String>> list = new ArrayList<>();
+        List<TaxCustomerImportFailVo> list = new ArrayList<>();
         JSONArray jsonArray = JSON.parseArray(jsonData);
         for (int i=0;i<jsonArray.size();i++) {
-            Map<String,String> map=new HashMap<>();
-            map.put("failMessage",jsonArray.getJSONObject(i).getString("failMessage"));
-            map.put("customerPdName",jsonArray.getJSONObject(i).getString("customerPdName"));
-            map.put("taxCode",jsonArray.getJSONObject(i).getString("taxCode"));
-            list.add(map);
+            TaxCustomerImportFailVo skuCustomerVo = JSONObject.toJavaObject(jsonArray.getJSONObject(i), TaxCustomerImportFailVo.class);
+            list.add(skuCustomerVo);
         }
-        ExportExcel<Map<String,String>> ex = new ExportExcel<>();
+        ExportExcel<TaxCustomerImportFailVo> ex = new ExportExcel<TaxCustomerImportFailVo>();
         String[] header =
                 { "失败原因","客户商品名称","税收分类编码"};
         String[] line =
-                {"failMessage","categoryNo","supplyPdNo","supplyPdName","brandName","supplyPdRule","supplyPdSize","minUint","refrencePrice","recentEnquiry","ean13Code","mnemonicCode","productNo"};
+                {"failMessage","customerPdName","taxCode"};
         OutputStream out;
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/x-download");
