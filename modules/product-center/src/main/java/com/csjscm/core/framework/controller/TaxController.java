@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.annotations.ApiIgnore;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
@@ -136,5 +137,32 @@ public class TaxController {
         example.setVersionId(versionId);
         QueryResult<TaxCategory> result=taxService.queryTaxCategoryList(page,rpp,example);
         return APIResponse.success(result);
+    }
+
+    @ApiOperation("新增税务编码分类")
+    @RequestMapping(value = "/taxCategory",method=RequestMethod.POST)
+    public APIResponse addTaxCategory(@Valid @RequestBody TaxCategory taxCategory){
+        JSONObject sessionUser = (JSONObject) AuthUtils.getSessionUser();
+        String userName=null;
+        if(sessionUser!=null){
+            userName=sessionUser.getString("name");
+        }
+        taxService.addTaxCategory(userName,taxCategory);
+        return APIResponse.success("新增税务编码分类成功");
+    }
+
+    @ApiOperation("修改税务编码分类")
+    @RequestMapping(value = "/taxCategory/{id}",method = RequestMethod.PUT)
+    public APIResponse updateTaxCategory(
+            @PathVariable Integer id,
+            @RequestBody TaxCategory taxCategory){
+        JSONObject sessionUser = (JSONObject) AuthUtils.getSessionUser();
+        String userName=null;
+        if(sessionUser!=null){
+            userName=sessionUser.getString("name");
+        }
+        taxCategory.setId(id);
+        taxService.updateTaxCategory(userName,taxCategory);
+        return APIResponse.success("更新税务编码分类成功");
     }
 }

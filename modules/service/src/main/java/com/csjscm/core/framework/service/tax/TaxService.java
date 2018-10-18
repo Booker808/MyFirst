@@ -8,7 +8,6 @@ import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Map;
 
 public interface TaxService {
     void importTaxCategoryExcel(String userName, Integer versionId, MultipartFile file);
@@ -26,4 +25,8 @@ public interface TaxService {
     List<TaxCategory> queryTaxCategoryAll(Integer versionId);
 
     QueryResult<TaxCategory> queryTaxCategoryList(int page, int rpp, TaxCategoryExample example);
+
+    Integer addTaxCategory(String userName, TaxCategory taxCategory);
+
+    Integer updateTaxCategory(String userName, TaxCategory taxCategory);
 }
