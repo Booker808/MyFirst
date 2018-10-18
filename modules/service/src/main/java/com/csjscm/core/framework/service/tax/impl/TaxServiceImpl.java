@@ -162,6 +162,30 @@ public class TaxServiceImpl implements TaxService {
         return result;
     }
 
+    @Override
+    public Integer addTaxCategory(String userName, TaxCategory taxCategory) {
+        if(isExists(taxCategory)){
+            throw new BusinessException("该版本已存在相应的税务code");
+        }
+        int result=taxCategoryMapper.insertSelective(taxCategory);
+        TaxVersion version=taxVersionMapper.selectByPrimaryKey(taxCategory.getVersionId());
+        version.setEditUser(userName);
+        version.setEditTime(null);
+        taxVersionMapper.updateByPrimaryKeySelective(version);
+        return result;
+    }
+
+    @Override
+    public Integer updateTaxCategory(String userName, TaxCategory taxCategory) {
+        int result=taxCategoryMapper.updateByPrimaryKeySelective(taxCategory);
+
+        TaxVersion version=taxVersionMapper.selectByPrimaryKey(taxCategory.getVersionId());
+        version.setEditUser(userName);
+        version.setEditTime(null);
+        taxVersionMapper.updateByPrimaryKeySelective(version);
+        return null;
+    }
+
     private boolean isExistsEnableVersion(TaxVersion taxVersion) {
         Map<String,Object> map=Maps.newHashMap();
         map.put("enable",1);
