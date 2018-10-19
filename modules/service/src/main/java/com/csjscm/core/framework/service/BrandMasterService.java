@@ -72,4 +72,10 @@ public interface BrandMasterService {
     void reloadBrandList();
 
     BrandMaster findSelective(Map<String,Object> map);
+
+    /**
+     * 按条件查询list
+     *
+     */
+    List<BrandMaster> listSelective(Map<String,Object> map);
 }

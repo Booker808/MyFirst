@@ -189,6 +189,7 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
                 }
                 Map<String, Object> brandNamemap = new HashMap<>();
                 brandNamemap.put("brandName", brandName);
+                brandNamemap.put("categoryId",categoryId);
                 List<BrandMaster> brandMasters = brandMasterMapper.listSelective(brandNamemap);
                 if (brandMasters.size() != 1) {
                     failCell = 4;
@@ -709,9 +710,17 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
                 scmPartnerFailVos.add(failVo);
                 continue;
             }
-
+            SkuCore skuCore = skuCoreMapper.selectByPrimaryKey(ps.getProductNo());
+            if(skuCore==null){
+                fail++;
+                failVo.setFailData(ps);
+                failVo.setMessage("平台商品编码有误");
+                scmPartnerFailVos.add(failVo);
+                continue;
+            }
             Map<String, Object> brandNamemap = new HashMap<>();
             brandNamemap.put("brandName", ps.getBrandName());
+            brandNamemap.put("categoryId", skuCore.getCategoryId());
             List<BrandMaster> brandMasters = brandMasterMapper.listSelective(brandNamemap);
             if (brandMasters.size() != 1) {
                 fail++;
@@ -731,14 +740,7 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
                 scmPartnerFailVos.add(failVo);
                 continue;
             }
-            SkuCore skuCore = skuCoreMapper.selectByPrimaryKey(ps.getProductNo());
-            if(skuCore==null){
-                fail++;
-                failVo.setFailData(ps);
-                failVo.setMessage("平台商品编码有误");
-                scmPartnerFailVos.add(failVo);
-                continue;
-            }
+
             Map<String, Object> parrnerMap = new HashMap<>();
             parrnerMap.put("supplyNo", ps.getSupplyNo());
             parrnerMap.put("supplyPdName", ps.getSupplyPdName());

@@ -158,4 +158,9 @@ public class BrandMasterServiceImpl implements BrandMasterService {
         return brandMasterMapper.findSelective(map);
     }
 
+    @Override
+    public List<BrandMaster> listSelective(Map<String, Object> map) {
+        return brandMasterMapper.listSelective(map);
+    }
+
 }

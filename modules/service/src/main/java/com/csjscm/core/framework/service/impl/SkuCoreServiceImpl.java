@@ -104,6 +104,7 @@ public class SkuCoreServiceImpl implements SkuCoreService {
                 SkuCore skuCore    = new SkuCore();
                 SkuCoreVo skuCoreVo   = new SkuCoreVo();
                 Row row = rows.get(i);
+                Integer categoryId = 0;
          /*       if (row.getLastCellNum() < MIX_CELL || row.getLastCellNum() > MAX_CELL) {
                     Map<String, Object> map = new HashMap<>();
                     failMsg = "excel列不在此区间" + MIX_CELL + "-" + MAX_CELL;
@@ -193,6 +194,8 @@ public class SkuCoreServiceImpl implements SkuCoreService {
                     failList.add(getFailMsg(failRow, failCell, failMsg));
                     failMsgStr+=getFailMsg(failRow, failCell, failMsg);
                     issuccess=false;
+                }else {
+                     categoryId = category.getId();
                 }
                 //校验商品名称
                 if (StringUtils.isBlank(productName) || productName.length() > 256) {
@@ -219,6 +222,7 @@ public class SkuCoreServiceImpl implements SkuCoreService {
                 }
                 Map<String, Object> brandNamemap = new HashMap<>();
                 brandNamemap.put("brandName", brandName);
+                brandNamemap.put("categoryId",categoryId);
                 List<BrandMaster> brandMasters = brandMasterMapper.listSelective(brandNamemap);
                 if (brandMasters.size()==0 || brandMasters.size()>1) {
                     failMsg = "品牌名称不存在或者存在多个相同品牌名称";
@@ -557,6 +561,7 @@ public class SkuCoreServiceImpl implements SkuCoreService {
         }
         map.clear();
         map.put("brandName", skuCoreSMMolde.getBrandName());
+        map.put("categoryId",category.getId());
         List<BrandMaster> brandMasters = brandMasterMapper.listSelective(map);
         if (brandMasters.size()==0 || brandMasters.size()>1) {
             throw  new  BussinessException("品牌名称不存在或者存在多个相同品牌名称");

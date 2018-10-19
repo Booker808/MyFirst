@@ -77,7 +77,7 @@ public class OutScmController {
     public APIResponse getBrand(@RequestParam(name = "brandName") String brandName) {
         Map<String,Object> map=new HashMap<>();
         map.put("brandName",brandName);
-        return APIResponse.success(brandMasterService.findSelective(map));
+        return APIResponse.success(brandMasterService.listSelective(map));
     }
 
     @ApiOperation("查询企业基本信息")

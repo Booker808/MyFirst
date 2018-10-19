@@ -193,6 +193,7 @@ public class ProductCustomerServiceImpl implements ProductCustomerService {
                 }
                 Map<String, Object> brandNamemap = new HashMap<>();
                 brandNamemap.put("brandName", brandName);
+                brandNamemap.put("categoryId",categoryId);
                 List<BrandMaster> brandMasters = brandMasterMapper.listSelective(brandNamemap);
                 if (brandMasters.size() != 1) {
                     failCell = 4;
@@ -495,8 +496,21 @@ public class ProductCustomerServiceImpl implements ProductCustomerService {
                 failList.add(failMsgVo);
                 continue;
             }
+            Map<String, Object> categoryNomap = new HashMap<>();
+            categoryNomap.put("levelNum", CategoryLevelEnum.三级.getState());
+            categoryNomap.put("classCode", sc.getCategoryNo());
+            Category category = categoryMapper.findSelective(categoryNomap);
+            if (category == null) {
+                fail++;
+                failMsgVo.setOutId(sc.getOutId());
+                failMsgVo.setFailMsg("细分类编码有误");
+                failList.add(failMsgVo);
+                continue;
+            }
+
             Map<String, Object> brandNamemap = new HashMap<>();
             brandNamemap.put("brandName", sc.getBrandName());
+            brandNamemap.put("categoryId", category.getId());
             List<BrandMaster> brandMasters = brandMasterMapper.listSelective(brandNamemap);
             if (brandMasters.size() != 1) {
                 fail++;
@@ -518,17 +532,7 @@ public class ProductCustomerServiceImpl implements ProductCustomerService {
                 continue;
             }
 
-            Map<String, Object> categoryNomap = new HashMap<>();
-            categoryNomap.put("levelNum", CategoryLevelEnum.三级.getState());
-            categoryNomap.put("classCode", sc.getCategoryNo());
-            Category category = categoryMapper.findSelective(categoryNomap);
-            if (category == null) {
-                fail++;
-                failMsgVo.setOutId(sc.getOutId());
-                failMsgVo.setFailMsg("细分类编码有误");
-                failList.add(failMsgVo);
-                continue;
-            }
+
 
             Map<String, Object> customermap = new HashMap<>();
             customermap.put("customerNo",sc.getCustomerNo());

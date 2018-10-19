@@ -54,7 +54,7 @@ public class TaxCustomerController {
         Map<String, Object> map = taxCustomerService.importExcel(file);
         return APIResponse.success(map);
     }
-    @ApiOperation("下载供应商商品失败数据模板")
+    @ApiOperation("下载失败数据模板")
     @RequestMapping(value = "download")
     public void download(@ApiParam(name = "jsonData",value = "失败的数据") @RequestParam(value="jsonData") String  jsonData, HttpServletRequest request, HttpServletResponse response)throws Exception{
         List<TaxCustomerImportFailVo> list = new ArrayList<>();
