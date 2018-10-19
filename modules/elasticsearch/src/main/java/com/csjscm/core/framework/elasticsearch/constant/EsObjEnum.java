@@ -31,7 +31,7 @@ public enum EsObjEnum {
         return index;
     }
 
-    public void setIndex(String index) {
+    private void setIndex(String index) {
         this.index = index;
     }
 
@@ -39,7 +39,7 @@ public enum EsObjEnum {
         return type;
     }
 
-    public void setType(String type) {
+    private void setType(String type) {
         this.type = type;
     }
 
@@ -47,7 +47,7 @@ public enum EsObjEnum {
         return clazz;
     }
 
-    public void setClazz(Class clazz) {
+    private void setClazz(Class clazz) {
         this.clazz = clazz;
     }
 }

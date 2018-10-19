@@ -21,6 +21,7 @@ import com.csjscm.sweet.framework.redis.RedisDistributedCounterObject;
 import com.csjscm.sweet.framework.redis.RedisServiceFacade;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.ss.usermodel.Row;
@@ -35,8 +36,8 @@ import java.lang.reflect.Field;
 import java.util.*;
 
 @Service
+@Slf4j
 public class ProductCustomerServiceImpl implements ProductCustomerService {
-    private static final Logger logger = LoggerFactory.getLogger(ProductCustomerServiceImpl.class);
     @Autowired
     private SkuCustomerMapper skuCustomerMapper;
     @Autowired
@@ -388,7 +389,7 @@ public class ProductCustomerServiceImpl implements ProductCustomerService {
                     failSkuCustomer.add(skuCustomerVo);
                 }
             } catch (Exception e) {
-                logger.error(e.getMessage());
+                log.error(e.getMessage());
                 failMsg = ExcelUtil.getFailMsg(failRow, failCell, "未知异常");
                 failList.add(failMsg);
                 SkuCustomerVo vo = new SkuCustomerVo();
@@ -550,6 +551,7 @@ public class ProductCustomerServiceImpl implements ProductCustomerService {
             try {
                 skuCustomer = insertSkuCoreAndCustomer(sc, skuCustomer, category, brandMasters.get(0).getId());
             } catch (Exception e) {
+                log.error(e.getMessage(),e);
                 e.printStackTrace();
                 fail++;
                 failMsgVo.setOutId(sc.getOutId());

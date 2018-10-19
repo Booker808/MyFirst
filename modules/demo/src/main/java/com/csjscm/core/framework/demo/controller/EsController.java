@@ -35,7 +35,7 @@ public class EsController {
                 return APIResponse.success(esUtil.insert(index,type,id,data));
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.getMessage(),e);
             return APIResponse.fail(e.getMessage());
         }
     }
@@ -49,7 +49,7 @@ public class EsController {
         try {
             return APIResponse.success(esUtil.updateById(index,type,id,data));
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.getMessage(),e);
             return APIResponse.fail(e.getMessage());
         }
     }
@@ -62,7 +62,7 @@ public class EsController {
         try {
             return APIResponse.success(esUtil.deleteById(index,type,id));
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.getMessage(),e);
             return APIResponse.fail(e.getMessage());
         }
     }
@@ -79,7 +79,7 @@ public class EsController {
             }
             return APIResponse.success(esUtil.selectById(index,type,id,ProductPartner.class));
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.getMessage(),e);
             return APIResponse.fail(e.getMessage());
         }
     }
@@ -94,7 +94,7 @@ public class EsController {
         try{
             return APIResponse.success(esUtil.selectByAndCondition(index,type,condition,ProductPartner.class));
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.getMessage(),e);
             return APIResponse.fail(e.getMessage());
         }
     }
