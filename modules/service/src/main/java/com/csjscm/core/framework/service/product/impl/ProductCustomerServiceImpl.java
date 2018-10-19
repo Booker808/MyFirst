@@ -552,7 +552,6 @@ public class ProductCustomerServiceImpl implements ProductCustomerService {
                 skuCustomer = insertSkuCoreAndCustomer(sc, skuCustomer, category, brandMasters.get(0).getId());
             } catch (Exception e) {
                 log.error(e.getMessage(),e);
-                e.printStackTrace();
                 fail++;
                 failMsgVo.setOutId(sc.getOutId());
                 failMsgVo.setFailMsg("新增时异常，内部错误");
