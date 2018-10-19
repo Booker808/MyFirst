@@ -272,82 +272,91 @@ public class ExcelUtil {
      * @return 
      */  
     public void setSheetList(String[] namelist, String[] textlist, String path , Integer lie, String[] headers) throws IOException {  
-        HSSFWorkbook wb = new HSSFWorkbook();// excel文件对象  
-        HSSFSheet sheetlist = wb.createSheet("sheet");// 工作表对象  
-        HSSFCellStyle style = wb.createCellStyle(); // 样式对象    
-        style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);// 垂直    
-        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);// 水平    
-        style.setFillForegroundColor(HSSFColor.LIGHT_YELLOW.index);  
-        style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);  
-        style.setBorderBottom(HSSFCellStyle.BORDER_THIN);  
-        style.setBorderLeft(HSSFCellStyle.BORDER_THIN);  
-        style.setBorderRight(HSSFCellStyle.BORDER_THIN);  
-        style.setBorderTop(HSSFCellStyle.BORDER_THIN);  
-        // 生成一个字体  
-        HSSFFont font = wb.createFont();  
-        font.setBoldweight(HSSFFont.BOLDWEIGHT_NORMAL);  
-        // 把字体应用到当前的样式  
-        
-        HSSFCellStyle style2 = wb.createCellStyle();  
-        style2.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);  
-        style2.setBorderBottom(HSSFCellStyle.BORDER_THIN);  
-        style2.setBorderLeft(HSSFCellStyle.BORDER_THIN);  
-        style2.setBorderRight(HSSFCellStyle.BORDER_THIN);  
-        style2.setBorderTop(HSSFCellStyle.BORDER_THIN);  
-        //setAlignment(HSSFCellStyle.ALIGN_CENTER);  
-       // style2.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);  
-        
-        style.setFont(font);  
-        HSSFRow row = sheetlist.createRow(0);  
-        sheetlist.createRow(0).setHeight((short) 600);
-        sheetlist.setColumnWidth(0, 15 * 256);
-        sheetlist.setColumnWidth(1, 15 * 256);
-        sheetlist.setColumnWidth(6, 25 * 256);
-        sheetlist.setColumnWidth(7, 45 * 256);
-        sheetlist.addMergedRegion(new CellRangeAddress(0,0,6,7));// 合并单元格，四个参数分别是：起始行，结束行，起始列，结束列   
-        HSSFCell cell0 = row.createCell(0);
-        HSSFRichTextString text0 = new HSSFRichTextString(headers[0]);  
-        cell0.setCellValue(text0);  
-        HSSFCell cell1 = row.createCell(1);
-        HSSFRichTextString text1 = new HSSFRichTextString(headers[1]);  
-        cell1.setCellValue(text1);  
-        HSSFCell cell = row.createCell(6);
-        HSSFRichTextString text = new HSSFRichTextString(headers[5]);  
-        cell.setCellValue(text); 
-        cell.setCellStyle(style); 
-        cell0.setCellStyle(style);  
-        cell1.setCellStyle(style);  
-        HSSFCell cell7 = row.createCell(7);
-        cell7.setCellStyle(style);  
-        //sheetlist.setColumnWidth(0, 15 * 256); 
-       // sheetlist.setColumnWidth(6, 25 * 256);
-        for (int i = 1; i < namelist.length+2; i++)  
-        {   
-        	row = sheetlist.createRow(i);  
-        	HSSFCell cellname = row.createCell(7);
-        	HSSFCell cellcode = row.createCell(6);  
-        	cellname.setCellStyle(style2); 
-        	cellcode.setCellStyle(style2);
-        	cellname.setCellType(1);
-        	cellcode.setCellType(2);
-        	if(i==1){
-        		HSSFRichTextString richString = new HSSFRichTextString(headers[7]);  
- 	            cellname.setCellValue(richString);  
- 	            HSSFRichTextString codeString = new HSSFRichTextString(headers[6]);  
- 	            cellcode.setCellValue(codeString);   
-        	}else{
-	            HSSFRichTextString richString = new HSSFRichTextString(namelist[i-2]);  
-	            cellname.setCellValue(richString);  
-	            HSSFRichTextString codeString = new HSSFRichTextString(textlist[i-2]);  
-	            cellcode.setCellValue(codeString); 
-        	}
-        } 
-        FileOutputStream out = new FileOutputStream(path);
-        setHSSFValidation(sheetlist, textlist, 1, 500, lie, lie);
+        HSSFWorkbook wb=null ;
+        FileOutputStream out=null;
+        try{
+            wb= new HSSFWorkbook();// excel文件对象
+            HSSFSheet sheetlist = wb.createSheet("sheet");// 工作表对象
+            HSSFCellStyle style = wb.createCellStyle(); // 样式对象
+            style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);// 垂直
+            style.setAlignment(HSSFCellStyle.ALIGN_CENTER);// 水平
+            style.setFillForegroundColor(HSSFColor.LIGHT_YELLOW.index);
+            style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+            style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+            style.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+            style.setBorderRight(HSSFCellStyle.BORDER_THIN);
+            style.setBorderTop(HSSFCellStyle.BORDER_THIN);
+            // 生成一个字体
+            HSSFFont font = wb.createFont();
+            font.setBoldweight(HSSFFont.BOLDWEIGHT_NORMAL);
+            // 把字体应用到当前的样式
 
-        wb.write(out);  
-        out.close();
-        wb.close();
+            HSSFCellStyle style2 = wb.createCellStyle();
+            style2.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+            style2.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+            style2.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+            style2.setBorderRight(HSSFCellStyle.BORDER_THIN);
+            style2.setBorderTop(HSSFCellStyle.BORDER_THIN);
+            //setAlignment(HSSFCellStyle.ALIGN_CENTER);
+           // style2.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+
+            style.setFont(font);
+            HSSFRow row = sheetlist.createRow(0);
+            sheetlist.createRow(0).setHeight((short) 600);
+            sheetlist.setColumnWidth(0, 15 * 256);
+            sheetlist.setColumnWidth(1, 15 * 256);
+            sheetlist.setColumnWidth(6, 25 * 256);
+            sheetlist.setColumnWidth(7, 45 * 256);
+            sheetlist.addMergedRegion(new CellRangeAddress(0,0,6,7));// 合并单元格，四个参数分别是：起始行，结束行，起始列，结束列
+            HSSFCell cell0 = row.createCell(0);
+            HSSFRichTextString text0 = new HSSFRichTextString(headers[0]);
+            cell0.setCellValue(text0);
+            HSSFCell cell1 = row.createCell(1);
+            HSSFRichTextString text1 = new HSSFRichTextString(headers[1]);
+            cell1.setCellValue(text1);
+            HSSFCell cell = row.createCell(6);
+            HSSFRichTextString text = new HSSFRichTextString(headers[5]);
+            cell.setCellValue(text);
+            cell.setCellStyle(style);
+            cell0.setCellStyle(style);
+            cell1.setCellStyle(style);
+            HSSFCell cell7 = row.createCell(7);
+            cell7.setCellStyle(style);
+            //sheetlist.setColumnWidth(0, 15 * 256);
+           // sheetlist.setColumnWidth(6, 25 * 256);
+            for (int i = 1; i < namelist.length+2; i++)
+            {
+                row = sheetlist.createRow(i);
+                HSSFCell cellname = row.createCell(7);
+                HSSFCell cellcode = row.createCell(6);
+                cellname.setCellStyle(style2);
+                cellcode.setCellStyle(style2);
+                cellname.setCellType(1);
+                cellcode.setCellType(2);
+                if(i==1){
+                    HSSFRichTextString richString = new HSSFRichTextString(headers[7]);
+                    cellname.setCellValue(richString);
+                    HSSFRichTextString codeString = new HSSFRichTextString(headers[6]);
+                    cellcode.setCellValue(codeString);
+                }else{
+                    HSSFRichTextString richString = new HSSFRichTextString(namelist[i-2]);
+                    cellname.setCellValue(richString);
+                    HSSFRichTextString codeString = new HSSFRichTextString(textlist[i-2]);
+                    cellcode.setCellValue(codeString);
+                }
+            }
+            out = new FileOutputStream(path);
+            setHSSFValidation(sheetlist, textlist, 1, 500, lie, lie);
+
+            wb.write(out);
+        } finally {
+            if(out!=null){
+                out.close();
+            }
+            if(wb!=null){
+                wb.close();
+            }
+        }
     }   
     
     /** 

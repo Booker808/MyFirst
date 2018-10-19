@@ -31,14 +31,24 @@ public class HttpClientUtil {
      */
     public static String get(String url) throws ClientProtocolException, IOException {
         //首先需要先创建一个DefaultHttpClient的实例
-        HttpClient httpClient = new DefaultHttpClient();
-        //先创建一个HttpGet对象,传入目标的网络地址,然后调用HttpClient的execute()方法即可:
-        HttpGet httpGet = new HttpGet();
-        httpGet.setURI(URI.create(url));
-        HttpResponse response = httpClient.execute(httpGet);
-        String httpEntityContent = getHttpEntityContent(response);
-        httpGet.abort();
-        httpClient.getConnectionManager().shutdown();
+        HttpClient httpClient =null;
+        HttpGet httpGet=null;
+        String httpEntityContent;
+        try{
+            httpClient= new DefaultHttpClient();
+            //先创建一个HttpGet对象,传入目标的网络地址,然后调用HttpClient的execute()方法即可:
+            httpGet = new HttpGet();
+            httpGet.setURI(URI.create(url));
+            HttpResponse response = httpClient.execute(httpGet);
+            httpEntityContent = getHttpEntityContent(response);
+        }finally {
+            if(httpGet!=null){
+                httpGet.abort();
+            }
+            if(httpClient!=null){
+                httpClient.getConnectionManager().shutdown();
+            }
+        }
         return httpEntityContent;
     }
     /**
@@ -51,15 +61,25 @@ public class HttpClientUtil {
      * @throws java.io.IOException
      */
     public static String get(String url, Map<String, String> paramMap) throws ClientProtocolException, IOException {
-        HttpClient httpClient = new DefaultHttpClient();
-        HttpGet httpGet = new HttpGet();
-        List<NameValuePair> formparams = setHttpParams(paramMap);
-        String param = URLEncodedUtils.format(formparams, "UTF-8");
-        httpGet.setURI(URI.create(url + "?" + param));
-        HttpResponse response = httpClient.execute(httpGet);
-        String httpEntityContent = getHttpEntityContent(response);
-        httpGet.abort();
-        httpClient.getConnectionManager().shutdown();
+        HttpClient httpClient =null;
+        HttpGet httpGet=null;
+        String httpEntityContent;
+        try{
+            httpClient= new DefaultHttpClient();
+            httpGet = new HttpGet();
+            List<NameValuePair> formparams = setHttpParams(paramMap);
+            String param = URLEncodedUtils.format(formparams, "UTF-8");
+            httpGet.setURI(URI.create(url + "?" + param));
+            HttpResponse response = httpClient.execute(httpGet);
+            httpEntityContent = getHttpEntityContent(response);
+        }finally {
+            if(httpGet!=null){
+                httpGet.abort();
+            }
+            if (httpClient != null) {
+                httpClient.getConnectionManager().shutdown();
+            }
+        }
         return httpEntityContent;
     }
     /**
@@ -110,19 +130,29 @@ public class HttpClientUtil {
      * @throws java.io.IOException
      */
     public static String post(String url, Map<String, String> paramMap) throws ClientProtocolException, IOException {
-        HttpClient httpClient = new DefaultHttpClient();
-        httpClient.getParams().setIntParameter(CoreConnectionPNames.SO_TIMEOUT, 5000);
-        httpClient.getParams().setIntParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 3000);
-        HttpPost httpPost = new HttpPost(url);
-        List<NameValuePair> formparams = setHttpParams(paramMap);
-        UrlEncodedFormEntity param = new UrlEncodedFormEntity(formparams, "UTF-8");
-        //通过setEntity()设置参数给post
-        httpPost.setEntity(param);
-        //利用httpClient的execute()方法发送请求并且获取返回参数
-        HttpResponse response = httpClient.execute(httpPost);
-        String httpEntityContent = getHttpEntityContent(response);
-        httpPost.abort();
-        httpClient.getConnectionManager().shutdown();
+        HttpClient httpClient =null;
+        HttpPost httpPost=null;
+        String httpEntityContent;
+        try{
+            httpClient= new DefaultHttpClient();
+            httpClient.getParams().setIntParameter(CoreConnectionPNames.SO_TIMEOUT, 5000);
+            httpClient.getParams().setIntParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 3000);
+            httpPost = new HttpPost(url);
+            List<NameValuePair> formparams = setHttpParams(paramMap);
+            UrlEncodedFormEntity param = new UrlEncodedFormEntity(formparams, "UTF-8");
+            //通过setEntity()设置参数给post
+            httpPost.setEntity(param);
+            //利用httpClient的execute()方法发送请求并且获取返回参数
+            HttpResponse response = httpClient.execute(httpPost);
+            httpEntityContent = getHttpEntityContent(response);
+        }finally {
+            if (httpPost != null) {
+                httpPost.abort();
+            }
+            if (httpClient != null) {
+                httpClient.getConnectionManager().shutdown();
+            }
+        }
         return httpEntityContent;
     }
 
