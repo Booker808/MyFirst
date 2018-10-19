@@ -38,6 +38,7 @@ public class HttpClientUtil {
         HttpResponse response = httpClient.execute(httpGet);
         String httpEntityContent = getHttpEntityContent(response);
         httpGet.abort();
+        httpClient.getConnectionManager().shutdown();
         return httpEntityContent;
     }
     /**
@@ -58,6 +59,7 @@ public class HttpClientUtil {
         HttpResponse response = httpClient.execute(httpGet);
         String httpEntityContent = getHttpEntityContent(response);
         httpGet.abort();
+        httpClient.getConnectionManager().shutdown();
         return httpEntityContent;
     }
     /**
@@ -120,6 +122,7 @@ public class HttpClientUtil {
         HttpResponse response = httpClient.execute(httpPost);
         String httpEntityContent = getHttpEntityContent(response);
         httpPost.abort();
+        httpClient.getConnectionManager().shutdown();
         return httpEntityContent;
     }
 

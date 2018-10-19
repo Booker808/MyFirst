@@ -192,11 +192,11 @@ public class CategoryServiceImpl implements CategoryService {
         List<CategoryJsonModel> list=new ArrayList<>();
         List<CategoryJsonModel> model = categoryMapper.findModelAll();
         for (CategoryJsonModel treeNode : model) {
-            if (treeNode.getParentClass().equals("0")) {
+            if (treeNode.getParentClass()==0) {
                 list.add(treeNode);
             }
             for (CategoryJsonModel it : model) {
-                if (it.getParentClass().equals(String.valueOf(treeNode.getId()))) {
+                if (it.getParentClass()!=null && it.getParentClass().equals(treeNode.getId())) {
                     if (treeNode.getChildren() == null) {
                         treeNode.setChildren(new ArrayList<CategoryJsonModel>());
                     }

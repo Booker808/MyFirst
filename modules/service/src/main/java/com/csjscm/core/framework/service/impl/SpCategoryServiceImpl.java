@@ -189,11 +189,11 @@ public class SpCategoryServiceImpl implements SpCategoryService {
         List<SpCategoryJsonModel> list=new ArrayList<>();
         List<SpCategoryJsonModel> model = spCategoryMapper.findModelAll();
         for (SpCategoryJsonModel treeNode : model) {
-            if (treeNode.getParentClass().equals("0")) {
+            if (treeNode.getParentClass()==0) {
                 list.add(treeNode);
             }
             for (SpCategoryJsonModel it : model) {
-                if (it.getParentClass().equals(String.valueOf(treeNode.getId()))) {
+                if (it.getParentClass()!=null && it.getParentClass().equals(treeNode.getId())) {
                     if (treeNode.getChildren() == null) {
                         treeNode.setChildren(new ArrayList<SpCategoryJsonModel>());
                     }

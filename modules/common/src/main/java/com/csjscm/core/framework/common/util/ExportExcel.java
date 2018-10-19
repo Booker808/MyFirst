@@ -11,6 +11,7 @@ import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.reflect.MethodUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -42,7 +43,8 @@ import org.apache.poi.xssf.streaming.SXSSFWorkbook;
  *            应用泛型，代表任意一个符合javabean风格的类 
  *            注意这里为了简单起见，boolean型的属性xxx的get器方式为getXxx(),而不是isXxx() 
  *            byte[]表jpg格式的图片数据 
- */  
+ */
+@Slf4j
 public class ExportExcel<T>  
 {  
 
@@ -69,8 +71,7 @@ public class ExportExcel<T>
      */  
     @SuppressWarnings("unchecked")  
     public void exportExcel(String title, String[] headers,  String[] line,
-            Collection<T> dataset, OutputStream out, String pattern) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException  
-    {  
+            Collection<T> dataset, OutputStream out, String pattern) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
         // 声明一个工作薄  
         HSSFWorkbook workbook = new HSSFWorkbook();  
         // 生成一个表格  
@@ -242,9 +243,10 @@ public class ExportExcel<T>
             workbook.write(out);  
         }  
         catch (IOException e)  
-        {  
-            e.printStackTrace();  
-        }  
+        {
+            log.error(e.getMessage(),e);
+        }
+        workbook.close();
     }  
     
     /** 
@@ -439,7 +441,7 @@ public class ExportExcel<T>
           
             workbook.write(out);  
             workbook.dispose();
-        
+        workbook.close();
     }  
   
     

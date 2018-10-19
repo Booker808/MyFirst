@@ -322,7 +322,7 @@ public class SkuCoreServiceImpl implements SkuCoreService {
                 if(StringUtils.isNotBlank(description)){
                     row.getCell(10).setCellType(HSSFCell.CELL_TYPE_STRING);
                     description = getCellValue(row.getCell(10));
-                    if(ean13Code.length()>255){
+                    if(description.length()>255){
                         failMsg = "商品文字描述长度超过255";
                         failCell = 11;
                         failList.add(getFailMsg(failRow, failCell, failMsg));

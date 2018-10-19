@@ -342,11 +342,12 @@ public class ExcelUtil {
 	            cellcode.setCellValue(codeString); 
         	}
         } 
-        FileOutputStream out = new FileOutputStream(path);  
-        sheetlist = setHSSFValidation(sheetlist, textlist, 1, 500, lie, lie);// 第一列的前501行都设置为选择列表形式.  
-  
+        FileOutputStream out = new FileOutputStream(path);
+        setHSSFValidation(sheetlist, textlist, 1, 500, lie, lie);
+
         wb.write(out);  
-        out.close();  
+        out.close();
+        wb.close();
     }   
     
     /** 
