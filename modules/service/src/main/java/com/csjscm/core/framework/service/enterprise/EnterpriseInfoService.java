@@ -32,6 +32,8 @@ public interface EnterpriseInfoService {
      */
     String saveSPEnterpriseInfo(EnterpriseInfoSPModel enterpriseInfoSPModel);
 
+    Map<String,Object> saveSPEnterpriseInfo(String name,Integer type);
+
 
     String insertEnterpriseInfo(EnterpriseInfoDto enterpriseInfoDto);
 

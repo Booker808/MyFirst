@@ -96,10 +96,14 @@ public class OutShoppingCenterController {
      * 创建供应商 客户企业
      * @return
      */
-    @RequestMapping(value = "/createEnterprise",method = RequestMethod.POST)
+ /*   @RequestMapping(value = "/createEnterprise",method = RequestMethod.POST)
     public APIResponse createEnterprise(EnterpriseInfoSPModel enterpriseInfoSPModel){
         BeanValidator.validate(enterpriseInfoSPModel);
         return APIResponse.success(enterpriseInfoService.saveSPEnterpriseInfo(enterpriseInfoSPModel));
+    }*/
+    @RequestMapping(value = "/createEnterprise",method = RequestMethod.POST)
+    public APIResponse createEnterprise(@RequestParam(value = "name",required =true) String name,@RequestParam(value = "type",required =true) Integer type){
+        return APIResponse.success(enterpriseInfoService.saveSPEnterpriseInfo(name,type));
     }
     /**
      * 新建供应商商品档案接口

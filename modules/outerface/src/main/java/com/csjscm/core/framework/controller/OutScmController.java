@@ -10,6 +10,7 @@ import com.csjscm.core.framework.model.*;
 import com.csjscm.core.framework.service.BrandMasterService;
 import com.csjscm.core.framework.service.CategoryService;
 import com.csjscm.core.framework.service.SkuCoreService;
+import com.csjscm.core.framework.service.enterprise.EnterpriseContactService;
 import com.csjscm.core.framework.service.enterprise.EnterpriseInfoService;
 import com.csjscm.core.framework.service.enterprise.dto.EnterpriseInfoDto;
 import com.csjscm.core.framework.service.product.ProductCustomerService;
@@ -52,6 +53,8 @@ public class OutScmController {
     private BrandMasterService brandMasterService;
     @Autowired
     private EnterpriseInfoService enterpriseInfoService;
+    @Autowired
+    private EnterpriseContactService enterpriseContactService;
 
     /**
      * 查询品牌名称列表
@@ -82,10 +85,11 @@ public class OutScmController {
 
     @ApiOperation("查询企业基本信息")
     @RequestMapping(value = "/enterpriseBaseInfo", method = RequestMethod.GET)
-    public APIResponse enterpriseBaseInfo(String requestId ,String entNumber) {
+    public APIResponse enterpriseBaseInfo(String requestId ,String entNumber,String entName) {
         Map<String,Object> map=new HashMap<>();
         map.put("requestId",requestId);
         map.put("entNumber",entNumber);
+        map.put("entName",entName);
         boolean flag = false;
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             if (entry.getValue() != null && StringUtils.isNotBlank(entry.getValue().toString())) {
@@ -261,6 +265,20 @@ public class OutScmController {
         }
         List<SkuCustomer> skuCustomers = productCustomerService.listSelectiveSCM(map);
         return APIResponse.success(skuCustomers);
+    }
+
+    /**
+     * 查询企业联系人信息
+     * @param entNumber
+     * @return
+     */
+    @RequestMapping(value = "findEnterpriseContact")
+    public APIResponse findEnterpriseContact(@RequestParam(value = "entNumber") String entNumber) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("entNumber",entNumber);
+        map.put("isdelete",0);
+        List<EnterpriseContact> enterpriseContacts = enterpriseContactService.listSelective(map);
+        return APIResponse.success(enterpriseContacts);
     }
 
 

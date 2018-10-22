@@ -443,6 +443,8 @@ public class EnterpriseInfoServiceImpl implements EnterpriseInfoService {
         EnterpriseInfo enterpriseInfo = new EnterpriseInfo();
         BeanutilsCopy.copyProperties(enterpriseInfoSPModel,enterpriseInfo);
         enterpriseInfo.setEntNumber(enterpriseNo);
+        String uuid = UUID.randomUUID().toString().replace("-", "");
+        enterpriseInfo.setRequestId(uuid);
         enterpriseInfoMapper.insertSelective(enterpriseInfo);
 
         EnterpriseContact contactPerson=new EnterpriseContact();
@@ -476,5 +478,33 @@ public class EnterpriseInfoServiceImpl implements EnterpriseInfoService {
             enterpriseAttachmentMapper.insertSelective(attachment);
         }
         return enterpriseNo;
+    }
+
+    @Override
+    public Map<String, Object> saveSPEnterpriseInfo(String name, Integer type) {
+        Map<String,Object> result=new HashMap<>();
+        Map<String,Object> map=new HashMap<>();
+        map.put("entName",name);
+        EnterpriseInfo selective = enterpriseInfoMapper.findSelective(map);
+        if(selective!=null){
+            if(selective.getEntType().intValue()<TradeTypeEnum.供应商采购商.getState().intValue()){
+                 if(type.intValue()!=selective.getEntType().intValue()){
+                     selective.setEntType(TradeTypeEnum.供应商采购商.getState());
+                     enterpriseInfoMapper.updateByPrimaryKeySelective(selective);
+                 }
+            }
+        }else {
+            String uuid = UUID.randomUUID().toString().replace("-", "");
+            selective=new EnterpriseInfo();
+            selective.setEntType(type);
+            selective.setRequestId(uuid);
+            selective.setIsvalid(0);
+            selective.setEntName(name);
+            selective.setEntNumber(createEnterpriseNo());
+            enterpriseInfoMapper.insertSelective(selective);
+        }
+        result.put("entNumber" ,selective.getEntNumber());
+        result.put("requestId" ,selective.getRequestId());
+        return result;
     }
 }
