@@ -45,47 +45,61 @@ public class TaxServiceImpl implements TaxService {
         List<Row> rows=excelUtil.readExcel(file);
         Stack<TaxCategory> stack=new Stack<>();
         TaxCategory lastTaxCategory;
+        int level;
         for(int i=READ_START_POS;i<rows.size();i++){
-            TaxCategory taxCategory=new TaxCategory();
-            Row row=rows.get(i);
-            String taxCode=ExcelUtil.getCellValue(row.getCell(0)).trim();
-            String taxCategoryName=ExcelUtil.getCellValue(row.getCell(1)).trim();
-            String description=ExcelUtil.getCellValue(row.getCell(2)).trim();
-            String taxRate=ExcelUtil.getCellValue(row.getCell(3)).trim();
-            if(StringUtils.isNotEmpty(description)&&description.startsWith("<![CDATA[")){
-                description=description.substring(9,description.length()-3);
-            }
-            if(StringUtils.isNotEmpty(taxRate)&&taxRate.startsWith("<![CDATA[")){
-                taxRate=taxRate.substring(9,taxRate.length()-4);
-            }
-
-            taxCategory.setVersionId(versionId);
-            taxCategory.setTaxCode(taxCode);
-            taxCategory.setDescription(description);
-            taxCategory.setTaxCategoryName(taxCategoryName);
-            if(StringUtils.isNotEmpty(taxRate)){
-                taxCategory.setTaxRate(BigDecimal.valueOf(Double.parseDouble(taxRate)));
-            }
-
-            if(isExists(taxCategory)){
-                throw new BusinessException("导入失败，该版本已存在相应的税务code");
-            }
-            while(!stack.isEmpty()){
-                lastTaxCategory=stack.peek();
-                if(taxCategory.getTaxCode().startsWith(
-                        lastTaxCategory.getTaxCode().substring(0,lastTaxCategory.getLevel()*2))){
-                    taxCategory.setParentCode(lastTaxCategory.getTaxCode());
-                    taxCategory.setLevel(stack.size()+1);
-                    taxCategoryMapper.insertSelective(taxCategory);
-                    stack.push(taxCategory);
-                    break;
+            try{
+                TaxCategory taxCategory=new TaxCategory();
+                Row row=rows.get(i);
+                String taxCode=ExcelUtil.getCellValue(row.getCell(0)).trim();
+                String taxCategoryName=ExcelUtil.getCellValue(row.getCell(1)).trim();
+                String description=ExcelUtil.getCellValue(row.getCell(2)).trim();
+                String taxRate=ExcelUtil.getCellValue(row.getCell(3)).trim();
+                if(StringUtils.isNotEmpty(description)&&description.startsWith("<![CDATA[")){
+                    description=description.substring(9,description.length()-3);
                 }
-                stack.pop();
-            }
-            if(stack.isEmpty()){
-                taxCategory.setLevel(1);
-                taxCategoryMapper.insertSelective(taxCategory);
-                stack.push(taxCategory);
+                if(StringUtils.isNotEmpty(taxRate)&&taxRate.startsWith("<![CDATA[")){
+                    taxRate=taxRate.substring(9,taxRate.length()-4);
+                }
+                taxCategory.setVersionId(versionId);
+                taxCategory.setTaxCode(taxCode);
+                taxCategory.setDescription(description);
+                taxCategory.setTaxCategoryName(taxCategoryName);
+                for(level=1;level<=10;level++){
+                    if(taxCode.substring(0,level*2-1)
+                            .concat("00000000000000000000").startsWith(taxCode)){
+                        taxCategory.setLevel(level);
+                        break;
+                    }
+                }
+                if(StringUtils.isNotEmpty(taxRate)){
+                    taxCategory.setTaxRate(BigDecimal.valueOf(Double.parseDouble(taxRate)));
+                }
+                while(!stack.isEmpty()){
+                    lastTaxCategory=stack.peek();
+                    if(taxCategory.getLevel()>lastTaxCategory.getLevel()){
+                        taxCategory.setParentCode(lastTaxCategory.getTaxCode());
+                        taxCategory.setLevel(stack.size()+1);
+                        if(isExists(taxCategory)){
+                            log.info("versionId:{},{}行,{}税务code重复",versionId,i,taxCategory);
+                        }else{
+                            taxCategoryMapper.insertSelective(taxCategory);
+                        }
+                        stack.push(taxCategory);
+                        break;
+                    }
+                    stack.pop();
+                }
+                if(stack.isEmpty()){
+                    if(isExists(taxCategory)){
+                        log.info("versionId:{},{}行,{}税务code重复",versionId,i,taxCategory);
+                    }else{
+                        taxCategoryMapper.insertSelective(taxCategory);
+                    }
+                    stack.push(taxCategory);
+                }
+            }catch(Exception e){
+                log.error("导入税务分类Excel失败",e);
+                throw new BusinessException(String.format("第%d行数据存在异常",i));
             }
         }
         TaxVersion taxVersion=taxVersionMapper.selectByPrimaryKey(versionId);
