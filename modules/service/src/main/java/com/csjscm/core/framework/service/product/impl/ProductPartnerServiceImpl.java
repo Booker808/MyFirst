@@ -718,7 +718,7 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
                 scmPartnerFailVos.add(failVo);
                 continue;
             }
-            Map<String, Object> brandNamemap = new HashMap<>();
+      /*      Map<String, Object> brandNamemap = new HashMap<>();
             brandNamemap.put("brandName", ps.getBrandName());
             brandNamemap.put("categoryId", skuCore.getCategoryId());
             List<BrandMaster> brandMasters = brandMasterMapper.listSelective(brandNamemap);
@@ -728,7 +728,7 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
                 failVo.setMessage("品牌名称不存在或者品牌不唯一");
                 scmPartnerFailVos.add(failVo);
                 continue;
-            }
+            }*/
             Map<String, Object> minUintMap = new HashMap<>();
             minUintMap.put("objName", ps.getMinUint());
             minUintMap.put("isvalid", InvUnitIsvalidEnum.有效.getState());

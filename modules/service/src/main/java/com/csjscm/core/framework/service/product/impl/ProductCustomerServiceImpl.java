@@ -508,7 +508,7 @@ public class ProductCustomerServiceImpl implements ProductCustomerService {
                 continue;
             }
 
-            Map<String, Object> brandNamemap = new HashMap<>();
+/*            Map<String, Object> brandNamemap = new HashMap<>();
             brandNamemap.put("brandName", sc.getBrandName());
             brandNamemap.put("categoryId", category.getId());
             List<BrandMaster> brandMasters = brandMasterMapper.listSelective(brandNamemap);
@@ -518,7 +518,7 @@ public class ProductCustomerServiceImpl implements ProductCustomerService {
                 failMsgVo.setFailMsg("品牌名称不存在或者品牌不唯一");
                 failList.add(failMsgVo);
                 continue;
-            }
+            }*/
 
             Map<String, Object> minUintMap = new HashMap<>();
             minUintMap.put("objName", sc.getMinUint());
@@ -553,7 +553,7 @@ public class ProductCustomerServiceImpl implements ProductCustomerService {
             SkuCustomer skuCustomer=new SkuCustomer();
             BeanutilsCopy.copyProperties(sc,skuCustomer);
             try {
-                skuCustomer = insertSkuCoreAndCustomer(sc, skuCustomer, category, brandMasters.get(0).getId());
+                skuCustomer = insertSkuCoreAndCustomer(sc, skuCustomer, category);
             } catch (Exception e) {
                 log.error(e.getMessage(),e);
                 fail++;
@@ -576,7 +576,7 @@ public class ProductCustomerServiceImpl implements ProductCustomerService {
         return vo;
     }
     @Transactional
-    public SkuCustomer insertSkuCoreAndCustomer(SkuCustomerSCMMolde skuCustomerSCMMolde,SkuCustomer skuCustomer,Category category,Integer brandId){
+    public SkuCustomer insertSkuCoreAndCustomer(SkuCustomerSCMMolde skuCustomerSCMMolde,SkuCustomer skuCustomer,Category category){
         String productNo="";
         Map<String, Object> productNamemap = new HashMap<>();
         productNamemap.put("productName", skuCustomerSCMMolde.getCustomerPdName());
@@ -598,7 +598,7 @@ public class ProductCustomerServiceImpl implements ProductCustomerService {
             //获取一级分类
             category=categoryMapper.findByPrimary(skuCore.getLv1CategoryId());
             skuCore.setLv1CategoryNo(category.getClassCode());
-            skuCore.setBrandId(brandId);
+           // skuCore.setBrandId(brandId);
             skuCore.setBrandName(skuCustomerSCMMolde.getBrandName());
             skuCore.setMinUint(skuCustomerSCMMolde.getMinUint());
             skuCore.setProductName(skuCustomerSCMMolde.getCustomerPdName());

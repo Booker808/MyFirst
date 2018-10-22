@@ -166,7 +166,6 @@ public class BrandController {
             while( (len=inStream.read(buffer)) != -1 ){
                 outStream.write(buffer, 0, len);
             }
-            inStream.close();
             byte data[] =outStream.toByteArray();
             inStream.close();
             OutputStream out;
