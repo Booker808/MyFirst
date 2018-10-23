@@ -26,6 +26,10 @@
             <artifactId>enterprice-center</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.csjscm.core.framework</groupId>
+            <artifactId>swagger-generater</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.csjscm.sweet.framework</groupId>
             <artifactId>sweet-framework-cas</artifactId>
         </dependency>
@@ -73,8 +77,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>2.3.2</version>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                     <encoding>utf-8</encoding>
                 </configuration>
             </plugin>

@@ -18,6 +18,7 @@
         <module>modules/dao</module>
         <module>root</module>
         <module>modules/elasticsearch</module>
+        <module>modules/swagger-generater</module>
     </modules>
 
     <properties>
@@ -67,6 +68,11 @@
                 <artifactId>elasticsearch</artifactId>
                 <version>${core.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.csjscm.core.framework</groupId>
+                <artifactId>swagger-generater</artifactId>
+                <version>${core.version}</version>
+            </dependency>
 
             <!--sweet-->
             <dependency>
@@ -109,6 +115,11 @@
                 <artifactId>sweet-framework-auth</artifactId>
                 <version>${sweet.version}</version>
             </dependency>
+            <dependency>
+                <groupId>io.swagger</groupId>
+                <artifactId>swagger-models</artifactId>
+                <version>1.5.19</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <build>
@@ -127,8 +138,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>2.1</version>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>

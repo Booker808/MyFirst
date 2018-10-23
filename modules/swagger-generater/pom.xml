@@ -10,28 +10,34 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>common</artifactId>
-
+    <artifactId>swagger-generater</artifactId>
     <dependencies>
         <dependency>
-            <groupId>com.csjscm.sweet.framework</groupId>
-            <artifactId>sweet-framework-core</artifactId>
+            <groupId>com.csjscm.core.framework</groupId>
+            <artifactId>common</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi</artifactId>
+            <groupId>io.github.swagger2markup</groupId>
+            <artifactId>swagger2markup</artifactId>
+            <version>1.3.3</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-ooxml</artifactId>
+            <groupId>org.asciidoctor</groupId>
+            <artifactId>asciidoctorj</artifactId>
+            <version>1.5.6</version>
         </dependency>
         <dependency>
-            <groupId>com.csjscm.sweet.framework</groupId>
-            <artifactId>sweet-framework-redis-autoconfiguration</artifactId>
+            <groupId>org.asciidoctor</groupId>
+            <artifactId>asciidoctorj-pdf</artifactId>
+            <version>1.5.0-alpha.16</version>
+            <classifier>zh</classifier>
         </dependency>
+
         <dependency>
-            <groupId>io.swagger</groupId>
-            <artifactId>swagger-models</artifactId>
+            <groupId>org.pegdown</groupId>
+            <artifactId>pegdown</artifactId>
+            <version>1.6.0</version>
         </dependency>
     </dependencies>
+
 </project>
