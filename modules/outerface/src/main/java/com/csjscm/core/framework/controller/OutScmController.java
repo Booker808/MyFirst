@@ -90,7 +90,7 @@ public class OutScmController {
         map.put("requestId",requestId);
         map.put("entNumber",entNumber);
         map.put("entName",entName);
-        boolean flag = false;
+/*        boolean flag = false;
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             if (entry.getValue() != null && StringUtils.isNotBlank(entry.getValue().toString())) {
                 flag = true;
@@ -99,8 +99,8 @@ public class OutScmController {
         }
         if (!flag) {
             return APIResponse.fail("必须要有一个搜索条件");
-        }
-        return APIResponse.success(enterpriseInfoService.findSelective(map));
+        }*/
+        return APIResponse.success(enterpriseInfoService.listSelective(map));
     }
 
     /**
