@@ -90,6 +90,12 @@ public class TaxCustomerController {
         taxCustomerService.update(taxCustomer);
         return APIResponse.success();
     }
+    @ApiOperation("查询启用的税收分类编码和名称")
+    @RequestMapping(value = "/findEnableTax",method = RequestMethod.GET)
+    public APIResponse findEnableTax(){
+        List<Map<String, Object>> enableTax = taxCustomerService.findEnableTax();
+        return APIResponse.success(enableTax);
+    }
 
     /**
      * 自定义异常捕获

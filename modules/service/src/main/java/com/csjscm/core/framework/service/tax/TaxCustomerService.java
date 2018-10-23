@@ -4,6 +4,7 @@ import com.csjscm.core.framework.model.TaxCustomer;
 import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -22,4 +23,9 @@ public interface TaxCustomerService {
     void save (TaxCustomer taxCustomer);
 
     void update (TaxCustomer taxCustomer);
+    /**
+     * 查询所有启用的分类编码 ，名称
+     * @return
+     */
+    List<Map<String,Object>> findEnableTax();
 }

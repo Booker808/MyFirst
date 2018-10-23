@@ -41,6 +41,10 @@ public interface TaxCustomerMapper{
       *
       */
      int findCount(Map<String, Object> map);
-
+    /**
+     * 查询所有启用的分类编码 ，名称
+     * @return
+     */
+       List<Map<String,Object>> findEnableTax();
 
 }

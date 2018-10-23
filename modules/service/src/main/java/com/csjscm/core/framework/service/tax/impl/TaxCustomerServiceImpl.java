@@ -198,4 +198,9 @@ public class TaxCustomerServiceImpl implements TaxCustomerService {
         }
         taxCustomerMapper.updateSelective(taxCustomer);
     }
+
+    @Override
+    public List<Map<String, Object>> findEnableTax() {
+        return taxCustomerMapper.findEnableTax();
+    }
 }

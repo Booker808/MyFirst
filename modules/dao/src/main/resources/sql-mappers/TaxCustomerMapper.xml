@@ -129,5 +129,10 @@
         from tax_customer
         <include refid="searchBy"/>
     </select>
+    <select id="findEnableTax" resultType="java.util.HashMap">
+SELECT a.tax_code taxCode ,a.tax_category_name taxCategoryName from tax_category a
+LEFT JOIN tax_version b on a.version_id =b.id
+WHERE b.`enable`=1
+    </select>
 
 </mapper>
