@@ -2,6 +2,7 @@ package com.csjscm.core.framework.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.csjscm.core.framework.common.constant.Constant;
+import com.csjscm.core.framework.common.enums.TradeTypeEnum;
 import com.csjscm.core.framework.common.util.BeanValidator;
 import com.csjscm.core.framework.common.util.BeanutilsCopy;
 import com.csjscm.core.framework.common.util.BussinessException;
@@ -76,12 +77,12 @@ public class OutShoppingCenterController {
     /**
      * 校验供应商企业、客户企业是否存在的接口
      * @param name
-     * @param type
+
      * @return
      */
     @RequestMapping(value = "/checkEnterpriseName",method = RequestMethod.GET)
     public APIResponse checkPartnerName(@RequestParam(value = "name",required =true) String name,@RequestParam(value = "type",required =true) Integer type){
-        EnterpriseInfo enterpriseInfo = enterpriseInfoService.checkPartnerName(name, type);
+        EnterpriseInfo enterpriseInfo = enterpriseInfoService.checkPartnerName(name,type);
         if(enterpriseInfo!=null){
             APIResponse apiResponse=new APIResponse();
             apiResponse.setMessage("企业名称已存在");
@@ -90,6 +91,19 @@ public class OutShoppingCenterController {
             return apiResponse;
         }
         return APIResponse.success();
+    }
+
+    /**
+     *   按类型查询企业
+     * @param type
+     * @return
+     */
+    @RequestMapping(value = "/getEnterpriseList",method = RequestMethod.GET)
+    public APIResponse getEnterpriseList(@RequestParam(value = "type",required =true) Integer type){
+        Map<String,Object> map=new HashMap<>();
+        map.put("entType",type);
+        List<EnterpriseInfo> enterpriseInfos = enterpriseInfoService.listSelective(map);
+        return APIResponse.success(enterpriseInfos);
     }
 
     /**
@@ -103,6 +117,9 @@ public class OutShoppingCenterController {
     }*/
     @RequestMapping(value = "/createEnterprise",method = RequestMethod.POST)
     public APIResponse createEnterprise(@RequestParam(value = "name",required =true) String name,@RequestParam(value = "type",required =true) Integer type){
+        if(type<1 || type>2){
+            return APIResponse.fail("type值为1,2");
+        }
         return APIResponse.success(enterpriseInfoService.saveSPEnterpriseInfo(name,type));
     }
     /**

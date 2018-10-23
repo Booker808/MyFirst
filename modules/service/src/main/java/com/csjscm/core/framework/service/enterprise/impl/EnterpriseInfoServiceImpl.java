@@ -423,20 +423,21 @@ public class EnterpriseInfoServiceImpl implements EnterpriseInfoService {
     }
 
     @Override
-    public EnterpriseInfo checkPartnerName(String name, Integer type) {
-        String entTypeIn="("+ TradeTypeEnum.供应商采购商.getState()+","+type+")";
+    public EnterpriseInfo checkPartnerName(String name,Integer type) {
         Map<String,Object> map=new HashMap<>();
-        map.put("entName",name);
-        map.put("entTypeIn",entTypeIn);
+        map.put("entName",name.trim());
         EnterpriseInfo selective = enterpriseInfoMapper.findSelective(map);
-        return selective;
+        if(selective!=null && selective.getEntType().intValue()==type.intValue()){
+            return selective;
+        }else {
+            return null;
+        }
     }
 
     @Override
     @Transactional
     public String saveSPEnterpriseInfo(EnterpriseInfoSPModel enterpriseInfoSPModel) {
-        EnterpriseInfo e = checkPartnerName(enterpriseInfoSPModel.getEntName(), enterpriseInfoSPModel.getEntType());
-        if(e!=null){
+        if(StringUtils.isNotEmpty(getEpNoByEpName(enterpriseInfoSPModel.getEntName()))){
             throw  new BussinessException("企业名称已存在");
         }
         String enterpriseNo = createEnterpriseNo();

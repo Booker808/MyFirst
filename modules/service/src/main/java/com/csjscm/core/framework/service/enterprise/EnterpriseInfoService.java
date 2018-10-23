@@ -20,10 +20,9 @@ public interface EnterpriseInfoService {
     /**
      * 看看这个企业存不存在 存在返回EnterpriseInfo
      * @param name 企业名称
-     * @param type 企业类型
      * @return
      */
-    EnterpriseInfo checkPartnerName(String name, Integer type);
+    EnterpriseInfo checkPartnerName(String name,Integer type);
 
     /**
      * 保存商城过来的企业信息
