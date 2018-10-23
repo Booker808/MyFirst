@@ -5,7 +5,9 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;  
 import java.io.IOException;  
 import java.io.InputStream;
-import java.util.ArrayList;  
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -19,12 +21,8 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;  
 import org.apache.poi.hssf.util.HSSFColor;
-import org.apache.poi.ss.usermodel.Cell;  
-import org.apache.poi.ss.usermodel.CellStyle;  
-import org.apache.poi.ss.usermodel.Row;  
-import org.apache.poi.ss.usermodel.Sheet;  
-import org.apache.poi.ss.usermodel.Workbook;  
-import org.apache.poi.ss.util.CellRangeAddress;  
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellRangeAddressList;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;  
 import org.springframework.web.multipart.MultipartFile;
@@ -694,8 +692,12 @@ public class ExcelUtil {
             // 读取Excel 97-03版，xls格式  
             rowList = readExcel(wb);   
         return rowList;  
-    }  
-  
+    }
+
+
+    public static SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+    public static DecimalFormat df = new DecimalFormat("0");
+
     /*** 
      * 读取单元格的值 
      *  
@@ -703,7 +705,9 @@ public class ExcelUtil {
      * @Date : 2014-9-11 上午10:52:07 
      * @param cell 
      * @return 
-     */  
+     */
+
+
     public static String getCellValue(Cell cell) {
         Object result = "";
         if (cell != null) {  
@@ -711,10 +715,14 @@ public class ExcelUtil {
             case Cell.CELL_TYPE_STRING:  
                 result = cell.getStringCellValue();  
                 break;  
-            case Cell.CELL_TYPE_NUMERIC:  
-                result = cell.getNumericCellValue();  
-                break;  
-            case Cell.CELL_TYPE_BOOLEAN:  
+            case Cell.CELL_TYPE_NUMERIC:
+                if (DateUtil.isCellDateFormatted(cell)) {
+                    result = fmt.format(cell.getDateCellValue());
+                } else {
+                    result = df.format(cell.getNumericCellValue());
+                }
+                break;
+            case Cell.CELL_TYPE_BOOLEAN:
                 result = cell.getBooleanCellValue();  
                 break;  
             case Cell.CELL_TYPE_FORMULA:  

@@ -9,6 +9,7 @@ import com.csjscm.core.framework.model.TaxCategory;
 import com.csjscm.core.framework.model.TaxCustomer;
 import com.csjscm.core.framework.service.tax.TaxCustomerService;
 import com.csjscm.core.framework.vo.SkuCustomerVo;
+import com.csjscm.core.framework.vo.TaxCustomerImportFailVo;
 import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -73,14 +74,14 @@ public class TaxCustomerServiceImpl implements TaxCustomerService {
         //失败信息
         List<String> failList = new ArrayList<>();
         //失败的数据
-        List<Map<String,Object>> failSkuCustomer = new ArrayList<>();
+        List<TaxCustomerImportFailVo> failSkuCustomer = new ArrayList<>();
         ExcelUtil excelUtil = new ExcelUtil();
         List<Row> rows = excelUtil.readExcel(file);
         total = rows.size() - READ_START_POS;
         int failRow = 0;
         int failCell = 0;
         for(int i=READ_START_POS;i<rows.size();i++){
-            Map<String,Object> fail=new HashMap<>();
+            TaxCustomerImportFailVo fail=new TaxCustomerImportFailVo();
             String failMsg = "";
             String failMsgStr = "";
             boolean issuccess=true;
@@ -111,17 +112,17 @@ public class TaxCustomerServiceImpl implements TaxCustomerService {
                 }
                 TaxCategory one=new TaxCategory();
                 if(StringUtils.isNotBlank(taxCode)){
-                    row.getCell(1).setCellType(HSSFCell.CELL_TYPE_STRING);
-                    taxCode = ExcelUtil.getCellValue(row.getCell(1));
                     Map<String,Object> taxCodemap=new HashMap<>();
                     taxCodemap.put("taxCode",taxCode);
-                    one = taxCategoryMapper.findOne(taxCodemap);
-                    if(one==null){
+                    List<TaxCategory> taxCategories = taxCategoryMapper.selectByCondition(taxCodemap);
+                    if(taxCategories.size()==0){
                         failCell = 2;
                         failMsg = ExcelUtil.getFailMsg(failRow, failCell, "税收分类编码不存在");
                         failList.add(failMsg);
                         failMsgStr += failMsg;
                         issuccess = false;
+                    }else {
+                        one.setTaxCategoryName(taxCategories.get(0).getTaxCategoryName());
                     }
                 }else {
                     failCell = 2;
@@ -147,10 +148,11 @@ public class TaxCustomerServiceImpl implements TaxCustomerService {
                     taxCustomer.setTaxCategoryName(one.getTaxCategoryName());
                     taxCustomer.setTaxCode(taxCode);
                     taxCustomerMapper.insertSelective(taxCustomer);
+                    successCount++;
                 }else {
-                    fail.put("customerPdName",customerPdName);
-                    fail.put("taxCode",taxCode);
-                    fail.put("failMessage",failMsgStr);
+                    fail.setCustomerPdName(customerPdName);
+                    fail.setFailMessage(failMsgStr);
+                    fail.setTaxCode(taxCode);
                     failSkuCustomer.add(fail);
                 }
             }catch (Exception e){
@@ -158,8 +160,8 @@ public class TaxCustomerServiceImpl implements TaxCustomerService {
                 failMsg = ExcelUtil.getFailMsg(failRow, failCell, "未知异常");
                 failList.add(failMsg);
                 Map<String,Object> fail1=new HashMap<>();
-                fail1.put("failMessage",failMsg);
-                failSkuCustomer.add(fail1);
+                fail.setFailMessage(failMsgStr);
+                failSkuCustomer.add(fail);
                 continue;
             }
         }
