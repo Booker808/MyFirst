@@ -33,38 +33,14 @@
             <groupId>com.csjscm.sweet.framework</groupId>
             <artifactId>sweet-framework-session</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+            <version>5.1.4</version>
+        </dependency>
     </dependencies>
 
-    <!--profile，根据maven -P指定的环境参数，替换application.properties的占位符-->
-    <!--<profiles>-->
-        <!--<profile>-->
-            <!--<id>dev</id>-->
-            <!--<activation>-->
-                <!--<activeByDefault>true</activeByDefault>-->
-            <!--</activation>-->
-            <!--<build>-->
-                <!--<filters>-->
-                    <!--<filter>../profiles/application-dev.properties</filter>-->
-                <!--</filters>-->
-            <!--</build>-->
-        <!--</profile>-->
-        <!--<profile>-->
-            <!--<id>test</id>-->
-            <!--<build>-->
-                <!--<filters>-->
-                    <!--<filter>../profiles/application-test.properties</filter>-->
-                <!--</filters>-->
-            <!--</build>-->
-        <!--</profile>-->
-        <!--<profile>-->
-            <!--<id>prd</id>-->
-            <!--<build>-->
-                <!--<filters>-->
-                    <!--<filter>../profiles/application-prd.properties</filter>-->
-                <!--</filters>-->
-            <!--</build>-->
-        <!--</profile>-->
-    <!--</profiles>-->
+
 
 
     <build>
@@ -87,6 +63,11 @@
             </resource>
         </resources>
         <plugins>
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <version>5.1.4</version>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
