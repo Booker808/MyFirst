@@ -45,7 +45,7 @@ public class TaxServiceImpl implements TaxService {
         List<Row> rows=excelUtil.readExcel(file);
         Stack<TaxCategory> stack=new Stack<>();
         TaxCategory lastTaxCategory;
-        int level;
+        int notZeroLength;
         for(int i=READ_START_POS;i<rows.size();i++){
             try{
                 TaxCategory taxCategory=new TaxCategory();
@@ -64,12 +64,14 @@ public class TaxServiceImpl implements TaxService {
                 taxCategory.setTaxCode(taxCode);
                 taxCategory.setDescription(description);
                 taxCategory.setTaxCategoryName(taxCategoryName);
-                for(level=1;level<=10;level++){
-                    if(taxCode.substring(0,level*2-1)
-                            .concat("00000000000000000000").startsWith(taxCode)){
-                        taxCategory.setLevel(level);
+                for(notZeroLength=taxCode.length()-1;notZeroLength>=0;notZeroLength--){
+                    if(taxCode.charAt(notZeroLength)!='0'){
+                        taxCategory.setLevel((notZeroLength+2)/2);
                         break;
                     }
+                }
+                if(taxCategory.getLevel()==null){
+                    taxCategory.setLevel(1);
                 }
                 if(StringUtils.isNotEmpty(taxRate)){
                     taxCategory.setTaxRate(BigDecimal.valueOf(Double.parseDouble(taxRate)));
