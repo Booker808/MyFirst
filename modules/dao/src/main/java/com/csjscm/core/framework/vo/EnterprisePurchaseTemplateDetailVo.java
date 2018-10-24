@@ -20,6 +20,9 @@ public class EnterprisePurchaseTemplateDetailVo extends EnterprisePurchaseTempla
     @ApiModelProperty("卖方账户")
     private String bankNo;
 
+    @ApiModelProperty("合同主体")
+    private String mainContract;
+
     @ApiModelProperty("是否提交审核：0仅保存，1保存并提交审核")
     private Integer isSubmit;
 

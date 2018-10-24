@@ -28,6 +28,7 @@
     <result column="account_name" property="accountName" jdbcType="VARCHAR"/>
     <result column="bank_name" property="bankName" jdbcType="VARCHAR"/>
     <result column="bank_no" property="bankNo" jdbcType="VARCHAR"/>
+    <result column="main_contract" property="mainContract" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     id, ent_number, address, pay_type, prepay_rate, pick_rate, warranty_rate, pay_date,
@@ -93,9 +94,11 @@
     ,account.account_name
     ,account.bank_name
     ,account.bank_no
+    ,protocol.main_contract
     from enterprise_purchase_template t
     left join enterprise_info info on info.ent_number=t.ent_number
     left join enterprise_account account on account.ent_number=t.ent_number and account.account_type=1 and account.isdelete=0
+    left join enterprise_protocol protocol on protocol.ent_number=t.ent_number
     <include refid="exSearchBy"/>
     order by t.create_time desc
   </select>

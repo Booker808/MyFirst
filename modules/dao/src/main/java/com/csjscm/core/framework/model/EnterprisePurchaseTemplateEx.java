@@ -13,4 +13,5 @@ public class EnterprisePurchaseTemplateEx extends EnterprisePurchaseTemplate{
     private String accountName;
     private String bankName;
     private String bankNo;
+    private String mainContract;
 }
