@@ -14,6 +14,7 @@ import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,6 +26,7 @@ import javax.validation.Valid;
 import javax.validation.ValidationException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -43,7 +45,15 @@ public class TaxCustomerController {
             @RequestParam(required = false,defaultValue = "1")int page,
             @RequestParam(required = false,defaultValue = "10")int rpp,
             @ApiIgnore @RequestParam Map<String,Object> condition){
-        QueryResult<TaxCustomer> result = taxCustomerService.findPage(page, rpp, condition);
+        Map<String,Object> map=new HashMap<>();
+        if(condition!=null && !condition.isEmpty()){
+            for (Map.Entry<String, Object> entry : condition.entrySet()) {
+                if (entry.getValue() != null && StringUtils.isNotBlank(entry.getValue().toString())) {
+                    map.put(entry.getKey(),entry.getValue().toString().trim());
+                }
+            }
+        }
+        QueryResult<TaxCustomer> result = taxCustomerService.findPage(page, rpp, map);
         return APIResponse.success(result);
     }
 
