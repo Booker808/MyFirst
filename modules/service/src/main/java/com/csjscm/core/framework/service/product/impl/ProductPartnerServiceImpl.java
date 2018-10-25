@@ -189,11 +189,11 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
                 }
                 Map<String, Object> brandNamemap = new HashMap<>();
                 brandNamemap.put("brandName", brandName);
-                brandNamemap.put("categoryId",categoryId);
+               // brandNamemap.put("categoryId",categoryId);
                 List<BrandMaster> brandMasters = brandMasterMapper.listSelective(brandNamemap);
-                if (brandMasters.size() != 1) {
+                if (brandMasters.size() == 0) {
                     failCell = 4;
-                    failMsg = ExcelUtil.getFailMsg(failRow, failCell, "品牌名称不存在或者品牌不唯一");
+                    failMsg = ExcelUtil.getFailMsg(failRow, failCell, "品牌名称不存在");
                     failList.add(failMsg);
                     failMsgStr += failMsg;
                     issuccess = false;
@@ -602,9 +602,6 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
         List<BrandMaster> brandMasters = brandMasterMapper.listSelective(parrnerMap);
         if (brandMasters.size() == 0) {
             throw new BussinessException("品牌名称信息有误，不存在该品牌名称");
-        }
-        if (brandMasters.size() > 1) {
-            throw new BussinessException("存在多个品牌名称，无法识别");
         }
         parrnerMap.clear();
         parrnerMap.put("classCode", skuPartnerModel.getClassCode());

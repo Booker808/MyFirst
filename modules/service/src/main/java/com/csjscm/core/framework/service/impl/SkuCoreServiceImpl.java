@@ -222,10 +222,10 @@ public class SkuCoreServiceImpl implements SkuCoreService {
                 }
                 Map<String, Object> brandNamemap = new HashMap<>();
                 brandNamemap.put("brandName", brandName);
-                brandNamemap.put("categoryId",categoryId);
+              //  brandNamemap.put("categoryId",categoryId);
                 List<BrandMaster> brandMasters = brandMasterMapper.listSelective(brandNamemap);
-                if (brandMasters.size()==0 || brandMasters.size()>1) {
-                    failMsg = "品牌名称不存在或者存在多个相同品牌名称";
+                if (brandMasters.size()==0) {
+                    failMsg = "品牌名称不存在";
                     failCell = 3;
                     failList.add(getFailMsg(failRow, failCell, failMsg));
                     failMsgStr+=getFailMsg(failRow, failCell, failMsg);
@@ -561,10 +561,9 @@ public class SkuCoreServiceImpl implements SkuCoreService {
         }
         map.clear();
         map.put("brandName", skuCoreSMMolde.getBrandName());
-        map.put("categoryId",category.getId());
         List<BrandMaster> brandMasters = brandMasterMapper.listSelective(map);
-        if (brandMasters.size()==0 || brandMasters.size()>1) {
-            throw  new  BussinessException("品牌名称不存在或者存在多个相同品牌名称");
+        if (brandMasters.size()==0 ) {
+            throw  new  BussinessException("品牌名称不存在");
         }
         map.clear();
         map.put("objName",skuCoreSMMolde.getMinUint());

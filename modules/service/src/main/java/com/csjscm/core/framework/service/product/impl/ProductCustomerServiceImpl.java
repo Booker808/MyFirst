@@ -193,11 +193,10 @@ public class ProductCustomerServiceImpl implements ProductCustomerService {
                 }
                 Map<String, Object> brandNamemap = new HashMap<>();
                 brandNamemap.put("brandName", brandName);
-                brandNamemap.put("categoryId",categoryId);
                 List<BrandMaster> brandMasters = brandMasterMapper.listSelective(brandNamemap);
-                if (brandMasters.size() != 1) {
+                if (brandMasters.size() ==0) {
                     failCell = 4;
-                    failMsg = ExcelUtil.getFailMsg(failRow, failCell, "品牌名称不存在或者品牌不唯一");
+                    failMsg = ExcelUtil.getFailMsg(failRow, failCell, "品牌名称不存在");
                     failList.add(failMsg);
                     failMsgStr += failMsg;
                     issuccess = false;
