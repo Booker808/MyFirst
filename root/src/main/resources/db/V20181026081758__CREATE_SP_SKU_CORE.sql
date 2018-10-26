@@ -71,6 +71,5 @@ CREATE TABLE `sp_sku_core` (
   KEY `brand_name` (`product_name`) USING BTREE,
   KEY `min_uint` (`min_uint`) USING BTREE,
   KEY `rule` (`rule`) USING BTREE,
-  KEY `size` (`size`) USING BTREE,
-  CONSTRAINT `FK_Reference_8` FOREIGN KEY (`std_product_no`) REFERENCES `spu` (`std_product_no`)
+  KEY `size` (`size`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='商品核心表';
