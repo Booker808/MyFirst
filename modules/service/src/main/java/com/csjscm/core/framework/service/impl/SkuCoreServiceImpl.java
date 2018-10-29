@@ -243,16 +243,25 @@ public class SkuCoreServiceImpl implements SkuCoreService {
                         issuccess=false;
                     }
                 }
+                if(StringUtils.isNotBlank(rule)){
+                    row.getCell(4).setCellType(HSSFCell.CELL_TYPE_STRING);
+                    rule = getCellValue(row.getCell(4));
+                    if(size.length()>255){
+                        failMsg = "规格长度超过255";
+                        failCell = 4;
+                        failList.add(getFailMsg(failRow, failCell, failMsg));
+                        failMsgStr+=getFailMsg(failRow, failCell, failMsg);
+                        issuccess=false;
+                    }
+                }
                 //校验规格型号 最小库存单位
-                if(StringUtils.isBlank(rule) || rule.length()>255 ||StringUtils.isBlank(minUint) || minUint.length()>255){
-                    failMsg = "规格型号、库存单位不能为空或者字段长度超过255";
+                if(StringUtils.isBlank(minUint) || minUint.length()>255){
+                    failMsg = "库存单位不能为空或者字段长度超过255";
                     failCell = 5;
                     failList.add(getFailMsg(failRow, failCell, failMsg));
                     failMsgStr+=getFailMsg(failRow, failCell, failMsg);
                     issuccess=false;
                 }else {
-                    row.getCell(4).setCellType(HSSFCell.CELL_TYPE_STRING);
-                    rule = getCellValue(row.getCell(4));
                     row.getCell(5).setCellType(HSSFCell.CELL_TYPE_STRING);
                     minUint = getCellValue(row.getCell(5));
                 }
