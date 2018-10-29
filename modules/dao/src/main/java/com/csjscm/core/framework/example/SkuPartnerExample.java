@@ -8,6 +8,8 @@ public class SkuPartnerExample {
     private String supplyNo;
     private String productNoLike;
     private String supplyPdName;
+    private String supplyPdRuleLike;
+    private String supplyPdRule;
     private String supplyPdSizeLike;
     private String entName;
     private Integer brandId;

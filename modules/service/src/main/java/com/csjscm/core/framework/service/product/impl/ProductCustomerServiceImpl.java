@@ -201,16 +201,15 @@ public class ProductCustomerServiceImpl implements ProductCustomerService {
                     issuccess = false;
                 }
                 //校验规格
-                if (StringUtils.isNotBlank(customerPdRule)) {
+                if (StringUtils.isBlank(customerPdRule) || customerPdRule.length()>255) {
+                    failCell = 5;
+                    failMsg = ExcelUtil.getFailMsg(failRow, failCell, "规格长度超过256或者为空");
+                    failList.add(failMsg);
+                    failMsgStr += failMsg;
+                    issuccess = false;
+                }else {
                     row.getCell(4).setCellType(HSSFCell.CELL_TYPE_STRING);
                     customerPdRule = ExcelUtil.getCellValue(row.getCell(4));
-                    if (customerPdRule.length() > 255) {
-                        failCell = 5;
-                        failMsg = ExcelUtil.getFailMsg(failRow, failCell, "规格长度不能超过256");
-                        failList.add(failMsg);
-                        failMsgStr += failMsg;
-                        issuccess = false;
-                    }
                 }
                 if (StringUtils.isNotBlank(customerPdSize)) {
                     row.getCell(5).setCellType(HSSFCell.CELL_TYPE_STRING);
@@ -309,7 +308,7 @@ public class ProductCustomerServiceImpl implements ProductCustomerService {
                 customermap.put("brandName", brandName);
                 customermap.put("minUint", invUnit);
                 customermap.put("customerPdRule",customerPdRule);
-                customermap.put("customerPdSize",customerPdSize);
+              //  customermap.put("customerPdSize",customerPdSize);
                 int count = skuCustomerMapper.findCount(customermap);
                 if(count>0){
                     failCell = 0;
@@ -326,7 +325,7 @@ public class ProductCustomerServiceImpl implements ProductCustomerService {
                         productNamemap.put("minUint", invUnit);
                         productNamemap.put("brandName", brandName);
                         productNamemap.put("rule",customerPdRule);
-                        productNamemap.put("sizes", customerPdSize);
+                        //productNamemap.put("sizes", customerPdSize);
                         SkuCore selective = skuCoreMapper.findSelective(productNamemap);
                         if (selective == null) {
                             // 获取商品编码
@@ -428,7 +427,7 @@ public class ProductCustomerServiceImpl implements ProductCustomerService {
         customermap.put("customerNo",skuCustomer.getCustomerNo());
         customermap.put("customerPdName",skuCustomer.getCustomerPdName());
         customermap.put("customerPdRule",skuCustomer.getCustomerPdRule());
-        customermap.put("customerPdSize",skuCustomer.getCustomerPdSize());
+       // customermap.put("customerPdSize",skuCustomer.getCustomerPdSize());
         customermap.put("customerPdNo",skuCustomer.getCustomerPdNo());
         customermap.put("brandName",skuCustomer.getBrandName());
         customermap.put("minUint",skuCustomer.getMinUint());
@@ -439,7 +438,7 @@ public class ProductCustomerServiceImpl implements ProductCustomerService {
         Map<String, Object> productNomap = new HashMap<>();
         productNomap.put("brandName", skuCustomer.getBrandName());
         productNomap.put("minUint", skuCustomer.getMinUint());
-        productNomap.put("sizes", skuCustomer.getCustomerPdSize());
+      //  productNomap.put("sizes", skuCustomer.getCustomerPdSize());
         productNomap.put("rule",skuCustomer.getCustomerPdRule());
         productNomap.put("productName", skuCustomer.getCustomerPdName());
         SkuCore skuCore = skuCoreMapper.findSelective(productNomap);
@@ -547,7 +546,7 @@ public class ProductCustomerServiceImpl implements ProductCustomerService {
             customermap.put("customerNo",sc.getCustomerNo());
             customermap.put("customerPdName",sc.getCustomerPdName());
             customermap.put("customerPdRule",sc.getCustomerPdRule());
-            customermap.put("customerPdSize",sc.getCustomerPdSize());
+           // customermap.put("customerPdSize",sc.getCustomerPdSize());
             customermap.put("brandName",sc.getBrandName());
             customermap.put("minUint",sc.getMinUint());
             SkuCustomer selective = skuCustomerMapper.findSelective(customermap);
@@ -592,7 +591,7 @@ public class ProductCustomerServiceImpl implements ProductCustomerService {
         productNamemap.put("minUint", skuCustomerSCMMolde.getMinUint());
         productNamemap.put("brandName", skuCustomerSCMMolde.getBrandName());
         productNamemap.put("rule", skuCustomerSCMMolde.getCustomerPdRule());
-        productNamemap.put("sizes", skuCustomerSCMMolde.getCustomerPdSize());
+        //productNamemap.put("sizes", skuCustomerSCMMolde.getCustomerPdSize());
         SkuCore selective = skuCoreMapper.findSelective(productNamemap);
         if(selective==null){
             SkuCore skuCore=new SkuCore();
@@ -650,7 +649,7 @@ public class ProductCustomerServiceImpl implements ProductCustomerService {
         customermap.put("customerNo",skuCustomer.getCustomerNo());
         customermap.put("customerPdName",skuCustomer.getCustomerPdName());
         customermap.put("customerPdRule",skuCustomer.getCustomerPdRule());
-        customermap.put("customerPdSize",skuCustomer.getCustomerPdSize());
+        //customermap.put("customerPdSize",skuCustomer.getCustomerPdSize());
         customermap.put("customerPdNo",skuCustomer.getCustomerPdNo());
         customermap.put("brandName",skuCustomer.getBrandName());
         customermap.put("minUint",skuCustomer.getMinUint());

@@ -199,16 +199,15 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
                     issuccess = false;
                 }
                 //校验supplyPdRule
-                if (StringUtils.isNotBlank(supplyPdRule)) {
-                    row.getCell(4).setCellType(HSSFCell.CELL_TYPE_STRING);
-                    supplyPdRule = ExcelUtil.getCellValue(row.getCell(4));
-                    if (supplyPdRule.length() > 255) {
+                if (StringUtils.isBlank(supplyPdRule) || supplyPdRule.length()>255) {
                         failCell = 5;
-                        failMsg = ExcelUtil.getFailMsg(failRow, failCell, "规格长度不能超过256");
+                        failMsg = ExcelUtil.getFailMsg(failRow, failCell, "规格长度不能超过256或为空");
                         failList.add(failMsg);
                         failMsgStr += failMsg;
                         issuccess = false;
-                    }
+                }else{
+                    row.getCell(4).setCellType(HSSFCell.CELL_TYPE_STRING);
+                    supplyPdRule = ExcelUtil.getCellValue(row.getCell(4));
                 }
                 //校验supplyPdSize
                 if (StringUtils.isNotBlank(supplyPdSize)) {
@@ -340,7 +339,7 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
                 parrnerMap.put("brandName", brandName);
                 parrnerMap.put("minUint", invUnit);
                 parrnerMap.put("supplyPdRule", supplyPdRule);
-                parrnerMap.put("supplyPdSize", supplyPdSize);
+               // parrnerMap.put("supplyPdSize", supplyPdSize);
                 int count = skuPartnerMapper.findCount(parrnerMap);
                 if (count > 0) {
                     failCell = 0;
@@ -357,7 +356,7 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
                         productNamemap.put("minUint", invUnit);
                         productNamemap.put("brandName", brandName);
                         productNamemap.put("rule", supplyPdRule);
-                        productNamemap.put("sizes", supplyPdSize);
+                       // productNamemap.put("sizes", supplyPdSize);
                         SkuCore selective = skuCoreMapper.findSelective(productNamemap);
                         if (selective == null) {
                             // 获取商品编码
@@ -476,7 +475,7 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
             productNomap.put("supplyPdName", skuPartnerAddModel.getSupplyPdName());
             productNomap.put("brandName", skuPartnerAddModel.getBrandName());
             productNomap.put("supplyPdRule", skuPartnerAddModel.getSupplyPdRule());
-            productNomap.put("supplyPdSize", skuPartnerAddModel.getSupplyPdSize());
+          //  productNomap.put("supplyPdSize", skuPartnerAddModel.getSupplyPdSize());
             productNomap.put("minUnit", skuPartnerAddModel.getMinUint());
             int count = skuPartnerMapper.findCount(productNomap);
             if (count > 0) {
@@ -491,7 +490,7 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
             productNomap.put("supplyPdName", skuPartnerAddModel.getSupplyPdName());
             productNomap.put("brandName", skuPartnerAddModel.getBrandName());
             productNomap.put("supplyPdRule", skuPartnerAddModel.getSupplyPdRule());
-            productNomap.put("supplyPdSize", skuPartnerAddModel.getSupplyPdSize());
+          //  productNomap.put("supplyPdSize", skuPartnerAddModel.getSupplyPdSize());
             productNomap.put("minUnit", skuPartnerAddModel.getMinUint());
             int count = skuPartnerMapper.findCount(productNomap);
             if (count > 0) {
@@ -501,9 +500,10 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
             productNomap.put("productName", skuPartnerAddModel.getSupplyNo());
             productNomap.put("brandName", skuPartnerAddModel.getBrandName());
             productNomap.put("rule", skuPartnerAddModel.getSupplyPdRule());
-            productNomap.put("sizes", skuPartnerAddModel.getSupplyPdSize());
-            productNomap.put("mnemonicCode", skuPartnerAddModel.getMnemonicCode());
-            productNomap.put("ean13Code", skuPartnerAddModel.getEan13Code());
+            productNomap.put("minUint", skuPartnerAddModel.getMinUint());
+           // productNomap.put("sizes", skuPartnerAddModel.getSupplyPdSize());
+          //  productNomap.put("mnemonicCode", skuPartnerAddModel.getMnemonicCode());
+           // productNomap.put("ean13Code", skuPartnerAddModel.getEan13Code());
             List<SkuCore> skuCores = skuCoreMapper.listSelective(productNomap);
             if (skuCores.size() > 0) {
                 productNo = skuCores.get(0).getProductNo();
@@ -618,7 +618,7 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
         parrnerMap.put("supplyPdName", skuPartnerModel.getSupplyPdName());
         parrnerMap.put("brandName", skuPartnerModel.getBrandName());
         parrnerMap.put("supplyPdRule", skuPartnerModel.getSupplyPdRule());
-        parrnerMap.put("supplyPdSize", skuPartnerModel.getSupplyPdSize());
+       // parrnerMap.put("supplyPdSize", skuPartnerModel.getSupplyPdSize());
         parrnerMap.put("minUint", skuPartnerModel.getMinUint());
         int count2 = skuPartnerMapper.findCount(parrnerMap);
         if (count2 > 0) {
@@ -628,7 +628,7 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
         productNamemap.put("productName", skuPartnerModel.getSupplyPdName());
         productNamemap.put("brandName", skuPartnerModel.getBrandName());
         productNamemap.put("rule", skuPartnerModel.getSupplyPdRule());
-        productNamemap.put("sizes", skuPartnerModel.getSupplyPdSize());
+     //   productNamemap.put("sizes", skuPartnerModel.getSupplyPdSize());
         productNamemap.put("minUint", skuPartnerModel.getMinUint());
         List<SkuCore> skuCores = skuCoreMapper.listSelective(productNamemap);
         String productNo = "";
@@ -744,7 +744,7 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
             parrnerMap.put("supplyPdName", ps.getSupplyPdName());
             parrnerMap.put("brandName", ps.getBrandName());
             parrnerMap.put("supplyPdRule", ps.getSupplyPdRule());
-            parrnerMap.put("supplyPdSize", ps.getSupplyPdSize());
+          //  parrnerMap.put("supplyPdSize", ps.getSupplyPdSize());
             parrnerMap.put("minUint", ps.getMinUint());
             parrnerMap.put("productNo", ps.getProductNo());
             int count1 = skuPartnerMapper.findCount(parrnerMap);

@@ -123,8 +123,8 @@ public class SpCategoryController {
     }
     @ApiOperation("sp编辑修改删除ufd")
     @RequestMapping(value = "editUdf",method = RequestMethod.POST)
-    public APIResponse editUdf(@RequestBody Map<String,Object> mnp){
-        spCategoryService.updateUdf(mnp);
+    public APIResponse editUdf(@RequestBody SpCategory category){
+        spCategoryService.updateUdf(category);
         return APIResponse.success();
     }
     

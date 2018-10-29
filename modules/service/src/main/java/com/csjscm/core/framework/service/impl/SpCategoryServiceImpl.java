@@ -179,8 +179,8 @@ public class SpCategoryServiceImpl implements SpCategoryService {
     }
 
     @Override
-    public void updateUdf(Map<String, Object> map) {
-        spCategoryMapper.updateUdf(map);
+    public void updateUdf(SpCategory t) {
+        spCategoryMapper.updateSelective(t);
         getJsonCategory();
     }
 

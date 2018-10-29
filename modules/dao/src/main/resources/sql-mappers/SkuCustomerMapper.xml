@@ -682,6 +682,12 @@
       <if test="sizeLike!=null and sizeLike!=''">
         and c.customer_pd_size  LIKE CONCAT('%',#{sizeLike,jdbcType=VARCHAR},'%')
       </if>
+      <if test="customerPdRuleLike != null and customerPdRuleLike != '' ">
+        and c.customer_pd_rule like concat('%',#{customerPdRuleLike,jdbcType=VARCHAR},'%')
+      </if>
+      <if test="customerPdRule != null and customerPdRule != '' ">
+        and c.customer_pd_rule = #{customerPdRule,jdbcType=VARCHAR}
+      </if>
       <if test="entName!=null and entName!=''">
         and ent.ent_name LIKE CONCAT('%',#{entName,jdbcType=VARCHAR},'%')
       </if>

@@ -55,7 +55,7 @@ public class SkuCoreController {
         String[] header =
                 { "失败原因","三级分类编码","商品名称", "品牌", "规格", "型号", "最小单位", "进价成本", "近期询价", "条形码", "商品简码", "商品文字描述"};
         String[] line =
-                {"failMessage","categoryNo","productName","brandName","rule","rule","minUint","refrencePrice","recentEnquiry","ean13Code","mnemonicCode","description"};
+                {"failMessage","categoryNo","productName","brandName","rule","size","minUint","refrencePrice","recentEnquiry","ean13Code","mnemonicCode","description"};
         OutputStream out;
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/x-download");

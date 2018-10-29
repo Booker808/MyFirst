@@ -184,6 +184,9 @@
       <if test="rule != null and rule != '' ">
         and rule = #{rule,jdbcType=VARCHAR}
       </if>
+      <if test="ruleLike != null and ruleLike != '' ">
+        and rule like concat('%',#{ruleLike,jdbcType=VARCHAR},'%')
+      </if>
       <if test="size != null and size != '' ">
         and `size` = #{size,jdbcType=VARCHAR}
       </if>

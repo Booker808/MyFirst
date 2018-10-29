@@ -143,6 +143,12 @@
       <if test="supplyPdSizeLike != null and supplyPdSizeLike != ''">
         and p.supply_pd_size  LIKE CONCAT('%',#{supplyPdSizeLike,jdbcType=VARCHAR},'%')
       </if>
+      <if test="supplyPdRuleLike != null and supplyPdRuleLike != ''">
+        and p.supply_pd_rule  LIKE CONCAT('%',#{supplyPdRuleLike,jdbcType=VARCHAR},'%')
+      </if>
+      <if test="supplyPdRule != null and supplyPdRule != ''">
+        and p.supply_pd_rule = #{supplyPdRule,jdbcType=VARCHAR}
+      </if>
       <if test="entName != null and entName != ''">
         and ent.ent_name  LIKE CONCAT('%',#{entName,jdbcType=VARCHAR},'%')
       </if>

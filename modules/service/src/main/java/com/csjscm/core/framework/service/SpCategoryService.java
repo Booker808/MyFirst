@@ -60,9 +60,9 @@ public interface SpCategoryService {
 
     /**
      * 编辑udf
-     * @param map
+     * @param
      */
-    void updateUdf(Map<String, Object> map);
+    void updateUdf(SpCategory t);
 
     /**
      * 一个分类接口  三级树状结构 把所有的分类集成起来, 并且缓存到 redis里面

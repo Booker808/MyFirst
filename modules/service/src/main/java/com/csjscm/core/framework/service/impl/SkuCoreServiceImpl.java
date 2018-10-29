@@ -232,20 +232,19 @@ public class SkuCoreServiceImpl implements SkuCoreService {
                     issuccess=false;
                 }
                //校验规格
-                if(StringUtils.isNotBlank(size)){
-                    row.getCell(3).setCellType(HSSFCell.CELL_TYPE_STRING);
-                    size = getCellValue(row.getCell(3));
-                    if(size.length()>255){
-                        failMsg = "规格长度超过255";
+                if(StringUtils.isBlank(rule) ||rule.length()>255){
+                        failMsg = "规格长度超过255或为空";
                         failCell = 4;
                         failList.add(getFailMsg(failRow, failCell, failMsg));
                         failMsgStr+=getFailMsg(failRow, failCell, failMsg);
                         issuccess=false;
-                    }
+                }else{
+                    row.getCell(3).setCellType(HSSFCell.CELL_TYPE_STRING);
+                    rule = getCellValue(row.getCell(3));
                 }
-                if(StringUtils.isNotBlank(rule)){
+                if(StringUtils.isNotBlank(size)){
                     row.getCell(4).setCellType(HSSFCell.CELL_TYPE_STRING);
-                    rule = getCellValue(row.getCell(4));
+                    size = getCellValue(row.getCell(4));
                     if(size.length()>255){
                         failMsg = "规格长度超过255";
                         failCell = 4;
@@ -348,7 +347,7 @@ public class SkuCoreServiceImpl implements SkuCoreService {
                 productNamemap.put("minUint", minUint);
                 productNamemap.put("brandName", brandName);
                 productNamemap.put("rule", rule);
-                productNamemap.put("sizes", size);
+               // productNamemap.put("sizes", size);
                 int productCount = skuCoreMapper.findCount(productNamemap);
                 if(productCount>0 ){
                     failMsg = "商品已存在";
@@ -507,7 +506,7 @@ public class SkuCoreServiceImpl implements SkuCoreService {
         Map<String, Object> query = new HashMap<>();
         query.put("productName",skuCore.getProductName());
         query.put("rule",skuCore.getRule());
-        query.put("sizes",skuCore.getSize());
+       // query.put("sizes",skuCore.getSize());
         query.put("brandName",skuCore.getBrandName());
         query.put("minUint",skuCore.getMinUint());
         List<SkuCore> skuCoreList = skuCoreMapper.listSelective(query);
@@ -586,7 +585,7 @@ public class SkuCoreServiceImpl implements SkuCoreService {
         productNamemap.put("minUint", skuCoreSMMolde.getMinUint());
         productNamemap.put("brandName", skuCoreSMMolde.getBrandName());
         productNamemap.put("rule", skuCoreSMMolde.getRule());
-        productNamemap.put("size", skuCoreSMMolde.getSize());
+       // productNamemap.put("size", skuCoreSMMolde.getSize());
         int productCount = skuCoreMapper.findCount(productNamemap);
         if(productCount>0){
             throw  new  BussinessException("商品已存在");
@@ -633,7 +632,7 @@ public class SkuCoreServiceImpl implements SkuCoreService {
         Map<String, Object> query = new HashMap<>();
         query.put("productName",skuCore.getProductName());
         query.put("rule",skuCore.getRule());
-        query.put("sizes",skuCore.getSize());
+        //query.put("sizes",skuCore.getSize());
         query.put("brandName",skuCore.getBrandName());
         query.put("minUint",skuCore.getMinUint());
         List<SkuCore> skuCoreList = skuCoreMapper.listSelective(query);
