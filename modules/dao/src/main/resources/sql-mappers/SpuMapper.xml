@@ -1,64 +1,110 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.csjscm.core.framework.dao.SpuMapper">
-  <resultMap id="BaseResultMap" type="com.csjscm.core.framework.model.Spu">
-    <id column="std_product_no" jdbcType="VARCHAR" property="stdProductNo" />
-    <result column="category_id" jdbcType="VARCHAR" property="categoryId" />
-    <result column="guidance_price" jdbcType="DECIMAL" property="guidancePrice" />
-    <result column="page_title" jdbcType="VARCHAR" property="pageTitle" />
-    <result column="distribution_condition" jdbcType="VARCHAR" property="distributionCondition" />
-    <result column="isvalidate" jdbcType="INTEGER" property="isvalidate" />
-    <result column="page_main_pic" jdbcType="VARCHAR" property="pageMainPic" />
-    <result column="brand_id" jdbcType="VARCHAR" property="brandId" />
-    <result column="create_user_id" jdbcType="VARCHAR" property="createUserId" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="edit_user_id" jdbcType="VARCHAR" property="editUserId" />
-    <result column="edit_time" jdbcType="TIMESTAMP" property="editTime" />
-    <result column="cdf1" jdbcType="VARCHAR" property="cdf1" />
-    <result column="cdf2" jdbcType="VARCHAR" property="cdf2" />
-    <result column="cdf3" jdbcType="VARCHAR" property="cdf3" />
-    <result column="cdf4" jdbcType="VARCHAR" property="cdf4" />
-    <result column="cdf5" jdbcType="VARCHAR" property="cdf5" />
-    <result column="cdf6" jdbcType="VARCHAR" property="cdf6" />
-    <result column="cdf7" jdbcType="VARCHAR" property="cdf7" />
-    <result column="cdf8" jdbcType="VARCHAR" property="cdf8" />
-    <result column="cdf9" jdbcType="VARCHAR" property="cdf9" />
-    <result column="cdf10" jdbcType="VARCHAR" property="cdf10" />
-    <result column="cdf11" jdbcType="VARCHAR" property="cdf11" />
-    <result column="cdf12" jdbcType="VARCHAR" property="cdf12" />
-    <result column="cdf13" jdbcType="VARCHAR" property="cdf13" />
-    <result column="cdf14" jdbcType="VARCHAR" property="cdf14" />
-    <result column="cdf15" jdbcType="VARCHAR" property="cdf15" />
-    <result column="cdf16" jdbcType="VARCHAR" property="cdf16" />
-    <result column="cdf17" jdbcType="VARCHAR" property="cdf17" />
-    <result column="cdf18" jdbcType="VARCHAR" property="cdf18" />
-    <result column="cdf19" jdbcType="VARCHAR" property="cdf19" />
-    <result column="cdf20" jdbcType="VARCHAR" property="cdf20" />
-    <result column="cdf21" jdbcType="VARCHAR" property="cdf21" />
-    <result column="cdf22" jdbcType="VARCHAR" property="cdf22" />
-    <result column="cdf23" jdbcType="VARCHAR" property="cdf23" />
-    <result column="cdf24" jdbcType="VARCHAR" property="cdf24" />
-    <result column="cdf25" jdbcType="VARCHAR" property="cdf25" />
-    <result column="cdf26" jdbcType="VARCHAR" property="cdf26" />
-    <result column="cdf27" jdbcType="VARCHAR" property="cdf27" />
-    <result column="cdf28" jdbcType="VARCHAR" property="cdf28" />
-    <result column="cdf29" jdbcType="VARCHAR" property="cdf29" />
-    <result column="cdf30" jdbcType="VARCHAR" property="cdf30" />
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.csjscm.core.framework.dao.SpuMapper" >
+  <resultMap id="BaseResultMap" type="com.csjscm.core.framework.model.Spu" >
+    <id column="std_product_no" property="stdProductNo" jdbcType="VARCHAR" />
+    <result column="product_name" property="productName" jdbcType="VARCHAR" />
+    <result column="lv1_category_id" property="lv1CategoryId" jdbcType="INTEGER" />
+    <result column="lv1_category_no" property="lv1CategoryNo" jdbcType="VARCHAR" />
+    <result column="lv2_category_id" property="lv2CategoryId" jdbcType="INTEGER" />
+    <result column="lv2_category_no" property="lv2CategoryNo" jdbcType="VARCHAR" />
+    <result column="category_id" property="categoryId" jdbcType="INTEGER" />
+    <result column="category_no" property="categoryNo" jdbcType="VARCHAR" />
+    <result column="lv1_category_sp_id" property="lv1CategorySpId" jdbcType="INTEGER" />
+    <result column="lv1_category_sp_no" property="lv1CategorySpNo" jdbcType="VARCHAR" />
+    <result column="lv2_category_sp_id" property="lv2CategorySpId" jdbcType="INTEGER" />
+    <result column="lv2_category_sp_no" property="lv2CategorySpNo" jdbcType="VARCHAR" />
+    <result column="category_sp_id" property="categorySpId" jdbcType="INTEGER" />
+    <result column="category_sp_no" property="categorySpNo" jdbcType="VARCHAR" />
+    <result column="mnemonic_code" property="mnemonicCode" jdbcType="VARCHAR" />
+    <result column="guidance_price" property="guidancePrice" jdbcType="DECIMAL" />
+    <result column="page_title" property="pageTitle" jdbcType="VARCHAR" />
+    <result column="distribution_condition" property="distributionCondition" jdbcType="VARCHAR" />
+    <result column="isvalidate" property="isvalidate" jdbcType="INTEGER" />
+    <result column="brand_id" property="brandId" jdbcType="VARCHAR" />
+    <result column="create_user_id" property="createUserId" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="edit_user_id" property="editUserId" jdbcType="VARCHAR" />
+    <result column="edit_time" property="editTime" jdbcType="TIMESTAMP" />
+    <result column="cdf1" property="cdf1" jdbcType="VARCHAR" />
+    <result column="cdf2" property="cdf2" jdbcType="VARCHAR" />
+    <result column="cdf3" property="cdf3" jdbcType="VARCHAR" />
+    <result column="cdf4" property="cdf4" jdbcType="VARCHAR" />
+    <result column="cdf5" property="cdf5" jdbcType="VARCHAR" />
+    <result column="cdf6" property="cdf6" jdbcType="VARCHAR" />
+    <result column="cdf7" property="cdf7" jdbcType="VARCHAR" />
+    <result column="cdf8" property="cdf8" jdbcType="VARCHAR" />
+    <result column="cdf9" property="cdf9" jdbcType="VARCHAR" />
+    <result column="cdf10" property="cdf10" jdbcType="VARCHAR" />
+    <result column="cdf11" property="cdf11" jdbcType="VARCHAR" />
+    <result column="cdf12" property="cdf12" jdbcType="VARCHAR" />
+    <result column="cdf13" property="cdf13" jdbcType="VARCHAR" />
+    <result column="cdf14" property="cdf14" jdbcType="VARCHAR" />
+    <result column="cdf15" property="cdf15" jdbcType="VARCHAR" />
+    <result column="cdf16" property="cdf16" jdbcType="VARCHAR" />
+    <result column="cdf17" property="cdf17" jdbcType="VARCHAR" />
+    <result column="cdf18" property="cdf18" jdbcType="VARCHAR" />
+    <result column="cdf19" property="cdf19" jdbcType="VARCHAR" />
+    <result column="cdf20" property="cdf20" jdbcType="VARCHAR" />
+    <result column="cdf21" property="cdf21" jdbcType="VARCHAR" />
+    <result column="cdf22" property="cdf22" jdbcType="VARCHAR" />
+    <result column="cdf23" property="cdf23" jdbcType="VARCHAR" />
+    <result column="cdf24" property="cdf24" jdbcType="VARCHAR" />
+    <result column="cdf25" property="cdf25" jdbcType="VARCHAR" />
+    <result column="cdf26" property="cdf26" jdbcType="VARCHAR" />
+    <result column="cdf27" property="cdf27" jdbcType="VARCHAR" />
+    <result column="cdf28" property="cdf28" jdbcType="VARCHAR" />
+    <result column="cdf29" property="cdf29" jdbcType="VARCHAR" />
+    <result column="cdf30" property="cdf30" jdbcType="VARCHAR" />
+    <result column="rule_size" property="ruleSize" jdbcType="VARCHAR" />
+    <result column="min_unit" property="minUnit" jdbcType="VARCHAR" />
+    <result column="weight" property="weight" jdbcType="DOUBLE" />
+    <result column="height" property="height" jdbcType="DOUBLE" />
+    <result column="width" property="width" jdbcType="DOUBLE" />
+    <result column="length" property="length" jdbcType="DOUBLE" />
+    <result column="shelf_time" property="shelfTime" jdbcType="TIMESTAMP" />
   </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.csjscm.core.framework.model.Spu">
-    <result column="product_info" jdbcType="LONGVARCHAR" property="productInfo" />
+  <resultMap id="ResultMapWithBLOBs" type="com.csjscm.core.framework.model.SpuWithBLOBs" extends="BaseResultMap" >
+    <result column="page_main_pic" property="pageMainPic" jdbcType="LONGVARCHAR" />
+    <result column="product_info" property="productInfo" jdbcType="LONGVARCHAR" />
   </resultMap>
-  <sql id="Base_Column_List">
-    std_product_no, category_id, guidance_price, page_title, distribution_condition, 
-    isvalidate, page_main_pic, brand_id, create_user_id, create_time, edit_user_id, edit_time, 
-    cdf1, cdf2, cdf3, cdf4, cdf5, cdf6, cdf7, cdf8, cdf9, cdf10, cdf11, cdf12, cdf13, 
-    cdf14, cdf15, cdf16, cdf17, cdf18, cdf19, cdf20, cdf21, cdf22, cdf23, cdf24, cdf25, 
-    cdf26, cdf27, cdf28, cdf29, cdf30
+  <resultMap id="ExResult" type="com.csjscm.core.framework.model.SpuEx" extends="BaseResultMap">
+    <result column="stock" property="stock" jdbcType="INTEGER"/>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    std_product_no, product_name, lv1_category_id, lv1_category_no, lv2_category_id, 
+    lv2_category_no, category_id, category_no, lv1_category_sp_id, lv1_category_sp_no, 
+    lv2_category_sp_id, lv2_category_sp_no, category_sp_id, category_sp_no, mnemonic_code, 
+    guidance_price, page_title, distribution_condition, isvalidate, brand_id, create_user_id, 
+    create_time, edit_user_id, edit_time, cdf1, cdf2, cdf3, cdf4, cdf5, cdf6, cdf7, cdf8, 
+    cdf9, cdf10, cdf11, cdf12, cdf13, cdf14, cdf15, cdf16, cdf17, cdf18, cdf19, cdf20, 
+    cdf21, cdf22, cdf23, cdf24, cdf25, cdf26, cdf27, cdf28, cdf29, cdf30, rule_size, 
+    min_unit, weight, height, width, length, shelf_time
   </sql>
-  <sql id="Blob_Column_List">
-    product_info
+  <sql id="Spu_Column_List">
+    spu.std_product_no,spu.product_name, spu.lv1_category_id, spu.lv1_category_no, spu.lv2_category_id, spu.lv2_category_no,
+    spu.category_id, spu.category_no, spu.lv1_category_sp_id, spu.lv1_category_sp_no, spu.lv2_category_sp_id,
+    spu.lv2_category_sp_no, spu.category_sp_id, spu.category_sp_no, spu.mnemonic_code, spu.guidance_price,
+    spu.page_title, spu.distribution_condition, spu.isvalidate, spu.brand_id, spu.create_user_id, spu.create_time,
+    spu.edit_user_id, spu.edit_time, spu.cdf1, spu.cdf2, spu.cdf3, spu.cdf4, spu.cdf5, spu.cdf6, spu.cdf7, spu.cdf8, spu.cdf9, spu.cdf10,
+    spu.cdf11, spu.cdf12, spu.cdf13, spu.cdf14, spu.cdf15, spu.cdf16, spu.cdf17, spu.cdf18, spu.cdf19, spu.cdf20, spu.cdf21, spu.cdf22,
+    spu.cdf23, spu.cdf24, spu.cdf25, spu.cdf26, spu.cdf27, spu.cdf28, spu.cdf29, spu.cdf30, spu.rule_size, spu.min_unit, spu.weight,
+    spu.height, spu.width, spu.length, spu.shelf_time
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+  <sql id="Blob_Column_List" >
+    page_main_pic, product_info
+  </sql>
+  <sql id="searchByExample">
+    <where>
+      <if test="productName != null and productName != ''">
+        spu.product_name like concat('%',#{productName,jdbcType=VARCHAR},'%')
+      </if>
+      <if test="isvalidate != null">
+        spu.isvalidate = #{isvalidate,jdbcType=INTEGER}
+      </if>
+    </where>
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
     ,
@@ -66,14 +112,30 @@
     from spu
     where std_product_no = #{stdProductNo,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+  <select id="selectByExample" resultMap="ExResult" parameterType="map">
+    select
+      <include refid="Spu_Column_List"/>
+    from spu
+    <include refid="searchByExample"/>
+  </select>
+  <select id="selectStockBySpu" resultType="integer" parameterType="string">
+    select sum(stock)
+    from sp_sku_core
+    where std_product_no=#{spuNo,jdbcType=VARCHAR}
+    order by create_time DESC
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from spu
     where std_product_no = #{stdProductNo,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.csjscm.core.framework.model.Spu">
-    insert into spu (std_product_no, category_id, guidance_price, 
-      page_title, distribution_condition, isvalidate, 
-      page_main_pic, brand_id, create_user_id, 
+  <insert id="insert" parameterType="com.csjscm.core.framework.model.SpuWithBLOBs" >
+    insert into spu (std_product_no, product_name, lv1_category_id, 
+      lv1_category_no, lv2_category_id, lv2_category_no, 
+      category_id, category_no, lv1_category_sp_id, 
+      lv1_category_sp_no, lv2_category_sp_id, lv2_category_sp_no, 
+      category_sp_id, category_sp_no, mnemonic_code, 
+      guidance_price, page_title, distribution_condition, 
+      isvalidate, brand_id, create_user_id, 
       create_time, edit_user_id, edit_time, 
       cdf1, cdf2, cdf3, cdf4, 
       cdf5, cdf6, cdf7, cdf8, 
@@ -84,10 +146,17 @@
       cdf21, cdf22, cdf23, 
       cdf24, cdf25, cdf26, 
       cdf27, cdf28, cdf29, 
-      cdf30, product_info)
-    values (#{stdProductNo,jdbcType=VARCHAR}, #{categoryId,jdbcType=VARCHAR}, #{guidancePrice,jdbcType=DECIMAL}, 
-      #{pageTitle,jdbcType=VARCHAR}, #{distributionCondition,jdbcType=VARCHAR}, #{isvalidate,jdbcType=INTEGER}, 
-      #{pageMainPic,jdbcType=VARCHAR}, #{brandId,jdbcType=VARCHAR}, #{createUserId,jdbcType=VARCHAR}, 
+      cdf30, rule_size, min_unit, 
+      weight, height, width, 
+      length, shelf_time, page_main_pic, 
+      product_info)
+    values (#{stdProductNo,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, #{lv1CategoryId,jdbcType=INTEGER}, 
+      #{lv1CategoryNo,jdbcType=VARCHAR}, #{lv2CategoryId,jdbcType=INTEGER}, #{lv2CategoryNo,jdbcType=VARCHAR}, 
+      #{categoryId,jdbcType=INTEGER}, #{categoryNo,jdbcType=VARCHAR}, #{lv1CategorySpId,jdbcType=INTEGER}, 
+      #{lv1CategorySpNo,jdbcType=VARCHAR}, #{lv2CategorySpId,jdbcType=INTEGER}, #{lv2CategorySpNo,jdbcType=VARCHAR}, 
+      #{categorySpId,jdbcType=INTEGER}, #{categorySpNo,jdbcType=VARCHAR}, #{mnemonicCode,jdbcType=VARCHAR}, 
+      #{guidancePrice,jdbcType=DECIMAL}, #{pageTitle,jdbcType=VARCHAR}, #{distributionCondition,jdbcType=VARCHAR}, 
+      #{isvalidate,jdbcType=INTEGER}, #{brandId,jdbcType=VARCHAR}, #{createUserId,jdbcType=VARCHAR}, 
       #{createTime,jdbcType=TIMESTAMP}, #{editUserId,jdbcType=VARCHAR}, #{editTime,jdbcType=TIMESTAMP}, 
       #{cdf1,jdbcType=VARCHAR}, #{cdf2,jdbcType=VARCHAR}, #{cdf3,jdbcType=VARCHAR}, #{cdf4,jdbcType=VARCHAR}, 
       #{cdf5,jdbcType=VARCHAR}, #{cdf6,jdbcType=VARCHAR}, #{cdf7,jdbcType=VARCHAR}, #{cdf8,jdbcType=VARCHAR}, 
@@ -98,413 +167,608 @@
       #{cdf21,jdbcType=VARCHAR}, #{cdf22,jdbcType=VARCHAR}, #{cdf23,jdbcType=VARCHAR}, 
       #{cdf24,jdbcType=VARCHAR}, #{cdf25,jdbcType=VARCHAR}, #{cdf26,jdbcType=VARCHAR}, 
       #{cdf27,jdbcType=VARCHAR}, #{cdf28,jdbcType=VARCHAR}, #{cdf29,jdbcType=VARCHAR}, 
-      #{cdf30,jdbcType=VARCHAR}, #{productInfo,jdbcType=LONGVARCHAR})
+      #{cdf30,jdbcType=VARCHAR}, #{ruleSize,jdbcType=VARCHAR}, #{minUnit,jdbcType=VARCHAR}, 
+      #{weight,jdbcType=DOUBLE}, #{height,jdbcType=DOUBLE}, #{width,jdbcType=DOUBLE}, 
+      #{length,jdbcType=DOUBLE}, #{shelfTime,jdbcType=TIMESTAMP}, #{pageMainPic,jdbcType=LONGVARCHAR}, 
+      #{productInfo,jdbcType=LONGVARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.csjscm.core.framework.model.Spu">
+  <insert id="insertSelective" parameterType="com.csjscm.core.framework.model.SpuWithBLOBs" >
     insert into spu
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="stdProductNo != null">
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="stdProductNo != null" >
         std_product_no,
       </if>
-      <if test="categoryId != null">
+      <if test="productName != null" >
+        product_name,
+      </if>
+      <if test="lv1CategoryId != null" >
+        lv1_category_id,
+      </if>
+      <if test="lv1CategoryNo != null" >
+        lv1_category_no,
+      </if>
+      <if test="lv2CategoryId != null" >
+        lv2_category_id,
+      </if>
+      <if test="lv2CategoryNo != null" >
+        lv2_category_no,
+      </if>
+      <if test="categoryId != null" >
         category_id,
       </if>
-      <if test="guidancePrice != null">
+      <if test="categoryNo != null" >
+        category_no,
+      </if>
+      <if test="lv1CategorySpId != null" >
+        lv1_category_sp_id,
+      </if>
+      <if test="lv1CategorySpNo != null" >
+        lv1_category_sp_no,
+      </if>
+      <if test="lv2CategorySpId != null" >
+        lv2_category_sp_id,
+      </if>
+      <if test="lv2CategorySpNo != null" >
+        lv2_category_sp_no,
+      </if>
+      <if test="categorySpId != null" >
+        category_sp_id,
+      </if>
+      <if test="categorySpNo != null" >
+        category_sp_no,
+      </if>
+      <if test="mnemonicCode != null" >
+        mnemonic_code,
+      </if>
+      <if test="guidancePrice != null" >
         guidance_price,
       </if>
-      <if test="pageTitle != null">
+      <if test="pageTitle != null" >
         page_title,
       </if>
-      <if test="distributionCondition != null">
+      <if test="distributionCondition != null" >
         distribution_condition,
       </if>
-      <if test="isvalidate != null">
+      <if test="isvalidate != null" >
         isvalidate,
       </if>
-      <if test="pageMainPic != null">
-        page_main_pic,
-      </if>
-      <if test="brandId != null">
+      <if test="brandId != null" >
         brand_id,
       </if>
-      <if test="createUserId != null">
+      <if test="createUserId != null" >
         create_user_id,
       </if>
-      <if test="createTime != null">
+      <if test="createTime != null" >
         create_time,
       </if>
-      <if test="editUserId != null">
+      <if test="editUserId != null" >
         edit_user_id,
       </if>
-      <if test="editTime != null">
+      <if test="editTime != null" >
         edit_time,
       </if>
-      <if test="cdf1 != null">
+      <if test="cdf1 != null" >
         cdf1,
       </if>
-      <if test="cdf2 != null">
+      <if test="cdf2 != null" >
         cdf2,
       </if>
-      <if test="cdf3 != null">
+      <if test="cdf3 != null" >
         cdf3,
       </if>
-      <if test="cdf4 != null">
+      <if test="cdf4 != null" >
         cdf4,
       </if>
-      <if test="cdf5 != null">
+      <if test="cdf5 != null" >
         cdf5,
       </if>
-      <if test="cdf6 != null">
+      <if test="cdf6 != null" >
         cdf6,
       </if>
-      <if test="cdf7 != null">
+      <if test="cdf7 != null" >
         cdf7,
       </if>
-      <if test="cdf8 != null">
+      <if test="cdf8 != null" >
         cdf8,
       </if>
-      <if test="cdf9 != null">
+      <if test="cdf9 != null" >
         cdf9,
       </if>
-      <if test="cdf10 != null">
+      <if test="cdf10 != null" >
         cdf10,
       </if>
-      <if test="cdf11 != null">
+      <if test="cdf11 != null" >
         cdf11,
       </if>
-      <if test="cdf12 != null">
+      <if test="cdf12 != null" >
         cdf12,
       </if>
-      <if test="cdf13 != null">
+      <if test="cdf13 != null" >
         cdf13,
       </if>
-      <if test="cdf14 != null">
+      <if test="cdf14 != null" >
         cdf14,
       </if>
-      <if test="cdf15 != null">
+      <if test="cdf15 != null" >
         cdf15,
       </if>
-      <if test="cdf16 != null">
+      <if test="cdf16 != null" >
         cdf16,
       </if>
-      <if test="cdf17 != null">
+      <if test="cdf17 != null" >
         cdf17,
       </if>
-      <if test="cdf18 != null">
+      <if test="cdf18 != null" >
         cdf18,
       </if>
-      <if test="cdf19 != null">
+      <if test="cdf19 != null" >
         cdf19,
       </if>
-      <if test="cdf20 != null">
+      <if test="cdf20 != null" >
         cdf20,
       </if>
-      <if test="cdf21 != null">
+      <if test="cdf21 != null" >
         cdf21,
       </if>
-      <if test="cdf22 != null">
+      <if test="cdf22 != null" >
         cdf22,
       </if>
-      <if test="cdf23 != null">
+      <if test="cdf23 != null" >
         cdf23,
       </if>
-      <if test="cdf24 != null">
+      <if test="cdf24 != null" >
         cdf24,
       </if>
-      <if test="cdf25 != null">
+      <if test="cdf25 != null" >
         cdf25,
       </if>
-      <if test="cdf26 != null">
+      <if test="cdf26 != null" >
         cdf26,
       </if>
-      <if test="cdf27 != null">
+      <if test="cdf27 != null" >
         cdf27,
       </if>
-      <if test="cdf28 != null">
+      <if test="cdf28 != null" >
         cdf28,
       </if>
-      <if test="cdf29 != null">
+      <if test="cdf29 != null" >
         cdf29,
       </if>
-      <if test="cdf30 != null">
+      <if test="cdf30 != null" >
         cdf30,
       </if>
-      <if test="productInfo != null">
+      <if test="ruleSize != null" >
+        rule_size,
+      </if>
+      <if test="minUnit != null" >
+        min_unit,
+      </if>
+      <if test="weight != null" >
+        weight,
+      </if>
+      <if test="height != null" >
+        height,
+      </if>
+      <if test="width != null" >
+        width,
+      </if>
+      <if test="length != null" >
+        length,
+      </if>
+      <if test="shelfTime != null" >
+        shelf_time,
+      </if>
+      <if test="pageMainPic != null" >
+        page_main_pic,
+      </if>
+      <if test="productInfo != null" >
         product_info,
       </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="stdProductNo != null">
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="stdProductNo != null" >
         #{stdProductNo,jdbcType=VARCHAR},
       </if>
-      <if test="categoryId != null">
-        #{categoryId,jdbcType=VARCHAR},
+      <if test="productName != null" >
+        #{productName,jdbcType=VARCHAR},
       </if>
-      <if test="guidancePrice != null">
+      <if test="lv1CategoryId != null" >
+        #{lv1CategoryId,jdbcType=INTEGER},
+      </if>
+      <if test="lv1CategoryNo != null" >
+        #{lv1CategoryNo,jdbcType=VARCHAR},
+      </if>
+      <if test="lv2CategoryId != null" >
+        #{lv2CategoryId,jdbcType=INTEGER},
+      </if>
+      <if test="lv2CategoryNo != null" >
+        #{lv2CategoryNo,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryId != null" >
+        #{categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="categoryNo != null" >
+        #{categoryNo,jdbcType=VARCHAR},
+      </if>
+      <if test="lv1CategorySpId != null" >
+        #{lv1CategorySpId,jdbcType=INTEGER},
+      </if>
+      <if test="lv1CategorySpNo != null" >
+        #{lv1CategorySpNo,jdbcType=VARCHAR},
+      </if>
+      <if test="lv2CategorySpId != null" >
+        #{lv2CategorySpId,jdbcType=INTEGER},
+      </if>
+      <if test="lv2CategorySpNo != null" >
+        #{lv2CategorySpNo,jdbcType=VARCHAR},
+      </if>
+      <if test="categorySpId != null" >
+        #{categorySpId,jdbcType=INTEGER},
+      </if>
+      <if test="categorySpNo != null" >
+        #{categorySpNo,jdbcType=VARCHAR},
+      </if>
+      <if test="mnemonicCode != null" >
+        #{mnemonicCode,jdbcType=VARCHAR},
+      </if>
+      <if test="guidancePrice != null" >
         #{guidancePrice,jdbcType=DECIMAL},
       </if>
-      <if test="pageTitle != null">
+      <if test="pageTitle != null" >
         #{pageTitle,jdbcType=VARCHAR},
       </if>
-      <if test="distributionCondition != null">
+      <if test="distributionCondition != null" >
         #{distributionCondition,jdbcType=VARCHAR},
       </if>
-      <if test="isvalidate != null">
+      <if test="isvalidate != null" >
         #{isvalidate,jdbcType=INTEGER},
       </if>
-      <if test="pageMainPic != null">
-        #{pageMainPic,jdbcType=VARCHAR},
-      </if>
-      <if test="brandId != null">
+      <if test="brandId != null" >
         #{brandId,jdbcType=VARCHAR},
       </if>
-      <if test="createUserId != null">
+      <if test="createUserId != null" >
         #{createUserId,jdbcType=VARCHAR},
       </if>
-      <if test="createTime != null">
+      <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="editUserId != null">
+      <if test="editUserId != null" >
         #{editUserId,jdbcType=VARCHAR},
       </if>
-      <if test="editTime != null">
+      <if test="editTime != null" >
         #{editTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="cdf1 != null">
+      <if test="cdf1 != null" >
         #{cdf1,jdbcType=VARCHAR},
       </if>
-      <if test="cdf2 != null">
+      <if test="cdf2 != null" >
         #{cdf2,jdbcType=VARCHAR},
       </if>
-      <if test="cdf3 != null">
+      <if test="cdf3 != null" >
         #{cdf3,jdbcType=VARCHAR},
       </if>
-      <if test="cdf4 != null">
+      <if test="cdf4 != null" >
         #{cdf4,jdbcType=VARCHAR},
       </if>
-      <if test="cdf5 != null">
+      <if test="cdf5 != null" >
         #{cdf5,jdbcType=VARCHAR},
       </if>
-      <if test="cdf6 != null">
+      <if test="cdf6 != null" >
         #{cdf6,jdbcType=VARCHAR},
       </if>
-      <if test="cdf7 != null">
+      <if test="cdf7 != null" >
         #{cdf7,jdbcType=VARCHAR},
       </if>
-      <if test="cdf8 != null">
+      <if test="cdf8 != null" >
         #{cdf8,jdbcType=VARCHAR},
       </if>
-      <if test="cdf9 != null">
+      <if test="cdf9 != null" >
         #{cdf9,jdbcType=VARCHAR},
       </if>
-      <if test="cdf10 != null">
+      <if test="cdf10 != null" >
         #{cdf10,jdbcType=VARCHAR},
       </if>
-      <if test="cdf11 != null">
+      <if test="cdf11 != null" >
         #{cdf11,jdbcType=VARCHAR},
       </if>
-      <if test="cdf12 != null">
+      <if test="cdf12 != null" >
         #{cdf12,jdbcType=VARCHAR},
       </if>
-      <if test="cdf13 != null">
+      <if test="cdf13 != null" >
         #{cdf13,jdbcType=VARCHAR},
       </if>
-      <if test="cdf14 != null">
+      <if test="cdf14 != null" >
         #{cdf14,jdbcType=VARCHAR},
       </if>
-      <if test="cdf15 != null">
+      <if test="cdf15 != null" >
         #{cdf15,jdbcType=VARCHAR},
       </if>
-      <if test="cdf16 != null">
+      <if test="cdf16 != null" >
         #{cdf16,jdbcType=VARCHAR},
       </if>
-      <if test="cdf17 != null">
+      <if test="cdf17 != null" >
         #{cdf17,jdbcType=VARCHAR},
       </if>
-      <if test="cdf18 != null">
+      <if test="cdf18 != null" >
         #{cdf18,jdbcType=VARCHAR},
       </if>
-      <if test="cdf19 != null">
+      <if test="cdf19 != null" >
         #{cdf19,jdbcType=VARCHAR},
       </if>
-      <if test="cdf20 != null">
+      <if test="cdf20 != null" >
         #{cdf20,jdbcType=VARCHAR},
       </if>
-      <if test="cdf21 != null">
+      <if test="cdf21 != null" >
         #{cdf21,jdbcType=VARCHAR},
       </if>
-      <if test="cdf22 != null">
+      <if test="cdf22 != null" >
         #{cdf22,jdbcType=VARCHAR},
       </if>
-      <if test="cdf23 != null">
+      <if test="cdf23 != null" >
         #{cdf23,jdbcType=VARCHAR},
       </if>
-      <if test="cdf24 != null">
+      <if test="cdf24 != null" >
         #{cdf24,jdbcType=VARCHAR},
       </if>
-      <if test="cdf25 != null">
+      <if test="cdf25 != null" >
         #{cdf25,jdbcType=VARCHAR},
       </if>
-      <if test="cdf26 != null">
+      <if test="cdf26 != null" >
         #{cdf26,jdbcType=VARCHAR},
       </if>
-      <if test="cdf27 != null">
+      <if test="cdf27 != null" >
         #{cdf27,jdbcType=VARCHAR},
       </if>
-      <if test="cdf28 != null">
+      <if test="cdf28 != null" >
         #{cdf28,jdbcType=VARCHAR},
       </if>
-      <if test="cdf29 != null">
+      <if test="cdf29 != null" >
         #{cdf29,jdbcType=VARCHAR},
       </if>
-      <if test="cdf30 != null">
+      <if test="cdf30 != null" >
         #{cdf30,jdbcType=VARCHAR},
       </if>
-      <if test="productInfo != null">
+      <if test="ruleSize != null" >
+        #{ruleSize,jdbcType=VARCHAR},
+      </if>
+      <if test="minUnit != null" >
+        #{minUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="weight != null" >
+        #{weight,jdbcType=DOUBLE},
+      </if>
+      <if test="height != null" >
+        #{height,jdbcType=DOUBLE},
+      </if>
+      <if test="width != null" >
+        #{width,jdbcType=DOUBLE},
+      </if>
+      <if test="length != null" >
+        #{length,jdbcType=DOUBLE},
+      </if>
+      <if test="shelfTime != null" >
+        #{shelfTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pageMainPic != null" >
+        #{pageMainPic,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="productInfo != null" >
         #{productInfo,jdbcType=LONGVARCHAR},
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.csjscm.core.framework.model.Spu">
+  <update id="updateByPrimaryKeySelective" parameterType="com.csjscm.core.framework.model.SpuWithBLOBs" >
     update spu
-    <set>
-      <if test="categoryId != null">
-        category_id = #{categoryId,jdbcType=VARCHAR},
+    <set >
+      <if test="productName != null" >
+        product_name = #{productName,jdbcType=VARCHAR},
       </if>
-      <if test="guidancePrice != null">
+      <if test="lv1CategoryId != null" >
+        lv1_category_id = #{lv1CategoryId,jdbcType=INTEGER},
+      </if>
+      <if test="lv1CategoryNo != null" >
+        lv1_category_no = #{lv1CategoryNo,jdbcType=VARCHAR},
+      </if>
+      <if test="lv2CategoryId != null" >
+        lv2_category_id = #{lv2CategoryId,jdbcType=INTEGER},
+      </if>
+      <if test="lv2CategoryNo != null" >
+        lv2_category_no = #{lv2CategoryNo,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryId != null" >
+        category_id = #{categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="categoryNo != null" >
+        category_no = #{categoryNo,jdbcType=VARCHAR},
+      </if>
+      <if test="lv1CategorySpId != null" >
+        lv1_category_sp_id = #{lv1CategorySpId,jdbcType=INTEGER},
+      </if>
+      <if test="lv1CategorySpNo != null" >
+        lv1_category_sp_no = #{lv1CategorySpNo,jdbcType=VARCHAR},
+      </if>
+      <if test="lv2CategorySpId != null" >
+        lv2_category_sp_id = #{lv2CategorySpId,jdbcType=INTEGER},
+      </if>
+      <if test="lv2CategorySpNo != null" >
+        lv2_category_sp_no = #{lv2CategorySpNo,jdbcType=VARCHAR},
+      </if>
+      <if test="categorySpId != null" >
+        category_sp_id = #{categorySpId,jdbcType=INTEGER},
+      </if>
+      <if test="categorySpNo != null" >
+        category_sp_no = #{categorySpNo,jdbcType=VARCHAR},
+      </if>
+      <if test="mnemonicCode != null" >
+        mnemonic_code = #{mnemonicCode,jdbcType=VARCHAR},
+      </if>
+      <if test="guidancePrice != null" >
         guidance_price = #{guidancePrice,jdbcType=DECIMAL},
       </if>
-      <if test="pageTitle != null">
+      <if test="pageTitle != null" >
         page_title = #{pageTitle,jdbcType=VARCHAR},
       </if>
-      <if test="distributionCondition != null">
+      <if test="distributionCondition != null" >
         distribution_condition = #{distributionCondition,jdbcType=VARCHAR},
       </if>
-      <if test="isvalidate != null">
+      <if test="isvalidate != null" >
         isvalidate = #{isvalidate,jdbcType=INTEGER},
       </if>
-      <if test="pageMainPic != null">
-        page_main_pic = #{pageMainPic,jdbcType=VARCHAR},
-      </if>
-      <if test="brandId != null">
+      <if test="brandId != null" >
         brand_id = #{brandId,jdbcType=VARCHAR},
       </if>
-      <if test="createUserId != null">
+      <if test="createUserId != null" >
         create_user_id = #{createUserId,jdbcType=VARCHAR},
       </if>
-      <if test="createTime != null">
+      <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="editUserId != null">
+      <if test="editUserId != null" >
         edit_user_id = #{editUserId,jdbcType=VARCHAR},
       </if>
-      <if test="editTime != null">
+      <if test="editTime != null" >
         edit_time = #{editTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="cdf1 != null">
+      <if test="cdf1 != null" >
         cdf1 = #{cdf1,jdbcType=VARCHAR},
       </if>
-      <if test="cdf2 != null">
+      <if test="cdf2 != null" >
         cdf2 = #{cdf2,jdbcType=VARCHAR},
       </if>
-      <if test="cdf3 != null">
+      <if test="cdf3 != null" >
         cdf3 = #{cdf3,jdbcType=VARCHAR},
       </if>
-      <if test="cdf4 != null">
+      <if test="cdf4 != null" >
         cdf4 = #{cdf4,jdbcType=VARCHAR},
       </if>
-      <if test="cdf5 != null">
+      <if test="cdf5 != null" >
         cdf5 = #{cdf5,jdbcType=VARCHAR},
       </if>
-      <if test="cdf6 != null">
+      <if test="cdf6 != null" >
         cdf6 = #{cdf6,jdbcType=VARCHAR},
       </if>
-      <if test="cdf7 != null">
+      <if test="cdf7 != null" >
         cdf7 = #{cdf7,jdbcType=VARCHAR},
       </if>
-      <if test="cdf8 != null">
+      <if test="cdf8 != null" >
         cdf8 = #{cdf8,jdbcType=VARCHAR},
       </if>
-      <if test="cdf9 != null">
+      <if test="cdf9 != null" >
         cdf9 = #{cdf9,jdbcType=VARCHAR},
       </if>
-      <if test="cdf10 != null">
+      <if test="cdf10 != null" >
         cdf10 = #{cdf10,jdbcType=VARCHAR},
       </if>
-      <if test="cdf11 != null">
+      <if test="cdf11 != null" >
         cdf11 = #{cdf11,jdbcType=VARCHAR},
       </if>
-      <if test="cdf12 != null">
+      <if test="cdf12 != null" >
         cdf12 = #{cdf12,jdbcType=VARCHAR},
       </if>
-      <if test="cdf13 != null">
+      <if test="cdf13 != null" >
         cdf13 = #{cdf13,jdbcType=VARCHAR},
       </if>
-      <if test="cdf14 != null">
+      <if test="cdf14 != null" >
         cdf14 = #{cdf14,jdbcType=VARCHAR},
       </if>
-      <if test="cdf15 != null">
+      <if test="cdf15 != null" >
         cdf15 = #{cdf15,jdbcType=VARCHAR},
       </if>
-      <if test="cdf16 != null">
+      <if test="cdf16 != null" >
         cdf16 = #{cdf16,jdbcType=VARCHAR},
       </if>
-      <if test="cdf17 != null">
+      <if test="cdf17 != null" >
         cdf17 = #{cdf17,jdbcType=VARCHAR},
       </if>
-      <if test="cdf18 != null">
+      <if test="cdf18 != null" >
         cdf18 = #{cdf18,jdbcType=VARCHAR},
       </if>
-      <if test="cdf19 != null">
+      <if test="cdf19 != null" >
         cdf19 = #{cdf19,jdbcType=VARCHAR},
       </if>
-      <if test="cdf20 != null">
+      <if test="cdf20 != null" >
         cdf20 = #{cdf20,jdbcType=VARCHAR},
       </if>
-      <if test="cdf21 != null">
+      <if test="cdf21 != null" >
         cdf21 = #{cdf21,jdbcType=VARCHAR},
       </if>
-      <if test="cdf22 != null">
+      <if test="cdf22 != null" >
         cdf22 = #{cdf22,jdbcType=VARCHAR},
       </if>
-      <if test="cdf23 != null">
+      <if test="cdf23 != null" >
         cdf23 = #{cdf23,jdbcType=VARCHAR},
       </if>
-      <if test="cdf24 != null">
+      <if test="cdf24 != null" >
         cdf24 = #{cdf24,jdbcType=VARCHAR},
       </if>
-      <if test="cdf25 != null">
+      <if test="cdf25 != null" >
         cdf25 = #{cdf25,jdbcType=VARCHAR},
       </if>
-      <if test="cdf26 != null">
+      <if test="cdf26 != null" >
         cdf26 = #{cdf26,jdbcType=VARCHAR},
       </if>
-      <if test="cdf27 != null">
+      <if test="cdf27 != null" >
         cdf27 = #{cdf27,jdbcType=VARCHAR},
       </if>
-      <if test="cdf28 != null">
+      <if test="cdf28 != null" >
         cdf28 = #{cdf28,jdbcType=VARCHAR},
       </if>
-      <if test="cdf29 != null">
+      <if test="cdf29 != null" >
         cdf29 = #{cdf29,jdbcType=VARCHAR},
       </if>
-      <if test="cdf30 != null">
+      <if test="cdf30 != null" >
         cdf30 = #{cdf30,jdbcType=VARCHAR},
       </if>
-      <if test="productInfo != null">
+      <if test="ruleSize != null" >
+        rule_size = #{ruleSize,jdbcType=VARCHAR},
+      </if>
+      <if test="minUnit != null" >
+        min_unit = #{minUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="weight != null" >
+        weight = #{weight,jdbcType=DOUBLE},
+      </if>
+      <if test="height != null" >
+        height = #{height,jdbcType=DOUBLE},
+      </if>
+      <if test="width != null" >
+        width = #{width,jdbcType=DOUBLE},
+      </if>
+      <if test="length != null" >
+        length = #{length,jdbcType=DOUBLE},
+      </if>
+      <if test="shelfTime != null" >
+        shelf_time = #{shelfTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pageMainPic != null" >
+        page_main_pic = #{pageMainPic,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="productInfo != null" >
         product_info = #{productInfo,jdbcType=LONGVARCHAR},
       </if>
     </set>
     where std_product_no = #{stdProductNo,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.csjscm.core.framework.model.Spu">
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.csjscm.core.framework.model.SpuWithBLOBs" >
     update spu
-    set category_id = #{categoryId,jdbcType=VARCHAR},
+    set product_name = #{productName,jdbcType=VARCHAR},
+      lv1_category_id = #{lv1CategoryId,jdbcType=INTEGER},
+      lv1_category_no = #{lv1CategoryNo,jdbcType=VARCHAR},
+      lv2_category_id = #{lv2CategoryId,jdbcType=INTEGER},
+      lv2_category_no = #{lv2CategoryNo,jdbcType=VARCHAR},
+      category_id = #{categoryId,jdbcType=INTEGER},
+      category_no = #{categoryNo,jdbcType=VARCHAR},
+      lv1_category_sp_id = #{lv1CategorySpId,jdbcType=INTEGER},
+      lv1_category_sp_no = #{lv1CategorySpNo,jdbcType=VARCHAR},
+      lv2_category_sp_id = #{lv2CategorySpId,jdbcType=INTEGER},
+      lv2_category_sp_no = #{lv2CategorySpNo,jdbcType=VARCHAR},
+      category_sp_id = #{categorySpId,jdbcType=INTEGER},
+      category_sp_no = #{categorySpNo,jdbcType=VARCHAR},
+      mnemonic_code = #{mnemonicCode,jdbcType=VARCHAR},
       guidance_price = #{guidancePrice,jdbcType=DECIMAL},
       page_title = #{pageTitle,jdbcType=VARCHAR},
       distribution_condition = #{distributionCondition,jdbcType=VARCHAR},
       isvalidate = #{isvalidate,jdbcType=INTEGER},
-      page_main_pic = #{pageMainPic,jdbcType=VARCHAR},
       brand_id = #{brandId,jdbcType=VARCHAR},
       create_user_id = #{createUserId,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -540,17 +804,37 @@
       cdf28 = #{cdf28,jdbcType=VARCHAR},
       cdf29 = #{cdf29,jdbcType=VARCHAR},
       cdf30 = #{cdf30,jdbcType=VARCHAR},
+      rule_size = #{ruleSize,jdbcType=VARCHAR},
+      min_unit = #{minUnit,jdbcType=VARCHAR},
+      weight = #{weight,jdbcType=DOUBLE},
+      height = #{height,jdbcType=DOUBLE},
+      width = #{width,jdbcType=DOUBLE},
+      length = #{length,jdbcType=DOUBLE},
+      shelf_time = #{shelfTime,jdbcType=TIMESTAMP},
+      page_main_pic = #{pageMainPic,jdbcType=LONGVARCHAR},
       product_info = #{productInfo,jdbcType=LONGVARCHAR}
     where std_product_no = #{stdProductNo,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.csjscm.core.framework.model.Spu">
+  <update id="updateByPrimaryKey" parameterType="com.csjscm.core.framework.model.Spu" >
     update spu
-    set category_id = #{categoryId,jdbcType=VARCHAR},
+    set product_name = #{productName,jdbcType=VARCHAR},
+      lv1_category_id = #{lv1CategoryId,jdbcType=INTEGER},
+      lv1_category_no = #{lv1CategoryNo,jdbcType=VARCHAR},
+      lv2_category_id = #{lv2CategoryId,jdbcType=INTEGER},
+      lv2_category_no = #{lv2CategoryNo,jdbcType=VARCHAR},
+      category_id = #{categoryId,jdbcType=INTEGER},
+      category_no = #{categoryNo,jdbcType=VARCHAR},
+      lv1_category_sp_id = #{lv1CategorySpId,jdbcType=INTEGER},
+      lv1_category_sp_no = #{lv1CategorySpNo,jdbcType=VARCHAR},
+      lv2_category_sp_id = #{lv2CategorySpId,jdbcType=INTEGER},
+      lv2_category_sp_no = #{lv2CategorySpNo,jdbcType=VARCHAR},
+      category_sp_id = #{categorySpId,jdbcType=INTEGER},
+      category_sp_no = #{categorySpNo,jdbcType=VARCHAR},
+      mnemonic_code = #{mnemonicCode,jdbcType=VARCHAR},
       guidance_price = #{guidancePrice,jdbcType=DECIMAL},
       page_title = #{pageTitle,jdbcType=VARCHAR},
       distribution_condition = #{distributionCondition,jdbcType=VARCHAR},
       isvalidate = #{isvalidate,jdbcType=INTEGER},
-      page_main_pic = #{pageMainPic,jdbcType=VARCHAR},
       brand_id = #{brandId,jdbcType=VARCHAR},
       create_user_id = #{createUserId,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -585,7 +869,26 @@
       cdf27 = #{cdf27,jdbcType=VARCHAR},
       cdf28 = #{cdf28,jdbcType=VARCHAR},
       cdf29 = #{cdf29,jdbcType=VARCHAR},
-      cdf30 = #{cdf30,jdbcType=VARCHAR}
+      cdf30 = #{cdf30,jdbcType=VARCHAR},
+      rule_size = #{ruleSize,jdbcType=VARCHAR},
+      min_unit = #{minUnit,jdbcType=VARCHAR},
+      weight = #{weight,jdbcType=DOUBLE},
+      height = #{height,jdbcType=DOUBLE},
+      width = #{width,jdbcType=DOUBLE},
+      length = #{length,jdbcType=DOUBLE},
+      shelf_time = #{shelfTime,jdbcType=TIMESTAMP}
     where std_product_no = #{stdProductNo,jdbcType=VARCHAR}
+  </update>
+  <update id="updateShelfState" parameterType="map">
+    update spu
+    set isvalidate=#{shelf,jdbcType=INTEGER}
+    <if test="shelfTime!=null">
+      ,shelf_time=#{shelfTime,jdbcType=TIMESTAMP}
+    </if>
+    where std_product_no in
+    <foreach item="item" index="index" open="(" separator="," close=")" collection="spuList">
+      #{item}
+    </foreach>
+    and isvalidate!=#{shelf,jdbcType=INTEGER}
   </update>
 </mapper>

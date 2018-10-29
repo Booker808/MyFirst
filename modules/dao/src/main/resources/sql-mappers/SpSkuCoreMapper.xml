@@ -1,0 +1,913 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.csjscm.core.framework.dao.SpSkuCoreMapper" >
+  <resultMap id="BaseResultMap" type="com.csjscm.core.framework.model.SpSkuCore" >
+    <id column="product_no" property="productNo" jdbcType="VARCHAR" />
+    <result column="std_product_no" property="stdProductNo" jdbcType="VARCHAR" />
+    <result column="product_name" property="productName" jdbcType="VARCHAR" />
+    <result column="product_price" property="productPrice" jdbcType="DECIMAL" />
+    <result column="lv1_category_id" property="lv1CategoryId" jdbcType="INTEGER" />
+    <result column="lv1_category_no" property="lv1CategoryNo" jdbcType="VARCHAR" />
+    <result column="lv2_category_id" property="lv2CategoryId" jdbcType="INTEGER" />
+    <result column="lv2_category_no" property="lv2CategoryNo" jdbcType="VARCHAR" />
+    <result column="category_id" property="categoryId" jdbcType="INTEGER" />
+    <result column="category_no" property="categoryNo" jdbcType="VARCHAR" />
+    <result column="lv1_category_sp_id" property="lv1CategorySpId" jdbcType="INTEGER" />
+    <result column="lv1_category_sp_no" property="lv1CategorySpNo" jdbcType="VARCHAR" />
+    <result column="lv2_category_sp_id" property="lv2CategorySpId" jdbcType="INTEGER" />
+    <result column="lv2_category_sp_no" property="lv2CategorySpNo" jdbcType="VARCHAR" />
+    <result column="category_sp_id" property="categorySpId" jdbcType="INTEGER" />
+    <result column="category_sp_no" property="categorySpNo" jdbcType="VARCHAR" />
+    <result column="isvalidate" property="isvalidate" jdbcType="INTEGER" />
+    <result column="approval_status" property="approvalStatus" jdbcType="INTEGER" />
+    <result column="channel" property="channel" jdbcType="INTEGER" />
+    <result column="brand_name" property="brandName" jdbcType="VARCHAR" />
+    <result column="brand_id" property="brandId" jdbcType="INTEGER" />
+    <result column="unit_id" property="unitId" jdbcType="INTEGER" />
+    <result column="min_uint" property="minUint" jdbcType="VARCHAR" />
+    <result column="product_pic" property="productPic" jdbcType="VARCHAR" />
+    <result column="ean13_code" property="ean13Code" jdbcType="VARCHAR" />
+    <result column="mnemonic_code" property="mnemonicCode" jdbcType="VARCHAR" />
+    <result column="invoice_type" property="invoiceType" jdbcType="VARCHAR" />
+    <result column="recent_enquiry" property="recentEnquiry" jdbcType="DECIMAL" />
+    <result column="refrence_price" property="refrencePrice" jdbcType="DECIMAL" />
+    <result column="txt_code" property="txtCode" jdbcType="VARCHAR" />
+    <result column="rule" property="rule" jdbcType="VARCHAR" />
+    <result column="size" property="size" jdbcType="VARCHAR" />
+    <result column="create_user_id" property="createUserId" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="edit_user_id" property="editUserId" jdbcType="VARCHAR" />
+    <result column="edit_time" property="editTime" jdbcType="TIMESTAMP" />
+    <result column="udf1" property="udf1" jdbcType="VARCHAR" />
+    <result column="udf2" property="udf2" jdbcType="VARCHAR" />
+    <result column="udf3" property="udf3" jdbcType="VARCHAR" />
+    <result column="udf4" property="udf4" jdbcType="VARCHAR" />
+    <result column="udf5" property="udf5" jdbcType="VARCHAR" />
+    <result column="udf6" property="udf6" jdbcType="VARCHAR" />
+    <result column="udf7" property="udf7" jdbcType="VARCHAR" />
+    <result column="udf8" property="udf8" jdbcType="VARCHAR" />
+    <result column="udf9" property="udf9" jdbcType="VARCHAR" />
+    <result column="udf10" property="udf10" jdbcType="VARCHAR" />
+    <result column="suf1" property="suf1" jdbcType="VARCHAR" />
+    <result column="suf2" property="suf2" jdbcType="VARCHAR" />
+    <result column="suf3" property="suf3" jdbcType="VARCHAR" />
+    <result column="suf4" property="suf4" jdbcType="VARCHAR" />
+    <result column="suf5" property="suf5" jdbcType="VARCHAR" />
+    <result column="suf6" property="suf6" jdbcType="VARCHAR" />
+    <result column="suf7" property="suf7" jdbcType="VARCHAR" />
+    <result column="suf8" property="suf8" jdbcType="VARCHAR" />
+    <result column="suf9" property="suf9" jdbcType="VARCHAR" />
+    <result column="suf10" property="suf10" jdbcType="VARCHAR" />
+    <result column="request_id" property="requestId" jdbcType="VARCHAR" />
+    <result column="category_id_old" property="categoryIdOld" jdbcType="VARCHAR" />
+    <result column="create_user_id_old" property="createUserIdOld" jdbcType="VARCHAR" />
+    <result column="edit_user_id_old" property="editUserIdOld" jdbcType="VARCHAR" />
+    <result column="approval_status_old" property="approvalStatusOld" jdbcType="VARCHAR" />
+    <result column="brand_id_old" property="brandIdOld" jdbcType="VARCHAR" />
+    <result column="min_uint_old" property="minUintOld" jdbcType="VARCHAR" />
+    <result column="stock" property="stock" jdbcType="INTEGER" />
+    <result column="weight" property="weight" jdbcType="DOUBLE" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.csjscm.core.framework.model.SpSkuCore" extends="BaseResultMap" >
+    <result column="description" property="description" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    product_no, std_product_no, product_name, product_price, lv1_category_id, lv1_category_no, 
+    lv2_category_id, lv2_category_no, category_id, category_no, lv1_category_sp_id, lv1_category_sp_no, 
+    lv2_category_sp_id, lv2_category_sp_no, category_sp_id, category_sp_no, isvalidate, 
+    approval_status, channel, brand_name, brand_id, unit_id, min_uint, product_pic, ean13_code, 
+    mnemonic_code, invoice_type, recent_enquiry, refrence_price, txt_code, rule, size, 
+    create_user_id, create_time, edit_user_id, edit_time, udf1, udf2, udf3, udf4, udf5, 
+    udf6, udf7, udf8, udf9, udf10, suf1, suf2, suf3, suf4, suf5, suf6, suf7, suf8, suf9, 
+    suf10, request_id, category_id_old, create_user_id_old, edit_user_id_old, approval_status_old, 
+    brand_id_old, min_uint_old, stock, weight
+  </sql>
+  <sql id="Blob_Column_List" >
+    description
+  </sql>
+  <sql id="searchBy">
+    <where>
+      <if test="stdProductNo!= null and stdProductNo != ''">
+        and std_product_no = #{stdProductNo,jdbcType=VARCHAR}
+      </if>
+      <if test="spuList!=null">
+        and std_product_no in
+        <foreach item="item" index="index" open="(" separator="," close=")" collection="spuList">
+          #{item}
+        </foreach>
+      </if>
+      <if test="isvalidate != null">
+        and isvalidate = #{isvalidate,jdbcType=INTEGER}
+      </if>
+    </where>
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from sp_sku_core
+    where product_no = #{productNo,jdbcType=VARCHAR}
+  </select>
+    <select id="selectByCondition" resultMap="ResultMapWithBLOBs" parameterType="map">
+      select
+      <include refid="Base_Column_List" />
+      ,
+      <include refid="Blob_Column_List" />
+      from sp_sku_core
+      <include refid="searchBy"/>
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from sp_sku_core
+    where product_no = #{productNo,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.csjscm.core.framework.model.SpSkuCore" >
+    insert into sp_sku_core (product_no, std_product_no, product_name, 
+      product_price, lv1_category_id, lv1_category_no, 
+      lv2_category_id, lv2_category_no, category_id, 
+      category_no, lv1_category_sp_id, lv1_category_sp_no, 
+      lv2_category_sp_id, lv2_category_sp_no, category_sp_id, 
+      category_sp_no, isvalidate, approval_status, 
+      channel, brand_name, brand_id, 
+      unit_id, min_uint, product_pic, 
+      ean13_code, mnemonic_code, invoice_type, 
+      recent_enquiry, refrence_price, txt_code, 
+      rule, size, create_user_id, 
+      create_time, edit_user_id, edit_time, 
+      udf1, udf2, udf3, udf4, 
+      udf5, udf6, udf7, udf8, 
+      udf9, udf10, suf1, 
+      suf2, suf3, suf4, suf5, 
+      suf6, suf7, suf8, suf9, 
+      suf10, request_id, category_id_old, 
+      create_user_id_old, edit_user_id_old, approval_status_old, 
+      brand_id_old, min_uint_old, stock, 
+      weight, description)
+    values (#{productNo,jdbcType=VARCHAR}, #{stdProductNo,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, 
+      #{productPrice,jdbcType=DECIMAL}, #{lv1CategoryId,jdbcType=INTEGER}, #{lv1CategoryNo,jdbcType=VARCHAR}, 
+      #{lv2CategoryId,jdbcType=INTEGER}, #{lv2CategoryNo,jdbcType=VARCHAR}, #{categoryId,jdbcType=INTEGER}, 
+      #{categoryNo,jdbcType=VARCHAR}, #{lv1CategorySpId,jdbcType=INTEGER}, #{lv1CategorySpNo,jdbcType=VARCHAR}, 
+      #{lv2CategorySpId,jdbcType=INTEGER}, #{lv2CategorySpNo,jdbcType=VARCHAR}, #{categorySpId,jdbcType=INTEGER}, 
+      #{categorySpNo,jdbcType=VARCHAR}, #{isvalidate,jdbcType=INTEGER}, #{approvalStatus,jdbcType=INTEGER}, 
+      #{channel,jdbcType=INTEGER}, #{brandName,jdbcType=VARCHAR}, #{brandId,jdbcType=INTEGER}, 
+      #{unitId,jdbcType=INTEGER}, #{minUint,jdbcType=VARCHAR}, #{productPic,jdbcType=VARCHAR}, 
+      #{ean13Code,jdbcType=VARCHAR}, #{mnemonicCode,jdbcType=VARCHAR}, #{invoiceType,jdbcType=VARCHAR}, 
+      #{recentEnquiry,jdbcType=DECIMAL}, #{refrencePrice,jdbcType=DECIMAL}, #{txtCode,jdbcType=VARCHAR}, 
+      #{rule,jdbcType=VARCHAR}, #{size,jdbcType=VARCHAR}, #{createUserId,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{editUserId,jdbcType=VARCHAR}, #{editTime,jdbcType=TIMESTAMP}, 
+      #{udf1,jdbcType=VARCHAR}, #{udf2,jdbcType=VARCHAR}, #{udf3,jdbcType=VARCHAR}, #{udf4,jdbcType=VARCHAR}, 
+      #{udf5,jdbcType=VARCHAR}, #{udf6,jdbcType=VARCHAR}, #{udf7,jdbcType=VARCHAR}, #{udf8,jdbcType=VARCHAR}, 
+      #{udf9,jdbcType=VARCHAR}, #{udf10,jdbcType=VARCHAR}, #{suf1,jdbcType=VARCHAR}, 
+      #{suf2,jdbcType=VARCHAR}, #{suf3,jdbcType=VARCHAR}, #{suf4,jdbcType=VARCHAR}, #{suf5,jdbcType=VARCHAR}, 
+      #{suf6,jdbcType=VARCHAR}, #{suf7,jdbcType=VARCHAR}, #{suf8,jdbcType=VARCHAR}, #{suf9,jdbcType=VARCHAR}, 
+      #{suf10,jdbcType=VARCHAR}, #{requestId,jdbcType=VARCHAR}, #{categoryIdOld,jdbcType=VARCHAR}, 
+      #{createUserIdOld,jdbcType=VARCHAR}, #{editUserIdOld,jdbcType=VARCHAR}, #{approvalStatusOld,jdbcType=VARCHAR}, 
+      #{brandIdOld,jdbcType=VARCHAR}, #{minUintOld,jdbcType=VARCHAR}, #{stock,jdbcType=INTEGER}, 
+      #{weight,jdbcType=DOUBLE}, #{description,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.csjscm.core.framework.model.SpSkuCore" >
+    insert into sp_sku_core
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="productNo != null" >
+        product_no,
+      </if>
+      <if test="stdProductNo != null" >
+        std_product_no,
+      </if>
+      <if test="productName != null" >
+        product_name,
+      </if>
+      <if test="productPrice != null" >
+        product_price,
+      </if>
+      <if test="lv1CategoryId != null" >
+        lv1_category_id,
+      </if>
+      <if test="lv1CategoryNo != null" >
+        lv1_category_no,
+      </if>
+      <if test="lv2CategoryId != null" >
+        lv2_category_id,
+      </if>
+      <if test="lv2CategoryNo != null" >
+        lv2_category_no,
+      </if>
+      <if test="categoryId != null" >
+        category_id,
+      </if>
+      <if test="categoryNo != null" >
+        category_no,
+      </if>
+      <if test="lv1CategorySpId != null" >
+        lv1_category_sp_id,
+      </if>
+      <if test="lv1CategorySpNo != null" >
+        lv1_category_sp_no,
+      </if>
+      <if test="lv2CategorySpId != null" >
+        lv2_category_sp_id,
+      </if>
+      <if test="lv2CategorySpNo != null" >
+        lv2_category_sp_no,
+      </if>
+      <if test="categorySpId != null" >
+        category_sp_id,
+      </if>
+      <if test="categorySpNo != null" >
+        category_sp_no,
+      </if>
+      <if test="isvalidate != null" >
+        isvalidate,
+      </if>
+      <if test="approvalStatus != null" >
+        approval_status,
+      </if>
+      <if test="channel != null" >
+        channel,
+      </if>
+      <if test="brandName != null" >
+        brand_name,
+      </if>
+      <if test="brandId != null" >
+        brand_id,
+      </if>
+      <if test="unitId != null" >
+        unit_id,
+      </if>
+      <if test="minUint != null" >
+        min_uint,
+      </if>
+      <if test="productPic != null" >
+        product_pic,
+      </if>
+      <if test="ean13Code != null" >
+        ean13_code,
+      </if>
+      <if test="mnemonicCode != null" >
+        mnemonic_code,
+      </if>
+      <if test="invoiceType != null" >
+        invoice_type,
+      </if>
+      <if test="recentEnquiry != null" >
+        recent_enquiry,
+      </if>
+      <if test="refrencePrice != null" >
+        refrence_price,
+      </if>
+      <if test="txtCode != null" >
+        txt_code,
+      </if>
+      <if test="rule != null" >
+        rule,
+      </if>
+      <if test="size != null" >
+        size,
+      </if>
+      <if test="createUserId != null" >
+        create_user_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="editUserId != null" >
+        edit_user_id,
+      </if>
+      <if test="editTime != null" >
+        edit_time,
+      </if>
+      <if test="udf1 != null" >
+        udf1,
+      </if>
+      <if test="udf2 != null" >
+        udf2,
+      </if>
+      <if test="udf3 != null" >
+        udf3,
+      </if>
+      <if test="udf4 != null" >
+        udf4,
+      </if>
+      <if test="udf5 != null" >
+        udf5,
+      </if>
+      <if test="udf6 != null" >
+        udf6,
+      </if>
+      <if test="udf7 != null" >
+        udf7,
+      </if>
+      <if test="udf8 != null" >
+        udf8,
+      </if>
+      <if test="udf9 != null" >
+        udf9,
+      </if>
+      <if test="udf10 != null" >
+        udf10,
+      </if>
+      <if test="suf1 != null" >
+        suf1,
+      </if>
+      <if test="suf2 != null" >
+        suf2,
+      </if>
+      <if test="suf3 != null" >
+        suf3,
+      </if>
+      <if test="suf4 != null" >
+        suf4,
+      </if>
+      <if test="suf5 != null" >
+        suf5,
+      </if>
+      <if test="suf6 != null" >
+        suf6,
+      </if>
+      <if test="suf7 != null" >
+        suf7,
+      </if>
+      <if test="suf8 != null" >
+        suf8,
+      </if>
+      <if test="suf9 != null" >
+        suf9,
+      </if>
+      <if test="suf10 != null" >
+        suf10,
+      </if>
+      <if test="requestId != null" >
+        request_id,
+      </if>
+      <if test="categoryIdOld != null" >
+        category_id_old,
+      </if>
+      <if test="createUserIdOld != null" >
+        create_user_id_old,
+      </if>
+      <if test="editUserIdOld != null" >
+        edit_user_id_old,
+      </if>
+      <if test="approvalStatusOld != null" >
+        approval_status_old,
+      </if>
+      <if test="brandIdOld != null" >
+        brand_id_old,
+      </if>
+      <if test="minUintOld != null" >
+        min_uint_old,
+      </if>
+      <if test="stock != null" >
+        stock,
+      </if>
+      <if test="weight != null" >
+        weight,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="productNo != null" >
+        #{productNo,jdbcType=VARCHAR},
+      </if>
+      <if test="stdProductNo != null" >
+        #{stdProductNo,jdbcType=VARCHAR},
+      </if>
+      <if test="productName != null" >
+        #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="productPrice != null" >
+        #{productPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="lv1CategoryId != null" >
+        #{lv1CategoryId,jdbcType=INTEGER},
+      </if>
+      <if test="lv1CategoryNo != null" >
+        #{lv1CategoryNo,jdbcType=VARCHAR},
+      </if>
+      <if test="lv2CategoryId != null" >
+        #{lv2CategoryId,jdbcType=INTEGER},
+      </if>
+      <if test="lv2CategoryNo != null" >
+        #{lv2CategoryNo,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryId != null" >
+        #{categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="categoryNo != null" >
+        #{categoryNo,jdbcType=VARCHAR},
+      </if>
+      <if test="lv1CategorySpId != null" >
+        #{lv1CategorySpId,jdbcType=INTEGER},
+      </if>
+      <if test="lv1CategorySpNo != null" >
+        #{lv1CategorySpNo,jdbcType=VARCHAR},
+      </if>
+      <if test="lv2CategorySpId != null" >
+        #{lv2CategorySpId,jdbcType=INTEGER},
+      </if>
+      <if test="lv2CategorySpNo != null" >
+        #{lv2CategorySpNo,jdbcType=VARCHAR},
+      </if>
+      <if test="categorySpId != null" >
+        #{categorySpId,jdbcType=INTEGER},
+      </if>
+      <if test="categorySpNo != null" >
+        #{categorySpNo,jdbcType=VARCHAR},
+      </if>
+      <if test="isvalidate != null" >
+        #{isvalidate,jdbcType=INTEGER},
+      </if>
+      <if test="approvalStatus != null" >
+        #{approvalStatus,jdbcType=INTEGER},
+      </if>
+      <if test="channel != null" >
+        #{channel,jdbcType=INTEGER},
+      </if>
+      <if test="brandName != null" >
+        #{brandName,jdbcType=VARCHAR},
+      </if>
+      <if test="brandId != null" >
+        #{brandId,jdbcType=INTEGER},
+      </if>
+      <if test="unitId != null" >
+        #{unitId,jdbcType=INTEGER},
+      </if>
+      <if test="minUint != null" >
+        #{minUint,jdbcType=VARCHAR},
+      </if>
+      <if test="productPic != null" >
+        #{productPic,jdbcType=VARCHAR},
+      </if>
+      <if test="ean13Code != null" >
+        #{ean13Code,jdbcType=VARCHAR},
+      </if>
+      <if test="mnemonicCode != null" >
+        #{mnemonicCode,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceType != null" >
+        #{invoiceType,jdbcType=VARCHAR},
+      </if>
+      <if test="recentEnquiry != null" >
+        #{recentEnquiry,jdbcType=DECIMAL},
+      </if>
+      <if test="refrencePrice != null" >
+        #{refrencePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="txtCode != null" >
+        #{txtCode,jdbcType=VARCHAR},
+      </if>
+      <if test="rule != null" >
+        #{rule,jdbcType=VARCHAR},
+      </if>
+      <if test="size != null" >
+        #{size,jdbcType=VARCHAR},
+      </if>
+      <if test="createUserId != null" >
+        #{createUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="editUserId != null" >
+        #{editUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="editTime != null" >
+        #{editTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="udf1 != null" >
+        #{udf1,jdbcType=VARCHAR},
+      </if>
+      <if test="udf2 != null" >
+        #{udf2,jdbcType=VARCHAR},
+      </if>
+      <if test="udf3 != null" >
+        #{udf3,jdbcType=VARCHAR},
+      </if>
+      <if test="udf4 != null" >
+        #{udf4,jdbcType=VARCHAR},
+      </if>
+      <if test="udf5 != null" >
+        #{udf5,jdbcType=VARCHAR},
+      </if>
+      <if test="udf6 != null" >
+        #{udf6,jdbcType=VARCHAR},
+      </if>
+      <if test="udf7 != null" >
+        #{udf7,jdbcType=VARCHAR},
+      </if>
+      <if test="udf8 != null" >
+        #{udf8,jdbcType=VARCHAR},
+      </if>
+      <if test="udf9 != null" >
+        #{udf9,jdbcType=VARCHAR},
+      </if>
+      <if test="udf10 != null" >
+        #{udf10,jdbcType=VARCHAR},
+      </if>
+      <if test="suf1 != null" >
+        #{suf1,jdbcType=VARCHAR},
+      </if>
+      <if test="suf2 != null" >
+        #{suf2,jdbcType=VARCHAR},
+      </if>
+      <if test="suf3 != null" >
+        #{suf3,jdbcType=VARCHAR},
+      </if>
+      <if test="suf4 != null" >
+        #{suf4,jdbcType=VARCHAR},
+      </if>
+      <if test="suf5 != null" >
+        #{suf5,jdbcType=VARCHAR},
+      </if>
+      <if test="suf6 != null" >
+        #{suf6,jdbcType=VARCHAR},
+      </if>
+      <if test="suf7 != null" >
+        #{suf7,jdbcType=VARCHAR},
+      </if>
+      <if test="suf8 != null" >
+        #{suf8,jdbcType=VARCHAR},
+      </if>
+      <if test="suf9 != null" >
+        #{suf9,jdbcType=VARCHAR},
+      </if>
+      <if test="suf10 != null" >
+        #{suf10,jdbcType=VARCHAR},
+      </if>
+      <if test="requestId != null" >
+        #{requestId,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryIdOld != null" >
+        #{categoryIdOld,jdbcType=VARCHAR},
+      </if>
+      <if test="createUserIdOld != null" >
+        #{createUserIdOld,jdbcType=VARCHAR},
+      </if>
+      <if test="editUserIdOld != null" >
+        #{editUserIdOld,jdbcType=VARCHAR},
+      </if>
+      <if test="approvalStatusOld != null" >
+        #{approvalStatusOld,jdbcType=VARCHAR},
+      </if>
+      <if test="brandIdOld != null" >
+        #{brandIdOld,jdbcType=VARCHAR},
+      </if>
+      <if test="minUintOld != null" >
+        #{minUintOld,jdbcType=VARCHAR},
+      </if>
+      <if test="stock != null" >
+        #{stock,jdbcType=INTEGER},
+      </if>
+      <if test="weight != null" >
+        #{weight,jdbcType=DOUBLE},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.csjscm.core.framework.model.SpSkuCore" >
+    update sp_sku_core
+    <set >
+      <if test="stdProductNo != null" >
+        std_product_no = #{stdProductNo,jdbcType=VARCHAR},
+      </if>
+      <if test="productName != null" >
+        product_name = #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="productPrice != null" >
+        product_price = #{productPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="lv1CategoryId != null" >
+        lv1_category_id = #{lv1CategoryId,jdbcType=INTEGER},
+      </if>
+      <if test="lv1CategoryNo != null" >
+        lv1_category_no = #{lv1CategoryNo,jdbcType=VARCHAR},
+      </if>
+      <if test="lv2CategoryId != null" >
+        lv2_category_id = #{lv2CategoryId,jdbcType=INTEGER},
+      </if>
+      <if test="lv2CategoryNo != null" >
+        lv2_category_no = #{lv2CategoryNo,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryId != null" >
+        category_id = #{categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="categoryNo != null" >
+        category_no = #{categoryNo,jdbcType=VARCHAR},
+      </if>
+      <if test="lv1CategorySpId != null" >
+        lv1_category_sp_id = #{lv1CategorySpId,jdbcType=INTEGER},
+      </if>
+      <if test="lv1CategorySpNo != null" >
+        lv1_category_sp_no = #{lv1CategorySpNo,jdbcType=VARCHAR},
+      </if>
+      <if test="lv2CategorySpId != null" >
+        lv2_category_sp_id = #{lv2CategorySpId,jdbcType=INTEGER},
+      </if>
+      <if test="lv2CategorySpNo != null" >
+        lv2_category_sp_no = #{lv2CategorySpNo,jdbcType=VARCHAR},
+      </if>
+      <if test="categorySpId != null" >
+        category_sp_id = #{categorySpId,jdbcType=INTEGER},
+      </if>
+      <if test="categorySpNo != null" >
+        category_sp_no = #{categorySpNo,jdbcType=VARCHAR},
+      </if>
+      <if test="isvalidate != null" >
+        isvalidate = #{isvalidate,jdbcType=INTEGER},
+      </if>
+      <if test="approvalStatus != null" >
+        approval_status = #{approvalStatus,jdbcType=INTEGER},
+      </if>
+      <if test="channel != null" >
+        channel = #{channel,jdbcType=INTEGER},
+      </if>
+      <if test="brandName != null" >
+        brand_name = #{brandName,jdbcType=VARCHAR},
+      </if>
+      <if test="brandId != null" >
+        brand_id = #{brandId,jdbcType=INTEGER},
+      </if>
+      <if test="unitId != null" >
+        unit_id = #{unitId,jdbcType=INTEGER},
+      </if>
+      <if test="minUint != null" >
+        min_uint = #{minUint,jdbcType=VARCHAR},
+      </if>
+      <if test="productPic != null" >
+        product_pic = #{productPic,jdbcType=VARCHAR},
+      </if>
+      <if test="ean13Code != null" >
+        ean13_code = #{ean13Code,jdbcType=VARCHAR},
+      </if>
+      <if test="mnemonicCode != null" >
+        mnemonic_code = #{mnemonicCode,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceType != null" >
+        invoice_type = #{invoiceType,jdbcType=VARCHAR},
+      </if>
+      <if test="recentEnquiry != null" >
+        recent_enquiry = #{recentEnquiry,jdbcType=DECIMAL},
+      </if>
+      <if test="refrencePrice != null" >
+        refrence_price = #{refrencePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="txtCode != null" >
+        txt_code = #{txtCode,jdbcType=VARCHAR},
+      </if>
+      <if test="rule != null" >
+        rule = #{rule,jdbcType=VARCHAR},
+      </if>
+      <if test="size != null" >
+        size = #{size,jdbcType=VARCHAR},
+      </if>
+      <if test="createUserId != null" >
+        create_user_id = #{createUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="editUserId != null" >
+        edit_user_id = #{editUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="editTime != null" >
+        edit_time = #{editTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="udf1 != null" >
+        udf1 = #{udf1,jdbcType=VARCHAR},
+      </if>
+      <if test="udf2 != null" >
+        udf2 = #{udf2,jdbcType=VARCHAR},
+      </if>
+      <if test="udf3 != null" >
+        udf3 = #{udf3,jdbcType=VARCHAR},
+      </if>
+      <if test="udf4 != null" >
+        udf4 = #{udf4,jdbcType=VARCHAR},
+      </if>
+      <if test="udf5 != null" >
+        udf5 = #{udf5,jdbcType=VARCHAR},
+      </if>
+      <if test="udf6 != null" >
+        udf6 = #{udf6,jdbcType=VARCHAR},
+      </if>
+      <if test="udf7 != null" >
+        udf7 = #{udf7,jdbcType=VARCHAR},
+      </if>
+      <if test="udf8 != null" >
+        udf8 = #{udf8,jdbcType=VARCHAR},
+      </if>
+      <if test="udf9 != null" >
+        udf9 = #{udf9,jdbcType=VARCHAR},
+      </if>
+      <if test="udf10 != null" >
+        udf10 = #{udf10,jdbcType=VARCHAR},
+      </if>
+      <if test="suf1 != null" >
+        suf1 = #{suf1,jdbcType=VARCHAR},
+      </if>
+      <if test="suf2 != null" >
+        suf2 = #{suf2,jdbcType=VARCHAR},
+      </if>
+      <if test="suf3 != null" >
+        suf3 = #{suf3,jdbcType=VARCHAR},
+      </if>
+      <if test="suf4 != null" >
+        suf4 = #{suf4,jdbcType=VARCHAR},
+      </if>
+      <if test="suf5 != null" >
+        suf5 = #{suf5,jdbcType=VARCHAR},
+      </if>
+      <if test="suf6 != null" >
+        suf6 = #{suf6,jdbcType=VARCHAR},
+      </if>
+      <if test="suf7 != null" >
+        suf7 = #{suf7,jdbcType=VARCHAR},
+      </if>
+      <if test="suf8 != null" >
+        suf8 = #{suf8,jdbcType=VARCHAR},
+      </if>
+      <if test="suf9 != null" >
+        suf9 = #{suf9,jdbcType=VARCHAR},
+      </if>
+      <if test="suf10 != null" >
+        suf10 = #{suf10,jdbcType=VARCHAR},
+      </if>
+      <if test="requestId != null" >
+        request_id = #{requestId,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryIdOld != null" >
+        category_id_old = #{categoryIdOld,jdbcType=VARCHAR},
+      </if>
+      <if test="createUserIdOld != null" >
+        create_user_id_old = #{createUserIdOld,jdbcType=VARCHAR},
+      </if>
+      <if test="editUserIdOld != null" >
+        edit_user_id_old = #{editUserIdOld,jdbcType=VARCHAR},
+      </if>
+      <if test="approvalStatusOld != null" >
+        approval_status_old = #{approvalStatusOld,jdbcType=VARCHAR},
+      </if>
+      <if test="brandIdOld != null" >
+        brand_id_old = #{brandIdOld,jdbcType=VARCHAR},
+      </if>
+      <if test="minUintOld != null" >
+        min_uint_old = #{minUintOld,jdbcType=VARCHAR},
+      </if>
+      <if test="stock != null" >
+        stock = #{stock,jdbcType=INTEGER},
+      </if>
+      <if test="weight != null" >
+        weight = #{weight,jdbcType=DOUBLE},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where product_no = #{productNo,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.csjscm.core.framework.model.SpSkuCore" >
+    update sp_sku_core
+    set std_product_no = #{stdProductNo,jdbcType=VARCHAR},
+      product_name = #{productName,jdbcType=VARCHAR},
+      product_price = #{productPrice,jdbcType=DECIMAL},
+      lv1_category_id = #{lv1CategoryId,jdbcType=INTEGER},
+      lv1_category_no = #{lv1CategoryNo,jdbcType=VARCHAR},
+      lv2_category_id = #{lv2CategoryId,jdbcType=INTEGER},
+      lv2_category_no = #{lv2CategoryNo,jdbcType=VARCHAR},
+      category_id = #{categoryId,jdbcType=INTEGER},
+      category_no = #{categoryNo,jdbcType=VARCHAR},
+      lv1_category_sp_id = #{lv1CategorySpId,jdbcType=INTEGER},
+      lv1_category_sp_no = #{lv1CategorySpNo,jdbcType=VARCHAR},
+      lv2_category_sp_id = #{lv2CategorySpId,jdbcType=INTEGER},
+      lv2_category_sp_no = #{lv2CategorySpNo,jdbcType=VARCHAR},
+      category_sp_id = #{categorySpId,jdbcType=INTEGER},
+      category_sp_no = #{categorySpNo,jdbcType=VARCHAR},
+      isvalidate = #{isvalidate,jdbcType=INTEGER},
+      approval_status = #{approvalStatus,jdbcType=INTEGER},
+      channel = #{channel,jdbcType=INTEGER},
+      brand_name = #{brandName,jdbcType=VARCHAR},
+      brand_id = #{brandId,jdbcType=INTEGER},
+      unit_id = #{unitId,jdbcType=INTEGER},
+      min_uint = #{minUint,jdbcType=VARCHAR},
+      product_pic = #{productPic,jdbcType=VARCHAR},
+      ean13_code = #{ean13Code,jdbcType=VARCHAR},
+      mnemonic_code = #{mnemonicCode,jdbcType=VARCHAR},
+      invoice_type = #{invoiceType,jdbcType=VARCHAR},
+      recent_enquiry = #{recentEnquiry,jdbcType=DECIMAL},
+      refrence_price = #{refrencePrice,jdbcType=DECIMAL},
+      txt_code = #{txtCode,jdbcType=VARCHAR},
+      rule = #{rule,jdbcType=VARCHAR},
+      size = #{size,jdbcType=VARCHAR},
+      create_user_id = #{createUserId,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      edit_user_id = #{editUserId,jdbcType=VARCHAR},
+      edit_time = #{editTime,jdbcType=TIMESTAMP},
+      udf1 = #{udf1,jdbcType=VARCHAR},
+      udf2 = #{udf2,jdbcType=VARCHAR},
+      udf3 = #{udf3,jdbcType=VARCHAR},
+      udf4 = #{udf4,jdbcType=VARCHAR},
+      udf5 = #{udf5,jdbcType=VARCHAR},
+      udf6 = #{udf6,jdbcType=VARCHAR},
+      udf7 = #{udf7,jdbcType=VARCHAR},
+      udf8 = #{udf8,jdbcType=VARCHAR},
+      udf9 = #{udf9,jdbcType=VARCHAR},
+      udf10 = #{udf10,jdbcType=VARCHAR},
+      suf1 = #{suf1,jdbcType=VARCHAR},
+      suf2 = #{suf2,jdbcType=VARCHAR},
+      suf3 = #{suf3,jdbcType=VARCHAR},
+      suf4 = #{suf4,jdbcType=VARCHAR},
+      suf5 = #{suf5,jdbcType=VARCHAR},
+      suf6 = #{suf6,jdbcType=VARCHAR},
+      suf7 = #{suf7,jdbcType=VARCHAR},
+      suf8 = #{suf8,jdbcType=VARCHAR},
+      suf9 = #{suf9,jdbcType=VARCHAR},
+      suf10 = #{suf10,jdbcType=VARCHAR},
+      request_id = #{requestId,jdbcType=VARCHAR},
+      category_id_old = #{categoryIdOld,jdbcType=VARCHAR},
+      create_user_id_old = #{createUserIdOld,jdbcType=VARCHAR},
+      edit_user_id_old = #{editUserIdOld,jdbcType=VARCHAR},
+      approval_status_old = #{approvalStatusOld,jdbcType=VARCHAR},
+      brand_id_old = #{brandIdOld,jdbcType=VARCHAR},
+      min_uint_old = #{minUintOld,jdbcType=VARCHAR},
+      stock = #{stock,jdbcType=INTEGER},
+      weight = #{weight,jdbcType=DOUBLE},
+      description = #{description,jdbcType=LONGVARCHAR}
+    where product_no = #{productNo,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.csjscm.core.framework.model.SpSkuCore" >
+    update sp_sku_core
+    set std_product_no = #{stdProductNo,jdbcType=VARCHAR},
+      product_name = #{productName,jdbcType=VARCHAR},
+      product_price = #{productPrice,jdbcType=DECIMAL},
+      lv1_category_id = #{lv1CategoryId,jdbcType=INTEGER},
+      lv1_category_no = #{lv1CategoryNo,jdbcType=VARCHAR},
+      lv2_category_id = #{lv2CategoryId,jdbcType=INTEGER},
+      lv2_category_no = #{lv2CategoryNo,jdbcType=VARCHAR},
+      category_id = #{categoryId,jdbcType=INTEGER},
+      category_no = #{categoryNo,jdbcType=VARCHAR},
+      lv1_category_sp_id = #{lv1CategorySpId,jdbcType=INTEGER},
+      lv1_category_sp_no = #{lv1CategorySpNo,jdbcType=VARCHAR},
+      lv2_category_sp_id = #{lv2CategorySpId,jdbcType=INTEGER},
+      lv2_category_sp_no = #{lv2CategorySpNo,jdbcType=VARCHAR},
+      category_sp_id = #{categorySpId,jdbcType=INTEGER},
+      category_sp_no = #{categorySpNo,jdbcType=VARCHAR},
+      isvalidate = #{isvalidate,jdbcType=INTEGER},
+      approval_status = #{approvalStatus,jdbcType=INTEGER},
+      channel = #{channel,jdbcType=INTEGER},
+      brand_name = #{brandName,jdbcType=VARCHAR},
+      brand_id = #{brandId,jdbcType=INTEGER},
+      unit_id = #{unitId,jdbcType=INTEGER},
+      min_uint = #{minUint,jdbcType=VARCHAR},
+      product_pic = #{productPic,jdbcType=VARCHAR},
+      ean13_code = #{ean13Code,jdbcType=VARCHAR},
+      mnemonic_code = #{mnemonicCode,jdbcType=VARCHAR},
+      invoice_type = #{invoiceType,jdbcType=VARCHAR},
+      recent_enquiry = #{recentEnquiry,jdbcType=DECIMAL},
+      refrence_price = #{refrencePrice,jdbcType=DECIMAL},
+      txt_code = #{txtCode,jdbcType=VARCHAR},
+      rule = #{rule,jdbcType=VARCHAR},
+      size = #{size,jdbcType=VARCHAR},
+      create_user_id = #{createUserId,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      edit_user_id = #{editUserId,jdbcType=VARCHAR},
+      edit_time = #{editTime,jdbcType=TIMESTAMP},
+      udf1 = #{udf1,jdbcType=VARCHAR},
+      udf2 = #{udf2,jdbcType=VARCHAR},
+      udf3 = #{udf3,jdbcType=VARCHAR},
+      udf4 = #{udf4,jdbcType=VARCHAR},
+      udf5 = #{udf5,jdbcType=VARCHAR},
+      udf6 = #{udf6,jdbcType=VARCHAR},
+      udf7 = #{udf7,jdbcType=VARCHAR},
+      udf8 = #{udf8,jdbcType=VARCHAR},
+      udf9 = #{udf9,jdbcType=VARCHAR},
+      udf10 = #{udf10,jdbcType=VARCHAR},
+      suf1 = #{suf1,jdbcType=VARCHAR},
+      suf2 = #{suf2,jdbcType=VARCHAR},
+      suf3 = #{suf3,jdbcType=VARCHAR},
+      suf4 = #{suf4,jdbcType=VARCHAR},
+      suf5 = #{suf5,jdbcType=VARCHAR},
+      suf6 = #{suf6,jdbcType=VARCHAR},
+      suf7 = #{suf7,jdbcType=VARCHAR},
+      suf8 = #{suf8,jdbcType=VARCHAR},
+      suf9 = #{suf9,jdbcType=VARCHAR},
+      suf10 = #{suf10,jdbcType=VARCHAR},
+      request_id = #{requestId,jdbcType=VARCHAR},
+      category_id_old = #{categoryIdOld,jdbcType=VARCHAR},
+      create_user_id_old = #{createUserIdOld,jdbcType=VARCHAR},
+      edit_user_id_old = #{editUserIdOld,jdbcType=VARCHAR},
+      approval_status_old = #{approvalStatusOld,jdbcType=VARCHAR},
+      brand_id_old = #{brandIdOld,jdbcType=VARCHAR},
+      min_uint_old = #{minUintOld,jdbcType=VARCHAR},
+      stock = #{stock,jdbcType=INTEGER},
+      weight = #{weight,jdbcType=DOUBLE}
+    where product_no = #{productNo,jdbcType=VARCHAR}
+  </update>
+
+  <select id="selectByProductNoList" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select max(substring(product_no,1,8)) as product_no,category_sp_no from sp_sku_core where category_sp_no is not null group by category_sp_no
+  </select>
+</mapper>

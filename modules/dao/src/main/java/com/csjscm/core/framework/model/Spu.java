@@ -6,7 +6,33 @@ import java.util.Date;
 public class Spu {
     private String stdProductNo;
 
-    private String categoryId;
+    private String productName;
+
+    private Integer lv1CategoryId;
+
+    private String lv1CategoryNo;
+
+    private Integer lv2CategoryId;
+
+    private String lv2CategoryNo;
+
+    private Integer categoryId;
+
+    private String categoryNo;
+
+    private Integer lv1CategorySpId;
+
+    private String lv1CategorySpNo;
+
+    private Integer lv2CategorySpId;
+
+    private String lv2CategorySpNo;
+
+    private Integer categorySpId;
+
+    private String categorySpNo;
+
+    private String mnemonicCode;
 
     private BigDecimal guidancePrice;
 
@@ -15,8 +41,6 @@ public class Spu {
     private String distributionCondition;
 
     private Integer isvalidate;
-
-    private String pageMainPic;
 
     private String brandId;
 
@@ -88,7 +112,19 @@ public class Spu {
 
     private String cdf30;
 
-    private String productInfo;
+    private String ruleSize;
+
+    private String minUnit;
+
+    private Double weight;
+
+    private Double height;
+
+    private Double width;
+
+    private Double length;
+
+    private Date shelfTime;
 
     public String getStdProductNo() {
         return stdProductNo;
@@ -98,12 +134,116 @@ public class Spu {
         this.stdProductNo = stdProductNo;
     }
 
-    public String getCategoryId() {
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public Integer getLv1CategoryId() {
+        return lv1CategoryId;
+    }
+
+    public void setLv1CategoryId(Integer lv1CategoryId) {
+        this.lv1CategoryId = lv1CategoryId;
+    }
+
+    public String getLv1CategoryNo() {
+        return lv1CategoryNo;
+    }
+
+    public void setLv1CategoryNo(String lv1CategoryNo) {
+        this.lv1CategoryNo = lv1CategoryNo;
+    }
+
+    public Integer getLv2CategoryId() {
+        return lv2CategoryId;
+    }
+
+    public void setLv2CategoryId(Integer lv2CategoryId) {
+        this.lv2CategoryId = lv2CategoryId;
+    }
+
+    public String getLv2CategoryNo() {
+        return lv2CategoryNo;
+    }
+
+    public void setLv2CategoryNo(String lv2CategoryNo) {
+        this.lv2CategoryNo = lv2CategoryNo;
+    }
+
+    public Integer getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(String categoryId) {
+    public void setCategoryId(Integer categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public String getCategoryNo() {
+        return categoryNo;
+    }
+
+    public void setCategoryNo(String categoryNo) {
+        this.categoryNo = categoryNo;
+    }
+
+    public Integer getLv1CategorySpId() {
+        return lv1CategorySpId;
+    }
+
+    public void setLv1CategorySpId(Integer lv1CategorySpId) {
+        this.lv1CategorySpId = lv1CategorySpId;
+    }
+
+    public String getLv1CategorySpNo() {
+        return lv1CategorySpNo;
+    }
+
+    public void setLv1CategorySpNo(String lv1CategorySpNo) {
+        this.lv1CategorySpNo = lv1CategorySpNo;
+    }
+
+    public Integer getLv2CategorySpId() {
+        return lv2CategorySpId;
+    }
+
+    public void setLv2CategorySpId(Integer lv2CategorySpId) {
+        this.lv2CategorySpId = lv2CategorySpId;
+    }
+
+    public String getLv2CategorySpNo() {
+        return lv2CategorySpNo;
+    }
+
+    public void setLv2CategorySpNo(String lv2CategorySpNo) {
+        this.lv2CategorySpNo = lv2CategorySpNo;
+    }
+
+    public Integer getCategorySpId() {
+        return categorySpId;
+    }
+
+    public void setCategorySpId(Integer categorySpId) {
+        this.categorySpId = categorySpId;
+    }
+
+    public String getCategorySpNo() {
+        return categorySpNo;
+    }
+
+    public void setCategorySpNo(String categorySpNo) {
+        this.categorySpNo = categorySpNo;
+    }
+
+    public String getMnemonicCode() {
+        return mnemonicCode;
+    }
+
+    public void setMnemonicCode(String mnemonicCode) {
+        this.mnemonicCode = mnemonicCode;
     }
 
     public BigDecimal getGuidancePrice() {
@@ -136,14 +276,6 @@ public class Spu {
 
     public void setIsvalidate(Integer isvalidate) {
         this.isvalidate = isvalidate;
-    }
-
-    public String getPageMainPic() {
-        return pageMainPic;
-    }
-
-    public void setPageMainPic(String pageMainPic) {
-        this.pageMainPic = pageMainPic;
     }
 
     public String getBrandId() {
@@ -426,11 +558,59 @@ public class Spu {
         this.cdf30 = cdf30;
     }
 
-    public String getProductInfo() {
-        return productInfo;
+    public String getRuleSize() {
+        return ruleSize;
     }
 
-    public void setProductInfo(String productInfo) {
-        this.productInfo = productInfo;
+    public void setRuleSize(String ruleSize) {
+        this.ruleSize = ruleSize;
+    }
+
+    public String getMinUnit() {
+        return minUnit;
+    }
+
+    public void setMinUnit(String minUnit) {
+        this.minUnit = minUnit;
+    }
+
+    public Double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(Double weight) {
+        this.weight = weight;
+    }
+
+    public Double getHeight() {
+        return height;
+    }
+
+    public void setHeight(Double height) {
+        this.height = height;
+    }
+
+    public Double getWidth() {
+        return width;
+    }
+
+    public void setWidth(Double width) {
+        this.width = width;
+    }
+
+    public Double getLength() {
+        return length;
+    }
+
+    public void setLength(Double length) {
+        this.length = length;
+    }
+
+    public Date getShelfTime() {
+        return shelfTime;
+    }
+
+    public void setShelfTime(Date shelfTime) {
+        this.shelfTime = shelfTime;
     }
 }
