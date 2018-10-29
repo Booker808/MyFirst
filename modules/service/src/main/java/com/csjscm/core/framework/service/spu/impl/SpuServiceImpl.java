@@ -152,7 +152,7 @@ public class SpuServiceImpl implements SpuService {
     public List<SpuAttrDetailDto> queryAttrList(String spuNo) {
         Spu spu=spuMapper.selectByPrimaryKey(spuNo);
         SpCategory spCategory=spCategoryMapper.findByPrimary(spu.getCategorySpId());
-        List<SpuAttrDetailDto> categoryAttrList= JSONObject.parseArray(spCategory.getUdf1(),SpuAttrDetailDto.class);
+        List<SpuAttrDetailDto> categoryAttrList= JSONObject.parseArray(spCategory.getUdf2(),SpuAttrDetailDto.class);
         List<SpuAttrDetailDto> spuAttrList=JSONObject.parseArray(spu.getCdf1(),SpuAttrDetailDto.class);
         Map<String,SpuAttrDetailDto> map=Maps.newHashMap();
         for(SpuAttrDetailDto caAttr:categoryAttrList){
