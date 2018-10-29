@@ -6,9 +6,12 @@ import com.csjscm.core.framework.dao.SpSkuCoreMapper;
 import com.csjscm.core.framework.dao.SpuMapper;
 import com.csjscm.core.framework.example.SpuExample;
 import com.csjscm.core.framework.model.SpSkuCore;
+import com.csjscm.core.framework.model.Spu;
 import com.csjscm.core.framework.model.SpuEx;
+import com.csjscm.core.framework.model.SpuWithBLOBs;
 import com.csjscm.core.framework.service.spu.SpuService;
-import com.csjscm.core.framework.vo.SpuVo;
+import com.csjscm.core.framework.service.spu.dto.SpSkuCoreDto;
+import com.csjscm.core.framework.service.spu.dto.SpuDto;
 import com.csjscm.sweet.framework.core.mvc.BusinessException;
 import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
 import com.csjscm.sweet.framework.redis.RedisDistributedCounterObject;
@@ -38,14 +41,14 @@ public class SpuServiceImpl implements SpuService {
     private RedisServiceFacade redisServiceFacade;
 
     @Override
-    public QueryResult<SpuVo> querySpuList(int page, int rpp, SpuExample example) {
+    public QueryResult<SpuDto> querySpuList(int page, int rpp, SpuExample example) {
         PageHelper.startPage(page,rpp);
         List<SpuEx> spuExList=spuMapper.selectByExample(example);
         PageInfo<SpuEx> pageInfo=new PageInfo<>(spuExList);
-        QueryResult<SpuVo> result=new QueryResult<>();
-        List<SpuVo> list= Lists.newLinkedList();
+        QueryResult<SpuDto> result=new QueryResult<>();
+        List<SpuDto> list= Lists.newLinkedList();
         for(SpuEx spuEx:pageInfo.getList()){
-            SpuVo vo=new SpuVo();
+            SpuDto vo=new SpuDto();
             BeanutilsCopy.copyProperties(spuEx,vo);
             vo.setStock(spuMapper.selectStockBySpu(vo.getStdProductNo()));
             list.add(vo);
@@ -76,16 +79,69 @@ public class SpuServiceImpl implements SpuService {
     }
 
     @Override
-    public List<SpSkuCore> querySkuListBySpu(String spuNo, int isvalidate) {
+    public List<SpSkuCoreDto> querySkuListBySpu(String spuNo, int isvalidate) {
         Map<String,Object> map=Maps.newHashMap();
         map.put("stdProductNo",spuNo);
         map.put("isvalidate",isvalidate);
-        return spSkuCoreMapper.selectByCondition(map);
+        List<SpSkuCore> spSkuCoreList= spSkuCoreMapper.selectByCondition(map);
+        List<SpSkuCoreDto> result=Lists.newLinkedList();
+        for(SpSkuCore spSkuCore:spSkuCoreList){
+            SpSkuCoreDto vo=new SpSkuCoreDto();
+            BeanutilsCopy.copyProperties(spSkuCore,vo);
+            result.add(vo);
+        }
+        return result;
     }
 
     @Override
     public List<SpSkuCore> selectByProductNoList() {
         return spSkuCoreMapper.selectByProductNoList();
+    }
+
+    @Override
+    public List<Spu> selectBySpuNoList() {
+        return spuMapper.selectBySpuNoList();
+    }
+
+    @Override
+    public SpuDto querySpu(String spuNo) {
+        Spu spu=spuMapper.selectByPrimaryKey(spuNo);
+        SpuDto result=new SpuDto();
+        BeanutilsCopy.copyProperties(spu,result);
+        return result;
+    }
+
+    @Override
+    public String createSpu(SpuDto spuDto) {
+        SpuWithBLOBs spu=new SpuWithBLOBs();
+        BeanutilsCopy.copyProperties(spuDto,spu);
+        spu.setStdProductNo(createSpuNo(spuDto.getCategorySpNo()));
+        spuMapper.insertSelective(spu);
+        return spu.getStdProductNo();
+    }
+
+    @Override
+    public void updateSpu(SpuDto spuDto) {
+        SpuWithBLOBs spu=new SpuWithBLOBs();
+        BeanutilsCopy.copyProperties(spuDto,spu);
+        spuMapper.updateByPrimaryKeyWithBLOBs(spu);
+    }
+
+    @Override
+    public void updateSpSkuList(String spuNo,List<SpSkuCoreDto> skuCoreVoList) {
+        for(SpSkuCoreDto spSkuCoreDto :skuCoreVoList){
+            SpSkuCore spSkuCore=new SpSkuCore();
+            BeanutilsCopy.copyProperties(spSkuCoreDto,spSkuCore);
+            spSkuCore.setStdProductNo(spuNo);
+            if(StringUtils.isEmpty(spSkuCore.getProductNo())){
+                //若不存在，则要生成产品编码
+                spSkuCore.setProductNo(createProductNo(spSkuCore.getCategorySpNo()));
+                spSkuCoreMapper.insertSelective(spSkuCore);
+            }else{
+                //若存在，则更新
+                spSkuCoreMapper.updateByPrimaryKeyWithBLOBs(spSkuCore);
+            }
+        }
     }
 
     private void recreateSpSkuCore(List<String> spuList){
@@ -103,6 +159,11 @@ public class SpuServiceImpl implements SpuService {
             oldSkuCore.setIsvalidate(0);
             spSkuCoreMapper.insertSelective(oldSkuCore);
         }
+    }
+
+    private String createSpuNo(String categorySpNo){
+        Long increase = redisServiceFacade.increase(new RedisDistributedCounterObject(Constant.REDIS_KEY_SP_SPU_NO + categorySpNo), 1);
+        return String.format("%s%s%05d","SP", categorySpNo,increase);
     }
 
     private String createProductNo(String categorySpNo) {

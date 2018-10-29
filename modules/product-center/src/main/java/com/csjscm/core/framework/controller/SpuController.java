@@ -2,9 +2,9 @@ package com.csjscm.core.framework.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.csjscm.core.framework.example.SpuExample;
-import com.csjscm.core.framework.model.SpSkuCore;
 import com.csjscm.core.framework.service.spu.SpuService;
-import com.csjscm.core.framework.vo.SpuVo;
+import com.csjscm.core.framework.service.spu.dto.SpSkuCoreDto;
+import com.csjscm.core.framework.service.spu.dto.SpuDto;
 import com.csjscm.sweet.framework.core.mvc.APIResponse;
 import com.csjscm.sweet.framework.core.mvc.BusinessException;
 import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
@@ -36,15 +36,37 @@ public class SpuController {
 
     })
     @RequestMapping(value = "/spu",method = RequestMethod.GET)
-    public APIResponse<QueryResult<SpuVo>> querySpuList(@RequestParam(required = false,defaultValue = "1")int page,
-                                                        @RequestParam(required = false,defaultValue = "10")int rpp,
-                                                        @ApiIgnore @RequestParam Map<String,String> condition){
+    public APIResponse<QueryResult<SpuDto>> querySpuList(@RequestParam(required = false,defaultValue = "1")int page,
+                                                         @RequestParam(required = false,defaultValue = "10")int rpp,
+                                                         @ApiIgnore @RequestParam Map<String,String> condition){
         SpuExample example=new SpuExample();
         if(condition!=null){
             example= JSON.parseObject(JSON.toJSONString(condition),SpuExample.class);
         }
-        QueryResult<SpuVo> result=spuService.querySpuList(page,rpp,example);
+        QueryResult<SpuDto> result=spuService.querySpuList(page,rpp,example);
         return APIResponse.success(result);
+    }
+
+    @ApiOperation("指定spu商品查询")
+    @RequestMapping(value = "/spu/{spuNo}",method = RequestMethod.GET)
+    public APIResponse<SpuDto> querySpu(@PathVariable String spuNo){
+        SpuDto spuDto =spuService.querySpu(spuNo);
+        return APIResponse.success(spuDto);
+    }
+
+    @ApiOperation("新建Spu,返回新生成的spu编码")
+    @RequestMapping(value = "/spu",method = RequestMethod.POST)
+    public APIResponse<String> createSpu(@RequestBody SpuDto spuDto){
+        String spuNo=spuService.createSpu(spuDto);
+        return APIResponse.success(spuNo);
+    }
+
+    @ApiOperation("更新Spu")
+    @RequestMapping(value = "/spu/{spuNo}",method = RequestMethod.PUT)
+    public APIResponse updateSpu(@PathVariable String spuNo,@RequestBody SpuDto spuDto){
+        spuDto.setStdProductNo(spuNo);
+        spuService.updateSpu(spuDto);
+        return APIResponse.success();
     }
 
     @ApiOperation("spu上下架操作")
@@ -61,8 +83,16 @@ public class SpuController {
 
     @ApiOperation("获取对应spu中对应的sku")
     @RequestMapping(value = "/spu/{spuNo}/sku",method = RequestMethod.GET)
-    public APIResponse<List<SpSkuCore>> querySkuListBySpu(@PathVariable String spuNo){
-        List<SpSkuCore> list=spuService.querySkuListBySpu(spuNo,0);
+    public APIResponse<List<SpSkuCoreDto>> querySkuListBySpu(@PathVariable String spuNo){
+        List<SpSkuCoreDto> list=spuService.querySkuListBySpu(spuNo,0);
         return APIResponse.success(list);
+    }
+
+    @ApiOperation("批量操作Sku，删除的话修改isvalidate值，并带上对应的sku")
+    @RequestMapping(value = "/spu/{spuNo}/sku",method = RequestMethod.POST)
+    public APIResponse updateSkuList(@PathVariable String spuNo,
+                                     @RequestBody List<SpSkuCoreDto> skuCoreVoList){
+        spuService.updateSpSkuList(spuNo,skuCoreVoList);
+        return APIResponse.success();
     }
 }

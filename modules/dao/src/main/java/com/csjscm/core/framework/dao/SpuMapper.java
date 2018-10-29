@@ -28,4 +28,6 @@ public interface SpuMapper {
     int selectStockBySpu(String spuNo);
 
     int updateShelfState(Map<String, Object> map);
+
+    List<Spu> selectBySpuNoList();
 }

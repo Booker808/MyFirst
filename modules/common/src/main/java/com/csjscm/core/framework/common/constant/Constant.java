@@ -14,6 +14,8 @@ public class Constant {
      * redis中最大商城商品编码的key的前缀 后面拼接最小商品分类编码
      */
     public static final String REDIS_KEY_SP_PRODUCT_NO = "sp_category_";
+
+    public static final String REDIS_KEY_SP_SPU_NO="spu_sp_category_";
     /**
      * redis中最大商城商品编码的key的前缀 后面拼接最小商品分类编码
      */

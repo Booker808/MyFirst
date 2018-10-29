@@ -124,6 +124,9 @@
     where std_product_no=#{spuNo,jdbcType=VARCHAR}
     order by create_time DESC
   </select>
+  <select id="selectBySpuNoList" resultMap="BaseResultMap">
+    select max(substring(std_product_no,6)) as std_product_no ,category_sp_no from spu where category_sp_no is not null group by category_sp_no
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from spu
     where std_product_no = #{stdProductNo,jdbcType=VARCHAR}
