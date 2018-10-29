@@ -3,6 +3,7 @@ package com.csjscm.core.framework.configuation;
 
 import com.csjscm.core.framework.model.SkuCore;
 import com.csjscm.core.framework.model.SpSkuCore;
+import com.csjscm.core.framework.model.Spu;
 import com.csjscm.core.framework.service.SkuCoreService;
 import com.csjscm.core.framework.service.spu.SpuService;
 import com.csjscm.sweet.framework.redis.RedisServiceFacade;
@@ -17,6 +18,7 @@ import java.util.List;
 
 import static com.csjscm.core.framework.common.constant.Constant.REDIS_KEY_PRODUCT_NO;
 import static com.csjscm.core.framework.common.constant.Constant.REDIS_KEY_SP_PRODUCT_NO;
+import static com.csjscm.core.framework.common.constant.Constant.REDIS_KEY_SP_SPU_NO;
 
 @WebListener
 @Configuration
@@ -71,6 +73,25 @@ public class ServletContextInitListener implements ServletContextListener {
         }
 
         sce.getServletContext().log("==================商城商品编码—redis初始化成功=============");
+
+        //商城商品SPU编码—redis初始化
+        List<Spu> spuList=spuService.selectBySpuNoList();
+        for(Spu spu:spuList){
+            String categorySpNo=spu.getCategorySpNo();
+            String stdProductNo=spu.getStdProductNo();
+            String redisCategorySpNo=redisServiceFacade.get(REDIS_KEY_SP_SPU_NO+categorySpNo);
+            if(StringUtils.isEmpty(stdProductNo)){
+                redisServiceFacade.set(REDIS_KEY_SP_PRODUCT_NO+categorySpNo,0);
+            }else if (StringUtils.isEmpty(redisCategorySpNo)){
+                redisServiceFacade.set(REDIS_KEY_SP_SPU_NO+categorySpNo,Integer.parseInt(stdProductNo));
+            }else{
+                int pId=Integer.parseInt(stdProductNo);
+                int rId=Integer.parseInt(redisCategorySpNo);
+                redisServiceFacade.set(REDIS_KEY_SP_SPU_NO+categorySpNo,pId>rId?pId:rId);
+            }
+        }
+        sce.getServletContext().log("==================商城商品SPU编码—redis初始化成功=============");
+
     }
 
     @Override
