@@ -168,17 +168,16 @@ public class ProductCustomerServiceImpl implements ProductCustomerService {
                     }
                 }
                 //检验 customerPdName  customerPdSize
-                if(StringUtils.isBlank(customerPdName)  ||StringUtils.isBlank(customerPdSize) || customerPdName.length()>256  ||customerPdSize.length()>256){
+                if(StringUtils.isBlank(customerPdName)   || customerPdName.length()>256 ){
                     failCell = 3;
-                    failMsg = ExcelUtil.getFailMsg(failRow, failCell, "客户物料名称或规格为空或者长度大于256");
+                    failMsg = ExcelUtil.getFailMsg(failRow, failCell, "客户物料名称或长度大于256");
                     failList.add(failMsg);
                     failMsgStr+=failMsg;
                     issuccess=false;
                 }else {
                     row.getCell(2).setCellType(HSSFCell.CELL_TYPE_STRING);
                     customerPdName = ExcelUtil.getCellValue(row.getCell(2));
-                    row.getCell(5).setCellType(HSSFCell.CELL_TYPE_STRING);
-                    customerPdSize = ExcelUtil.getCellValue(row.getCell(5));
+
                 }
                 //校验品牌
                 if (StringUtils.isBlank(brandName) || brandName.length() > 255) {
@@ -203,11 +202,22 @@ public class ProductCustomerServiceImpl implements ProductCustomerService {
                 }
                 //校验规格
                 if (StringUtils.isNotBlank(customerPdRule)) {
+                    row.getCell(4).setCellType(HSSFCell.CELL_TYPE_STRING);
+                    customerPdRule = ExcelUtil.getCellValue(row.getCell(4));
+                    if (customerPdRule.length() > 255) {
+                        failCell = 5;
+                        failMsg = ExcelUtil.getFailMsg(failRow, failCell, "规格长度不能超过256");
+                        failList.add(failMsg);
+                        failMsgStr += failMsg;
+                        issuccess = false;
+                    }
+                }
+                if (StringUtils.isNotBlank(customerPdSize)) {
                     row.getCell(5).setCellType(HSSFCell.CELL_TYPE_STRING);
-                    customerPdRule = ExcelUtil.getCellValue(row.getCell(5));
+                    customerPdSize = ExcelUtil.getCellValue(row.getCell(5));
                     if (customerPdRule.length() > 255) {
                         failCell = 6;
-                        failMsg = ExcelUtil.getFailMsg(failRow, failCell, "规格长度不能超过256");
+                        failMsg = ExcelUtil.getFailMsg(failRow, failCell, "型号长度不能超过256");
                         failList.add(failMsg);
                         failMsgStr += failMsg;
                         issuccess = false;
