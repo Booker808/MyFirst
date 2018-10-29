@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.csjscm.core.framework.example.SpuExample;
 import com.csjscm.core.framework.service.spu.SpuService;
 import com.csjscm.core.framework.service.spu.dto.SpSkuCoreDto;
+import com.csjscm.core.framework.service.spu.dto.SpuAttrDetailDto;
+import com.csjscm.core.framework.service.spu.dto.SpuAttrDto;
 import com.csjscm.core.framework.service.spu.dto.SpuDto;
 import com.csjscm.sweet.framework.core.mvc.APIResponse;
 import com.csjscm.sweet.framework.core.mvc.BusinessException;
@@ -93,6 +95,20 @@ public class SpuController {
     public APIResponse updateSkuList(@PathVariable String spuNo,
                                      @RequestBody List<SpSkuCoreDto> skuCoreVoList){
         spuService.updateSpSkuList(spuNo,skuCoreVoList);
+        return APIResponse.success();
+    }
+
+    @ApiOperation("获取扩展属性")
+    @RequestMapping(value = "/spu/{spuNo}/attributes",method = RequestMethod.GET)
+    public APIResponse<List<SpuAttrDetailDto>> querySpuAttrList(@PathVariable String spuNo){
+        List<SpuAttrDetailDto> result=spuService.queryAttrList(spuNo);
+        return APIResponse.success(result);
+    }
+
+    @ApiOperation("保存spu扩展属性")
+    @RequestMapping(value = "/spu/{spuNo}/attributes",method = RequestMethod.POST)
+    public APIResponse saveSpuAttrList(@PathVariable String spuNo,@RequestBody List<SpuAttrDto> attrList){
+        spuService.saveSpuAttrList(spuNo,attrList);
         return APIResponse.success();
     }
 }

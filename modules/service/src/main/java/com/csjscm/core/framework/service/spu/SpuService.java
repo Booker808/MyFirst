@@ -4,6 +4,8 @@ import com.csjscm.core.framework.example.SpuExample;
 import com.csjscm.core.framework.model.SpSkuCore;
 import com.csjscm.core.framework.model.Spu;
 import com.csjscm.core.framework.service.spu.dto.SpSkuCoreDto;
+import com.csjscm.core.framework.service.spu.dto.SpuAttrDetailDto;
+import com.csjscm.core.framework.service.spu.dto.SpuAttrDto;
 import com.csjscm.core.framework.service.spu.dto.SpuDto;
 import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
 
@@ -51,4 +53,20 @@ public interface SpuService {
      * @param skuCoreVoList
      */
     void updateSpSkuList(String spuNo,List<SpSkuCoreDto> skuCoreVoList);
+
+    /**
+     * 查询指定spuNo的扩展属性
+     *
+     * @param spuNo
+     * @return
+     */
+    List<SpuAttrDetailDto> queryAttrList(String spuNo);
+
+    /**
+     * 保存Spu扩展属性
+     *
+     * @param spuNo
+     * @param attrList
+     */
+    void saveSpuAttrList(String spuNo, List<SpuAttrDto> attrList);
 }

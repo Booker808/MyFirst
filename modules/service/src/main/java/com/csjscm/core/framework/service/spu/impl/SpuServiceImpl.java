@@ -1,16 +1,17 @@
 package com.csjscm.core.framework.service.spu.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.csjscm.core.framework.common.constant.Constant;
 import com.csjscm.core.framework.common.util.BeanutilsCopy;
+import com.csjscm.core.framework.dao.SpCategoryMapper;
 import com.csjscm.core.framework.dao.SpSkuCoreMapper;
 import com.csjscm.core.framework.dao.SpuMapper;
 import com.csjscm.core.framework.example.SpuExample;
-import com.csjscm.core.framework.model.SpSkuCore;
-import com.csjscm.core.framework.model.Spu;
-import com.csjscm.core.framework.model.SpuEx;
-import com.csjscm.core.framework.model.SpuWithBLOBs;
+import com.csjscm.core.framework.model.*;
 import com.csjscm.core.framework.service.spu.SpuService;
 import com.csjscm.core.framework.service.spu.dto.SpSkuCoreDto;
+import com.csjscm.core.framework.service.spu.dto.SpuAttrDetailDto;
+import com.csjscm.core.framework.service.spu.dto.SpuAttrDto;
 import com.csjscm.core.framework.service.spu.dto.SpuDto;
 import com.csjscm.sweet.framework.core.mvc.BusinessException;
 import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
@@ -39,6 +40,8 @@ public class SpuServiceImpl implements SpuService {
     private SpSkuCoreMapper spSkuCoreMapper;
     @Autowired
     private RedisServiceFacade redisServiceFacade;
+    @Autowired
+    private SpCategoryMapper spCategoryMapper;
 
     @Override
     public QueryResult<SpuDto> querySpuList(int page, int rpp, SpuExample example) {
@@ -128,6 +131,7 @@ public class SpuServiceImpl implements SpuService {
     }
 
     @Override
+    @Transactional
     public void updateSpSkuList(String spuNo,List<SpSkuCoreDto> skuCoreVoList) {
         for(SpSkuCoreDto spSkuCoreDto :skuCoreVoList){
             SpSkuCore spSkuCore=new SpSkuCore();
@@ -142,6 +146,35 @@ public class SpuServiceImpl implements SpuService {
                 spSkuCoreMapper.updateByPrimaryKeyWithBLOBs(spSkuCore);
             }
         }
+    }
+
+    @Override
+    public List<SpuAttrDetailDto> queryAttrList(String spuNo) {
+        Spu spu=spuMapper.selectByPrimaryKey(spuNo);
+        SpCategory spCategory=spCategoryMapper.findByPrimary(spu.getCategorySpId());
+        List<SpuAttrDetailDto> categoryAttrList= JSONObject.parseArray(spCategory.getUdf1(),SpuAttrDetailDto.class);
+        List<SpuAttrDetailDto> spuAttrList=JSONObject.parseArray(spu.getCdf1(),SpuAttrDetailDto.class);
+        Map<String,SpuAttrDetailDto> map=Maps.newHashMap();
+        for(SpuAttrDetailDto caAttr:categoryAttrList){
+            map.put(caAttr.getName(),caAttr);
+        }
+        for(SpuAttrDetailDto spuAttr:spuAttrList){
+            if(map.containsKey(spuAttr.getName())){
+                map.get(spuAttr.getName()).setCurrentValue(spuAttr.getCurrentValue());
+            }else{
+                map.put(spuAttr.getName(),spuAttr);
+            }
+        }
+        return Lists.newArrayList(map.values());
+    }
+
+    @Override
+    @Transactional
+    public void saveSpuAttrList(String spuNo, List<SpuAttrDto> attrList) {
+        SpuWithBLOBs spu=new SpuWithBLOBs();
+        spu.setStdProductNo(spuNo);
+        spu.setCdf1(JSONObject.toJSONString(attrList));
+        spuMapper.updateByPrimaryKeySelective(spu);
     }
 
     private void recreateSpSkuCore(List<String> spuList){
