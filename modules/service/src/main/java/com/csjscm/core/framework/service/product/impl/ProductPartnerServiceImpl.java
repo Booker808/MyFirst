@@ -211,15 +211,16 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
                     }
                 }
                 //校验supplyPdSize
-                if (StringUtils.isBlank(supplyPdSize) || supplyPdSize.length() > 255) {
-                    failCell = 6;
-                    failMsg = ExcelUtil.getFailMsg(failRow, failCell, "型号长度不能为空或超过256");
-                    failList.add(failMsg);
-                    failMsgStr += failMsg;
-                    issuccess = false;
-                } else {
+                if (StringUtils.isNotBlank(supplyPdSize)) {
                     row.getCell(5).setCellType(HSSFCell.CELL_TYPE_STRING);
                     supplyPdSize = ExcelUtil.getCellValue(row.getCell(5));
+                    if(supplyPdSize.length()>255){
+                        failCell = 6;
+                        failMsg = ExcelUtil.getFailMsg(failRow, failCell, "型号长度不能为空或超过256");
+                        failList.add(failMsg);
+                        failMsgStr += failMsg;
+                        issuccess = false;
+                    }
                 }
 
                 if (StringUtils.isBlank(invUnit) || invUnit.length() > 256) {
