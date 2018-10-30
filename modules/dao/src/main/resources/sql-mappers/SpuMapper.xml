@@ -94,6 +94,9 @@
   <sql id="Blob_Column_List" >
     page_main_pic, product_info
   </sql>
+  <sql id="Spu_Blob_Column_List" >
+    spu.page_main_pic, spu.product_info
+  </sql>
   <sql id="searchByExample">
     <where>
       <if test="productName != null and productName != ''">
@@ -115,6 +118,8 @@
   <select id="selectByExample" resultMap="ExResult" parameterType="map">
     select
       <include refid="Spu_Column_List"/>
+    ,
+      <include refid="Spu_Blob_Column_List"/>
     from spu
     <include refid="searchByExample"/>
   </select>
@@ -123,6 +128,9 @@
     from sp_sku_core
     where std_product_no=#{spuNo,jdbcType=VARCHAR}
     order by create_time DESC
+  </select>
+  <select id="selectBySpuNoList" resultMap="BaseResultMap">
+    select max(substring(std_product_no,6)) as std_product_no ,category_sp_no from spu where category_sp_no is not null group by category_sp_no
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from spu
