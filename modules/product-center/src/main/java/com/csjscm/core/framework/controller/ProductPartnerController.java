@@ -117,7 +117,7 @@ public class ProductPartnerController {
      * @param skuPartnerAddModel
      * @return
      */
-    @ApiOperation("新增客户商品")
+    @ApiOperation("新增供应商商品")
     @RequestMapping(value = "/product",method = RequestMethod.POST)
     public APIResponse saveSkuPartner(@RequestBody @Valid SkuPartnerAddModel skuPartnerAddModel){
         productPartnerService.save(skuPartnerAddModel);
