@@ -1,6 +1,8 @@
 package com.csjscm.core.framework.model;
 
 
+import com.csjscm.core.framework.annotation.Creator;
+import com.csjscm.core.framework.annotation.Editor;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -63,6 +65,7 @@ import java.util.Date;
     /**
     * 
     */
+    @Creator
     private String createUserId;
 
     /**
@@ -73,6 +76,7 @@ import java.util.Date;
     /**
     * 
     */
+    @Editor
     private String editUserId;
 
     /**

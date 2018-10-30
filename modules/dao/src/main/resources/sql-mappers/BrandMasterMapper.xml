@@ -78,6 +78,9 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.csjscm.core.framework.model.BrandMaster">
+    <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+      SELECT LAST_INSERT_ID() AS id
+    </selectKey>
     insert into brand_master (id, brand_id, brand_name, 
       brand_pic, brand_info, brand_ca, 
       create_user_id, create_time, edit_user_id, 
@@ -88,6 +91,9 @@
       #{editTime,jdbcType=TIMESTAMP}, #{requestId,jdbcType=VARCHAR},#{categoryId,jdbcType=INTEGER},#{isAuthorize,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.csjscm.core.framework.model.BrandMaster">
+    <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+      SELECT LAST_INSERT_ID() AS id
+    </selectKey>
     insert into brand_master
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">

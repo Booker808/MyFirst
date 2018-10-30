@@ -1,6 +1,7 @@
 package com.csjscm.core.framework.service;
 
 import com.csjscm.core.framework.model.BrandMaster;
+import com.csjscm.core.framework.vo.BrandMasterModel;
 import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
 
 import java.util.List;
@@ -44,14 +45,14 @@ public interface BrandMasterService {
      * @param record
      * @return
      */
-    int insertSelective(BrandMaster record);
+    int insertSelective(BrandMasterModel record);
 
     /**
      * 更新指定品牌
-     * @param record
+     * @param
      * @return
      */
-    int updateByPrimaryKeySelective(BrandMaster record);
+    int updateByPrimaryKeySelective(BrandMasterModel brand);
 
     /**
      * 删除指定品牌列表
@@ -78,4 +79,5 @@ public interface BrandMasterService {
      *
      */
     List<BrandMaster> listSelective(Map<String,Object> map);
+
 }

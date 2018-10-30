@@ -1,11 +1,16 @@
 package com.csjscm.core.framework.service.product.impl;
 
 import com.csjscm.core.framework.dao.BrandCategoryMapper;
+import com.csjscm.core.framework.model.BrandCategory;
 import com.csjscm.core.framework.service.product.BrandCategoryService;
+import com.csjscm.core.framework.vo.BrandCategoryVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -25,5 +30,18 @@ public class BrandCategoryServiceImpl implements BrandCategoryService {
     private BrandCategoryMapper brandCategoryMapper;
 
 
-	
+    @Override
+    public List<BrandCategory> listSelective(Map<String, Object> map) {
+        return brandCategoryMapper.listSelective(map);
+    }
+
+    @Override
+    public List<String> findCategoryNameList(Map<String, Object> map) {
+        return brandCategoryMapper.findCategoryNameList(map);
+    }
+
+    @Override
+    public List<BrandCategoryVo> findBrandCategoryVo(Integer brandId) {
+        return brandCategoryMapper.findBrandCategoryVo(brandId);
+    }
 }

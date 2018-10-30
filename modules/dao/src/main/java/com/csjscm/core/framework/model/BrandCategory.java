@@ -1,5 +1,8 @@
 package com.csjscm.core.framework.model;
 
+import org.hibernate.validator.constraints.Range;
+
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -28,21 +31,26 @@ import java.util.Date;
     /**
     * 一级分类id
     */
+    @NotNull(message = "lv1CategoryId不能为空")
     private Integer lv1CategoryId;
 
     /**
     * 二级分类id
     */
+    @NotNull(message = "lv2CategoryId不能为空")
     private Integer lv2CategoryId;
 
     /**
     * 三级分类id
     */
+    @NotNull(message = "lv3CategoryId不能为空")
     private Integer lv3CategoryId;
 
     /**
     * 1平台 2商城
     */
+    @NotNull(message = "type不能为空")
+    @Range(min = 1, max = 2, message = "type只能输入1或者2")
     private Integer type;
 
 

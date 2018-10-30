@@ -2,6 +2,8 @@ package com.csjscm.core.framework.dao;
 
 
 import com.csjscm.core.framework.model.BrandCategory;
+import com.csjscm.core.framework.vo.BrandCategoryVo;
+
 import java.util.List;
 import java.util.Map;
 
@@ -16,6 +18,8 @@ import java.util.Map;
 
 public interface BrandCategoryMapper{
     int deleteByPrimaryKey(Integer id);
+
+    int deleteByBrandId(Integer brandId);
 
     int insert(BrandCategory t);
 
@@ -42,5 +46,8 @@ public interface BrandCategoryMapper{
       */
      int findCount(Map<String, Object> map);
 
+     List<String> findCategoryNameList(Map<String, Object> map);
+
+     List<BrandCategoryVo> findBrandCategoryVo(Integer brandId);
 
 }

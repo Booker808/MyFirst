@@ -11,7 +11,9 @@
         <result column="lv3_category_id" property="lv3CategoryId" jdbcType="INTEGER" />
         <result column="type" property="type" jdbcType="INTEGER" />
     </resultMap>
-    
+     <resultMap id="ModelResultMap" type="com.csjscm.core.framework.vo.BrandCategoryVo" extends="BaseResultMap">
+         <result column="class_name" property="className" jdbcType="VARCHAR" />
+     </resultMap>
     <!--基本的sql查询字段 公共引用...-->
     <sql id="Base_Column_List">
         id,brand_id,lv1_category_id,lv2_category_id,lv3_category_id,type 
@@ -46,10 +48,16 @@
     </delete>
     
     <insert id="insert" parameterType="com.csjscm.core.framework.model.BrandCategory">
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
         insert into brand_category(brand_id,lv1_category_id,lv2_category_id,lv3_category_id,type)values(#{brandId,jdbcType=INTEGER},#{lv1CategoryId,jdbcType=INTEGER},#{lv2CategoryId,jdbcType=INTEGER},#{lv3CategoryId,jdbcType=INTEGER},#{type,jdbcType=INTEGER})
     </insert>
 
     <insert id="insertSelective" parameterType="com.csjscm.core.framework.model.BrandCategory">
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
         insert into brand_category
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null ">
@@ -151,5 +159,18 @@
         from brand_category
         <include refid="searchBy"/>
     </select>
+    <select id="findCategoryNameList" resultType="java.lang.String" parameterType="java.util.HashMap">
+     SELECT class_name from category WHERE id in (SELECT lv3_category_id from brand_category WHERE brand_id=#{brandId} AND type=#{type})
+    </select>
 
+    <select id="findBrandCategoryVo" resultMap="ModelResultMap" parameterType="java.lang.Integer">
+SELECT a.*,if(ISNULL(b.class_name),c.class_name,b.class_name)  class_name  from brand_category a
+LEFT JOIN category b on a.lv3_category_id =b.id
+LEFT JOIN sp_category c on a.lv3_category_id =c.id
+WHERE a.brand_id=#{brandId}
+    </select>
+    <delete id="deleteByBrandId" parameterType="java.lang.Integer">
+        delete from  brand_category
+        where brand_id =   #{brandId,jdbcType=INTEGER}
+    </delete>
 </mapper>

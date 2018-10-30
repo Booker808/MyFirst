@@ -420,9 +420,11 @@ public class ProductCustomerServiceImpl implements ProductCustomerService {
     @Override
     @Transactional
     public void save(SkuCustomerVo skuCustomerVo) {
+        String productNo="";
         SkuCustomer skuCustomer=new SkuCustomer();
         BeanutilsCopy.copyProperties(skuCustomerVo,skuCustomer);
         skuCustomer.setCreateTime(new Date());
+
         Map<String, Object> customermap = new HashMap<>();
         customermap.put("customerNo",skuCustomer.getCustomerNo());
         customermap.put("customerPdName",skuCustomer.getCustomerPdName());
@@ -435,35 +437,38 @@ public class ProductCustomerServiceImpl implements ProductCustomerService {
         if(count>0){
             throw  new  BussinessException("客户商品已存在");
         }
-        Map<String, Object> productNomap = new HashMap<>();
-        productNomap.put("brandName", skuCustomer.getBrandName());
-        productNomap.put("minUint", skuCustomer.getMinUint());
-      //  productNomap.put("sizes", skuCustomer.getCustomerPdSize());
-        productNomap.put("rule",skuCustomer.getCustomerPdRule());
-        productNomap.put("productName", skuCustomer.getCustomerPdName());
-        SkuCore skuCore = skuCoreMapper.findSelective(productNomap);
-        String productNo="";
-        if(skuCore==null){
-             skuCore = new SkuCore();
-            BeanutilsCopy.copyProperties(skuCustomerVo,skuCore);
-            // 获取商品编码
-            Long increase = redisServiceFacade.increase(new RedisDistributedCounterObject(Constant.REDIS_KEY_PRODUCT_NO + skuCore.getCategoryNo()), 1);
-            String increment = increase.toString();
-            String str = "";
-            for (int j = 0; j < 5 - increment.length(); j++) {
-                str += "0";
+        if(StringUtils.isBlank(skuCustomerVo.getProductNo())){
+            Map<String, Object> productNomap = new HashMap<>();
+            productNomap.put("brandName", skuCustomer.getBrandName());
+            productNomap.put("minUint", skuCustomer.getMinUint());
+            //  productNomap.put("sizes", skuCustomer.getCustomerPdSize());
+            productNomap.put("rule",skuCustomer.getCustomerPdRule());
+            productNomap.put("productName", skuCustomer.getCustomerPdName());
+            SkuCore skuCore = skuCoreMapper.findSelective(productNomap);
+            if(skuCore==null){
+                skuCore = new SkuCore();
+                BeanutilsCopy.copyProperties(skuCustomerVo,skuCore);
+                // 获取商品编码
+                Long increase = redisServiceFacade.increase(new RedisDistributedCounterObject(Constant.REDIS_KEY_PRODUCT_NO + skuCore.getCategoryNo()), 1);
+                String increment = increase.toString();
+                String str = "";
+                for (int j = 0; j < 5 - increment.length(); j++) {
+                    str += "0";
+                }
+                str += increment;
+                productNo = skuCore.getCategoryNo() + str;
+                skuCore.setCreateTime(new Date());
+                skuCore.setChannel(SkuCoreChannelEnum.手动新增.getState());
+                skuCore.setProductNo(productNo);
+                skuCore.setRule(skuCustomer.getCustomerPdRule());
+                skuCore.setSize(skuCustomer.getCustomerPdSize());
+                skuCore.setProductName(skuCustomer.getCustomerPdName());
+                skuCoreMapper.insertSelective(skuCore);
+            }else {
+                productNo=skuCore.getProductNo();
             }
-            str += increment;
-            productNo = skuCore.getCategoryNo() + str;
-            skuCore.setCreateTime(new Date());
-            skuCore.setChannel(SkuCoreChannelEnum.手动新增.getState());
-            skuCore.setProductNo(productNo);
-            skuCore.setRule(skuCustomer.getCustomerPdRule());
-            skuCore.setSize(skuCustomer.getCustomerPdSize());
-            skuCore.setProductName(skuCustomer.getCustomerPdName());
-            skuCoreMapper.insertSelective(skuCore);
-        }else {
-            productNo=skuCore.getProductNo();
+        }else{
+            productNo=skuCustomerVo.getProductNo();
         }
         if(StringUtils.isBlank(skuCustomer.getCustomerPdNo())){
             skuCustomer.setCustomerPdNo(productNo);

@@ -3,13 +3,16 @@ package com.csjscm.core.framework.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.csjscm.core.framework.common.constant.Constant;
+import com.csjscm.core.framework.common.util.BeanValidator;
+import com.csjscm.core.framework.common.util.BeanutilsCopy;
 import com.csjscm.core.framework.common.util.BussinessException;
-import com.csjscm.core.framework.dao.BrandMasterMapper;
-import com.csjscm.core.framework.dao.CategoryMapper;
-import com.csjscm.core.framework.dao.SkuCoreMapper;
+import com.csjscm.core.framework.dao.*;
+import com.csjscm.core.framework.model.BrandCategory;
 import com.csjscm.core.framework.model.BrandMaster;
 import com.csjscm.core.framework.model.Category;
+import com.csjscm.core.framework.model.SpCategory;
 import com.csjscm.core.framework.service.BrandMasterService;
+import com.csjscm.core.framework.vo.BrandMasterModel;
 import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
 import com.csjscm.sweet.framework.redis.RedisServiceFacade;
 import com.github.pagehelper.Page;
@@ -17,6 +20,7 @@ import com.github.pagehelper.PageHelper;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -34,6 +38,10 @@ public class BrandMasterServiceImpl implements BrandMasterService {
     private RedisServiceFacade redisServiceFacade;
     @Autowired
     private CategoryMapper categoryMapper;
+    @Autowired
+    private SpCategoryMapper spCategoryMapper;
+    @Autowired
+    private BrandCategoryMapper brandCategoryMapper;
 
     @Override
     public QueryResult<BrandMaster> queryBrandMasterList(Map<String, Object> map, int current, int pageSize) {
@@ -78,54 +86,81 @@ public class BrandMasterServiceImpl implements BrandMasterService {
     }
 
     @Override
-    public int insertSelective(BrandMaster record) {
-        record.setCreateTime(new Date());
+    @Transactional
+    public int insertSelective(BrandMasterModel record) {
+        BrandMaster brandMaster=new BrandMaster();
+        BeanutilsCopy.copyProperties(record,brandMaster);
+        brandMaster.setCreateTime(new Date());
         Map<String, Object> map = new HashMap<>();
-        if (StringUtils.isBlank(record.getBrandName())){
-            throw  new BussinessException("品牌为空");
-        }
-        map.put("brandName", record.getBrandName());
+        map.put("brandName", brandMaster.getBrandName());
         List<BrandMaster> list = brandMasterMapper.selectByBrand(map);
         if (null != list && !list.isEmpty()) {
             throw  new BussinessException("品牌已存在");
         }
-        if(record.getCategoryId()!=null){
-            Category category=categoryMapper.findByPrimary(record.getCategoryId());
-            if(category==null){
-                throw new BussinessException("品牌分类错误");
-            }
-        }
-        int i = brandMasterMapper.insertSelective(record);
+        int i = brandMasterMapper.insertSelective(brandMaster);
+        saveBrandSpCategory(brandMaster.getId(),record.getBrandCategory(),record.getBrandSpCategory());
         reloadBrandList();
         return i;
     }
+    @Transactional
+    public void saveBrandSpCategory(Integer brandId,String brandCategoryStr,String brandSpCategoryStr){
+        String[] brandCategorys = brandCategoryStr.split(",");
+        for(String s:brandCategorys){
+            int id = Integer.parseInt(s);
+            Category byPrimary = categoryMapper.findByPrimary(id);
+            Category byPrimary1 = categoryMapper.findByPrimary(byPrimary.getParentClass());
+            Category byPrimary2 = categoryMapper.findByPrimary(byPrimary1.getParentClass());
+            BrandCategory brandCategory=new BrandCategory();
+            brandCategory.setBrandId(brandId);
+            brandCategory.setLv1CategoryId(byPrimary2.getId());
+            brandCategory.setLv2CategoryId(byPrimary1.getId());
+            brandCategory.setLv3CategoryId(byPrimary.getId());
+            brandCategory.setType(1);
+            brandCategoryMapper.insertSelective(brandCategory);
+        }
+        String[] brandSpCategorys = brandSpCategoryStr.split(",");
+        for(String s:brandSpCategorys){
+            int id = Integer.parseInt(s);
+            SpCategory byPrimary = spCategoryMapper.findByPrimary(id);
+            SpCategory byPrimary1 = spCategoryMapper.findByPrimary(byPrimary.getParentClass());
+            SpCategory byPrimary2 = spCategoryMapper.findByPrimary(byPrimary1.getParentClass());
+            BrandCategory brandCategory=new BrandCategory();
+            brandCategory.setBrandId(brandId);
+            brandCategory.setLv1CategoryId(byPrimary2.getId());
+            brandCategory.setLv2CategoryId(byPrimary1.getId());
+            brandCategory.setLv3CategoryId(byPrimary.getId());
+            brandCategory.setType(2);
+            brandCategoryMapper.insertSelective(brandCategory);
+        }
+    }
 
     @Override
-    public int updateByPrimaryKeySelective(BrandMaster record) {
-        if(record.getId()==null){
+    @Transactional
+    public int updateByPrimaryKeySelective(BrandMasterModel brand) {
+        if(brand.getId()==null){
             throw  new BussinessException("id不能为空");
         }
+        BrandMaster brandMaster=new BrandMaster();
+        BeanutilsCopy.copyProperties(brand,brandMaster);
+
         Map<String, Object> response = new HashMap<>();
-        response.put("brandName", record.getBrandName());
+        response.put("brandName", brand.getBrandName());
         List<BrandMaster> brandMasterList = brandMasterMapper.selectByBrand(response);
         if (brandMasterList.size()>0){
-            BrandMaster brandMaster = brandMasterList.get(0);
-            if(brandMaster.getId().intValue()!=record.getId().intValue()){
+            BrandMaster brandMaster1 = brandMasterList.get(0);
+            if(brandMaster1.getId().intValue()!=brand.getId().intValue()){
                 throw  new BussinessException("修改品牌已存在");
             }
         }
-        if(record.getCategoryId()!=null){
-            Category category=categoryMapper.findByPrimary(record.getCategoryId());
-            if(category==null){
-                throw new BussinessException("品牌分类错误");
-            }
-        }
-        int i = brandMasterMapper.updateByPrimaryKeySelective(record);
+        int i = brandMasterMapper.updateByPrimaryKeySelective(brandMaster);
+        brandCategoryMapper.deleteByBrandId(brand.getId());
+        saveBrandSpCategory(brand.getId(),brand.getBrandCategory(),brand.getBrandSpCategory());
         reloadBrandList();
         return i;
     }
 
     @Override
+    @Transactional
     public int deleteByPrimaryKey(Integer id) {
         Map<String,Object> map=new HashMap<>();
         map.put("brandId",id);
@@ -134,6 +169,7 @@ public class BrandMasterServiceImpl implements BrandMasterService {
             throw  new  BussinessException("该品牌已关联商品，无法删除");
         }
         int i = brandMasterMapper.deleteByPrimaryKey(id);
+        brandCategoryMapper.deleteByBrandId(id);
         reloadBrandList();
         return i;
     }

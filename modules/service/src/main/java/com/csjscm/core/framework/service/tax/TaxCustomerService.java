@@ -28,4 +28,9 @@ public interface TaxCustomerService {
      * @return
      */
     List<Map<String,Object>> findEnableTax();
+    /**
+     * 按条件查询list
+     *
+     */
+    List<TaxCustomer> listSelective(Map<String, Object> map);
 }

@@ -4,8 +4,12 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.csjscm.core.framework.common.constant.Constant;
 import com.csjscm.core.framework.common.util.BussinessException;
+import com.csjscm.core.framework.model.BrandCategory;
 import com.csjscm.core.framework.model.BrandMaster;
 import com.csjscm.core.framework.service.BrandMasterService;
+import com.csjscm.core.framework.service.product.BrandCategoryService;
+import com.csjscm.core.framework.vo.BrandCategoryVo;
+import com.csjscm.core.framework.vo.BrandMasterModel;
 import com.csjscm.sweet.framework.core.mvc.APIResponse;
 import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
 import com.csjscm.sweet.framework.redis.RedisServiceFacade;
@@ -19,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import javax.validation.ValidationException;
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
@@ -37,6 +42,8 @@ public class BrandController {
     private StorageService storageService;
     @Autowired
     private RedisServiceFacade redisServiceFacade;
+    @Autowired
+    private BrandCategoryService brandCategoryService;
 
 
     /**
@@ -100,6 +107,22 @@ public class BrandController {
         BrandMaster brandMaster = brandMasterService.selectByPrimaryKey(id);
         return APIResponse.success(brandMaster);
     }
+    /**
+     * 获取品牌、详情编辑界面
+     *
+     * @param id
+     * @return
+     */
+    @ApiOperation("获取品牌、详情编辑界面")
+    @RequestMapping(value = "/brandInfo",method = RequestMethod.GET)
+    public APIResponse brandInfo(@ApiParam(name="id",value="主键id",required=true)  Integer id){
+        List<BrandCategoryVo> brandCategories = brandCategoryService.findBrandCategoryVo(id);
+        BrandMaster brandMaster = brandMasterService.selectByPrimaryKey(id);
+        Map<String,Object> result=new HashMap<>();
+        result.put("brandCategories",brandCategories);
+        result.put("brandMaster",brandMaster);
+        return APIResponse.success(result);
+    }
 
     /**
      * 创建品牌对象
@@ -108,8 +131,8 @@ public class BrandController {
      * @return
      */
     @ApiOperation("创建品牌对象")
-    @RequestMapping(value = "/brandObject",method = RequestMethod.POST)
-    public APIResponse createBrand(@RequestBody @Valid BrandMaster brand){
+    @RequestMapping(value = "/brandCreate",method = RequestMethod.POST)
+    public APIResponse createBrand(@RequestBody @Valid BrandMasterModel brand){
         brandMasterService.insertSelective(brand);
         return APIResponse.success();
     }
@@ -122,7 +145,7 @@ public class BrandController {
      */
     @ApiOperation("更新指定品牌")
     @RequestMapping(value = "brandUpdate",method = RequestMethod.POST)
-    public APIResponse updateBrand(@RequestBody  @Valid  BrandMaster brand){
+    public APIResponse updateBrand(@RequestBody  @Valid  BrandMasterModel brand){
         brandMasterService.updateByPrimaryKeySelective(brand);
         return APIResponse.success();
     }
@@ -184,6 +207,10 @@ public class BrandController {
     }
     @ExceptionHandler({BussinessException.class})
     public APIResponse exceptionHandler(Exception e, HttpServletResponse response) {
+        return APIResponse.fail(e.getMessage());
+    }
+    @ExceptionHandler(ValidationException.class)
+    public APIResponse validationExp(ValidationException e, HttpServletResponse response) {
         return APIResponse.fail(e.getMessage());
     }
 }
