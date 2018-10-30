@@ -94,6 +94,9 @@
   <sql id="Blob_Column_List" >
     page_main_pic, product_info
   </sql>
+  <sql id="Spu_Blob_Column_List" >
+    spu.page_main_pic, spu.product_info
+  </sql>
   <sql id="searchByExample">
     <where>
       <if test="productName != null and productName != ''">
@@ -115,6 +118,8 @@
   <select id="selectByExample" resultMap="ExResult" parameterType="map">
     select
       <include refid="Spu_Column_List"/>
+    ,
+      <include refid="Spu_Blob_Column_List"/>
     from spu
     <include refid="searchByExample"/>
   </select>

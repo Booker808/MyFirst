@@ -159,4 +159,10 @@ public class SpuDto {
 
     @ApiModelProperty("库存")
     private Integer stock;
+
+    @ApiModelProperty("商品主图")
+    private String pageMainPic;
+
+    @ApiModelProperty("商品信息")
+    private String productInfo;
 }
