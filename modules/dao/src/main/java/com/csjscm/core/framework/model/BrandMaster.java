@@ -1,5 +1,7 @@
 package com.csjscm.core.framework.model;
 
+import com.csjscm.core.framework.annotation.Creator;
+import com.csjscm.core.framework.annotation.Editor;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -21,10 +23,12 @@ public class BrandMaster implements Serializable {
 
     private String brandCa;
 
+    @Creator
     private String createUserId;
 
     private Date createTime;
 
+    @Editor
     private String editUserId;
 
     private Date editTime;

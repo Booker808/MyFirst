@@ -1,5 +1,8 @@
 package com.csjscm.core.framework.model;
 
+import com.csjscm.core.framework.annotation.Creator;
+import com.csjscm.core.framework.annotation.Editor;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -44,10 +47,12 @@ public class Spu {
 
     private String brandId;
 
+    @Creator
     private String createUserId;
 
     private Date createTime;
 
+    @Editor
     private String editUserId;
 
     private Date editTime;
