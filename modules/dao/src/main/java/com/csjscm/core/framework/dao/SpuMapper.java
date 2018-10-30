@@ -25,7 +25,7 @@ public interface SpuMapper {
 
     List<SpuEx> selectByExample(SpuExample example);
 
-    int selectStockBySpu(String spuNo);
+    Integer selectStockBySpu(String spuNo);
 
     int updateShelfState(Map<String, Object> map);
 
