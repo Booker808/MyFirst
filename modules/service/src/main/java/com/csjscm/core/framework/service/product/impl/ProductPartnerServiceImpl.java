@@ -108,8 +108,8 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
                 String supplyPdNo = ExcelUtil.getCellValue(row.getCell(1)).trim();
                 String supplyPdName = ExcelUtil.getCellValue(row.getCell(2));
                 String brandName = ExcelUtil.getCellValue(row.getCell(3)).trim();
-                String supplyPdSize = ExcelUtil.getCellValue(row.getCell(4)).trim();
-                String supplyPdRule = ExcelUtil.getCellValue(row.getCell(5)).trim();
+                String supplyPdRule = ExcelUtil.getCellValue(row.getCell(4)).trim();
+                String supplyPdSize = ExcelUtil.getCellValue(row.getCell(5)).trim();
                 String invUnit = ExcelUtil.getCellValue(row.getCell(6)).trim();
                 String refrencePrice = ExcelUtil.getCellValue(row.getCell(7)).trim();
                 String recentEnquiry = ExcelUtil.getCellValue(row.getCell(8)).trim();
