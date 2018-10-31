@@ -103,36 +103,44 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
                 //获取普通字段
                 /*String lv1CategoryNo = ExcelUtil.getCellValue(row.getCell(0));
                 String lv2CategoryNo = ExcelUtil.getCellValue(row.getCell(1));*/
-                String categoryNo = ExcelUtil.getCellValue(row.getCell(0)).trim();
-
+                String productNo = ExcelUtil.getCellValue(row.getCell(0)).trim();
                 String supplyPdNo = ExcelUtil.getCellValue(row.getCell(1)).trim();
-                String supplyPdName = ExcelUtil.getCellValue(row.getCell(2));
-                String brandName = ExcelUtil.getCellValue(row.getCell(3)).trim();
-                String supplyPdRule = ExcelUtil.getCellValue(row.getCell(4)).trim();
-                String supplyPdSize = ExcelUtil.getCellValue(row.getCell(5)).trim();
+                String categoryNo = ExcelUtil.getCellValue(row.getCell(2)).trim();
+
+                String supplyPdName = ExcelUtil.getCellValue(row.getCell(3));
+                String brandName = ExcelUtil.getCellValue(row.getCell(4)).trim();
+                String supplyPdRule = ExcelUtil.getCellValue(row.getCell(5)).trim();
+
+                //  String supplyPdSize = ExcelUtil.getCellValue(row.getCell(5)).trim();
                 String invUnit = ExcelUtil.getCellValue(row.getCell(6)).trim();
                 String refrencePrice = ExcelUtil.getCellValue(row.getCell(7)).trim();
                 String recentEnquiry = ExcelUtil.getCellValue(row.getCell(8)).trim();
                 String ean13Code = ExcelUtil.getCellValue(row.getCell(9)).trim();
                 String mnemonicCode = ExcelUtil.getCellValue(row.getCell(10)).trim();
-                String productNo = ExcelUtil.getCellValue(row.getCell(11)).trim();
+                String free = ExcelUtil.getCellValue(row.getCell(11)).trim();
                 Integer categoryId = 0;
                 Category category = new Category();
+
+                if(StringUtils.isNotBlank(free)){
+                    row.getCell(11).setCellType(HSSFCell.CELL_TYPE_STRING);
+                    free = ExcelUtil.getCellValue(row.getCell(11));
+                }
+
                 if (StringUtils.isBlank(categoryNo) || categoryNo.length() > 255) {
-                    failCell = 1;
+                    failCell = 3;
                     failMsg = ExcelUtil.getFailMsg(failRow, failCell, "分类编码为空或者长度超过255");
                     failList.add(failMsg);
                     failMsgStr += failMsg;
                     issuccess = false;
                 } else {
-                    row.getCell(0).setCellType(HSSFCell.CELL_TYPE_STRING);
-                    categoryNo = ExcelUtil.getCellValue(row.getCell(0));
+                    row.getCell(2).setCellType(HSSFCell.CELL_TYPE_STRING);
+                    categoryNo = ExcelUtil.getCellValue(row.getCell(2));
                     Map<String, Object> categoryNomap = new HashMap<>();
                     categoryNomap.put("levelNum", CategoryLevelEnum.三级.getState());
                     categoryNomap.put("classCode", categoryNo);
                     category = categoryMapper.findSelective(categoryNomap);
                     if (category == null) {
-                        failCell = 1;
+                        failCell = 3;
                         failMsg = ExcelUtil.getFailMsg(failRow, failCell, "分类编码不存在");
                         failList.add(failMsg);
                         failMsgStr += failMsg;
@@ -167,32 +175,32 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
                 }
                 //校验supplyPdName
                 if (StringUtils.isBlank(supplyPdName) || supplyPdName.length() > 256) {
-                    failCell = 3;
+                    failCell = 4;
                     failMsg = ExcelUtil.getFailMsg(failRow, failCell, "商品名称不能为空或者长度大于256");
                     failList.add(failMsg);
                     failMsgStr += failMsg;
                     issuccess = false;
                 } else {
-                    row.getCell(2).setCellType(HSSFCell.CELL_TYPE_STRING);
-                    supplyPdName = ExcelUtil.getCellValue(row.getCell(2));
+                    row.getCell(3).setCellType(HSSFCell.CELL_TYPE_STRING);
+                    supplyPdName = ExcelUtil.getCellValue(row.getCell(3));
                 }
                 //校验品牌
                 if (StringUtils.isBlank(brandName) || brandName.length() > 255) {
-                    failCell = 4;
+                    failCell = 5;
                     failMsg = ExcelUtil.getFailMsg(failRow, failCell, "品牌名称不能为空或者长度大于256");
                     failList.add(failMsg);
                     failMsgStr += failMsg;
                     issuccess = false;
                 } else {
-                    row.getCell(3).setCellType(HSSFCell.CELL_TYPE_STRING);
-                    brandName = ExcelUtil.getCellValue(row.getCell(3));
+                    row.getCell(4).setCellType(HSSFCell.CELL_TYPE_STRING);
+                    brandName = ExcelUtil.getCellValue(row.getCell(4));
                 }
                 Map<String, Object> brandNamemap = new HashMap<>();
                 brandNamemap.put("brandName", brandName);
                // brandNamemap.put("categoryId",categoryId);
                 List<BrandMaster> brandMasters = brandMasterMapper.listSelective(brandNamemap);
                 if (brandMasters.size() == 0) {
-                    failCell = 4;
+                    failCell = 5;
                     failMsg = ExcelUtil.getFailMsg(failRow, failCell, "品牌名称不存在");
                     failList.add(failMsg);
                     failMsgStr += failMsg;
@@ -200,17 +208,17 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
                 }
                 //校验supplyPdRule
                 if (StringUtils.isBlank(supplyPdRule) || supplyPdRule.length()>255) {
-                        failCell = 5;
+                        failCell = 6;
                         failMsg = ExcelUtil.getFailMsg(failRow, failCell, "规格长度不能超过256或为空");
                         failList.add(failMsg);
                         failMsgStr += failMsg;
                         issuccess = false;
                 }else{
-                    row.getCell(4).setCellType(HSSFCell.CELL_TYPE_STRING);
-                    supplyPdRule = ExcelUtil.getCellValue(row.getCell(4));
+                    row.getCell(5).setCellType(HSSFCell.CELL_TYPE_STRING);
+                    supplyPdRule = ExcelUtil.getCellValue(row.getCell(5));
                 }
                 //校验supplyPdSize
-                if (StringUtils.isNotBlank(supplyPdSize)) {
+      /*          if (StringUtils.isNotBlank(supplyPdSize)) {
                     row.getCell(5).setCellType(HSSFCell.CELL_TYPE_STRING);
                     supplyPdSize = ExcelUtil.getCellValue(row.getCell(5));
                     if(supplyPdSize.length()>255){
@@ -220,7 +228,7 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
                         failMsgStr += failMsg;
                         issuccess = false;
                     }
-                }
+                }*/
 
                 if (StringUtils.isBlank(invUnit) || invUnit.length() > 256) {
                     failCell = 7;
@@ -299,11 +307,11 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
 
                 //校验productNo
                 if(StringUtils.isNotBlank(productNo)){
-                    row.getCell(11).setCellType(HSSFCell.CELL_TYPE_STRING);
-                    productNo = ExcelUtil.getCellValue(row.getCell(11));
+                    row.getCell(0).setCellType(HSSFCell.CELL_TYPE_STRING);
+                    productNo = ExcelUtil.getCellValue(row.getCell(0));
                     SkuCore skuCore = skuCoreMapper.selectByPrimaryKey(productNo);
                     if(skuCore==null){
-                        failCell = 12;
+                        failCell = 1;
                         failMsg = ExcelUtil.getFailMsg(failRow, failCell, "川商品编码错误");
                         failList.add(failMsg);
                         failMsgStr += failMsg;
@@ -384,7 +392,7 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
                             skuCore.setChannel(SkuCoreChannelEnum.手动新增.getState());
                             skuCore.setProductNo(productNo);
                             skuCore.setRule(supplyPdRule);
-                            skuCore.setSize(supplyPdSize);
+                           // skuCore.setSize(supplyPdSize);
                             skuCore.setProductName(supplyPdName);
                             skuCore.setBrandName(brandName);
                             skuCore.setBrandId(brandMasters.get(0).getId());
@@ -394,6 +402,7 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
                             skuCore.setMnemonicCode(mnemonicCode);
                             skuCore.setEan13Code(ean13Code);
                             skuCore.setRecentEnquiry(recentEnquiry1);
+                            skuCore.setDescription(free);
                             skuCore.setRefrencePrice(refrencePrice1);
                             skuCoreMapper.insertSelective(skuCore);
                         } else {
@@ -413,7 +422,7 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
                         skuPartner.setSupplyPdNo(supplyPdNo);
                     }
                     skuPartner.setSupplyPdRule(supplyPdRule);
-                    skuPartner.setSupplyPdSize(supplyPdSize);
+                   // skuPartner.setSupplyPdSize(supplyPdSize);
                     skuPartner.setUuid(uuid);
                     skuPartner.setRecentEnquiry(recentEnquiry1);
                     skuPartner.setRefrencePrice(refrencePrice1);
@@ -427,7 +436,7 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
                     skuPartnerVo.setSupplyPdName(supplyPdName);
                     skuPartnerVo.setSupplyPdNo(supplyPdNo);
                     skuPartnerVo.setSupplyPdRule(supplyPdRule);
-                    skuPartnerVo.setSupplyPdSize(supplyPdSize);
+                 //   skuPartnerVo.setSupplyPdSize(supplyPdSize);
                     skuPartnerVo.setCategoryNo(categoryNo);
                     skuPartnerVo.setMinUint(invUnit);
                     skuPartnerVo.setRecentEnquiry(recentEnquiry);
@@ -436,6 +445,7 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
                     //skuPartnerVo.setLv2CategoryNo(lv2CategoryNo);
                     skuPartnerVo.setEan13Code(ean13Code);
                     skuPartnerVo.setMnemonicCode(mnemonicCode);
+                    skuPartnerVo.setFree(free);
                     failSkuPartnerVo.add(skuPartnerVo);
                 }
             } catch (Exception e) {
