@@ -11,10 +11,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
 @Api("权限")
-@Controller
+@RestController
 @RequestMapping("/system/auth")
-@ResponseBody
 public class AuthController {
 
     private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
@@ -27,16 +28,23 @@ public class AuthController {
         }
         return APIResponse.success();
     }
+
     @ApiOperation("获取用户信息")
     @RequestMapping(value = "/getUserInfo", method = RequestMethod.GET)
     public APIResponse getUserInfo() {
-        APIResponse apiResponse=new  APIResponse();
-        apiResponse.setData(AuthUtils.getSessionUser());
-        apiResponse.setMessage(System.getProperty("sweet.framework.scm.domain"));
-        System.out.println();
-        logger.info("当前用户权限集合："+AuthUtils.getSessionAttribute("SWEET-SESSION-USER_PERMISSION"));
-        System.out.println();
-        apiResponse.setCode("success");
-        return apiResponse;
+        Object sessionUser = AuthUtils.getSessionUser();
+        if (sessionUser == null) {
+            return new APIResponse("user-not-login");
+        } else {
+            APIResponse apiResponse = APIResponse.success();
+            apiResponse.setData(sessionUser);
+            apiResponse.setMessage(System.getProperty("sweet.framework.scm.domain"));
+            System.out.println();
+            logger.info("当前用户权限集合：" + AuthUtils.getSessionAttribute("SWEET-SESSION-USER_PERMISSION"));
+            System.out.println();
+            return apiResponse;
+        }
+
+
     }
 }
