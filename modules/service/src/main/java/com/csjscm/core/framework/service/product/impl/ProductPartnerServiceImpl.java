@@ -507,7 +507,7 @@ public class ProductPartnerServiceImpl implements ProductPartnerService {
                 throw new BussinessException("该商品已存在");
             }
             productNomap.clear();
-            productNomap.put("productName", skuPartnerAddModel.getSupplyNo());
+            productNomap.put("productName", skuPartnerAddModel.getSupplyPdName());
             productNomap.put("brandName", skuPartnerAddModel.getBrandName());
             productNomap.put("rule", skuPartnerAddModel.getSupplyPdRule());
             productNomap.put("minUint", skuPartnerAddModel.getMinUint());
