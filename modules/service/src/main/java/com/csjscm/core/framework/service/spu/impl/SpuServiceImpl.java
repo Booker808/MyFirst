@@ -133,10 +133,17 @@ public class SpuServiceImpl implements SpuService {
     @Override
     @Transactional
     public void updateSpSkuList(String spuNo,List<SpSkuCoreDto> skuCoreVoList) {
+        Spu spu=spuMapper.selectByPrimaryKey(spuNo);
         for(SpSkuCoreDto spSkuCoreDto :skuCoreVoList){
             SpSkuCore spSkuCore=new SpSkuCore();
             BeanutilsCopy.copyProperties(spSkuCoreDto,spSkuCore);
             spSkuCore.setStdProductNo(spuNo);
+            spSkuCore.setCategorySpId(spu.getCategorySpId());
+            spSkuCore.setCategorySpNo(spu.getCategorySpNo());
+            spSkuCore.setLv1CategorySpId(spu.getLv1CategorySpId());
+            spSkuCore.setLv1CategorySpNo(spu.getLv1CategorySpNo());
+            spSkuCore.setLv2CategorySpId(spu.getLv2CategorySpId());
+            spSkuCore.setLv2CategorySpNo(spu.getLv2CategorySpNo());
             if(StringUtils.isEmpty(spSkuCore.getProductNo())){
                 //若不存在，则要生成产品编码
                 spSkuCore.setProductNo(createProductNo(spSkuCore.getCategorySpNo()));
