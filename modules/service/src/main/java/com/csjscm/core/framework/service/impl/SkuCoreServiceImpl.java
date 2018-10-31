@@ -123,55 +123,14 @@ public class SkuCoreServiceImpl implements SkuCoreService {
                 String  productName = getCellValue(row.getCell(1)).trim();
                 String  brandName = getCellValue(row.getCell(2)).trim();
                 String rule = getCellValue(row.getCell(3)).trim();
-                String size = getCellValue(row.getCell(4)).trim();
+               // String size = getCellValue(row.getCell(4)).trim();
 
-                String minUint = getCellValue(row.getCell(5)).trim();
-                String  refrencePrice = getCellValue(row.getCell(6)).trim();
-                String  recentEnquiry = getCellValue(row.getCell(7)).trim();
-                String  ean13Code = getCellValue(row.getCell(8)).trim();
-                String mnemonicCode = getCellValue(row.getCell(9)).trim();
-                String  description = getCellValue(row.getCell(10)).trim();
-                //suf
-              //  Map<String, String> sufMap = new HashMap<>();
-                // 获取suf
-        /*        int index = 0;
-                for (int j = MIX_CELL; j < row.getLastCellNum(); j++) {
-                    index++;
-                    String sufKey = "suf" + index;
-                    String sufVaule = getCellValue(row.getCell(j));
-                    if(StringUtils.isNotBlank(sufVaule)){
-                        row.getCell(j).setCellType(HSSFCell.CELL_TYPE_STRING);
-                        sufVaule = getCellValue(row.getCell(j));
-                    }
-                    if (sufVaule.length() > 256) {
-                        failMsg = "字段长度不能大于256";
-                        failCell = j + 1;
-                        failList.add(getFailMsg(failRow, failCell, failMsg));
-                        failMsgStr+=getFailMsg(failRow, failCell, failMsg);
-                        issuccess=false;
-                    }
-                    sufMap.put(sufKey, sufVaule);
-                }
-
-                //设置suf
-                if(!sufMap.isEmpty()){
-                    for (Map.Entry<String, String> entry : sufMap.entrySet()) {
-                        try {
-                            Field field = SkuCore.class.getDeclaredField(entry.getKey());
-                            field.setAccessible(true);
-                            field.set(skuCore, entry.getValue());
-
-                            Field fieldvo = SkuCoreVo.class.getDeclaredField(entry.getKey());
-                            fieldvo.setAccessible(true);
-                            fieldvo.set(skuCoreVo, entry.getValue());
-                        } catch (Exception e) {
-                            failMsg = "设置"+entry.getKey()+"自定义属性时异常";
-                            failList.add(getFailMsg(failRow, failCell, failMsg));
-                            failMsgStr+=getFailMsg(failRow, failCell, failMsg);
-                            issuccess=false;
-                        }
-                    }
-                }*/
+                String minUint = getCellValue(row.getCell(4)).trim();
+                String  refrencePrice = getCellValue(row.getCell(5)).trim();
+                String  recentEnquiry = getCellValue(row.getCell(6)).trim();
+                String  ean13Code = getCellValue(row.getCell(7)).trim();
+                String mnemonicCode = getCellValue(row.getCell(8)).trim();
+                String  description = getCellValue(row.getCell(9)).trim();
 
                 //校验分类编码 categoryNo
                 if (StringUtils.isBlank(categoryNo)) {
@@ -242,7 +201,7 @@ public class SkuCoreServiceImpl implements SkuCoreService {
                     row.getCell(3).setCellType(HSSFCell.CELL_TYPE_STRING);
                     rule = getCellValue(row.getCell(3));
                 }
-                if(StringUtils.isNotBlank(size)){
+         /*       if(StringUtils.isNotBlank(size)){
                     row.getCell(4).setCellType(HSSFCell.CELL_TYPE_STRING);
                     size = getCellValue(row.getCell(4));
                     if(size.length()>255){
@@ -252,7 +211,7 @@ public class SkuCoreServiceImpl implements SkuCoreService {
                         failMsgStr+=getFailMsg(failRow, failCell, failMsg);
                         issuccess=false;
                     }
-                }
+                }*/
                 //校验规格型号 最小库存单位
                 if(StringUtils.isBlank(minUint) || minUint.length()>255){
                     failMsg = "库存单位不能为空或者字段长度超过255";
@@ -261,8 +220,8 @@ public class SkuCoreServiceImpl implements SkuCoreService {
                     failMsgStr+=getFailMsg(failRow, failCell, failMsg);
                     issuccess=false;
                 }else {
-                    row.getCell(5).setCellType(HSSFCell.CELL_TYPE_STRING);
-                    minUint = getCellValue(row.getCell(5));
+                    row.getCell(4).setCellType(HSSFCell.CELL_TYPE_STRING);
+                    minUint = getCellValue(row.getCell(4));
                 }
 
                 Map<String, Object> minUintMap = new HashMap<>();
@@ -271,7 +230,7 @@ public class SkuCoreServiceImpl implements SkuCoreService {
                 int count = invUnitMapper.findCount(minUintMap);
                 if(count<1){
                     failMsg = "最小单位有误";
-                    failCell = 6;
+                    failCell = 5;
                     failList.add(getFailMsg(failRow, failCell, failMsg));
                     failMsgStr+=getFailMsg(failRow, failCell, failMsg);
                     issuccess=false;
@@ -284,7 +243,7 @@ public class SkuCoreServiceImpl implements SkuCoreService {
                        refrencePrice1 = a.setScale(2,BigDecimal.ROUND_HALF_UP);
                    }catch (Exception e){
                        failMsg = "进价成本字段有误";
-                       failCell = 7;
+                       failCell = 6;
                        failList.add(getFailMsg(failRow, failCell, failMsg));
                        failMsgStr+=getFailMsg(failRow, failCell, failMsg);
                        issuccess=false;
@@ -299,7 +258,7 @@ public class SkuCoreServiceImpl implements SkuCoreService {
                        recentEnquiry1 = a.setScale(2,BigDecimal.ROUND_HALF_UP);
                    }catch (Exception e){
                        failMsg = "近期询价字段有误";
-                       failCell = 8;
+                       failCell = 7;
                        failList.add(getFailMsg(failRow, failCell, failMsg));
                        failMsgStr+=getFailMsg(failRow, failCell, failMsg);
                        issuccess=false;
@@ -308,11 +267,11 @@ public class SkuCoreServiceImpl implements SkuCoreService {
                 }
                 //校验69码（EAN13码）助记码
                 if(StringUtils.isNotBlank(ean13Code)){
-                    row.getCell(8).setCellType(HSSFCell.CELL_TYPE_STRING);
-                    ean13Code = getCellValue(row.getCell(8));
+                    row.getCell(7).setCellType(HSSFCell.CELL_TYPE_STRING);
+                    ean13Code = getCellValue(row.getCell(7));
                     if(ean13Code.length()>255){
                         failMsg = "69码（EAN13码）段长度超过255";
-                        failCell = 9;
+                        failCell = 8;
                         failList.add(getFailMsg(failRow, failCell, failMsg));
                         failMsgStr+=getFailMsg(failRow, failCell, failMsg);
                         issuccess=false;
@@ -320,11 +279,11 @@ public class SkuCoreServiceImpl implements SkuCoreService {
                 }
 
                 if(StringUtils.isNotBlank(mnemonicCode)){
-                    row.getCell(9).setCellType(HSSFCell.CELL_TYPE_STRING);
-                    mnemonicCode = getCellValue(row.getCell(9));
+                    row.getCell(8).setCellType(HSSFCell.CELL_TYPE_STRING);
+                    mnemonicCode = getCellValue(row.getCell(8));
                     if(mnemonicCode.length()>255){
                         failMsg = "助记码段长度超过255";
-                        failCell = 10;
+                        failCell = 9;
                         failList.add(getFailMsg(failRow, failCell, failMsg));
                         failMsgStr+=getFailMsg(failRow, failCell, failMsg);
                         issuccess=false;
@@ -332,11 +291,11 @@ public class SkuCoreServiceImpl implements SkuCoreService {
                 }
 
                 if(StringUtils.isNotBlank(description)){
-                    row.getCell(10).setCellType(HSSFCell.CELL_TYPE_STRING);
-                    description = getCellValue(row.getCell(10));
+                    row.getCell(9).setCellType(HSSFCell.CELL_TYPE_STRING);
+                    description = getCellValue(row.getCell(9));
                     if(description.length()>255){
                         failMsg = "商品文字描述长度超过255";
-                        failCell = 11;
+                        failCell = 10;
                         failList.add(getFailMsg(failRow, failCell, failMsg));
                         failMsgStr+=getFailMsg(failRow, failCell, failMsg);
                         issuccess=false;
@@ -377,7 +336,7 @@ public class SkuCoreServiceImpl implements SkuCoreService {
                     skuCore.setMnemonicCode(mnemonicCode);
                     skuCore.setProductName(productName);
                     skuCore.setRule(rule);
-                    skuCore.setSize(size);
+                   // skuCore.setSize(size);
                     // 获取商品编码
                     Long increase = redisServiceFacade.increase(new RedisDistributedCounterObject(Constant.REDIS_KEY_PRODUCT_NO + skuCore.getCategoryNo()), 1);
                     String  increment =increase.toString();
@@ -403,7 +362,7 @@ public class SkuCoreServiceImpl implements SkuCoreService {
                     skuCoreVo.setMnemonicCode(mnemonicCode);
                     skuCoreVo.setProductName(productName);
                     skuCoreVo.setRule(rule);
-                    skuCoreVo.setSize(size);
+                    //skuCoreVo.setSize(size);
                     skuCoreVo.setDescription(description);
                     skuCoreVo.setRecentEnquiry(recentEnquiry);
                     skuCoreVo.setRefrencePrice(refrencePrice);

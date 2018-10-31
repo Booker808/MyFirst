@@ -32,6 +32,15 @@ public class SkuCustomerVo {
     private String brandName;
     @ApiModelProperty("客户编码")
     private String customerNo;
+    private String description;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public Integer getBrandId() {
         return brandId;

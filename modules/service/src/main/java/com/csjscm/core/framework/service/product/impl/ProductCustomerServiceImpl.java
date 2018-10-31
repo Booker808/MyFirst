@@ -107,28 +107,29 @@ public class ProductCustomerServiceImpl implements ProductCustomerService {
 
                 //String lv1CategoryNo = ExcelUtil.getCellValue(row.getCell(0));
                 //String lv2CategoryNo = ExcelUtil.getCellValue(row.getCell(1));
-                String categoryNo = ExcelUtil.getCellValue(row.getCell(0)).trim();
+                String  productNo = ExcelUtil.getCellValue(row.getCell(0)).trim();
                 String  customerPdNo = ExcelUtil.getCellValue(row.getCell(1));
-                String  customerPdName = ExcelUtil.getCellValue(row.getCell(2)).trim();
-                String  brandName = ExcelUtil.getCellValue(row.getCell(3)).trim();
-                String  customerPdRule = ExcelUtil.getCellValue(row.getCell(4)).trim();
-                String customerPdSize = ExcelUtil.getCellValue(row.getCell(5)).trim();
+                String categoryNo = ExcelUtil.getCellValue(row.getCell(2)).trim();
+                String  customerPdName = ExcelUtil.getCellValue(row.getCell(3)).trim();
+                String  brandName = ExcelUtil.getCellValue(row.getCell(4)).trim();
+                String  customerPdRule = ExcelUtil.getCellValue(row.getCell(5)).trim();
+              //  String customerPdSize = ExcelUtil.getCellValue(row.getCell(5)).trim();
                 String invUnit = ExcelUtil.getCellValue(row.getCell(6)).trim();
                 String ean13Code = ExcelUtil.getCellValue(row.getCell(7)).trim();
                 String mnemonicCode = ExcelUtil.getCellValue(row.getCell(8)).trim();
-                String  productNo = ExcelUtil.getCellValue(row.getCell(9)).trim();
+                String description = ExcelUtil.getCellValue(row.getCell(9)).trim();
                 Category category = new Category();
                 Integer categoryId = 0;
 
                 if (StringUtils.isBlank(categoryNo) || categoryNo.length() > 255) {
-                    failCell = 1;
+                    failCell = 3;
                     failMsg = ExcelUtil.getFailMsg(failRow, failCell, "分类编码为空或者长度超过255");
                     failList.add(failMsg);
                     failMsgStr += failMsg;
                     issuccess = false;
                 } else {
-                    row.getCell(0).setCellType(HSSFCell.CELL_TYPE_STRING);
-                    categoryNo = ExcelUtil.getCellValue(row.getCell(0));
+                    row.getCell(2).setCellType(HSSFCell.CELL_TYPE_STRING);
+                    categoryNo = ExcelUtil.getCellValue(row.getCell(2));
                     Map<String, Object> categoryNomap = new HashMap<>();
                     categoryNomap.put("levelNum", CategoryLevelEnum.三级.getState());
                     categoryNomap.put("classCode", categoryNo);
@@ -169,32 +170,32 @@ public class ProductCustomerServiceImpl implements ProductCustomerService {
                 }
                 //检验 customerPdName  customerPdSize
                 if(StringUtils.isBlank(customerPdName)   || customerPdName.length()>256 ){
-                    failCell = 3;
+                    failCell = 4;
                     failMsg = ExcelUtil.getFailMsg(failRow, failCell, "客户物料名称或长度大于256");
                     failList.add(failMsg);
                     failMsgStr+=failMsg;
                     issuccess=false;
                 }else {
-                    row.getCell(2).setCellType(HSSFCell.CELL_TYPE_STRING);
-                    customerPdName = ExcelUtil.getCellValue(row.getCell(2));
+                    row.getCell(3).setCellType(HSSFCell.CELL_TYPE_STRING);
+                    customerPdName = ExcelUtil.getCellValue(row.getCell(3));
 
                 }
                 //校验品牌
                 if (StringUtils.isBlank(brandName) || brandName.length() > 255) {
-                    failCell = 4;
+                    failCell = 5;
                     failMsg = ExcelUtil.getFailMsg(failRow, failCell, "品牌名称不能为空或者长度大于256");
                     failList.add(failMsg);
                     failMsgStr += failMsg;
                     issuccess = false;
                 } else {
-                    row.getCell(3).setCellType(HSSFCell.CELL_TYPE_STRING);
-                    brandName = ExcelUtil.getCellValue(row.getCell(3));
+                    row.getCell(4).setCellType(HSSFCell.CELL_TYPE_STRING);
+                    brandName = ExcelUtil.getCellValue(row.getCell(4));
                 }
                 Map<String, Object> brandNamemap = new HashMap<>();
                 brandNamemap.put("brandName", brandName);
                 List<BrandMaster> brandMasters = brandMasterMapper.listSelective(brandNamemap);
                 if (brandMasters.size() ==0) {
-                    failCell = 4;
+                    failCell = 5;
                     failMsg = ExcelUtil.getFailMsg(failRow, failCell, "品牌名称不存在");
                     failList.add(failMsg);
                     failMsgStr += failMsg;
@@ -202,16 +203,16 @@ public class ProductCustomerServiceImpl implements ProductCustomerService {
                 }
                 //校验规格
                 if (StringUtils.isBlank(customerPdRule) || customerPdRule.length()>255) {
-                    failCell = 5;
+                    failCell = 6;
                     failMsg = ExcelUtil.getFailMsg(failRow, failCell, "规格长度超过256或者为空");
                     failList.add(failMsg);
                     failMsgStr += failMsg;
                     issuccess = false;
                 }else {
-                    row.getCell(4).setCellType(HSSFCell.CELL_TYPE_STRING);
-                    customerPdRule = ExcelUtil.getCellValue(row.getCell(4));
+                    row.getCell(5).setCellType(HSSFCell.CELL_TYPE_STRING);
+                    customerPdRule = ExcelUtil.getCellValue(row.getCell(5));
                 }
-                if (StringUtils.isNotBlank(customerPdSize)) {
+               /* if (StringUtils.isNotBlank(customerPdSize)) {
                     row.getCell(5).setCellType(HSSFCell.CELL_TYPE_STRING);
                     customerPdSize = ExcelUtil.getCellValue(row.getCell(5));
                     if (customerPdRule.length() > 255) {
@@ -221,7 +222,7 @@ public class ProductCustomerServiceImpl implements ProductCustomerService {
                         failMsgStr += failMsg;
                         issuccess = false;
                     }
-                }
+                }*/
 
                 if (StringUtils.isBlank(invUnit) || invUnit.length() > 256) {
                     failCell = 7;
@@ -270,16 +271,20 @@ public class ProductCustomerServiceImpl implements ProductCustomerService {
                 }
                 //校验productNo
                 if(StringUtils.isNotBlank(productNo)){
-                    row.getCell(9).setCellType(HSSFCell.CELL_TYPE_STRING);
-                    productNo = ExcelUtil.getCellValue(row.getCell(9));
+                    row.getCell(0).setCellType(HSSFCell.CELL_TYPE_STRING);
+                    productNo = ExcelUtil.getCellValue(row.getCell(0));
                     SkuCore skuCore = skuCoreMapper.selectByPrimaryKey(productNo);
                     if(skuCore==null){
-                        failCell = 10;
+                        failCell = 1;
                         failMsg = ExcelUtil.getFailMsg(failRow, failCell, "川商品编码错误");
                         failList.add(failMsg);
                         failMsgStr += failMsg;
                         issuccess = false;
                     }
+                }
+                if(StringUtils.isNotBlank(description)){
+                    row.getCell(9).setCellType(HSSFCell.CELL_TYPE_STRING);
+                    description = ExcelUtil.getCellValue(row.getCell(9));
                 }
       /*          if (StringUtils.isNotBlank(productNo)) {
                     row.getCell(9).setCellType(HSSFCell.CELL_TYPE_STRING);
@@ -352,7 +357,8 @@ public class ProductCustomerServiceImpl implements ProductCustomerService {
                             skuCore.setChannel(SkuCoreChannelEnum.手动新增.getState());
                             skuCore.setProductNo(productNo);
                             skuCore.setRule(customerPdRule);
-                            skuCore.setSize(customerPdSize);
+                           // skuCore.setSize(customerPdSize);
+                            skuCore.setDescription(description);
                             skuCore.setProductName(customerPdName);
                             skuCore.setBrandName(brandName);
                             skuCore.setBrandId(brandMasters.get(0).getId());
@@ -375,7 +381,7 @@ public class ProductCustomerServiceImpl implements ProductCustomerService {
                     skuCustomer.setCustomerNo(customerNo);
                     skuCustomer.setCustomerPdName(customerPdName);
                     skuCustomer.setCustomerPdRule(customerPdRule);
-                    skuCustomer.setCustomerPdSize(customerPdSize);
+                   // skuCustomer.setCustomerPdSize(customerPdSize);
                     skuCustomer.setProductNo(productNo);
                     skuCustomer.setBrandId(brandMasters.get(0).getId().toString());
                     skuCustomer.setBrandName(brandName);
@@ -386,7 +392,8 @@ public class ProductCustomerServiceImpl implements ProductCustomerService {
                     skuCustomerVo.setCustomerPdName(customerPdName);
                     skuCustomerVo.setCustomerPdNo(customerPdNo);
                     skuCustomerVo.setCustomerPdRule(customerPdRule);
-                    skuCustomerVo.setCustomerPdSize(customerPdSize);
+                   // skuCustomerVo.setCustomerPdSize(customerPdSize);
+                    skuCustomerVo.setDescription(description);
                     skuCustomerVo.setProductNo(productNo);
                     skuCustomerVo.setFailMessage(failMsgStr);
                     //skuCustomerVo.setLv1CategoryNo(lv1CategoryNo);

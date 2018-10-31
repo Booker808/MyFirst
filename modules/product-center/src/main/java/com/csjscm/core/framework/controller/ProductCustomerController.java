@@ -83,9 +83,9 @@ public class ProductCustomerController {
         }
         ExportExcel<SkuCustomerVo> ex = new ExportExcel<SkuCustomerVo>();
         String[] header =
-                { "失败原因","三级分类编码","客户商品编码","商品名称", "品牌", "规格", "型号", "最小单位",  "条形码", "商品简码", "川商品编码"};
+                { "失败原因", "川商品编码","客户商品编码","三级分类编码","商品名称", "品牌", "规格", "最小单位",  "条形码", "商品简码"};
         String[] line =
-                {"failMessage", "categoryNo","customerPdNo","customerPdName","brandName","customerPdRule","customerPdSize","minUint","ean13Code","mnemonicCode","productNo"};
+                {"failMessage","productNo", "customerPdNo","categoryNo","customerPdName","brandName","customerPdRule","minUint","ean13Code","mnemonicCode"};
         OutputStream out;
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/x-download");
