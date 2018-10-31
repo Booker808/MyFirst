@@ -510,7 +510,7 @@ public class SkuCoreServiceImpl implements SkuCoreService {
         query.put("brandName",skuCore.getBrandName());
         query.put("minUint",skuCore.getMinUint());
         List<SkuCore> skuCoreList = skuCoreMapper.listSelective(query);
-        if (null != skuCoreList && !skuCoreList.isEmpty()) {
+        if (skuCoreList.size()>0) {
             throw  new BussinessException("商品已存在");
         }
         /**Redis获取商品编码*/

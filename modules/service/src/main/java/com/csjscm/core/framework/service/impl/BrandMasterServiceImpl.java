@@ -94,7 +94,7 @@ public class BrandMasterServiceImpl implements BrandMasterService {
         Map<String, Object> map = new HashMap<>();
         map.put("brandName", brandMaster.getBrandName());
         List<BrandMaster> list = brandMasterMapper.selectByBrand(map);
-        if (null != list && !list.isEmpty()) {
+        if (list.size()>0) {
             throw  new BussinessException("品牌已存在");
         }
         int i = brandMasterMapper.insertSelective(brandMaster);
