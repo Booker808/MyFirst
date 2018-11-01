@@ -93,7 +93,7 @@ public class TaxCustomerServiceImpl implements TaxCustomerService {
                 if(StringUtils.isNotBlank(customerPdName)){
                     row.getCell(0).setCellType(HSSFCell.CELL_TYPE_STRING);
                     customerPdName = ExcelUtil.getCellValue(row.getCell(0));
-                    Map<String,Object> customerPdNamemap=new HashMap<>();
+       /*             Map<String,Object> customerPdNamemap=new HashMap<>();
                     customerPdNamemap.put("customerPdName",customerPdName);
                     int count = skuCustomerMapper.findCount(customerPdNamemap);
                     if(count<1){
@@ -102,7 +102,7 @@ public class TaxCustomerServiceImpl implements TaxCustomerService {
                         failList.add(failMsg);
                         failMsgStr += failMsg;
                         issuccess = false;
-                    }
+                    }*/
                 }else {
                     failCell = 1;
                     failMsg = ExcelUtil.getFailMsg(failRow, failCell, "商品名称不能为空");
@@ -112,6 +112,14 @@ public class TaxCustomerServiceImpl implements TaxCustomerService {
                 }
                 TaxCategory one=new TaxCategory();
                 if(StringUtils.isNotBlank(taxCode)){
+                    int length = taxCode.length();
+                    if(length<=19){
+                        String str="";
+                        for(int j=0;j<19-length;j++){
+                            str+="0";
+                        }
+                        taxCode=taxCode+str;
+                    }
                     Map<String,Object> taxCodemap=new HashMap<>();
                     taxCodemap.put("taxCode",taxCode);
                     List<TaxCategory> taxCategories = taxCategoryMapper.selectByCondition(taxCodemap);
