@@ -271,4 +271,9 @@
       id,brand_name
     from brand_master
   </select>
+  <select id="findBrandByLv3CategoryId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  SELECT a.* FROM  brand_master a
+   LEFT JOIN  brand_category b  on a.id=b.brand_id
+   WHERE b.lv3_category_id=#{lv3CategoryId} and b.type=2
+  </select>
 </mapper>

@@ -8,9 +8,7 @@ public class BrandMasterModel {
 
     @NotBlank(message = "品牌名称不能为空")
     private String brandName;
-    @NotBlank(message = "品牌平台分类信息不能为空")
     private String brandCategory;
-    @NotBlank(message = "品牌商城分类信息不能为空")
     private String brandSpCategory;
     /**
      * 品牌图片

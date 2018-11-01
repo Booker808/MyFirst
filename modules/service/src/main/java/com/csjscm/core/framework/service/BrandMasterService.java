@@ -80,4 +80,11 @@ public interface BrandMasterService {
      */
     List<BrandMaster> listSelective(Map<String,Object> map);
 
+    /**
+     * 根据商城三级分类id 查询 该分类底下的品牌
+     * @param lv3CategoryId
+     * @return
+     */
+    List<BrandMaster> findBrandByLv3CategoryId(Integer lv3CategoryId);
+
 }

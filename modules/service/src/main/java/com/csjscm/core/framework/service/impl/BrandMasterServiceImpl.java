@@ -104,33 +104,37 @@ public class BrandMasterServiceImpl implements BrandMasterService {
     }
     @Transactional
     public void saveBrandSpCategory(Integer brandId,String brandCategoryStr,String brandSpCategoryStr){
-        String[] brandCategorys = brandCategoryStr.split(",");
-        for(String s:brandCategorys){
-            int id = Integer.parseInt(s);
-            Category byPrimary = categoryMapper.findByPrimary(id);
-            Category byPrimary1 = categoryMapper.findByPrimary(byPrimary.getParentClass());
-            Category byPrimary2 = categoryMapper.findByPrimary(byPrimary1.getParentClass());
-            BrandCategory brandCategory=new BrandCategory();
-            brandCategory.setBrandId(brandId);
-            brandCategory.setLv1CategoryId(byPrimary2.getId());
-            brandCategory.setLv2CategoryId(byPrimary1.getId());
-            brandCategory.setLv3CategoryId(byPrimary.getId());
-            brandCategory.setType(1);
-            brandCategoryMapper.insertSelective(brandCategory);
+        if(StringUtils.isNotBlank(brandCategoryStr)){
+            String[] brandCategorys = brandCategoryStr.split(",");
+            for(String s:brandCategorys){
+                int id = Integer.parseInt(s);
+                Category byPrimary = categoryMapper.findByPrimary(id);
+                Category byPrimary1 = categoryMapper.findByPrimary(byPrimary.getParentClass());
+                Category byPrimary2 = categoryMapper.findByPrimary(byPrimary1.getParentClass());
+                BrandCategory brandCategory=new BrandCategory();
+                brandCategory.setBrandId(brandId);
+                brandCategory.setLv1CategoryId(byPrimary2.getId());
+                brandCategory.setLv2CategoryId(byPrimary1.getId());
+                brandCategory.setLv3CategoryId(byPrimary.getId());
+                brandCategory.setType(1);
+                brandCategoryMapper.insertSelective(brandCategory);
+            }
         }
-        String[] brandSpCategorys = brandSpCategoryStr.split(",");
-        for(String s:brandSpCategorys){
-            int id = Integer.parseInt(s);
-            SpCategory byPrimary = spCategoryMapper.findByPrimary(id);
-            SpCategory byPrimary1 = spCategoryMapper.findByPrimary(byPrimary.getParentClass());
-            SpCategory byPrimary2 = spCategoryMapper.findByPrimary(byPrimary1.getParentClass());
-            BrandCategory brandCategory=new BrandCategory();
-            brandCategory.setBrandId(brandId);
-            brandCategory.setLv1CategoryId(byPrimary2.getId());
-            brandCategory.setLv2CategoryId(byPrimary1.getId());
-            brandCategory.setLv3CategoryId(byPrimary.getId());
-            brandCategory.setType(2);
-            brandCategoryMapper.insertSelective(brandCategory);
+        if(StringUtils.isNotBlank(brandSpCategoryStr)){
+            String[] brandSpCategorys = brandSpCategoryStr.split(",");
+            for(String s:brandSpCategorys){
+                int id = Integer.parseInt(s);
+                SpCategory byPrimary = spCategoryMapper.findByPrimary(id);
+                SpCategory byPrimary1 = spCategoryMapper.findByPrimary(byPrimary.getParentClass());
+                SpCategory byPrimary2 = spCategoryMapper.findByPrimary(byPrimary1.getParentClass());
+                BrandCategory brandCategory=new BrandCategory();
+                brandCategory.setBrandId(brandId);
+                brandCategory.setLv1CategoryId(byPrimary2.getId());
+                brandCategory.setLv2CategoryId(byPrimary1.getId());
+                brandCategory.setLv3CategoryId(byPrimary.getId());
+                brandCategory.setType(2);
+                brandCategoryMapper.insertSelective(brandCategory);
+            }
         }
     }
 
@@ -197,6 +201,11 @@ public class BrandMasterServiceImpl implements BrandMasterService {
     @Override
     public List<BrandMaster> listSelective(Map<String, Object> map) {
         return brandMasterMapper.listSelective(map);
+    }
+
+    @Override
+    public List<BrandMaster> findBrandByLv3CategoryId(Integer lv3CategoryId) {
+        return brandMasterMapper.findBrandByLv3CategoryId(lv3CategoryId);
     }
 
 }
