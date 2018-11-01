@@ -3,6 +3,7 @@ package com.csjscm.core.framework.service.spu.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.csjscm.core.framework.common.constant.Constant;
 import com.csjscm.core.framework.common.util.BeanutilsCopy;
+import com.csjscm.core.framework.dao.BrandMasterMapper;
 import com.csjscm.core.framework.dao.SpCategoryMapper;
 import com.csjscm.core.framework.dao.SpSkuCoreMapper;
 import com.csjscm.core.framework.dao.SpuMapper;
@@ -42,6 +43,8 @@ public class SpuServiceImpl implements SpuService {
     private RedisServiceFacade redisServiceFacade;
     @Autowired
     private SpCategoryMapper spCategoryMapper;
+    @Autowired
+    private BrandMasterMapper brandMasterMapper;
 
     @Override
     public QueryResult<SpuDto> querySpuList(int page, int rpp, SpuExample example) {
@@ -111,6 +114,12 @@ public class SpuServiceImpl implements SpuService {
         Spu spu=spuMapper.selectByPrimaryKey(spuNo);
         SpuDto result=new SpuDto();
         BeanutilsCopy.copyProperties(spu,result);
+        if(result.getBrandId()!=null){
+            BrandMaster brandMaster=brandMasterMapper.selectByPrimaryKey(Integer.parseInt(result.getBrandId()));
+            if(brandMaster!=null){
+                result.setBrandName(brandMaster.getBrandName());
+            }
+        }
         return result;
     }
 
@@ -127,7 +136,7 @@ public class SpuServiceImpl implements SpuService {
     public void updateSpu(SpuDto spuDto) {
         SpuWithBLOBs spu=new SpuWithBLOBs();
         BeanutilsCopy.copyProperties(spuDto,spu);
-        spuMapper.updateByPrimaryKeyWithBLOBs(spu);
+        spuMapper.updateByPrimaryKeySelective(spu);
     }
 
     @Override
@@ -150,7 +159,7 @@ public class SpuServiceImpl implements SpuService {
                 spSkuCoreMapper.insertSelective(spSkuCore);
             }else{
                 //若存在，则更新
-                spSkuCoreMapper.updateByPrimaryKeyWithBLOBs(spSkuCore);
+                spSkuCoreMapper.updateByPrimaryKeySelective(spSkuCore);
             }
         }
     }
@@ -159,17 +168,21 @@ public class SpuServiceImpl implements SpuService {
     public List<SpuAttrDetailDto> queryAttrList(String spuNo) {
         Spu spu=spuMapper.selectByPrimaryKey(spuNo);
         SpCategory spCategory=spCategoryMapper.findByPrimary(spu.getCategorySpId());
-        List<SpuAttrDetailDto> categoryAttrList= JSONObject.parseArray(spCategory.getUdf2(),SpuAttrDetailDto.class);
-        List<SpuAttrDetailDto> spuAttrList=JSONObject.parseArray(spu.getCdf1(),SpuAttrDetailDto.class);
         Map<String,SpuAttrDetailDto> map=Maps.newHashMap();
-        for(SpuAttrDetailDto caAttr:categoryAttrList){
-            map.put(caAttr.getName(),caAttr);
+        if(spCategory.getUdf2()!=null){
+            List<SpuAttrDetailDto> categoryAttrList= JSONObject.parseArray(spCategory.getUdf2(),SpuAttrDetailDto.class);
+            for(SpuAttrDetailDto caAttr:categoryAttrList){
+                map.put(caAttr.getName(),caAttr);
+            }
         }
-        for(SpuAttrDetailDto spuAttr:spuAttrList){
-            if(map.containsKey(spuAttr.getName())){
-                map.get(spuAttr.getName()).setCurrentValue(spuAttr.getCurrentValue());
-            }else{
-                map.put(spuAttr.getName(),spuAttr);
+        if(spu.getCdf1()!=null){
+            List<SpuAttrDetailDto> spuAttrList=JSONObject.parseArray(spu.getCdf1(),SpuAttrDetailDto.class);
+            for(SpuAttrDetailDto spuAttr:spuAttrList){
+                if(map.containsKey(spuAttr.getName())){
+                    map.get(spuAttr.getName()).setCurrentValue(spuAttr.getCurrentValue());
+                }else{
+                    map.put(spuAttr.getName(),spuAttr);
+                }
             }
         }
         return Lists.newArrayList(map.values());

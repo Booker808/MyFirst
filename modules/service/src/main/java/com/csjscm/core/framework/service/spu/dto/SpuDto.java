@@ -68,6 +68,9 @@ public class SpuDto {
     @ApiModelProperty("品牌ID")
     private String brandId;
 
+    @ApiModelProperty("品牌名")
+    private String brandName;
+
     private String createUserId;
 
     private Date createTime;
