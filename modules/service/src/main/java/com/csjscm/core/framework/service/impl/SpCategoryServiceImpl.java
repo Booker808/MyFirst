@@ -180,8 +180,37 @@ public class SpCategoryServiceImpl implements SpCategoryService {
 
     @Override
     public void updateUdf(SpCategory t) {
+        String vaildudf1 = vaildudf(t.getUdf1());
+        String vaildudf2 = vaildudf(t.getUdf2());
+        t.setUdf1(vaildudf1);
+        t.setUdf2(vaildudf2);
         spCategoryMapper.updateSelective(t);
         getJsonCategory();
+    }
+
+    public String vaildudf(String udf){
+       List<Object> list=new ArrayList<>();
+        if(StringUtils.isNotBlank(udf)){
+            JSONArray objects = JSONArray.parseArray(udf);
+            for(int i=0;i<objects.size();i++){
+                JSONObject jsonObject = objects.getJSONObject(i);
+                String value =jsonObject.getString("value");
+                if(StringUtils.isNotBlank(value)){
+                    value= value.trim();
+                    value=value.replaceAll("，",",");
+                    if(value.endsWith(",")){
+                        value= value.substring(0,value.length() - 1);
+                    }
+                    jsonObject.remove("value");
+                    jsonObject.put("value",value);
+                    list.add(jsonObject);
+                }
+            }
+        }else{
+            return  "";
+        }
+        String s = JSON.toJSONString(list);
+        return  s;
     }
 
     @Override

@@ -692,7 +692,7 @@
         and ent.ent_name LIKE CONCAT('%',#{entName,jdbcType=VARCHAR},'%')
       </if>
       <if test="entNameLike!=null and entNameLike!=''">
-        and ent.ent_name LIKE CONCAT('%',#{entName,jdbcType=VARCHAR},'%')
+        and ent.ent_name LIKE CONCAT('%',#{entNameLike,jdbcType=VARCHAR},'%')
       </if>
       <if test="lv1CategoryNo != null and lv1CategoryNo != '' ">
         and sku.lv1_category_no = #{lv1CategoryNo,jdbcType=VARCHAR}

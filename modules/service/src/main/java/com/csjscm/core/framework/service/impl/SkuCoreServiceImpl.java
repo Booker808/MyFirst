@@ -354,7 +354,7 @@ public class SkuCoreServiceImpl implements SkuCoreService {
                     skuCore.setDescription(description);
                     skuCore.setRecentEnquiry(recentEnquiry1);
                     skuCore.setRefrencePrice(refrencePrice1);
-                   // skuCore.setProductPrice(recentEnquiry1);
+                    skuCore.setProductPrice(refrencePrice1);
                     skuCoreMapper.insertSelective(skuCore);
                     successCount++;
                 }else {
