@@ -2,6 +2,7 @@ package com.csjscm.core.framework.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.csjscm.core.framework.common.util.BussinessException;
 import com.csjscm.core.framework.example.TaxCategoryExample;
 import com.csjscm.core.framework.example.TaxVersionExample;
 import com.csjscm.core.framework.model.TaxCategory;
@@ -9,6 +10,7 @@ import com.csjscm.core.framework.model.TaxVersion;
 import com.csjscm.core.framework.service.tax.TaxService;
 import com.csjscm.sweet.framework.auth.AuthUtils;
 import com.csjscm.sweet.framework.core.mvc.APIResponse;
+import com.csjscm.sweet.framework.core.mvc.BusinessException;
 import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.annotations.ApiIgnore;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
@@ -164,5 +167,10 @@ public class TaxController {
         taxCategory.setId(id);
         taxService.updateTaxCategory(userName,taxCategory);
         return APIResponse.success("更新税务编码分类成功");
+    }
+
+    @ExceptionHandler({BusinessException.class,BussinessException.class})
+    public APIResponse exceptionHandler(Exception e, HttpServletResponse response) {
+        return APIResponse.fail(e.getMessage());
     }
 }
