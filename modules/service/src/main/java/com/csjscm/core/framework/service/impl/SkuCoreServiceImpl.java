@@ -19,6 +19,7 @@ import com.csjscm.sweet.framework.redis.RedisServiceFacade;
 import org.apache.commons.lang.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +31,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -351,7 +354,7 @@ public class SkuCoreServiceImpl implements SkuCoreService {
                     skuCore.setDescription(description);
                     skuCore.setRecentEnquiry(recentEnquiry1);
                     skuCore.setRefrencePrice(refrencePrice1);
-                    skuCore.setProductPrice(recentEnquiry1);
+                   // skuCore.setProductPrice(recentEnquiry1);
                     skuCoreMapper.insertSelective(skuCore);
                     successCount++;
                 }else {
@@ -425,6 +428,8 @@ public class SkuCoreServiceImpl implements SkuCoreService {
      * @param cell
      * @return
      */
+    public static SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+    public static DecimalFormat df = new DecimalFormat("#.##");
     private String getCellValue(Cell cell) {
         Object result = "";
         if (cell != null) {
@@ -433,7 +438,11 @@ public class SkuCoreServiceImpl implements SkuCoreService {
                     result = cell.getStringCellValue();
                     break;
                 case Cell.CELL_TYPE_NUMERIC:
-                    result = cell.getNumericCellValue();
+                    if (DateUtil.isCellDateFormatted(cell)) {
+                        result = fmt.format(cell.getDateCellValue());
+                    } else {
+                        result = df.format(cell.getNumericCellValue());
+                    }
                     break;
                 case Cell.CELL_TYPE_BOOLEAN:
                     result = cell.getBooleanCellValue();

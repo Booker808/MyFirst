@@ -696,7 +696,7 @@ public class ExcelUtil {
 
 
     public static SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
-    public static DecimalFormat df = new DecimalFormat("0");
+    public static DecimalFormat df = new DecimalFormat("#.##");
 
     /*** 
      * 读取单元格的值 
