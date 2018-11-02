@@ -36,6 +36,12 @@
             <if test="taxCategoryName != null and taxCategoryName != '' ">
                 and tax_category_name = #{taxCategoryName,jdbcType=VARCHAR}
             </if>
+            <if test="customerPdNameList!=null">
+                and customer_pd_name in
+                <foreach item="item" index="index" open="(" separator="," close=")" collection="customerPdNameList">
+                    #{item}
+                </foreach>
+            </if>
         </trim>
     </sql>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">

@@ -216,6 +216,27 @@ public class TaxCustomerServiceImpl implements TaxCustomerService {
 
     @Override
     public List<TaxCustomer> listSelective(Map<String, Object> map) {
+        if(map.containsKey("customerPdNameList")){
+            if(map.get("customerPdNameList") !=null && StringUtils.isNotBlank(map.get("customerPdNameList").toString())){
+                String customerPdNameList = map.get("customerPdNameList").toString();
+                try {
+                    String[] split = customerPdNameList.split(",");
+                    List<String> list=new ArrayList<>();
+                    for(String s:split){
+                        if(StringUtils.isBlank(s)){
+                            throw  new BussinessException("customerPdNameList参数有问题");
+                        }
+                        list.add(s);
+                    }
+                    map.remove("customerPdNameList");
+                    map.put("customerPdNameList",list);
+                }catch (Exception e){
+                    throw  new BussinessException("customerPdNameList参数有问题");
+                }
+            }else {
+                map.remove("customerPdNameList");
+            }
+        }
         return taxCustomerMapper.listSelective(map);
     }
 }

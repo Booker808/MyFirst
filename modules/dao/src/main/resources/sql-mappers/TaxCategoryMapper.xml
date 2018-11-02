@@ -186,4 +186,23 @@
     from tax_category
     <include refid="searchBy"/>
   </select>
+  <select id="findPageByEnableTax" parameterType="java.util.HashMap"  resultMap="BaseResultMap">
+SELECT a.id, tax_code, tax_category_name, level, parent_code, tax_rate, description, version_id FROM `tax_category` a
+LEFT JOIN tax_version b on a.version_id =b.id
+    <where>
+      `enable`=1
+      <if test="taxCode !=null and taxCode !=''">
+        and tax_code=#{taxCode,jdbcType=VARCHAR}
+      </if>
+      <if test="taxCodeLike !=null and taxCodeLike !=''">
+        and tax_code like concat('%',#{taxCodeLike,jdbcType=VARCHAR},'%')
+      </if>
+      <if test="taxCategoryName != null and taxCategoryName != ''">
+        and tax_category_name =#{taxCategoryName,jdbcType=VARCHAR}
+      </if>
+      <if test="taxCategoryNameLike != null and taxCategoryNameLike != ''">
+        and tax_category_name like concat('%',#{taxCategoryNameLike,jdbcType=VARCHAR},'%')
+      </if>
+    </where>
+  </select>
 </mapper>

@@ -1,23 +1,16 @@
 package com.csjscm.core.framework.controller;
 
-import com.alibaba.fastjson.JSONArray;
-import com.csjscm.core.framework.common.constant.Constant;
-import com.csjscm.core.framework.common.util.BeanValidator;
 import com.csjscm.core.framework.common.util.BussinessException;
-import com.csjscm.core.framework.model.*;
-import com.csjscm.core.framework.service.SkuCoreService;
-import com.csjscm.core.framework.service.SpCategoryService;
-import com.csjscm.core.framework.service.enterprise.EnterpriseInfoService;
-import com.csjscm.core.framework.service.product.ProductCustomerService;
-import com.csjscm.core.framework.service.product.ProductPartnerService;
+import com.csjscm.core.framework.model.TaxCategory;
+import com.csjscm.core.framework.model.TaxCustomer;
 import com.csjscm.core.framework.service.tax.TaxCustomerService;
-import com.csjscm.core.framework.vo.SkuPartnerModel;
+import com.csjscm.core.framework.service.tax.TaxService;
 import com.csjscm.sweet.framework.core.mvc.APIResponse;
-import com.csjscm.sweet.framework.redis.RedisServiceFacade;
-import org.apache.commons.lang.StringUtils;
+import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ValidationException;
@@ -33,6 +26,8 @@ public class OutTigerController {
 
     @Autowired
     private TaxCustomerService taxCustomerService;
+    @Autowired
+    private TaxService taxService;
 
     /**
      *  客户商品与税收关联记录列表
@@ -41,15 +36,31 @@ public class OutTigerController {
      */
     @RequestMapping(value = "/getTaxCustomerList",method = RequestMethod.GET)
     public APIResponse getEnterpriseList(@RequestParam(value = "customerPdName",required =false) String customerPdName,@RequestParam(value = "taxCode",required =false) String taxCode,
-    @RequestParam(value = "taxCategoryName",required =false) String taxCategoryName){
+    @RequestParam(value = "taxCategoryName",required =false) String taxCategoryName, @RequestParam(value = "customerPdNameList",required =false) String customerPdNameList){
         Map<String,Object> map=new HashMap<>();
         map.put("customerPdName",customerPdName);
         map.put("taxCode",taxCode);
         map.put("taxCategoryName",taxCategoryName);
+        map.put("customerPdNameList",customerPdNameList);
         List<TaxCustomer> taxCustomers = taxCustomerService.listSelective(map);
         return APIResponse.success(taxCustomers);
     }
 
+    /**
+     * 获取启用的税收分类分页
+     * @param page
+     * @param rpp
+     * @param condition
+     * @return
+     */
+    @RequestMapping(value = "/taxCategoryPage",method = RequestMethod.GET)
+    public APIResponse<QueryResult<TaxCategory>> queryTaxVersionList(
+            @RequestParam(required = false,defaultValue = "1")int page,
+            @RequestParam(required = false,defaultValue = "10")int rpp,
+            @ApiIgnore @RequestParam Map<String,Object> condition){
+        QueryResult<TaxCategory> pageByEnableTax = taxService.findPageByEnableTax(page, rpp, condition);
+        return APIResponse.success(pageByEnableTax);
+    }
     /**
      * 自定义异常捕获
      * @param e

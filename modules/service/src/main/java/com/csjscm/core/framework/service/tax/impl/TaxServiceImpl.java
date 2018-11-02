@@ -202,6 +202,17 @@ public class TaxServiceImpl implements TaxService {
         return null;
     }
 
+    @Override
+    public QueryResult<TaxCategory> findPageByEnableTax(int page, int rpp, Map<String, Object> map) {
+        PageHelper.startPage(page,rpp);
+        List<TaxCategory> taxCategoryList=taxCategoryMapper.findPageByEnableTax(map);
+        PageInfo<TaxCategory> pageInfo=new PageInfo<>(taxCategoryList);
+        QueryResult<TaxCategory> result=new QueryResult<>();
+        result.setItems(pageInfo.getList());
+        result.setTotal(pageInfo.getTotal());
+        return result;
+    }
+
     private boolean isExistsEnableVersion(TaxVersion taxVersion) {
         Map<String,Object> map=Maps.newHashMap();
         map.put("enable",1);

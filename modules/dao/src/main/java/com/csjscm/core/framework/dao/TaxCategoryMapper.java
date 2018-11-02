@@ -28,4 +28,6 @@ public interface TaxCategoryMapper {
     List<TaxCategory> selectByCondition(Map<String, Object> map);
 
     List<TaxCategory> selectByExample(TaxCategoryExample example);
+
+    List<TaxCategory> findPageByEnableTax(Map<String, Object> map);
 }
