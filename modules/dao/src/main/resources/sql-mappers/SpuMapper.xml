@@ -68,7 +68,7 @@
     <result column="page_main_pic" property="pageMainPic" jdbcType="LONGVARCHAR" />
     <result column="product_info" property="productInfo" jdbcType="LONGVARCHAR" />
   </resultMap>
-  <resultMap id="ExResult" type="com.csjscm.core.framework.model.SpuEx" extends="BaseResultMap">
+  <resultMap id="ExResult" type="com.csjscm.core.framework.model.SpuEx" extends="ResultMapWithBLOBs">
     <result column="stock" property="stock" jdbcType="INTEGER"/>
   </resultMap>
   <sql id="Base_Column_List" >

@@ -113,6 +113,9 @@ public class SpuServiceImpl implements SpuService {
     public SpuDto querySpu(String spuNo) {
         Spu spu=spuMapper.selectByPrimaryKey(spuNo);
         SpuDto result=new SpuDto();
+        if(spu==null){
+            throw new BusinessException("找不到对应的spu");
+        }
         BeanutilsCopy.copyProperties(spu,result);
         if(result.getBrandId()!=null){
             BrandMaster brandMaster=brandMasterMapper.selectByPrimaryKey(Integer.parseInt(result.getBrandId()));

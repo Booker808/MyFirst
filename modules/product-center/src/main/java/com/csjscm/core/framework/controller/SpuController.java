@@ -111,4 +111,9 @@ public class SpuController {
         spuService.saveSpuAttrList(spuNo,attrList);
         return APIResponse.success();
     }
+
+    @ExceptionHandler({BusinessException.class})
+    public APIResponse exceptionHandler(Exception e) {
+        return APIResponse.fail(e.getMessage());
+    }
 }
