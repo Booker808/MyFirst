@@ -73,6 +73,7 @@ public class EnterpriseInfoServiceImpl implements EnterpriseInfoService {
     @Override
     @Transactional
     public String insertEnterpriseInfo(EnterpriseInfoDto enterpriseInfoDto) {
+        enterpriseInfoDto.getEnterpriseInfo().setEntNumber(createEnterpriseNo());
         String result;
         switch (enterpriseInfoDto.getEnterpriseInfo().getEntType()){
             //采购商
