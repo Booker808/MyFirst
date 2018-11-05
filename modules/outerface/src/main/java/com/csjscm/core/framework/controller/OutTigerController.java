@@ -34,7 +34,7 @@ public class OutTigerController {
      * @param
      * @return
      */
-    @RequestMapping(value = "/getTaxCustomerList",method = RequestMethod.GET)
+    @RequestMapping(value = "/getTaxCustomerList")
     public APIResponse getEnterpriseList(@RequestParam(value = "customerPdName",required =false) String customerPdName,@RequestParam(value = "taxCode",required =false) String taxCode,
     @RequestParam(value = "taxCategoryName",required =false) String taxCategoryName, @RequestParam(value = "customerPdNameList",required =false) String customerPdNameList){
         Map<String,Object> map=new HashMap<>();
@@ -53,7 +53,7 @@ public class OutTigerController {
      * @param condition
      * @return
      */
-    @RequestMapping(value = "/taxCategoryPage",method = RequestMethod.GET)
+    @RequestMapping(value = "/taxCategoryPage")
     public APIResponse<QueryResult<TaxCategory>> queryTaxVersionList(
             @RequestParam(required = false,defaultValue = "1")int page,
             @RequestParam(required = false,defaultValue = "10")int rpp,
