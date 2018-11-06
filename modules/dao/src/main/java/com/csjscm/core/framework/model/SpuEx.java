@@ -5,6 +5,6 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class SpuEx extends SpuWithBLOBs {
+public class SpuEx extends Spu {
     private Integer stock;
 }

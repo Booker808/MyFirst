@@ -74,7 +74,9 @@ public class EnterpriseController {
             @ApiImplicitParam(name="rpp",value = "每页数量",dataType = "Integer",defaultValue = "10",paramType = "query"),
             @ApiImplicitParam(name="entNumber",value="企业编码",dataType = "String",paramType = "query"),
             @ApiImplicitParam(name="entName",value="企业名称",dataType = "String",paramType = "query"),
-            @ApiImplicitParam(name = "channel",value = "来源（1平台2商城）",dataType = "String",paramType = "query")
+            @ApiImplicitParam(name = "channel",value = "来源（1平台2商城）",dataType = "String",paramType = "query"),
+            @ApiImplicitParam(name = "businessPrincipal",value = "业务负责人",dataType = "String",paramType = "query"),
+            @ApiImplicitParam(name = "purchasePrincipal",value = "采购负责人",dataType = "String",paramType = "query")
     })
     @RequestMapping(value = "/enterpriseInfo",method = RequestMethod.GET)
     public APIResponse<QueryResult<EnterpriseInfoDto>> queryEnterpriseInfo(

@@ -10,4 +10,6 @@ public class EnterpriseInfoExample {
     private String entName;
     private List<Integer> entType;
     private Integer channel;
+    private String purchasePrincipal;
+    private String businessPrincipal;
 }

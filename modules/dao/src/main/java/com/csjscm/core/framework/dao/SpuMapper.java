@@ -3,7 +3,6 @@ package com.csjscm.core.framework.dao;
 import com.csjscm.core.framework.example.SpuExample;
 import com.csjscm.core.framework.model.Spu;
 import com.csjscm.core.framework.model.SpuEx;
-import com.csjscm.core.framework.model.SpuWithBLOBs;
 
 import java.util.List;
 import java.util.Map;
@@ -11,15 +10,15 @@ import java.util.Map;
 public interface SpuMapper {
     int deleteByPrimaryKey(String stdProductNo);
 
-    int insert(SpuWithBLOBs record);
+    int insert(Spu record);
 
-    int insertSelective(SpuWithBLOBs record);
+    int insertSelective(Spu record);
 
-    SpuWithBLOBs selectByPrimaryKey(String stdProductNo);
+    Spu selectByPrimaryKey(String stdProductNo);
 
-    int updateByPrimaryKeySelective(SpuWithBLOBs record);
+    int updateByPrimaryKeySelective(Spu record);
 
-    int updateByPrimaryKeyWithBLOBs(SpuWithBLOBs record);
+    int updateByPrimaryKeyWithBLOBs(Spu record);
 
     int updateByPrimaryKey(Spu record);
 

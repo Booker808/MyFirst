@@ -128,7 +128,7 @@ public class SpuServiceImpl implements SpuService {
 
     @Override
     public String createSpu(SpuDto spuDto) {
-        SpuWithBLOBs spu=new SpuWithBLOBs();
+        Spu spu=new Spu();
         BeanutilsCopy.copyProperties(spuDto,spu);
         spu.setStdProductNo(createSpuNo(spuDto.getCategorySpNo()));
         spuMapper.insertSelective(spu);
@@ -137,7 +137,7 @@ public class SpuServiceImpl implements SpuService {
 
     @Override
     public void updateSpu(SpuDto spuDto) {
-        SpuWithBLOBs spu=new SpuWithBLOBs();
+        Spu spu=new Spu();
         BeanutilsCopy.copyProperties(spuDto,spu);
         spuMapper.updateByPrimaryKeySelective(spu);
     }
@@ -194,7 +194,7 @@ public class SpuServiceImpl implements SpuService {
     @Override
     @Transactional
     public void saveSpuAttrList(String spuNo, List<SpuAttrDto> attrList) {
-        SpuWithBLOBs spu=new SpuWithBLOBs();
+        Spu spu=new Spu();
         spu.setStdProductNo(spuNo);
         spu.setCdf1(JSONObject.toJSONString(attrList));
         spuMapper.updateByPrimaryKeySelective(spu);

@@ -141,6 +141,12 @@
         #{item}
       </foreach>
     </if>
+    <if test="purchasePrincipal != null and purchasePrincipal != ''">
+      and purchase_principal=#{purchasePrincipal,jdbcType=VARCHAR}
+    </if>
+    <if test="businessPrincipal != null and businessPrincipal != ''">
+      and business_principal=#{businessPrincipal,jdbcType=VARCHAR}
+    </if>
     order by ent_number desc
   </select>
   <select id="selectNameByFuzzyName" parameterType="java.lang.String" resultType="java.lang.String">
