@@ -50,4 +50,10 @@ public class EnterpriseInfo {
 
 
     private  Integer  channel;
+
+    @ApiModelProperty("业务负责人")
+    private String businessPrincipal;
+
+    @ApiModelProperty("采购负责人")
+    private String purchasePrincipal;
 }

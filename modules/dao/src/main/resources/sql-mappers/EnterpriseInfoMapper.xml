@@ -22,11 +22,13 @@
     <result column="request_id" property="requestId" jdbcType="VARCHAR" />
     <result column="isdelete" property="isdelete" jdbcType="INTEGER" />
     <result column="channel" property="channel" jdbcType="INTEGER" />
+    <result column="business_principal" property="businessPrincipal" jdbcType="VARCHAR"/>
+    <result column="purchase_principal" property="purchasePrincipal" jdbcType="VARCHAR"/>
   </resultMap>
   <sql id="Base_Column_List" >
     ent_number, ent_type, ent_name, register_address, bussiness_address, web_address,
     register_money, taxpayer_id, purchase, sell, tender, bid, check_state, isvalid, create_time,
-    edit_time, edit_user, isdelete,channel,request_id
+    edit_time, edit_user, isdelete,channel,request_id,business_principal,purchase_principal
   </sql>
   <!-- 基本的sql查询条件公共引用 -->
   <sql id="searchBy">
@@ -97,6 +99,12 @@
       <if test="channel != null ">
         and channel = #{channel,jdbcType=INTEGER}
       </if>
+      <if test="purchasePrincipal != null">
+        and purchase_principal = #{purchasePrincipal,jdbcType=VARCHAR}
+      </if>
+      <if test="businessPrincipal != null">
+        and business_principal = #{businessPrincipal,jdbcType=VARCHAR}
+      </if>
     </trim>
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
@@ -153,14 +161,15 @@
       register_money, taxpayer_id, purchase, 
       sell, tender, bid, 
       check_state, isvalid, create_time, 
-      edit_time, edit_user, isdelete,channel,request_id
+      edit_time, edit_user, isdelete,channel,request_id,purchase_principal,business_principal
       )
     values (#{entNumber,jdbcType=VARCHAR}, #{entType,jdbcType=INTEGER}, #{entName,jdbcType=VARCHAR}, 
       #{registerAddress,jdbcType=VARCHAR}, #{bussinessAddress,jdbcType=VARCHAR}, #{webAddress,jdbcType=VARCHAR}, 
       #{registerMoney,jdbcType=VARCHAR}, #{taxpayerId,jdbcType=VARCHAR}, #{purchase,jdbcType=INTEGER}, 
       #{sell,jdbcType=INTEGER}, #{tender,jdbcType=INTEGER}, #{bid,jdbcType=INTEGER}, 
       #{checkState,jdbcType=VARCHAR}, #{isvalid,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP},
-      #{editTime,jdbcType=TIMESTAMP}, #{editUser,jdbcType=VARCHAR}, #{isdelete,jdbcType=INTEGER}, #{channel,jdbcType=INTEGER},#{requestId,jdbcType=VARCHAR}
+      #{editTime,jdbcType=TIMESTAMP}, #{editUser,jdbcType=VARCHAR}, #{isdelete,jdbcType=INTEGER}, #{channel,jdbcType=INTEGER},#{requestId,jdbcType=VARCHAR},
+      #{purchasePrincipal,jdbcType=VARCHAR},#{businessPrincipal,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.csjscm.core.framework.model.EnterpriseInfo" >
@@ -226,6 +235,12 @@
       <if test="channel != null" >
         channel,
       </if>
+      <if test="purchasePrincipal != null">
+        purchase_principal,
+      </if>
+      <if test="businessPrincipal != null">
+        business_principal,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="entNumber != null" >
@@ -287,6 +302,12 @@
       </if>
       <if test="channel != null" >
         #{channel,jdbcType=INTEGER},
+      </if>
+      <if test="purchasePrincipal != null">
+        #{purchasePrincipal,jdbcType=VARCHAR},
+      </if>
+      <if test="businessPrincipal != null">
+        #{businessPrincipal,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -350,6 +371,12 @@
       <if test="channel != null" >
         channel = #{channel,jdbcType=INTEGER},
       </if>
+      <if test="purchasePrincipal != null">
+        purchase_principal=#{purchasePrincipal,jdbcType=VARCHAR},
+      </if>
+      <if test="businessPrincipal != null">
+        business_principal=#{businessPrincipal,jdbcType=VARCHAR},
+      </if>
     </set>
     where ent_number = #{entNumber,jdbcType=VARCHAR}
   </update>
@@ -372,7 +399,9 @@
       edit_time = #{editTime,jdbcType=TIMESTAMP},
       edit_user = #{editUser,jdbcType=VARCHAR},
       isdelete = #{isdelete,jdbcType=INTEGER},
-      channel = #{channel,jdbcType=INTEGER}
+      channel = #{channel,jdbcType=INTEGER},
+      purchase_principal = #{purchasePrincipal,jdbcType=VARCHAR},
+      business_principal = #{businessPrincipal,jdbcType=VARCHAR}
     where ent_number = #{entNumber,jdbcType=VARCHAR}
   </update>
   <select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
