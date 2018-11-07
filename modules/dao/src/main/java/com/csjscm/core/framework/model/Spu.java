@@ -49,6 +49,8 @@ public class Spu {
 
     private String brandId;
 
+    private String brandName;
+
     @Creator
     private String createUserId;
 

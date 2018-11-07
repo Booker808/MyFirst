@@ -133,12 +133,12 @@ public class SpuServiceImpl implements SpuService {
             throw new BusinessException("找不到对应的spu");
         }
         BeanutilsCopy.copyProperties(spu,result);
-        if(result.getBrandId()!=null){
-            BrandMaster brandMaster=brandMasterMapper.selectByPrimaryKey(Integer.parseInt(result.getBrandId()));
-            if(brandMaster!=null){
-                result.setBrandName(brandMaster.getBrandName());
-            }
-        }
+//        if(result.getBrandId()!=null){
+//            BrandMaster brandMaster=brandMasterMapper.selectByPrimaryKey(Integer.parseInt(result.getBrandId()));
+//            if(brandMaster!=null){
+//                result.setBrandName(brandMaster.getBrandName());
+//            }
+//        }
         return result;
     }
 
@@ -147,6 +147,7 @@ public class SpuServiceImpl implements SpuService {
         Spu spu=new Spu();
         BeanutilsCopy.copyProperties(spuDto,spu);
         spu.setStdProductNo(createSpuNo(spuDto.getCategorySpNo()));
+        checkSpuRepeat(spu);
         spuMapper.insertSelective(spu);
         return spu.getStdProductNo();
     }
@@ -155,6 +156,7 @@ public class SpuServiceImpl implements SpuService {
     public void updateSpu(SpuDto spuDto) {
         Spu spu=new Spu();
         BeanutilsCopy.copyProperties(spuDto,spu);
+        checkSpuRepeat(spu);
         spuMapper.updateByPrimaryKeySelective(spu);
     }
 
@@ -241,5 +243,17 @@ public class SpuServiceImpl implements SpuService {
     private String createProductNo(String categorySpNo) {
         Long increase = redisServiceFacade.increase(new RedisDistributedCounterObject(Constant.REDIS_KEY_SP_PRODUCT_NO + categorySpNo), 1);
         return String.format("%s%06d",categorySpNo,increase);
+    }
+
+    private void checkSpuRepeat(Spu spu){
+        Map<String,Object> condition=Maps.newHashMap();
+        condition.put("productName",spu.getProductName());
+        condition.put("minUnit",spu.getMinUnit());
+        condition.put("brandId",spu.getBrandId());
+        condition.put("categorySpNo",spu.getCategorySpNo());
+        condition.put("notStdProductNo",spu.getStdProductNo());
+        int count=spuMapper.findCount(condition);
+        if(count!=0)
+            throw new BusinessException("存在重复的Spu，请检查商品名、最小单位、品牌、分类是否唯一");
     }
 }

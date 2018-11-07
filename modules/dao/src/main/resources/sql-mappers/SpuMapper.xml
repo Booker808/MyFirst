@@ -22,6 +22,7 @@
     <result column="distribution_condition" property="distributionCondition" jdbcType="VARCHAR" />
     <result column="isvalidate" property="isvalidate" jdbcType="INTEGER" />
     <result column="brand_id" property="brandId" jdbcType="VARCHAR" />
+    <result column="brand_name" property="brandName" jdbcType="VARCHAR" />
     <result column="create_user_id" property="createUserId" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="edit_user_id" property="editUserId" jdbcType="VARCHAR" />
@@ -75,7 +76,7 @@
     std_product_no, product_name, lv1_category_id, lv1_category_no, lv2_category_id, 
     lv2_category_no, category_id, category_no, lv1_category_sp_id, lv1_category_sp_no, 
     lv2_category_sp_id, lv2_category_sp_no, category_sp_id, category_sp_no, mnemonic_code, 
-    guidance_price, page_title, distribution_condition, isvalidate, brand_id, create_user_id, 
+    guidance_price, page_title, distribution_condition, isvalidate, brand_id, brand_name, create_user_id,
     create_time, edit_user_id, edit_time, cdf2, cdf3, cdf4, cdf5, cdf6, cdf7, cdf8,
     cdf9, cdf10, cdf11, cdf12, cdf13, cdf14, cdf15, cdf16, cdf17, cdf18, cdf19, cdf20, 
     cdf21, cdf22, cdf23, cdf24, cdf25, cdf26, cdf27, cdf28, cdf29, cdf30, rule_size, 
@@ -85,7 +86,7 @@
     spu.std_product_no,spu.product_name, spu.lv1_category_id, spu.lv1_category_no, spu.lv2_category_id, spu.lv2_category_no,
     spu.category_id, spu.category_no, spu.lv1_category_sp_id, spu.lv1_category_sp_no, spu.lv2_category_sp_id,
     spu.lv2_category_sp_no, spu.category_sp_id, spu.category_sp_no, spu.mnemonic_code, spu.guidance_price,
-    spu.page_title, spu.distribution_condition, spu.isvalidate, spu.brand_id, spu.create_user_id, spu.create_time,
+    spu.page_title, spu.distribution_condition, spu.isvalidate, spu.brand_id,spu.brand_name, spu.create_user_id, spu.create_time,
     spu.edit_user_id, spu.edit_time, spu.cdf2, spu.cdf3, spu.cdf4, spu.cdf5, spu.cdf6, spu.cdf7, spu.cdf8, spu.cdf9, spu.cdf10,
     spu.cdf11, spu.cdf12, spu.cdf13, spu.cdf14, spu.cdf15, spu.cdf16, spu.cdf17, spu.cdf18, spu.cdf19, spu.cdf20, spu.cdf21, spu.cdf22,
     spu.cdf23, spu.cdf24, spu.cdf25, spu.cdf26, spu.cdf27, spu.cdf28, spu.cdf29, spu.cdf30, spu.rule_size, spu.min_unit, spu.weight,
@@ -104,6 +105,25 @@
       </if>
       <if test="isvalidate != null">
         spu.isvalidate = #{isvalidate,jdbcType=INTEGER}
+      </if>
+    </where>
+  </sql>
+  <sql id="searchByCondition">
+    <where>
+      <if test="productName != null and productName != ''">
+        and product_name = #{productName,jdbcType=VARCHAR}
+      </if>
+      <if test="minUnit != null and minUnit != ''">
+        and min_unit = #{minUnit,jdbcType=VARCHAR}
+      </if>
+      <if test="brandId != null">
+        and brand_id = #{brandId,jdbcType=VARCHAR}
+      </if>
+      <if test="categorySpNo != null and categorySpNo != ''">
+        and category_sp_no = #{categorySpNo,jdbcType=VARCHAR}
+      </if>
+      <if test="notStdProductNo != null and notStdProductNo != ''">
+        and std_product_no != #{notStdProductNo,jdbcType=VARCHAR}
       </if>
     </where>
   </sql>
@@ -132,6 +152,10 @@
   <select id="selectBySpuNoList" resultMap="BaseResultMap">
     select max(substring(std_product_no,6)) as std_product_no ,category_sp_no from spu where category_sp_no is not null group by category_sp_no
   </select>
+  <select id="findCount" resultType="java.lang.Integer" parameterType="map">
+    select count(1) from spu
+    <include refid="searchByCondition"/>
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from spu
     where std_product_no = #{stdProductNo,jdbcType=VARCHAR}
@@ -143,7 +167,7 @@
       lv1_category_sp_no, lv2_category_sp_id, lv2_category_sp_no, 
       category_sp_id, category_sp_no, mnemonic_code, 
       guidance_price, page_title, distribution_condition, 
-      isvalidate, brand_id, create_user_id, 
+      isvalidate, brand_id,brand_name, create_user_id,
       create_time, edit_user_id, edit_time, 
       cdf1, cdf2, cdf3, cdf4, 
       cdf5, cdf6, cdf7, cdf8, 
@@ -164,7 +188,7 @@
       #{lv1CategorySpNo,jdbcType=VARCHAR}, #{lv2CategorySpId,jdbcType=INTEGER}, #{lv2CategorySpNo,jdbcType=VARCHAR}, 
       #{categorySpId,jdbcType=INTEGER}, #{categorySpNo,jdbcType=VARCHAR}, #{mnemonicCode,jdbcType=VARCHAR}, 
       #{guidancePrice,jdbcType=DECIMAL}, #{pageTitle,jdbcType=VARCHAR}, #{distributionCondition,jdbcType=VARCHAR}, 
-      #{isvalidate,jdbcType=INTEGER}, #{brandId,jdbcType=VARCHAR}, #{createUserId,jdbcType=VARCHAR}, 
+      #{isvalidate,jdbcType=INTEGER}, #{brandId,jdbcType=VARCHAR},#{brandName,jdbcType=VARCHAR}, #{createUserId,jdbcType=VARCHAR},
       #{createTime,jdbcType=TIMESTAMP}, #{editUserId,jdbcType=VARCHAR}, #{editTime,jdbcType=TIMESTAMP}, 
       #{cdf1,jdbcType=LONGVARCHAR}, #{cdf2,jdbcType=VARCHAR}, #{cdf3,jdbcType=VARCHAR}, #{cdf4,jdbcType=VARCHAR},
       #{cdf5,jdbcType=VARCHAR}, #{cdf6,jdbcType=VARCHAR}, #{cdf7,jdbcType=VARCHAR}, #{cdf8,jdbcType=VARCHAR}, 
@@ -242,6 +266,9 @@
       </if>
       <if test="brandId != null" >
         brand_id,
+      </if>
+      <if test="brandName != null" >
+        brand_name,
       </if>
       <if test="createUserId != null" >
         create_user_id,
@@ -434,6 +461,9 @@
       <if test="brandId != null" >
         #{brandId,jdbcType=VARCHAR},
       </if>
+      <if test="brandName != null" >
+        #{brandName,jdbcType=VARCHAR},
+      </if>
       <if test="createUserId != null" >
         #{createUserId,jdbcType=VARCHAR},
       </if>
@@ -625,6 +655,9 @@
       <if test="brandId != null" >
         brand_id = #{brandId,jdbcType=VARCHAR},
       </if>
+      <if test="brandName != null" >
+        brand_name = #{brandName,jdbcType=VARCHAR},
+      </if>
       <if test="createUserId != null" >
         create_user_id = #{createUserId,jdbcType=VARCHAR},
       </if>
@@ -778,6 +811,7 @@
       distribution_condition = #{distributionCondition,jdbcType=VARCHAR},
       isvalidate = #{isvalidate,jdbcType=INTEGER},
       brand_id = #{brandId,jdbcType=VARCHAR},
+      brand_name = #{brandName,jdbcType=VARCHAR},
       create_user_id = #{createUserId,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       edit_user_id = #{editUserId,jdbcType=VARCHAR},
@@ -844,6 +878,7 @@
       distribution_condition = #{distributionCondition,jdbcType=VARCHAR},
       isvalidate = #{isvalidate,jdbcType=INTEGER},
       brand_id = #{brandId,jdbcType=VARCHAR},
+      brand_name = #{brandName,jdbcType=VARCHAR},
       create_user_id = #{createUserId,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       edit_user_id = #{editUserId,jdbcType=VARCHAR},

@@ -29,4 +29,6 @@ public interface SpuMapper {
     int updateShelfState(Map<String, Object> map);
 
     List<Spu> selectBySpuNoList();
+
+    int findCount(Map<String, Object> condition);
 }
