@@ -73,6 +73,7 @@ public class SpuServiceImpl implements SpuService {
         //如果是上架，则需要更新上架时间
         if(0==shelf){
             map.put("shelfTime",new Date());
+            checkHasSku(spuList.get(0));
         }
         int count=spuMapper.updateShelfState(map);
         if(count!=spuList.size()){
@@ -81,6 +82,21 @@ public class SpuServiceImpl implements SpuService {
         //如果下架，需要重新创建对应的sku
         if(1==shelf){
             recreateSpSkuCore(spuList);
+        }
+    }
+
+    /**
+     * 校验spu是否存在对应的sku
+     *
+     * @param spuNo
+     */
+    private void checkHasSku(String spuNo) {
+        Map<String,Object> map=Maps.newHashMap();
+        map.put("stdProductNo",spuNo);
+        map.put("isvalidate",0);
+        List<SpSkuCore> spSkuCoreList= spSkuCoreMapper.selectByCondition(map);
+        if(spSkuCoreList==null||spSkuCoreList.size()==0){
+            throw new BusinessException("销售属性为空，无法上架");
         }
     }
 
