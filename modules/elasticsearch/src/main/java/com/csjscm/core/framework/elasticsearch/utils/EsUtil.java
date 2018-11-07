@@ -1,11 +1,63 @@
 package com.csjscm.core.framework.elasticsearch.utils;
 
+import com.csjscm.sweet.framework.core.mvc.BusinessException;
 import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
 public interface EsUtil {
+    /**
+     * 创建Index
+     *
+     * @param clazz
+     * @return
+     */
+    boolean createIndex(Class clazz);
+
+    boolean deleteIndex(Class clazz);
+
+    /**
+     * 向Es引擎插入对象
+     *
+     * @param object
+     * @return
+     * @throws IOException
+     */
+    String insert(Object object) throws IOException, NoSuchMethodException, InvocationTargetException, IllegalAccessException;
+
+    /**
+     * 更新Es引擎中的对象
+     *
+     * @param object
+     * @return
+     */
+    String update(Object object) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, IOException,BusinessException;
+
+    /**
+     * 删除Es引擎中的对象
+     *
+     * @param object
+     * @return
+     */
+    String delete(Object object) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, BusinessException, IOException;
+
+    /**
+     * 根据ID搜索Es中的对象
+     *
+     * @param id
+     * @param clazz
+     * @param <T>
+     * @return
+     * @throws IOException
+     */
+    <T> T selectById(String id,Class<T> clazz) throws IOException;
+
+    <T> QueryResult<T> selectByCondition(Map<String,String> condition,Class<T> clazz) throws IOException;
+
+    QueryResult<String> selectIdsByCondition(Map<String,String> condition,Class clazz) throws IOException;
+
     /**
      * 插入数据（不指定ID）
      *
@@ -15,6 +67,7 @@ public interface EsUtil {
      * @return
      * @throws IOException
      */
+    @Deprecated
     String insert(String index,String type,Object object) throws IOException;
 
     /**
@@ -27,6 +80,7 @@ public interface EsUtil {
      * @return
      * @throws IOException
      */
+    @Deprecated
     String insert(String index,String type,String id,Object object) throws IOException;
 
     /**
@@ -39,6 +93,7 @@ public interface EsUtil {
      * @return
      * @throws IOException
      */
+    @Deprecated
     String updateById(String index, String type, String id, Object object) throws IOException;
 
     /**
@@ -49,6 +104,7 @@ public interface EsUtil {
      * @param id
      * @return
      */
+    @Deprecated
     String deleteById(String index, String type, String id) throws IOException;
 
     /**
@@ -71,7 +127,7 @@ public interface EsUtil {
      * @param clazz
      * @return
      */
-    <T> QueryResult<T> selectByAndCondition(String index, String type, Map<String,String> condition, Class<T> clazz) throws IOException;
+    <T> QueryResult<T> selectByCondition(String index, String type, Map<String,String> condition, Class<T> clazz) throws IOException;
 
 
     /**
@@ -82,7 +138,7 @@ public interface EsUtil {
      * @param condition
      * @return
      */
-     QueryResult<String> selectIdsByAndCondition(String index, String type, Map<String,String> condition) throws IOException;
+    QueryResult<String> selectIdsByCondition(String index, String type, Map<String,String> condition) throws IOException;
 
 
 }
