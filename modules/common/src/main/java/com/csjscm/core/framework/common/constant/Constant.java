@@ -70,6 +70,10 @@ public class Constant {
      */
     public static final String  ENTERPRISE_CHECK_OA_FLOW_INFO_URL = "/api/activiti/getMyWorkFlowInfoHisDetail";
     /**
+     * 获取流程图(新)API
+     */
+    public static final String  ENTERPRISE_CHECK_OA_TRACE_PROCESS_URL = "/api/activiti/getNewTraceProcess";
+    /**
      * 流程定义关键字
      */
     public static final String  ENTERPRISE_CHECK_OA_PROCESS = "SupplierAdmittanceProcess2.2";

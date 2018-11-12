@@ -24,7 +24,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ValidationException;
-import java.io.IOException;
+import java.io.*;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -116,7 +118,44 @@ public class EnterpriseCheckController {
         EnterpriseFlow byPrimary = enterpriseFlowService.findByPrimary(id);
         return APIResponse.success(byPrimary);
     }
-
+    @ApiOperation("获取流程图")
+    @RequestMapping(value = "/getTraceProcess")
+    public APIResponse getTraceProcess(HttpServletResponse response, @ApiParam(name="entNumber",value="企业编码",required=true) String entNumber) throws  Exception{
+        Map<String, Object> map = new HashMap<>();
+        map.put("entNumber",entNumber);
+        map.put("custom", 3);
+        EnterpriseFlow one = enterpriseFlowService.findSelective(map);
+        if(one==null){
+            return APIResponse.fail("供应商未开始审核，无法查询流程图");
+        }
+        String url = System.getProperty(Constant.RNTERPRISE_CHECK_OA_DOMAIN) + Constant.ENTERPRISE_CHECK_OA_TRACE_PROCESS_URL+"?processInstanceId="+one.getInstanceId();
+        URL url1 = new URL(url);
+        try {
+            URLConnection conn = url1.openConnection();
+            InputStream inStream = conn.getInputStream();
+            ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+            byte[] buffer = new byte[2048];
+            int len = 0;
+            while( (len=inStream.read(buffer)) != -1 ){
+                outStream.write(buffer, 0, len);
+            }
+            byte data[] =outStream.toByteArray();
+            inStream.close();
+            OutputStream out;
+            response.setCharacterEncoding("UTF-8");
+            response.setContentType("image/jpeg");
+            //   String fileName=new String("供应商准入流程图.png".getBytes("UTF-8"),"iso-8859-1");
+            //  response.addHeader("Content-Type", "application/octet-stream");
+            //   response.addHeader("Content-Disposition", "attachment;filename="+fileName);
+            out=response.getOutputStream();
+            out.write(data);
+            out.flush();
+            out.close();
+        } catch (FileNotFoundException e) {
+            throw  new BussinessException("文件下载异常");
+        }
+        return APIResponse.success();
+    }
     /**
      * 自定义异常捕获
      *
