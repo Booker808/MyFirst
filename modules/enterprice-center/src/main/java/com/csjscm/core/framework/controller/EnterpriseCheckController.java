@@ -8,8 +8,10 @@ import com.csjscm.core.framework.common.util.BussinessException;
 import com.csjscm.core.framework.common.util.HttpClientUtil;
 import com.csjscm.core.framework.model.EnterpriseFlow;
 import com.csjscm.core.framework.model.EnterpriseInfo;
+import com.csjscm.core.framework.model.EnterprisePurchaseTemplate;
 import com.csjscm.core.framework.service.enterprise.EnterpriseFlowService;
 import com.csjscm.core.framework.service.enterprise.EnterpriseInfoService;
+import com.csjscm.core.framework.service.template.EnterpriseTemplateFlowService;
 import com.csjscm.core.framework.vo.EnterpriseFlowModel;
 import com.csjscm.core.framework.vo.MyTodoDealWithVo;
 import com.csjscm.sweet.framework.auth.AuthUtils;
@@ -17,6 +19,7 @@ import com.csjscm.sweet.framework.core.mvc.APIResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +46,8 @@ public class EnterpriseCheckController {
     private EnterpriseFlowService enterpriseFlowService;
     @Autowired
     private EnterpriseInfoService enterpriseInfoService;
-
+    @Autowired
+    private EnterpriseTemplateFlowService flowService;
     /**
      * 获取代办信息
      *
@@ -120,15 +124,30 @@ public class EnterpriseCheckController {
     }
     @ApiOperation("获取流程图")
     @RequestMapping(value = "/getTraceProcess")
-    public APIResponse getTraceProcess(HttpServletResponse response, @ApiParam(name="entNumber",value="企业编码",required=true) String entNumber) throws  Exception{
-        Map<String, Object> map = new HashMap<>();
-        map.put("entNumber",entNumber);
-        map.put("custom", 3);
-        EnterpriseFlow one = enterpriseFlowService.findSelective(map);
-        if(one==null){
-            return APIResponse.fail("供应商未开始审核，无法查询流程图");
+    public APIResponse getTraceProcess(HttpServletResponse response,String entNumber,Integer templateId) throws  Exception{
+        String instanceId="";
+        if(StringUtils.isNotBlank(entNumber)){
+            Map<String, Object> map = new HashMap<>();
+            map.put("entNumber",entNumber);
+            map.put("custom", 3);
+            EnterpriseFlow one = enterpriseFlowService.findSelective(map);
+            if(one==null){
+                return APIResponse.fail("供应商未开始审核，无法查询流程图");
+            }
+            instanceId=one.getInstanceId();
         }
-        String url = System.getProperty(Constant.RNTERPRISE_CHECK_OA_DOMAIN) + Constant.ENTERPRISE_CHECK_OA_TRACE_PROCESS_URL+"?processInstanceId="+one.getInstanceId();
+        if(templateId!=null){
+            EnterprisePurchaseTemplate enterprisePurchaseTemplate = flowService.selectByPrimaryKey(templateId);
+            if(enterprisePurchaseTemplate!=null && StringUtils.isNotBlank(enterprisePurchaseTemplate.getInstanceId())){
+                instanceId=enterprisePurchaseTemplate.getInstanceId();
+            }else {
+                return APIResponse.fail("采购合同模板未开始审核，无法查询流程图");
+            }
+        }
+        if(StringUtils.isBlank(instanceId)){
+            return APIResponse.fail("无法查询流程图");
+        }
+        String url = System.getProperty(Constant.RNTERPRISE_CHECK_OA_DOMAIN) + Constant.ENTERPRISE_CHECK_OA_TRACE_PROCESS_URL+"?processInstanceId="+instanceId;
         URL url1 = new URL(url);
         try {
             URLConnection conn = url1.openConnection();
@@ -151,8 +170,8 @@ public class EnterpriseCheckController {
             out.write(data);
             out.flush();
             out.close();
-        } catch (FileNotFoundException e) {
-            throw  new BussinessException("文件下载异常");
+        } catch (Exception e) {
+            throw  new BussinessException("获取流程图异常");
         }
         return APIResponse.success();
     }

@@ -1,5 +1,6 @@
 package com.csjscm.core.framework.service.template;
 
+import com.csjscm.core.framework.model.EnterprisePurchaseTemplate;
 import com.csjscm.core.framework.service.template.model.CheckTaskVo;
 import com.csjscm.core.framework.service.template.model.HisWorkFlowInfo;
 import com.csjscm.core.framework.service.template.model.TodoWorkFlowInfo;
@@ -35,4 +36,6 @@ public interface EnterpriseTemplateFlowService {
      * @return
      */
     List<HisWorkFlowInfo> queryHisFlow(String instanceId);
+
+    EnterprisePurchaseTemplate selectByPrimaryKey(Integer id);
 }

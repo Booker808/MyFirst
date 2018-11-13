@@ -203,6 +203,11 @@ public class EnterpriseTemplateFlowServiceImpl implements EnterpriseTemplateFlow
         return JSONObject.parseArray(jsonObject.getString("data"),HisWorkFlowInfo.class);
     }
 
+    @Override
+    public EnterprisePurchaseTemplate selectByPrimaryKey(Integer id) {
+        return purchaseTemplateMapper.selectByPrimaryKey(id);
+    }
+
     /**
      * 根据业务模板ID和实例ID查询OA中当前流程状态
      *
