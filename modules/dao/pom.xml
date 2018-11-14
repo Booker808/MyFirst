@@ -17,6 +17,10 @@
             <groupId>com.csjscm.core.framework</groupId>
             <artifactId>common</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.csjscm.core.framework</groupId>
+            <artifactId>elasticsearch</artifactId>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

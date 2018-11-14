@@ -71,4 +71,9 @@ public interface CategoryService {
      * @return
      */
     List<CategoryJsonModel>  getJsonCategory();
+
+    /**
+     * 初始化分类的Es数据，会清空之前在Es存储的分类，重新创建Index
+     */
+    void initCategoryEs();
 }

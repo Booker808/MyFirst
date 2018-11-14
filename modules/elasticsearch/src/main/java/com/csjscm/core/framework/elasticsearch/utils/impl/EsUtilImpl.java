@@ -1,5 +1,6 @@
 package com.csjscm.core.framework.elasticsearch.utils.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.csjscm.core.framework.elasticsearch.annotation.ElasticsearchIndex;
 import com.csjscm.core.framework.elasticsearch.annotation.ElasticsearchIndexField;
@@ -16,6 +17,9 @@ import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
 import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse;
+import org.elasticsearch.action.admin.indices.get.GetIndexRequest;
+import org.elasticsearch.action.bulk.BulkRequest;
+import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.get.GetRequest;
@@ -44,10 +48,12 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 
 import static com.csjscm.core.framework.elasticsearch.constant.IndexFiledTypeEnum.KEYWORD;
+import static com.csjscm.core.framework.elasticsearch.constant.IndexFiledTypeEnum.TEXT;
 
 @Component
 @Slf4j
@@ -69,13 +75,10 @@ public class EsUtilImpl implements EsUtil {
             if(field.isAnnotationPresent(ElasticsearchIndexField.class)){
                 Map<String,Object> indexField=Maps.newHashMap();
                 String fieldName= getIndexField(field);
-                switch(field.getAnnotation(ElasticsearchIndexField.class).indexType()){
-                    case TEXT:
-                        indexField.put("analyzer", "ik_max_word");
-                    case KEYWORD:
-                        indexField.put("type", field.getAnnotation(ElasticsearchIndexField.class).indexType().toString().toLowerCase());
-                        propertiesMap.put(fieldName,indexField);
-                    default:
+                indexField.put("type", field.getAnnotation(ElasticsearchIndexField.class).indexType().toString().toLowerCase());
+                propertiesMap.put(fieldName,indexField);
+                if(field.getAnnotation(ElasticsearchIndexField.class).indexType().equals(TEXT)){
+                    indexField.put("analyzer", "ik_max_word");
                 }
             }
         }
@@ -94,9 +97,29 @@ public class EsUtilImpl implements EsUtil {
     }
 
     @Override
+    public boolean existsIndex(Class clazz) {
+        if(!clazz.isAnnotationPresent(ElasticsearchIndex.class)){
+            return false;
+        }
+        GetIndexRequest request = new GetIndexRequest();
+        String indexName=getIndexName(clazz);
+        request.indices(indexName);
+        boolean result=false;
+        try{
+            result=client.indices().exists(request, RequestOptions.DEFAULT);
+        }catch (IOException e){
+            log.error("查询搜索引擎Index"+indexName+"请求失败:"+e.getMessage(),e);
+        }
+        return result;
+    }
+
+    @Override
     public boolean deleteIndex(Class clazz) {
         if(!clazz.isAnnotationPresent(ElasticsearchIndex.class)){
             return false;
+        }
+        if(!existsIndex(clazz)){
+            return true;
         }
         String indexName=getIndexName(clazz);
         DeleteIndexRequest request = new DeleteIndexRequest(indexName);
@@ -124,6 +147,36 @@ public class EsUtilImpl implements EsUtil {
         indexRequest.source(map);
         IndexResponse response = client.index(indexRequest, RequestOptions.DEFAULT);
         return response.getResult().getLowercase();
+    }
+
+    @Override
+    public <T> String insertList(List<T> list,Class<T> clazz) throws IOException {
+        if(list==null || list.isEmpty()){
+            return null;
+        }
+        if(!clazz.isAnnotationPresent(ElasticsearchIndex.class)){
+            return null;
+        }
+        BulkRequest request=new BulkRequest();
+        for(Object data:list){
+            try{
+                IndexRequest indexRequest=new IndexRequest(getIndexName(clazz),getIndexType(clazz));
+                Map<String,Object> map=getIndexObject(data);
+                String id=getId(data);
+                if(StringUtils.isNotEmpty(id)){
+                    indexRequest.id(id);
+                }
+                indexRequest.source(map);
+                request.add(indexRequest);
+            }catch (Exception e){
+                log.error("Something wrong:"+ JSON.toJSONString(data),e);
+            }
+        }
+        BulkResponse responses=client.bulk(request,RequestOptions.DEFAULT);
+        if(responses.hasFailures()){
+            return responses.buildFailureMessage();
+        }
+        return null;
     }
 
     @Override
@@ -162,7 +215,9 @@ public class EsUtilImpl implements EsUtil {
         }
         GetRequest request=new GetRequest(getIndexName(clazz),getIndexType(clazz),id);
         GetResponse response=client.get(request,RequestOptions.DEFAULT);
-        return JSONObject.parseObject(response.getSourceAsString(),clazz);
+        T object= JSONObject.parseObject(response.getSourceAsString(),clazz);
+        setId(object,response.getId());
+        return object;
     }
 
     @Override
@@ -174,7 +229,9 @@ public class EsUtilImpl implements EsUtil {
         long totalHits=hits.getTotalHits();
         List<T> list= Lists.newLinkedList();
         for (SearchHit hit:hits.getHits()){
-            list.add(JSONObject.parseObject(hit.getSourceAsString(),clazz));
+            T object=JSONObject.parseObject(hit.getSourceAsString(),clazz);
+            setId(object,hit.getId());
+            list.add(object);
         }
         QueryResult<T> result=new QueryResult<>();
         result.setItems(list);
@@ -236,7 +293,9 @@ public class EsUtilImpl implements EsUtil {
     public <T> T selectById(String index, String type, String id, Class<T> clazz) throws IOException {
         GetRequest request=new GetRequest(index, type, id);
         GetResponse response=client.get(request,RequestOptions.DEFAULT);
-        return JSONObject.parseObject(response.getSourceAsString(),clazz);
+        T object= JSONObject.parseObject(response.getSourceAsString(),clazz);
+        setId(object,response.getId());
+        return object;
     }
 
     @Override
@@ -245,7 +304,9 @@ public class EsUtilImpl implements EsUtil {
         long totalHits=hits.getTotalHits();
         List<T> list= Lists.newLinkedList();
         for (SearchHit hit:hits.getHits()){
-            list.add(JSONObject.parseObject(hit.getSourceAsString(),clazz));
+            T object=JSONObject.parseObject(hit.getSourceAsString(),clazz);
+            setId(object,hit.getId());
+            list.add(object);
         }
         QueryResult<T> result=new QueryResult<>();
         result.setItems(list);
@@ -313,7 +374,7 @@ public class EsUtilImpl implements EsUtil {
      */
     private String getIndexName(Class clazz){
         String indexName=((ElasticsearchIndex)clazz.getAnnotation(ElasticsearchIndex.class)).indexName();
-        return StringUtils.isEmpty(indexName)?clazz.getSimpleName():indexName;
+        return StringUtils.isEmpty(indexName)?clazz.getSimpleName().toLowerCase():indexName;
     }
 
     /**
@@ -324,7 +385,7 @@ public class EsUtilImpl implements EsUtil {
      */
     private String getIndexType(Class clazz){
         String typeName=((ElasticsearchIndex)clazz.getAnnotation(ElasticsearchIndex.class)).typeName();
-        return StringUtils.isEmpty(typeName)?clazz.getSimpleName():typeName;
+        return StringUtils.isEmpty(typeName)?clazz.getSimpleName().toLowerCase():typeName;
     }
 
     /**
@@ -360,6 +421,28 @@ public class EsUtilImpl implements EsUtil {
         return null;
     }
 
+    private void setId(Object object,String id){
+        for(Field field:object.getClass().getDeclaredFields()){
+            if(field.isAnnotationPresent(ElasticsearchIndexId.class)){
+                char[] name;
+                name=field.getName().toCharArray();
+                name[0]-=32;
+                try{
+                    if(field.getType().equals(String.class)){
+                        object.getClass().getDeclaredMethod("set"+String.valueOf(name),field.getType()).invoke(object,id);
+                    }else if(field.getType().equals(Integer.class)){
+                        object.getClass().getDeclaredMethod("set"+String.valueOf(name),field.getType()).invoke(object,Integer.parseInt(id));
+                    }
+                }catch (Exception e){
+                    log.error("set id fail:"+id,e);
+                }
+                return;
+//                Object value=object.getClass().getDeclaredMethod("set"+String.valueOf(name)).invoke(object);
+//                return value==null?null:value.toString();
+            }
+        }
+    }
+
     /**
      * 获取对象的map
      *
@@ -379,12 +462,7 @@ public class EsUtilImpl implements EsUtil {
                 name=field.getName().toCharArray();
                 name[0]-=32;
                 value=object.getClass().getDeclaredMethod("get"+String.valueOf(name)).invoke(object);
-                switch(field.getAnnotation(ElasticsearchIndexField.class).indexType()){
-                    case TEXT:
-                    case KEYWORD:
-                        map.put(fieldName,value);
-                    default:
-                }
+                map.put(fieldName,value);
             }
         }
         return map;

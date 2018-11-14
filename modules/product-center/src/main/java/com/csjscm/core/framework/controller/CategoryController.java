@@ -130,6 +130,13 @@ public class CategoryController{
         return APIResponse.success();
     }
 
+    @ApiOperation("初始化分类Es数据库")
+    @RequestMapping(value = "/categoryEs/_init",method = RequestMethod.POST)
+    public APIResponse initCategoryEs(){
+        categoryService.initCategoryEs();
+        return APIResponse.success();
+    }
+
     @ExceptionHandler({BussinessException.class})
     public APIResponse exceptionHandler(Exception e, HttpServletResponse response) {
           return APIResponse.fail(e.getMessage());

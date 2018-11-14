@@ -3,6 +3,10 @@ package com.csjscm.core.framework.model;
 
 import com.csjscm.core.framework.annotation.Creator;
 import com.csjscm.core.framework.annotation.Editor;
+import com.csjscm.core.framework.elasticsearch.annotation.ElasticsearchIndex;
+import com.csjscm.core.framework.elasticsearch.annotation.ElasticsearchIndexField;
+import com.csjscm.core.framework.elasticsearch.annotation.ElasticsearchIndexId;
+import com.csjscm.core.framework.elasticsearch.constant.IndexFiledTypeEnum;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -19,6 +23,7 @@ import java.util.Date;
  */
 
 @Data
+@ElasticsearchIndex
  public class Category implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -26,18 +31,21 @@ import java.util.Date;
     /**
     * 主键Id
     */
+    @ElasticsearchIndexId
     private Integer id;
 
     /**
     * 分类编码
     */
     @NotBlank(message = "分类编码不能为空")
+    @ElasticsearchIndexField(indexType = IndexFiledTypeEnum.KEYWORD)
     private String classCode;
 
     /**
     * 分类名称
     */
     @NotBlank(message = "分类编码不能为空")
+    @ElasticsearchIndexField(indexType = IndexFiledTypeEnum.TEXT)
     private String className;
 
     /**
@@ -49,6 +57,7 @@ import java.util.Date;
     * 上层分类ID
     */
     @NotNull(message = "上层分类ID不能为空")
+    @ElasticsearchIndexField(indexType = IndexFiledTypeEnum.INTEGER)
     private Integer parentClass;
 
     /**
@@ -145,5 +154,6 @@ import java.util.Date;
     /**
      * 1启用 0停用
      */
+    @ElasticsearchIndexField(indexType = IndexFiledTypeEnum.INTEGER)
     private Integer state;
 }

@@ -7,6 +7,7 @@ import com.csjscm.core.framework.common.enums.CategoryLevelEnum;
 import com.csjscm.core.framework.common.util.BussinessException;
 import com.csjscm.core.framework.dao.CategoryMapper;
 import com.csjscm.core.framework.dao.SkuCoreMapper;
+import com.csjscm.core.framework.elasticsearch.utils.EsUtil;
 import com.csjscm.core.framework.model.Category;
 import com.csjscm.core.framework.service.CategoryService;
 import com.csjscm.core.framework.vo.CategoryJsonModel;
@@ -15,6 +16,7 @@ import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
 import com.csjscm.sweet.framework.redis.RedisServiceFacade;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.google.common.collect.Maps;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.*;
 
 
@@ -44,6 +47,8 @@ public class CategoryServiceImpl implements CategoryService {
     private RedisServiceFacade redisServiceFacade;
     @Autowired
     private SkuCoreMapper skuCoreMapper;
+    @Autowired
+    private EsUtil esUtil;
 
 
     @Override
@@ -63,6 +68,7 @@ public class CategoryServiceImpl implements CategoryService {
             redisServiceFacade.set(Constant.REDIS_KEY_PRODUCT_NO + t.getClassCode(), 0);
         }
         int i = categoryMapper.insertSelective(t);
+        insert2Es(t);
         getJsonCategory();
         return i;
     }
@@ -95,6 +101,7 @@ public class CategoryServiceImpl implements CategoryService {
         }
         t.setEditTime(new Date());
         int i = categoryMapper.updateSelective(t);
+        update2Es(t);
         getJsonCategory();
         return i;
     }
@@ -149,6 +156,8 @@ public class CategoryServiceImpl implements CategoryService {
                 stringBuffer.append(Constant.REDIS_KEY_PRODUCT_NO).append(primary.getClassCode()).append(",");
             }
             categoryMapper.deleteByPrimaryKey(Integer.parseInt(strId));
+
+            delete2Es(primary);
         }
         String s = stringBuffer.toString();
         if (StringUtils.isNotBlank(s)) {
@@ -168,6 +177,8 @@ public class CategoryServiceImpl implements CategoryService {
             Category category = categoryMapper.findByPrimary(id);
             category.setState(state);
             categoryMapper.updateSelective(category);
+
+            update2Es(category);
             Map<String, Object> map = new HashMap<>();
             map.put("parentClass", category.getId());
             List<Category> categories = categoryMapper.listSelective(map);
@@ -208,4 +219,53 @@ public class CategoryServiceImpl implements CategoryService {
         return list;
     }
 
+    @Override
+    public void initCategoryEs(){
+        try{
+            esUtil.deleteIndex(Category.class);
+        }catch (Exception e){
+            logger.error("删除Es分类失败",e);
+        }
+        try{
+            esUtil.createIndex(Category.class);
+        }catch (Exception e){
+            throw new BusinessException("创建Es分类失败");
+        }
+        Map<String,Object> map= Maps.newHashMap();
+        map.put("levelNum",3);
+        List<Category> list=listSelective(map);
+        try {
+            esUtil.insertList(list,Category.class);
+        } catch (IOException e) {
+            logger.error("初始化分类Es数据失败",e);
+        }
+    }
+
+    private void insert2Es(Category category){
+        if (category.getLevelNum().intValue() == CategoryLevelEnum.三级.getState().intValue()) {
+            try{
+                esUtil.insert(category);
+            }catch (Exception e){
+                logger.error("新增分类至Es失败："+JSON.toJSONString(category),e);
+            }
+        }
+    }
+    private void update2Es(Category category){
+        if (category.getLevelNum().intValue() == CategoryLevelEnum.三级.getState().intValue()) {
+            try{
+                esUtil.update(category);
+            }catch (Exception e){
+                logger.error("更新分类至Es失败："+JSON.toJSONString(category),e);
+            }
+        }
+    }
+    private void delete2Es(Category category){
+        if (category.getLevelNum().intValue() == CategoryLevelEnum.三级.getState().intValue()) {
+            try{
+                esUtil.delete(category);
+            }catch (Exception e){
+                logger.error("删除分类至Es失败："+JSON.toJSONString(category),e);
+            }
+        }
+    }
 }

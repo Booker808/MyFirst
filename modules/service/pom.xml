@@ -18,10 +18,6 @@
             <artifactId>dao</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.csjscm.core.framework</groupId>
-            <artifactId>elasticsearch</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.csjscm.sweet.framework</groupId>
             <artifactId>sweet-framework-auth</artifactId>
         </dependency>

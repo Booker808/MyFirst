@@ -5,6 +5,7 @@ import com.csjscm.sweet.framework.core.mvc.model.QueryResult;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 import java.util.Map;
 
 public interface EsUtil {
@@ -16,6 +17,14 @@ public interface EsUtil {
      */
     boolean createIndex(Class clazz);
 
+    /**
+     * 检测是否存在Index
+     *
+     * @param clazz
+     * @return
+     */
+    boolean existsIndex(Class clazz);
+
     boolean deleteIndex(Class clazz);
 
     /**
@@ -26,6 +35,8 @@ public interface EsUtil {
      * @throws IOException
      */
     String insert(Object object) throws IOException, NoSuchMethodException, InvocationTargetException, IllegalAccessException;
+
+    <T> String insertList(List<T> list,Class<T> clazz) throws IOException;
 
     /**
      * 更新Es引擎中的对象

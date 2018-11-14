@@ -120,6 +120,9 @@
         insert into category(class_code,class_name,simple_name,parent_class,level_num,memos,create_user_id,create_time,edit_user_id,edit_time,udf1,udf2,udf3,udf4,udf5,udf6,udf7,udf8,udf9,udf10,request_id,sort,state)values(#{classCode,jdbcType=VARCHAR},#{className,jdbcType=VARCHAR},#{simpleName,jdbcType=VARCHAR},#{parentClass,jdbcType=INTEGER},#{levelNum,jdbcType=INTEGER},#{memos,jdbcType=VARCHAR},#{createUserId,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},#{editUserId,jdbcType=VARCHAR},#{editTime,jdbcType=TIMESTAMP},#{udf1,jdbcType=VARCHAR},#{udf2,jdbcType=VARCHAR},#{udf3,jdbcType=VARCHAR},#{udf4,jdbcType=VARCHAR},#{udf5,jdbcType=VARCHAR},#{udf6,jdbcType=VARCHAR},#{udf7,jdbcType=VARCHAR},#{udf8,jdbcType=VARCHAR},#{udf9,jdbcType=VARCHAR},#{udf10,jdbcType=VARCHAR},#{requestId,jdbcType=VARCHAR},#{sort,jdbcType=INTEGER},#{state,jdbcType=INTEGER})
     </insert>
     <insert id="insertSelective" parameterType="com.csjscm.core.framework.model.Category">
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
         insert into category
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
