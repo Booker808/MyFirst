@@ -19,6 +19,10 @@ import java.net.UnknownHostException;
 public class MongoConfig {
     @Value("${spring.data.mongodb.uri}")
     private String MONGO_URI;
+    @Value("${spring.data.mongodb.jhp.uri}")
+    private String MONGO_URI_JHP;
+
+    /******************************主mongodb配置***********************************/
     @Bean
     @Primary
     public MongoMappingContext mongoMappingContext() {
@@ -46,6 +50,35 @@ public class MongoConfig {
     @Primary
     public MongoTemplate mongoTemplate() throws Exception {
         return new MongoTemplate(dbFactory(), this.mappingMongoConverter()); }
+
+
+
+    /******************************第二mongodb配置***********************************/
+    @Bean
+    public MongoMappingContext mongoMappingContext1() {
+        MongoMappingContext mappingContext = new MongoMappingContext();
+        return mappingContext;
+    }
+    @Bean
+    public MongoDbFactory dbFactory1() throws UnknownHostException {
+        return new SimpleMongoDbFactory(new MongoClientURI(MONGO_URI_JHP)); }
+
+    /**
+     * 使用自定义的typeMapper去除写入mongodb时的“_class”字段
+     *
+     * @return
+     * @throws Exception
+     */
+    @Bean
+    public MappingMongoConverter mappingMongoConverter1() throws Exception {
+        DefaultDbRefResolver dbRefResolver = new DefaultDbRefResolver(this.dbFactory1());
+        MappingMongoConverter converter = new MappingMongoConverter(dbRefResolver, this.mongoMappingContext1());
+        converter.setTypeMapper(new DefaultMongoTypeMapper(null));
+        return converter;
+    }
+    @Bean
+    public MongoTemplate mongoTemplate_jhp() throws Exception {
+        return new MongoTemplate(dbFactory1(), this.mappingMongoConverter1()); }
 
 
 }
