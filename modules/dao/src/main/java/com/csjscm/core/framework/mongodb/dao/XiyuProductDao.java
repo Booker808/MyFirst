@@ -12,7 +12,7 @@ public class XiyuProductDao extends MongoCommonDao<XiyuProduct> {
 
     @Override
     @Autowired
-    @Qualifier("mongoTemplate")
+    @Qualifier("mongoTemplate_ehsy")
     protected void setMongoTemplate(MongoTemplate mongoTemplate) {
         this.mongoTemplate=mongoTemplate;
     }

@@ -5,6 +5,8 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.csjscm.core.framework.common.util.BeanutilsCopy;
 import com.csjscm.core.framework.common.util.Page;
+import com.csjscm.core.framework.mongodb.dao.CrawlerSkuProductDao;
+import com.csjscm.core.framework.mongodb.dao.CrawlerSpuProductDao;
 import com.csjscm.core.framework.mongodb.model.CrawlerSkuProduct;
 import com.csjscm.core.framework.mongodb.model.CrawlerSpuProduct;
 import com.csjscm.core.framework.mongodb.model.XiyuProduct;
@@ -36,6 +38,10 @@ public class DemoController {
     @Autowired
     private XiyuProductDao xiyuProductDao;
     @Autowired
+    private CrawlerSkuProductDao crawlerSkuProductDao;
+    @Autowired
+    private CrawlerSpuProductDao crawlerSpuProductDao;
+    @Autowired
     private CrawlerProductService crawlerProductService;
 
     @RequestMapping(value = "/list",method = RequestMethod.GET)
@@ -57,7 +63,6 @@ public class DemoController {
         for(XiyuProduct l:list3){
             CrawlerSpuProduct spuProductBack=new CrawlerSpuProduct();
             spuProductBack.setBrandNameBack(l.getBrandName());
-
             String[] categoryNames = l.getCategoryNames();
             String categorystr="";
             if(categoryNames!=null){
@@ -90,7 +95,6 @@ public class DemoController {
                     }
                 }
             }
-            String uuid = UUID.randomUUID().toString().replace("-", "");
             spuProductBack.setMinUnitBack(l.getSaleUom());
             spuProductBack.setMnemonicCode(l.getSkuCode());
             spuProductBack.setPageMainPic(l.getPictureUrl());
@@ -107,7 +111,6 @@ public class DemoController {
             spuProductBack.setProductTitle(l.getProductName());
             spuProductBack.setStock(l.getStock());
             spuProductBack.setAttrJson(l.getSpecParam());
-            spuProductBack.setUuid(uuid);
           //  mongoTemplate.insert(spuProductBack,"spu_product_back");
 
             CrawlerSkuProduct skuProductBack=new CrawlerSkuProduct();
@@ -127,7 +130,6 @@ public class DemoController {
             }
             skuProductBack.setSpecParam(array);
             skuProductBack.setAttrJson(l.getSpecParam());
-            skuProductBack.setSpuUuid(uuid);
             skuProductBack.setReferencePrice(l.getMarketPrice());
             skuProductBack.setSellPrice(l.getSalePrice());
           //  mongoTemplate.insert(skuProductBack,"sku_product_back");

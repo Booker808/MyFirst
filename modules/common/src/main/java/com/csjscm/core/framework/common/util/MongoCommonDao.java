@@ -39,6 +39,11 @@ public abstract class MongoCommonDao<T> {
         return mongoTemplate.find(query, this.getEntityClass());
     }
 
+    public List<T> find(Map<String,Object> map) {
+        Query query = covertQuery(map);
+        return mongoTemplate.find(query, this.getEntityClass());
+    }
+
     /**
      * 通过条件查询实体(集合)，可以指定条件和集合名
      */
@@ -191,6 +196,12 @@ public abstract class MongoCommonDao<T> {
             mongoTemplate.remove(query, collectionName);
         }
     }
+    public void remove(Map<String ,Object> map, String collectionName) {
+        Query query = covertQuery(map);
+        if (mongoTemplate.exists(query, collectionName)) {
+            mongoTemplate.remove(query, collectionName);
+        }
+    }
 
     /**
      * 删除数据集
@@ -292,6 +303,10 @@ public abstract class MongoCommonDao<T> {
      */
 
     public long count(Query query) {
+        return mongoTemplate.count(query, this.getEntityClass());
+    }
+    public long count(Map<String ,Object> map) {
+        Query query = covertQuery(map);
         return mongoTemplate.count(query, this.getEntityClass());
     }
     public long count(Query query,String collectionName) {

@@ -19,7 +19,9 @@ public class XiyuProduct {
     private JSONArray specParam;
     private String skuCode;
     private String pictureUrl;
+    private String spu;
     private String stock;
+    private String mfgSku;
 
 
 }

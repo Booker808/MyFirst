@@ -2,6 +2,7 @@ package com.csjscm.core.framework.mongodb.model;
 
 import com.alibaba.fastjson.JSONArray;
 import lombok.Data;
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -9,8 +10,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 public class CrawlerSpuProduct {
     @Id
+    @NotBlank(message = "id不能为空")
     private String id;
-    private String uuid;
     private String minUnit;
     private String minUnitBack;
     private String categoryNames;
