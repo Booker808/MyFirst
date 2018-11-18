@@ -14,6 +14,7 @@ import java.util.Map;
 public interface BrandMasterService {
     /**
      * 查询品牌接口(分页)
+     *
      * @param map
      * @param current
      * @param pageSize
@@ -23,6 +24,7 @@ public interface BrandMasterService {
 
     /**
      * 查询品牌名称
+     *
      * @param brandName
      * @return
      */
@@ -30,11 +32,14 @@ public interface BrandMasterService {
 
     /**
      * 查询品牌名称列表
+     *
      * @return
      */
     List<BrandMaster> selectByBrandNameSky();
+
     /**
      * 查询目标为ID的品牌
+     *
      * @param id
      * @return
      */
@@ -42,6 +47,7 @@ public interface BrandMasterService {
 
     /**
      * 创建品牌对象
+     *
      * @param record
      * @return
      */
@@ -49,6 +55,7 @@ public interface BrandMasterService {
 
     /**
      * 更新指定品牌
+     *
      * @param
      * @return
      */
@@ -56,13 +63,13 @@ public interface BrandMasterService {
 
     /**
      * 删除指定品牌列表
+     *
      * @param id
      * @return
      */
     int deleteByPrimaryKey(Integer id);
 
     /**
-     *
      * @param ids
      */
     void deleteByIds(String ids);
@@ -72,19 +79,27 @@ public interface BrandMasterService {
      */
     void reloadBrandList();
 
-    BrandMaster findSelective(Map<String,Object> map);
+    BrandMaster findSelective(Map<String, Object> map);
 
     /**
      * 按条件查询list
-     *
      */
-    List<BrandMaster> listSelective(Map<String,Object> map);
+    List<BrandMaster> listSelective(Map<String, Object> map);
 
     /**
      * 根据商城三级分类id 查询 该分类底下的品牌
+     *
      * @param lv3CategoryId
      * @return
      */
     List<BrandMaster> findBrandByLv3CategoryId(Integer lv3CategoryId);
+
+    /**
+     * 根据品牌id集合查询
+     *
+     * @param brandIds
+     * @return
+     */
+    List<BrandMaster> findBrandListByIds(List<Integer> brandIds);
 
 }
