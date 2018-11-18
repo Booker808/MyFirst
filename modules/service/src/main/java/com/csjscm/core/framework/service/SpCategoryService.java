@@ -16,7 +16,7 @@ import java.util.Map;
  */
 
 public interface SpCategoryService {
-    int save(SpCategory t);
+    // int save(SpCategory t);
 
 
     int update(SpCategory t);
